@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-08-2011:
+Add new 'interactive' governor (Mike Chan via netarchy: https://github.com/netarchy/nexus-s/commit/b6a49be1525390890813808a4b4966438bb7b4e8).
 Begin using localversion for versioning (removed from default.prop).
 Some changes to system_apps init script (some logging and don't move apps that are odexed).
 Changes to mount_ro init script (remove other init scripts before Remount ro).

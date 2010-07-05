@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-16-2012:
+PM: Make it possible to avoid races between wakeup and system sleep (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=c125e96f044427f38d106fab7bc5e4a5e6a18262).
+
 05-15-2012:
 Makefile: fix up some cflags (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/1a0c161466de4860af58f11e0b9c1d830c5d5865) (rebased into below commit).
 ARM: switch to 'hardfloat' optimization flags (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/6d113f32bde45bc9d7557c0cc73249ac31b7c36e).

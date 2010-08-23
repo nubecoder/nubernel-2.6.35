@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-15-2012:
+loop: add some basic read-only sysfs attributes (via kernel.org: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=ee86273062cbb310665fe49e1f1937d2cf85b0b9). [Thanks to Warren Togami for sharing.]
 Adjustments to defconfigs.
 Remove more unused defconfigs.
 Remove unused cyanogenmod defconfig.

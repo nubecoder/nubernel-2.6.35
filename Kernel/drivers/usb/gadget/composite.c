@@ -1230,7 +1230,8 @@ unknown:
 				}
 			}
 #endif
-			f = cdev->config->interface[intf];
+			if (cdev->config)
+				f = cdev->config->interface[intf];
 			CSY_DBG("f=0x%p, f->setup=0x%p, f->name=%s\n", f, f->setup, f->name);
 			break;
 

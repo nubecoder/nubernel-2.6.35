@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-16-2012:
+PM: Fix signed/unsigned warning in dpm_show_time() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=0702d9ee0f1dcb6258789032f03b3208bfafaffc).
 PM: Make it possible to avoid races between wakeup and system sleep (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=c125e96f044427f38d106fab7bc5e4a5e6a18262).
 
 05-15-2012:

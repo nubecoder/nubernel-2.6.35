@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-15-2012:
+ARM: S5PV210: Place the common SPARSEMEM at ARCH_S5PV210 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=eecb6a8420fde47ebc37d03f72ef6dcb8e93c0ef).
+
 05-13-2012:
 initramfs: TW: Update modified proprietary modules for TW BML (hacked for 2.6.35.14 vermagic).
 scripting: modules: Update VERSION_PATH define for 2.6.35.14.

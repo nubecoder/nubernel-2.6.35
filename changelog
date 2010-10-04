@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-16-2012:
+PM: Allow wakeup events to abort freezing of tasks (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=dbeeec5fe868f2e2e92fe94daa2c5a047240fdc4).
 PM: Prevent dpm_prepare() from returning errors unnecessarily (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=1e75227ef0571031cd18536ab768ee35667ec5b9).
 PM: Allow devices to be removed during late suspend and early resume (via mianline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=d08a5ace18dce9b18d8eb56bb6c0feef082b1b33).
 PM: Fix potential issue with failing asynchronous suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=098dff738abbeaea15fc95c4f4fdaee1e9bbea75).

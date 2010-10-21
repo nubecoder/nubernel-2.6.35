@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-15-2012:
+Optimized ARM RWSEM algorithm (via codeaurora: https://www.codeaurora.org/gitweb/quic/le/?p=kernel/msm.git;a=commit;h=917c8db2c20f54a904451b5b38933d57d3d1cc2e).
 arm: Allow CPU-supported unaligned accesses (via codeaurora: https://www.codeaurora.org/gitweb/quic/le/?p=kernel/msm.git;a=commit;h=d5c13d6cba4554cff2d0f6357984eaf068fa3061).
 ARM: 6900/1: Suspend: Fix build error on ARCH_S5PC100 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=5f23188e036aabfe9245f9e61adbb4ea27ed8f35).
 mfd: Fix resource reclaim for max8998 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=7484552eb24e3c62ef55a4ff0133d8450adea206).

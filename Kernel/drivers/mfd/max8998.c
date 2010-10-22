@@ -160,7 +160,7 @@ static int max8998_i2c_probe(struct i2c_client *i2c,
 
 err:
 	mfd_remove_devices(max8998->dev);
-//	max8998_irq_exit(max8998);
+	max8998_irq_exit(max8998);
 //	i2c_unregister_device(max8998->rtc);
 	kfree(max8998);
 	return ret;
@@ -171,7 +171,7 @@ static int max8998_i2c_remove(struct i2c_client *i2c)
 	struct max8998_dev *max8998 = i2c_get_clientdata(i2c);
 
 	mfd_remove_devices(max8998->dev);
-//	max8998_irq_exit(max8998);
+	max8998_irq_exit(max8998);
 //	i2c_unregister_device(max8998->rtc);
 	kfree(max8998);
 

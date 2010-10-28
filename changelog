@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-15-2012:
+loop: Properly clear sysfs in autoclear mode (via kernel.org: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=51a0bb0c2e614659132fce272c8a1815a12c5c2a). [Thanks to Warren Togami for sharing.]
 loop: add some basic read-only sysfs attributes (via kernel.org: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=ee86273062cbb310665fe49e1f1937d2cf85b0b9). [Thanks to Warren Togami for sharing.]
 Adjustments to defconfigs.
 Remove more unused defconfigs.

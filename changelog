@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-16-2012:
+PM: Allow devices to be removed during late suspend and early resume (via mianline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=d08a5ace18dce9b18d8eb56bb6c0feef082b1b33).
 PM: Fix potential issue with failing asynchronous suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=098dff738abbeaea15fc95c4f4fdaee1e9bbea75).
 PM / Wakeup: Introduce wakeup source objects and event statistics (v3) (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=074037ec79bea73edf1b1ec72fef1010e83e3cc5).
 PM: Do not use dynamically allocated objects in pm_wakeup_event() (via mianline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=4eb241e5691363c391aac8a5051d0d013188ec84).

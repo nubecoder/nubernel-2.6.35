@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-16-2012:
+PM: Use pm_wakeup_pending() in __device_suspend() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=d83f905e126f8cbc5e4addc5d1a64aea785b732e).
 PM / Wakeup: Replace pm_check_wakeup_events() with pm_wakeup_pending() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=a2867e08c8e3bdbc00caf56bc3bdde19ccc058e3).
 Freezer: Fix a race during freezing of TASK_STOPPED tasks (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=8cfe400ca54fd1ed96f962bea5f7e20b09b6d69f).
 PM: Allow wakeup events to abort freezing of tasks (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=dbeeec5fe868f2e2e92fe94daa2c5a047240fdc4).

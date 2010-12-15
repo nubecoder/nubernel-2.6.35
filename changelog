@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-16-2012:
+PM: Use a different list of devices for each stage of device suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=8a43a9ab7b329aa8590f8a064df9bf8c80987507).
 PM: Avoid compiler warning in pm_noirq_op() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=2cbb3ce1ad19e66858a4284dd6c4bb958162c483).
 PM: Use pm_wakeup_pending() in __device_suspend() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=d83f905e126f8cbc5e4addc5d1a64aea785b732e).
 PM / Wakeup: Replace pm_check_wakeup_events() with pm_wakeup_pending() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=a2867e08c8e3bdbc00caf56bc3bdde19ccc058e3).

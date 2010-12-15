@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-16-2012:
+PM: Replace the device power.status field with a bit field (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=b8c76f6aed0ab7df73a6410f3f82de2c831bb144).
 PM: Remove redundant checks from core device resume routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=5b219a51fdceaf76e0e18da57c7efb9e5586e567).
 PM: Use a different list of devices for each stage of device suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=8a43a9ab7b329aa8590f8a064df9bf8c80987507).
 PM: Avoid compiler warning in pm_noirq_op() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=2cbb3ce1ad19e66858a4284dd6c4bb958162c483).

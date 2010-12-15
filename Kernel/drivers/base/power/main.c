@@ -67,7 +67,7 @@ static int async_error;
  */
 void device_pm_init(struct device *dev)
 {
-	dev->power.status = DPM_ON;
+	dev->power.in_suspend = false;
 	init_completion(&dev->power.completion);
 	complete_all(&dev->power.completion);
 	dev->power.wakeup = NULL;
@@ -102,7 +102,7 @@ void device_pm_add(struct device *dev)
 		 kobject_name(&dev->kobj));
 	mutex_lock(&dpm_list_mtx);
 	if (dev->parent) {
-		if (dev->parent->power.status >= DPM_SUSPENDING)
+		if (dev->parent->power.in_suspend)
 			dev_warn(dev, "parent %s should not be sleeping\n",
 				 dev_name(dev->parent));
 	} else if (transition_started) {
@@ -492,7 +492,6 @@ void dpm_resume_noirq(pm_message_t state)
 		int error;
 
 		get_device(dev);
-		dev->power.status = DPM_OFF;
 		list_move_tail(&dev->power.entry, &dpm_suspended_list);
 		mutex_unlock(&dpm_list_mtx);
 
@@ -542,11 +541,11 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
 	TRACE_DEVICE(dev);
 	TRACE_RESUME(0);
 
-	if (dev->parent && dev->parent->power.status >= DPM_OFF)
+	if (dev->parent && dev->parent->power.in_suspend)
 		dpm_wait(dev->parent, async);
 	device_lock(dev);
 
-	dev->power.status = DPM_RESUMING;
+	dev->power.in_suspend = false;
 
 	if (dev->bus) {
 		if (dev->bus->pm) {
@@ -734,7 +733,7 @@ static void dpm_complete(pm_message_t state)
 		struct device *dev = to_device(dpm_prepared_list.prev);
 
 		get_device(dev);
-		dev->power.status = DPM_ON;
+		dev->power.in_suspend = false;
 		list_move(&dev->power.entry, &list);
 		mutex_unlock(&dpm_list_mtx);
 
@@ -850,7 +849,6 @@ int dpm_suspend_noirq(pm_message_t state)
 			put_device(dev);
 			break;
 		}
-		dev->power.status = DPM_OFF_IRQ;
 		if (!list_empty(&dev->power.entry))
 			list_move(&dev->power.entry, &dpm_noirq_list);
 		put_device(dev);
@@ -937,9 +935,6 @@ static int __device_suspend(struct device *dev, pm_message_t state, bool async)
 			error = legacy_suspend(dev, state, dev->bus->suspend);
 		}
 	}
-
-	if (!error)
-		dev->power.status = DPM_OFF;
 
  End:
 	device_unlock(dev);
@@ -1076,7 +1071,6 @@ static int dpm_prepare(pm_message_t state)
 		struct device *dev = to_device(dpm_list.next);
 
 		get_device(dev);
-		dev->power.status = DPM_PREPARING;
 		mutex_unlock(&dpm_list_mtx);
 
 		pm_runtime_get_noresume(dev);
@@ -1092,7 +1086,6 @@ static int dpm_prepare(pm_message_t state)
 
 		mutex_lock(&dpm_list_mtx);
 		if (error) {
-			dev->power.status = DPM_ON;
 			if (error == -EAGAIN) {
 				put_device(dev);
 				error = 0;
@@ -1104,7 +1097,7 @@ static int dpm_prepare(pm_message_t state)
 			put_device(dev);
 			break;
 		}
-		dev->power.status = DPM_SUSPENDING;
+		dev->power.in_suspend = true;
 		if (!list_empty(&dev->power.entry))
 			list_move_tail(&dev->power.entry, &dpm_prepared_list);
 		put_device(dev);

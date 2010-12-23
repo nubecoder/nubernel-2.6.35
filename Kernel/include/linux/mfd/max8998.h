@@ -144,13 +144,14 @@ struct max8998_platform_data {
 	int				num_regulators;
 	int				irq_base;
 	int				ono;
-	int                             buck1_voltage_set[4];
-        int                             buck2_voltage_set[2];
+	int				buck1_voltage_set[4];
+	int				buck2_voltage_set[2];
 	int				buck1_set1;
 	int				buck1_set2;
 	int				buck2_set3;
+	bool				wakeup;
 	struct adc_channel_type		*s3c_adc_channel;
-        struct s5p_batt_block_temp      *s5pc110_batt_block_temp;
+	struct s5p_batt_block_temp	*s5pc110_batt_block_temp;
 };
 
 #endif /*  __LINUX_MFD_MAX8998_H */

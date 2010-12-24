@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-16-2012:
+PM: Use dev_name() in core device suspend and resume routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=5c1a07ab3e78ef68fc9ccf419c969e8ed88d7cb6).
 PM: Permit registration of parentless devices during system suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=b64959e6158d6dcb640fc22d7f43b94ad1c91135).
 PM: Replace the device power.status field with a bit field (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=b8c76f6aed0ab7df73a6410f3f82de2c831bb144).
 PM: Remove redundant checks from core device resume routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=5b219a51fdceaf76e0e18da57c7efb9e5586e567).

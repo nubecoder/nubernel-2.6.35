@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-13-2012:
+sched: Move sched_autogroup_exit() to free_signal_struct() (Mike Galbraith via existz: https://github.com/existz/linux_gt-i9000-gb/commit/140cb4cb0716ca15af16de56c8d80b043d901faa).
 sched, autogroup fixes (zachariasmaladroit via existz: https://github.com/existz/linux_gt-i9000-gb/commit/3fcc5aaeb633bceacfb4ba2f377830a7c6ee7b78).
 sched: Add 'autogroup' scheduling feature: automated per session task groups (Mike Galbraith via existz: https://github.com/existz/linux_gt-i9000-gb/commit/febcfa876e669047d7c31585438bf89891249977).
 Reverting "Automated per tty task groups patch" (commitID: a4a969e).

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-19-2011:
+Compiler optimizations (via netarchy: https://github.com/netarchy/nexus-s/commit/f0b9a5dd0f03eddf4d0912a0aec827bb3b1c4976).
 Moving CROSS_COMPILE into the defconfigs (still setting it on the command line).
 
 12-10-2011:

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-08-2011:
+ARM: S5PC11X: CPUFREQ: Fix power suspend cpu frequency (coolbho3k via netarchy: https://github.com/netarchy/nexus-s/commit/e434b50998753930d302988a0444ffce92623500).
 Begin using localversion for versioning (removed from default.prop).
 Some changes to system_apps init script (some logging and don't move apps that are odexed).
 Changes to mount_ro init script (remove other init scripts before Remount ro).

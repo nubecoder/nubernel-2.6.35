@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+12-09-2011:
+Update to 2.6.35.8 (via netarchy: https://github.com/netarchy/nexus-s/commit/0c4f455bda1583e34b2041aa1ae79f705dc5c265).
+
 12-07-2011:
 3 button reboot, all fixed up and working.
 3 button reboot, correcting key code for POWER key.

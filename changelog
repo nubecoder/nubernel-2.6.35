@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-08-2011:
+Add 1.3ghz and 1.4ghz frequencies to the table (via netarchy: https://github.com/netarchy/nexus-s/commit/bea38ab5ed2fd4366f111d6c2c60295a043fb7fa).
 Define safe initial min and max speeds on boot (netarchy: https://github.com/netarchy/nexus-s/commit/3b1bcb430e45ad0610d0b5346f8eb4af2298b922).
 Overclock tweaks (via netarchy: https://github.com/netarchy/nexus-s/commit/161bcc7b7b7c54fb4ee896fd52cc90509ccfde8f).
 Fixed 1.2ghz overclock (via netarchy: https://github.com/netarchy/nexus-s/commit/6b66678fa196d0ce7550c38fdb6566da57d46d95).

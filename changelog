@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-08-2011:
+Tweaking conservative governor defaults (netarchy: https://github.com/netarchy/nexus-s/commit/ee6f881f29eb660aa41b8cfa4481ddc69f33ea4d).
 Fix compile errors with interactive governor (netarchy: https://github.com/netarchy/nexus-s/commit/51259e9997e892d343166d7999fef0aeb50c42a1).
 cpufreq interactive governor: fix crash on CPU shutdown (Todd Poynor via netarchy: https://github.com/netarchy/nexus-s/commit/627ebb25780b7aa3d8d5d3d181a89c66f69b7443).
 cpufreq interactive governor save/restore IRQs around cpumask spinlocks (Todd Poynor via netarchy: https://github.com/netarchy/nexus-s/commit/4620008ae098748acd0e6f1c6013634ab592dbc8).

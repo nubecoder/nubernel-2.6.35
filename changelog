@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Makefile fix for non-gnueabi toolchains (nullghost via myself: https://github.com/nubecoder/nubernel-kernel/commit/62adb91fde258ce1d2565fbc9579ac654e43f1d3).
 Compile host OS tools with 03 (gzub via myself: https://github.com/nubecoder/nubernel-kernel/commit/50e04c62d84a61b3a5995f2083d51223de80eba4).
 Optimized config flags (gzub via myself: https://github.com/nubecoder/nubernel-kernel/commit/fdc0ddeb19f1fbabc705f750c64fc6dd355c2a1d).
 Set 4k read ahead in mtd_blkdevs.c (Rodderik via myself: https://github.com/nubecoder/nubernel-kernel/commit/4c45a265fd8e4d7f573dd178462a0e65ce862822).

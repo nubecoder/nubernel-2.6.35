@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Expose sysfs file for scaling_available_frequencies (nullghost via myself: https://github.com/nubecoder/nubernel-kernel/commit/e3ea2a07c023948b68585d27db6f1fdc7c44e9db).
 Added ueventd.rc to cleanup init script.
 Fixing mounts in recovery.rc.
 Added helper scripts into scripts folder.

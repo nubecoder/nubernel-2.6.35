@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-09-2011:
+Updated BFQ to v2. (thalamus via netarchy: https://github.com/netarchy/nexus-s/commit/42aebccf504700c7ba6f0a54dd02f6c1734a6b42).
 Add BFQ IO Scheduler (Paolo Valente via netarchy: https://github.com/netarchy/nexus-s/commit/7acd3e3e3b7f344d7e69a8186159148935fce07f).
 Add Simple IO Scheduler (Miguel Boton via netarchy: https://github.com/netarchy/nexus-s/commit/50ca05184f28a31805edcaecc74808a69245d289).
 

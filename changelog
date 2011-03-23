@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Optimized config flags (gzub via myself: https://github.com/nubecoder/nubernel-kernel/commit/fdc0ddeb19f1fbabc705f750c64fc6dd355c2a1d).
 Set 4k read ahead in mtd_blkdevs.c (Rodderik via myself: https://github.com/nubecoder/nubernel-kernel/commit/4c45a265fd8e4d7f573dd178462a0e65ce862822).
 Changed swappiness from 60 to 10 (Rodderik via myself: https://github.com/nubecoder/nubernel-kernel/commit/0f95cb37dd56f922287be0d55158d8f7ed93dc15).
 Expose sysfs file for scaling_available_frequencies (nullghost via myself: https://github.com/nubecoder/nubernel-kernel/commit/e3ea2a07c023948b68585d27db6f1fdc7c44e9db).

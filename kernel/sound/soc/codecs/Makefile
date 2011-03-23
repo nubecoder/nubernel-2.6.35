@@ -1,3 +1,4 @@
+subdir-ccflags-y += -O2
 snd-soc-ac97-objs := ac97.o
 snd-soc-ad1836-objs := ad1836.o
 snd-soc-ad193x-objs := ad193x.o

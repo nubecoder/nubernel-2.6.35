@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-15-2012:
+ARM: Suspend: Fix dependency of ARCH_SUSPEND_POSSIBLE (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=3e1d9874b44212628b65ec4455d32cb4880b553f).
 ARM: S5P: Fix end address in memory resource information for UART devices (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=6236b97b9fa032057a9908ad16ff02c95feb3ad8).
 ARM: S5PV210: Place the common SPARSEMEM at ARCH_S5PV210 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=eecb6a8420fde47ebc37d03f72ef6dcb8e93c0ef).
 

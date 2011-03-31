@@ -28,6 +28,8 @@
 #define APLL_VAL_800	((1<<31)|(100<<16)|(3<<8)|(1))
 #define APLL_VAL_600	((1<<31)|(75<<16)|(3<<8)|(1))
 
+#define NUM_FREQ 11
+
 enum perf_level {
 	L0 = 0,	// 1.4GHz
 	L1,	// 1.3GHz

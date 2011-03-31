@@ -29,13 +29,17 @@
 #include <linux/completion.h>
 #include <linux/mutex.h>
 
+#ifdef CONFIG_MACH_VICTORY
+#include <mach/cpu-freq-v210.h>
+#endif
+
 #define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_CORE, \
 						"cpufreq-core", msg)
 
 /* UV */
-extern unsigned int freq_uv_table[11][3];
-int exp_UV_mV[11] =     { 1450000, 1400000, 1350000, 1300000, 1275000, 1225000, 1200000, 1175000, 1050000, 950000, 950000 };
-int enabled_freqs[11] = {       0,       0,       0,       1,       1,       1,       1,        1,      1,      1,      1 };
+extern unsigned int freq_uv_table[NUM_FREQ][3];
+int exp_UV_mV[NUM_FREQ] =     { 1450000, 1400000, 1350000, 1300000, 1275000, 1225000, 1200000, 1175000, 1050000, 950000, 950000 };
+int enabled_freqs[NUM_FREQ] = {       0,       0,       0,       1,       1,       1,       1,        1,      1,      1,      1 };
 /*  clock freqs         {  1.4GHz,  1.3GHz,  1.2GHz,  1.1GHz,  1.0GHz,  900MHz,  800MHz,  600MHz,  400MHz, 200MHz, 100MHz } */
 
 /**
@@ -672,11 +676,11 @@ static ssize_t store_UV_mV_table(struct cpufreq_policy *policy,
 			&exp_UV_mV[0], &exp_UV_mV[1], &exp_UV_mV[2], &exp_UV_mV[3],
 			&exp_UV_mV[4], &exp_UV_mV[5], &exp_UV_mV[6], &exp_UV_mV[7],
 			&exp_UV_mV[8], &exp_UV_mV[9], &exp_UV_mV[10]);
-	if(ret != 11) {
+	if(ret != NUM_FREQ) {
 		return -EINVAL;
 	}
 	else {
-		for(i = 0; i < 11; i++)
+		for(i = 0; i < NUM_FREQ; i++)
 		{
 		   exp_UV_mV[i] *= 1000;
 		}
@@ -734,7 +738,7 @@ static ssize_t store_states_enabled_table(struct cpufreq_policy *policy, const c
 			&enabled_freqs[0], &enabled_freqs[1], &enabled_freqs[2], &enabled_freqs[3],
 			&enabled_freqs[4], &enabled_freqs[5], &enabled_freqs[6], &enabled_freqs[7],
 			&enabled_freqs[8], &enabled_freqs[9], &enabled_freqs[10]);
-	if(ret != 1) {
+	if(ret != NUM_FREQ) {
 		return -EINVAL;
 	}
 	else

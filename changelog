@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-15-2012:
+arm: Allow CPU-supported unaligned accesses (via codeaurora: https://www.codeaurora.org/gitweb/quic/le/?p=kernel/msm.git;a=commit;h=d5c13d6cba4554cff2d0f6357984eaf068fa3061).
 ARM: 6900/1: Suspend: Fix build error on ARCH_S5PC100 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=5f23188e036aabfe9245f9e61adbb4ea27ed8f35).
 mfd: Fix resource reclaim for max8998 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=7484552eb24e3c62ef55a4ff0133d8450adea206).
 mfd: MAX8998/LP3974 hibernation support (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=cdd137c9c86c201ddb7f42ec978d2da45e7b7a17).

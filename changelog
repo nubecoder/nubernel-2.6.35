@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-08-2011:
+Correct some voltage settings and add the ability to modify voltages via sysfs based on work by TheEscapistxda (netarchy: https://github.com/netarchy/nexus-s/commit/3a9a272a0f3d3c048a7a364b327eb49f6680c4fd).
 Add 1.3ghz and 1.4ghz frequencies to the table (via netarchy: https://github.com/netarchy/nexus-s/commit/bea38ab5ed2fd4366f111d6c2c60295a043fb7fa).
 Define safe initial min and max speeds on boot (netarchy: https://github.com/netarchy/nexus-s/commit/3b1bcb430e45ad0610d0b5346f8eb4af2298b922).
 Overclock tweaks (via netarchy: https://github.com/netarchy/nexus-s/commit/161bcc7b7b7c54fb4ee896fd52cc90509ccfde8f).

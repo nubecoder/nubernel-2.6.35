@@ -1388,7 +1388,12 @@ static void sdhci_tasklet_finish(unsigned long param)
 
 	host = (struct sdhci_host*)param;
 
-	if(host == NULL)
+	//if(host == NULL)
+	/*
+	 * If this tasklet gets rescheduled while running, it will
+	 * be run again afterwards but without any active request.
+	 */
+	if (!host->mrq)
 		return;
 
 	spin_lock_irqsave(&host->lock, flags);

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-08-2011:
+Modify sysfs vdd interface so that the user can set vdd directly (netarchy: https://github.com/netarchy/nexus-s/commit/b16cbfdeab73f27e05d100c7afbc1fdb32dc0917).
 Raise arm voltage cap for adventurous over-volting individuals (netarchy: https://github.com/netarchy/nexus-s/commit/94215cb9f00e5680019fb5c1648b3101e4664d1a).
 Commenting out spammy printk used for vdd verification during testing (netarchy: https://github.com/netarchy/nexus-s/commit/8ccf4ec96ed195a9404c131c31d9764b9c3d1230).
 Correct some voltage settings and add the ability to modify voltages via sysfs based on work by TheEscapistxda (netarchy: https://github.com/netarchy/nexus-s/commit/3a9a272a0f3d3c048a7a364b327eb49f6680c4fd).

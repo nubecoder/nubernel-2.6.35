@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-08-2011:
+Add TheEscapists modified smartass governor, and fix the scaling for the 400mhz-800mhz gap (TheEscapist13 via netarchy: https://github.com/netarchy/nexus-s/commit/1f3ee7b3b5172cdd9e9e60fec8afa03ea4d8098f).
 Tweaks to ondemand defaults (netarchy: https://github.com/netarchy/nexus-s/commit/3d9a7418598d5eda3a60e9b415676bfe077b8a88).
 Tweaking conservative governor defaults (netarchy: https://github.com/netarchy/nexus-s/commit/ee6f881f29eb660aa41b8cfa4481ddc69f33ea4d).
 Fix compile errors with interactive governor (netarchy: https://github.com/netarchy/nexus-s/commit/51259e9997e892d343166d7999fef0aeb50c42a1).

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-24-2011:
+Add SLQB (Nick Piggin via netarchy: https://github.com/netarchy/nexus-s/commit/db7daf96ad654265272ae2c0733e7b29104fe228).
 JHash 3 (Jozsef Kadlecsik via netarchy: https://github.com/netarchy/nexus-s/commit/665cd5dc159970027a724217461c2515c490e616).
 
 12-19-2011:

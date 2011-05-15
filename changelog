@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-08-2011:
+Small tweak to ondemand default up threshold (netarchy: https://github.com/netarchy/nexus-s/commit/63fa22148e0c29d989e4c9120fd3b84fae4cf924).
 Interactive adjustments (netarchy: https://github.com/netarchy/nexus-s/commit/7bd7b9ae76b98c3ec8c71dc11bfd4e62b04ae7a3).
 More adjustments for smartass (netarchy: https://github.com/netarchy/nexus-s/commit/86a3adea41b089c9a2439bb3db237be185f49759).
 Smartass adjustments (netarchy: https://github.com/netarchy/nexus-s/commit/54dcfef94a96bc3043aac6f66339a1dd24d77301).

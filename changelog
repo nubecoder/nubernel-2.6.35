@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-09-2011:
+cpufreq: smartass: New 'smartass' governor (syncing up with erasmux) (erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/87270f22ba6b6efd6bd9fe2c9bf7c63cb4bf7ac2).
 Add interactiveX governor (imoseyon via erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/0f8231644179cc7f874766cb58aa43f9f9ce08bb).
 cpufreq: add smartassV2 governor (erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/2ade635b0607acc1ab0ec7f4d274855a9487af57).
 

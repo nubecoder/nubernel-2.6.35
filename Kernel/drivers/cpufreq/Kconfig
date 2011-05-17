@@ -208,10 +208,6 @@ config CPU_FREQ_GOV_INTERACTIVEX
 	  'interactivex' - This driver adds a dynamic cpufreq policy governor
 	  designed for latency-sensitive workloads.
 
-config CPU_FREQ_GOV_SMARTASS
-	tristate "'smartass' cpufreq governor"
-	depends on CPU_FREQ
-
 config CPU_FREQ_GOV_CONSERVATIVE
 	tristate "'conservative' cpufreq governor"
 	depends on CPU_FREQ
@@ -232,6 +228,14 @@ config CPU_FREQ_GOV_CONSERVATIVE
 	  module will be called cpufreq_conservative.
 
 	  For details, take a look at linux/Documentation/cpu-freq.
+
+	  If in doubt, say N.
+
+config CPU_FREQ_GOV_SMARTASS
+	tristate "'smartass' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  'smartass' - a "smart" optimized governor for the hero!
 
 	  If in doubt, say N.
 

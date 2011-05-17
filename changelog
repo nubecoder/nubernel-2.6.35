@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-09-2011:
+Add Simple IO Scheduler (Miguel Boton via netarchy: https://github.com/netarchy/nexus-s/commit/50ca05184f28a31805edcaecc74808a69245d289).
+
 11-08-2011:
 Begin using localversion for versioning (removed from default.prop).
 Some changes to system_apps init script (some logging and don't move apps that are odexed).

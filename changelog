@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-13-2012:
+sched: Add 'autogroup' scheduling feature: automated per session task groups (Mike Galbraith via existz: https://github.com/existz/linux_gt-i9000-gb/commit/febcfa876e669047d7c31585438bf89891249977).
 Reverting "Automated per tty task groups patch" (commitID: a4a969e).
 
 04-12-2012:

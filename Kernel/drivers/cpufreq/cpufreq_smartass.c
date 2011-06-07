@@ -217,8 +217,8 @@ static void cpufreq_smartass_timer(unsigned long data)
                 cpu_load = 100 * (unsigned int)(delta_time - delta_idle) / (unsigned int)delta_time;
 
         if (debug_mask & SMARTASS_DEBUG_LOAD)
-                printk(KERN_INFO "SmartassT @ %d: load %d (delta_time %llu)\n",
-                       policy->cur,cpu_load,delta_time);
+                printk(KERN_INFO "SmartassT @ %dMHz: load %d (delta_time %llu)\n",
+                       (policy->cur/1000),cpu_load,delta_time);
 
         this_smartass->cur_cpu_load = cpu_load;
 
@@ -338,7 +338,7 @@ static void cpufreq_smartass_freq_change_time_work(struct work_struct *work)
 
                 if (new_freq != policy->cur) {
                         if (debug_mask & SMARTASS_DEBUG_JUMPS)
-                                printk(KERN_INFO "SmartassQ: jumping from %d to %d\n",policy->cur,new_freq);
+                                printk(KERN_INFO "SmartassQ: jumping from %dMHz to %dMHz\n",(policy->cur/1000),(new_freq/1000));
 
                         __cpufreq_driver_target(policy, new_freq, relation);
 
@@ -656,7 +656,7 @@ static int cpufreq_governor_smartass(struct cpufreq_policy *new_policy,
                 smartass_update_min_max(this_smartass,new_policy,suspended);
                 if (this_smartass->cur_policy->cur != this_smartass->max_speed) {
                         if (debug_mask & SMARTASS_DEBUG_JUMPS)
-                                printk(KERN_INFO "SmartassI: initializing to %d\n",this_smartass->max_speed);
+                                printk(KERN_INFO "SmartassI: initializing to %dMHz\n",(this_smartass->max_speed/1000));
                         __cpufreq_driver_target(new_policy, this_smartass->max_speed, CPUFREQ_RELATION_H);
                 }
                 break;
@@ -691,7 +691,7 @@ static void smartass_suspend(int cpu, int suspend)
                 new_freq = validate_freq(this_smartass,sleep_wakeup_freq);
 
                 if (debug_mask & SMARTASS_DEBUG_JUMPS)
-                        printk(KERN_INFO "SmartassS: awaking at %d\n",new_freq);
+                        printk(KERN_INFO "SmartassS: awaking at %dMHz\n",(new_freq/1000));
 
                 __cpufreq_driver_target(policy, new_freq,
                                         CPUFREQ_RELATION_L);
@@ -708,7 +708,7 @@ static void smartass_suspend(int cpu, int suspend)
                         get_cpu_idle_time_us(cpu,&this_smartass->freq_change_time);
 
                 if (debug_mask & SMARTASS_DEBUG_JUMPS)
-                        printk(KERN_INFO "SmartassS: suspending at %d\n",policy->cur);
+                        printk(KERN_INFO "SmartassS: suspending at %dMHz\n",(policy->cur/1000));
         }
 }
 

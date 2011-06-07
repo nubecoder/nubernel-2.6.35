@@ -216,7 +216,8 @@ static void cpufreq_smartass_timer(unsigned long data)
                 cpu_load = 100 * (unsigned int)(delta_time - delta_idle) / (unsigned int)delta_time;
 
         if (debug_mask & SMARTASS_DEBUG_LOAD)
-                printk(KERN_INFO "smartassT @ %d: load %d (delta_time %llu)\n",policy->cur,cpu_load,delta_time);
+                printk(KERN_INFO "SmartassT @ %d: load %d (delta_time %llu)\n",
+                       policy->cur,cpu_load,delta_time);
 
         this_smartass->cur_cpu_load = cpu_load;
 

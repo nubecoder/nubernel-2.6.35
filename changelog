@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-08-2011:
+Interactive adjustments (netarchy: https://github.com/netarchy/nexus-s/commit/7bd7b9ae76b98c3ec8c71dc11bfd4e62b04ae7a3).
 More adjustments for smartass (netarchy: https://github.com/netarchy/nexus-s/commit/86a3adea41b089c9a2439bb3db237be185f49759).
 Smartass adjustments (netarchy: https://github.com/netarchy/nexus-s/commit/54dcfef94a96bc3043aac6f66339a1dd24d77301).
 Add TheEscapists modified smartass governor, and fix the scaling for the 400mhz-800mhz gap (TheEscapist13 via netarchy: https://github.com/netarchy/nexus-s/commit/1f3ee7b3b5172cdd9e9e60fec8afa03ea4d8098f).

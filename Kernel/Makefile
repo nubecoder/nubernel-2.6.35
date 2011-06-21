@@ -358,7 +358,9 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -march=armv7-a \
 		   -mcpu=cortex-a8 \
 		   -mtune=cortex-a8 \
-		   -mfpu=neon
+		   -mfpu=neon \
+#for codesourcery 4.5.2
+		   -mno-unaligned-access
 
 KBUILD_AFLAGS   := -D__ASSEMBLY__
 

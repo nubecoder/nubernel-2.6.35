@@ -972,6 +972,15 @@ config USB_ANDROID_SAMSUNG_MTP
         help
           Provides Media Transfer Protocol (MTP) support for samsung gadget driver.
 
+config USB_CSW_HACK
+	boolean "USB Mass storage csw hack Feature"
+	depends on USB_ANDROID
+	help
+	 This csw hack feature is for increasing the performance of the mass
+	 storage
+
+	default y
+
 config USB_CDC_COMPOSITE
 	tristate "CDC Composite Device (Ethernet and ACM)"
 	depends on NET

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-15-2012:
+ARM: vfp: set mfpu=neon (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/d5a7f38a8f4d0d8148536ab79d7c43bed604e550).
 sched: Improve latencies under load by decreasing minimum scheduling granularity (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=0bf377bbb0bea6130f35613491887cc622e42a8b).
 Optimized ARM RWSEM algorithm (via codeaurora: https://www.codeaurora.org/gitweb/quic/le/?p=kernel/msm.git;a=commit;h=917c8db2c20f54a904451b5b38933d57d3d1cc2e).
 arm: Allow CPU-supported unaligned accesses (via codeaurora: https://www.codeaurora.org/gitweb/quic/le/?p=kernel/msm.git;a=commit;h=d5c13d6cba4554cff2d0f6357984eaf068fa3061).

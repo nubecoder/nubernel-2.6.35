@@ -28,6 +28,8 @@
 
 #include <asm/cputime.h>
 
+#define NC_DEBUG
+
 static void (*pm_idle_old)(void);
 static atomic_t active_count = ATOMIC_INIT(0);
 
@@ -208,6 +210,9 @@ static void cpufreq_interactivex_freq_change_time_work(struct work_struct *work)
 	cpumask_t tmp_mask = work_cpumask;
 
 	for_each_cpu(cpu, tmp_mask) {
+#ifdef NC_DEBUG
+		printk(KERN_INFO "GOV:InteractiveX: early target_freq: %d \n",target_freq);
+#endif
 		if (!suspended && (target_freq >= freq_threshold || target_freq == policy->max) ) {
 			if (policy->cur < 400000) {
 			  // avoid quick jump from lowest to highest
@@ -217,20 +222,39 @@ static void cpufreq_interactivex_freq_change_time_work(struct work_struct *work)
 				cpumask_clear_cpu(cpu, &work_cpumask);
 				return;
 			}
+#ifdef NC_DEBUG
+			printk(KERN_INFO "GOV:InteractiveX: !suspended: using policy->max (target_freq): %d \n",target_freq);
+#endif
 			__cpufreq_driver_target(policy, target_freq, CPUFREQ_RELATION_H);
 		} else {
 			if (!suspended) {
-		  	  target_freq = cpufreq_interactivex_calc_freq(cpu);
-			  __cpufreq_driver_target(policy, target_freq, CPUFREQ_RELATION_L);
+				target_freq = cpufreq_interactivex_calc_freq(cpu);
+#ifdef NC_DEBUG
+				printk(KERN_INFO "GOV:InteractiveX: !suspended: using target_freq: %d \n",target_freq);
+#endif
+				__cpufreq_driver_target(policy, target_freq, CPUFREQ_RELATION_L);
 			} else {  // special care when suspended
-			  if (target_freq > suspendfreq) {
-			     __cpufreq_driver_target(policy, suspendfreq, CPUFREQ_RELATION_H);
-			  } else {
-		  	    target_freq = cpufreq_interactivex_calc_freq(cpu);
-			    if (target_freq < policy->cur) 
-			      __cpufreq_driver_target(policy, target_freq, CPUFREQ_RELATION_H);
-			  }
-		       }
+				if (target_freq > suspendfreq) {
+#ifdef NC_DEBUG
+					printk(KERN_INFO "GOV:InteractiveX: suspended: using suspendfreq: %d \n",suspendfreq);
+#endif
+					 __cpufreq_driver_target(policy, suspendfreq, CPUFREQ_RELATION_H);
+				} else {
+					target_freq = cpufreq_interactivex_calc_freq(cpu);
+#ifdef NC_DEBUG
+					printk(KERN_INFO "GOV:InteractiveX: suspended: target_freq: %d \n",target_freq);
+#endif
+					if (target_freq < policy->cur) {
+#ifdef NC_DEBUG
+						printk(KERN_INFO "GOV:InteractiveX: suspended: using target_freq: %d \n",target_freq);
+#endif
+						__cpufreq_driver_target(policy, target_freq, CPUFREQ_RELATION_H);
+					}
+#ifdef NC_DEBUG
+					printk(KERN_INFO "GOV:InteractiveX: suspended: not doing anything \n");
+#endif
+				}
+			}
 		}
 	  freq_change_time_in_idle = get_cpu_idle_time_us(cpu, &freq_change_time);
 	  cpumask_clear_cpu(cpu, &work_cpumask);

@@ -354,6 +354,7 @@ static int cpufreq_governor_interactivex(struct cpufreq_policy *new_policy,
 
 static int __init cpufreq_interactivex_init(void)
 {
+	int err;
 	unsigned int i;
 	struct timer_list *t;
 	min_sample_time = DEFAULT_MIN_SAMPLE_TIME;
@@ -368,12 +369,31 @@ static int __init cpufreq_interactivex_init(void)
 
 	/* Scale up is high priority */
 	up_wq = create_rt_workqueue("kinteractivex_up");
-	down_wq = create_workqueue("kinteractivex_down");
+	if (!up_wq) {
+		printk(KERN_ERR "Creation of knteractivex_up failed\n");
+		return -EFAULT;
+	}
+	down_wq = create_workqueue("knteractivex_down");
+	if (!down_wq) {
+		printk(KERN_ERR "Creation of knteractivex_down failed\n");
+		err = -EFAULT;
+		goto destroy_up;
+	}
 
 	INIT_WORK(&freq_scale_work, cpufreq_interactivex_freq_change_time_work);
-    
-    pr_info("[imoseyon] interactivex enter\n");
-	return cpufreq_register_governor(&cpufreq_gov_interactivex);
+
+	pr_info("[imoseyon] interactiveX enter\n");
+	err = cpufreq_register_governor(&cpufreq_gov_interactivex);
+	if (err) {
+		goto destroy_down;
+	}
+	return err;
+
+destroy_down:
+	destroy_workqueue(down_wq);
+destroy_up:
+	destroy_workqueue(up_wq);
+	return err;
 }
 
 #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVEX

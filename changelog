@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-09-2011:
+Added some error checking to interactiveX governor (me: https://github.com/nubecoder/nubernel-kernel/commit/b953ef89b9b57ad0e3a6e65eb5be0d3f8667c75c).
 Changes to interactiveX governor for compatibility with Epic 4G (me: https://github.com/nubecoder/nubernel-kernel/commit/5fb629dfa8a33653df3df2e97bc3c1613ae1c514).
 Fixing a typo in interactiveX governor (me: https://github.com/nubecoder/nubernel-kernel/commit/0b61c8f0c319b72adc7a085b55f222caf948e4b3).
 cpufreq: smartass: New 'smartass' governor (syncing up with erasmux) (erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/87270f22ba6b6efd6bd9fe2c9bf7c63cb4bf7ac2).

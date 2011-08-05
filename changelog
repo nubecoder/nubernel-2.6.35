@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Quiet warning in /scripts/kconfig/conf.c (myself: https://github.com/nubecoder/nubernel-kernel/commit/e69b55a42c7124209df79296ad93d7727bba68b0).
 Fixing someone's typo (myself: https://github.com/nubecoder/nubernel-kernel/commit/9acfffb4cd17437869a203b9f459287b2885d62b).
 Quiet warning in samsung_mipi driver config.
 Adjusting Makefile for toolchain (myself: https://github.com/nubecoder/nubernel-kernel/commit/48b74dea623507f7fe1a1c4969cef7c40297f99a).

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-02-2012:
+arm: remove "optimized" SHA1 routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commit;h=4d4487140d34c1b9b321889d2d209321b0da6643).
 lib/sha1: use the git implementation of SHA-1 (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=1eb19a12bd2214cdcad5273d472b062a4ba97fa1).
 s3c-keypad: On slide open, set keyboard backlight to configured state, not always on (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/e58150f788625c012019392a9bb028440d09e521).
 cpufreq: s5pv210: Call cpufreq_update_policy on DVFS events and force SLEEP_FREQ on suspend (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/a08ec940e5bebb86acec43b7bd73c2182bdd7c62).

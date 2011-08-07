@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-05-2012:
+arm: remove stale export of 'sha_transform' (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=f23c126bfabef88c201c8cc56bd3ccd9d59c51e0).
+
 06-04-2012:
 leds: ledtrig: Give "other" users write permission.
 update-zip: all: Add some led_fun to the update-zips.

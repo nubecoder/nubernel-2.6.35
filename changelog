@@ -9,6 +9,8 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-15-2012:
+Makefile: fix up some cflags (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/1a0c161466de4860af58f11e0b9c1d830c5d5865) (rebased into below commit).
+ARM: switch to 'hardfloat' optimization flags (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/6d113f32bde45bc9d7557c0cc73249ac31b7c36e).
 Add some optimization flags in arch/arm/Makefile (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/463f8e9a74d7f7145229ac0ba6d28f570f77a9f0).
 ARM: vfp: set mfpu=neon (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/d5a7f38a8f4d0d8148536ab79d7c43bed604e550).
 sched: Improve latencies under load by decreasing minimum scheduling granularity (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=0bf377bbb0bea6130f35613491887cc622e42a8b).

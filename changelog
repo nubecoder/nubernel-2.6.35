@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-09-2011:
+cpufreq: add smartassV2 governor (erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/2ade635b0607acc1ab0ec7f4d274855a9487af57).
+
 11-08-2011:
 Small tweak to ondemand default up threshold (netarchy: https://github.com/netarchy/nexus-s/commit/63fa22148e0c29d989e4c9120fd3b84fae4cf924).
 Interactive adjustments (netarchy: https://github.com/netarchy/nexus-s/commit/7bd7b9ae76b98c3ec8c71dc11bfd4e62b04ae7a3).

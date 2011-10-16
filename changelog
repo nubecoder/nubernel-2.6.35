@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-13-2012:
+ARM: dma-mapping: free allocated page if unable to map (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/4b35e7172553d85f49d9f9545f41970c68244b2d).
 Whitespace fix.
 sched: Move sched_autogroup_exit() to free_signal_struct() (Mike Galbraith via existz: https://github.com/existz/linux_gt-i9000-gb/commit/140cb4cb0716ca15af16de56c8d80b043d901faa).
 sched, autogroup fixes (zachariasmaladroit via existz: https://github.com/existz/linux_gt-i9000-gb/commit/3fcc5aaeb633bceacfb4ba2f377830a7c6ee7b78).

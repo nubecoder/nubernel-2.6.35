@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-13-2012:
+mmc: core: Increase write data timeout value for bad SDHC cards (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/e393f86874b9f13e403376ab6a77a863d6ecebfc).
 lib/checksum.c: optimize do_csum a bit (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/3cc03cd454711d6040777b77e961b3ccf1b5d30c).
 ARM: dma-mapping: free allocated page if unable to map (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/4b35e7172553d85f49d9f9545f41970c68244b2d).
 Whitespace fix.

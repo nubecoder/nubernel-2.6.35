@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-13-2012:
+lib: Improve the performance of memcpy and memmove of the general version (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/f1391df95bd4b0e19f0b502123db862443333821).
 lib: Introduce some memory copy macros and functions (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/ee353c9f0230fadd7eea7b2bdb9a875d51b8300e).
 mmc: core: Increase write data timeout value for bad SDHC cards (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/e393f86874b9f13e403376ab6a77a863d6ecebfc).
 lib/checksum.c: optimize do_csum a bit (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/3cc03cd454711d6040777b77e961b3ccf1b5d30c).

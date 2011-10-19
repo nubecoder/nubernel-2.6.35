@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-12-2011:
+Import init.local.rc (Decad3nce: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/aa7266f269abba1314bac9eb6494e20ae720a8d0).
 Added some cpufreq debugging and syntax fixes.
 
 11-10-2011:

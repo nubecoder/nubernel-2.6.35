@@ -43,6 +43,9 @@ loglevel 3
 # Backwards Compat - XXX: Going away in G*
     symlink /mnt/sdcard /sdcard
 
+# Include extra init file
+    import /system/etc/init.local.rc
+
     mkdir /system
     mkdir /data 0771 system system
     mkdir /cache 0771 system cache

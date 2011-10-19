@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-13-2012:
+sched: Fix update_curr_rt() (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/ee8487a1c27e22dd6be26fad37c468404ad02e09).
 vmscan: prevent background aging of anon page in no swap system (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/8a2bf870ca7697c149d23ea2749da234e2cd2a2c).
 lib: Improve the performance of memcpy and memmove of the general version (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/f1391df95bd4b0e19f0b502123db862443333821).
 lib: Introduce some memory copy macros and functions (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/ee353c9f0230fadd7eea7b2bdb9a875d51b8300e).

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-29-2011:
+Add MODULE_LOOSE_VERMAGIC option for compatibility with EH17 vermagic (Mike Kasick via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/570961a558726414985cca96d9ded965fd1436d0).
 Added a few files into kernel/.gitignore.
 Added kernel/.gitignore file.
 Changes to defconfig (IKCONFIG, LZMA compression, deadline IO scheduler, TUN, etc).

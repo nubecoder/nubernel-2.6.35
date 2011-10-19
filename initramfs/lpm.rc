@@ -52,6 +52,9 @@ on boot
     hostname localhost
     domainname localdomain
 
+    write /sys/devices/platform/s3c-keypad/column_delay 5
+    write /sys/devices/platform/s3c-keypad/timer_delay  5
+
     class_start default
 
 service ueventd /sbin/ueventd

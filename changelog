@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Ignore sound/soc/codec/victory/ files. Resolves mic feedback issue on CM7 (UberPinguin: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/b74df3644022033f565bcb55744e13f6e0089d00).
 Changes to defconfig for kexec patches.
 Added kexec patches (Mike Kasick via ugothakd / Tortel: https://github.com/ugothakd/android_kernel_epic4g_gb_official/commit/6d513f22ba2c31acbb911212c2805b4945160201).
 Fixing permissions for bclean script.

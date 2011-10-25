@@ -53,6 +53,12 @@ else
 	fi
 	busybox cat /data/local/timer_delay > /sys/devices/platform/s3c-keypad/timer_delay
 	busybox cat /data/local/timer_delay > /sys/devices/platform/s3c-keypad/column_delay
+
+	SEND_LOG "Ensuring bootanimation.zip gets played"
+	if [ -f "/system/media/bootanimation.zip" ] && [ ! -f "/system/media/sanim.zip" ]; then
+		SEND_LOG "  Symlinking sanim.zip to bootanimation.zip"
+		busybox ln -s /system/media/bootanimation.zip /system/media/sanim.zip
+	fi
 fi
 
 SEND_LOG "Sync filesystem"

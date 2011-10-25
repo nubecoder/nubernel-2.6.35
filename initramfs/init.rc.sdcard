@@ -929,3 +929,6 @@ service wimax_renew /system/bin/dhcpcd -n uwbr0
 service init_scripts /system/bin/logwrapper /vendor/scripts/run_init_scripts.sh
     user root
     oneshot
+
+on property:sys.boot_completed=1
+    stop bootanim

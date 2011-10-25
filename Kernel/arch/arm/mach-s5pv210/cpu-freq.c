@@ -66,6 +66,18 @@ static struct cpufreq_frequency_table freq_table[] = {
 	{0, CPUFREQ_TABLE_END},
 };
 
+unsigned int freq_uv_table[6][3] = {
+	//frequency, stock voltage, current voltage
+	{1400000, 1450, 1450},
+	{1300000, 1400, 1400},
+	{1200000, 1350, 1350},
+	{1000000, 1275, 1275},
+	{800000, 1200, 1200},
+	{400000, 1050, 1050},
+	{200000, 950, 950},
+	{100000, 950, 950}
+};
+
 struct s5pv210_dvs_conf {
 	unsigned long       arm_volt;   /* uV */
 	unsigned long       int_volt;   /* uV */
@@ -73,7 +85,7 @@ struct s5pv210_dvs_conf {
 
 #ifdef CONFIG_DVFS_LIMIT
 static unsigned int g_dvfs_high_lock_token = 0;
-static unsigned int g_dvfs_high_lock_limit = 4;
+static unsigned int g_dvfs_high_lock_limit = 7;
 static unsigned int g_dvfslockval[DVFS_LOCK_TOKEN_NUM];
 //static DEFINE_MUTEX(dvfs_high_lock);
 #endif
@@ -541,6 +553,7 @@ static int s5pv210_cpufreq_target(struct cpufreq_policy *policy,
 
 //	arm_volt = (dvs_conf[index].arm_volt + (exp_UV_mV[index] * 1000));
 	arm_volt = exp_UV_mV[index]; //dvs_conf[index].arm_volt;
+	freq_uv_table[index][2] = (int) arm_volt / 1000;
 	int_volt = dvs_conf[index].int_volt;
 
 //	printk("setting vdd %d for speed %d\n", arm_volt, arm_clk);
@@ -732,6 +745,7 @@ static int s5pv210_cpufreq_target(struct cpufreq_policy *policy,
 //	previous_arm_volt = dvs_conf[index].arm_volt;
 	previous_arm_volt = exp_UV_mV[index];
 //	previous_arm_volt = (dvs_conf[index].arm_volt + (exp_UV_mV[index] * 1000));
+	freq_uv_table[index][2] = (int) previous_arm_volt / 1000;
 
 	if (first_run)
 		first_run = false;
@@ -776,6 +790,7 @@ static int s5pv210_cpufreq_resume(struct cpufreq_policy *policy)
 			sizeof(struct s3c_freq));
 	previous_arm_volt = exp_UV_mV[level]; //dvs_conf[level].arm_volt;
 //	previous_arm_volt = (dvs_conf[level].arm_volt + (exp_UV_mV[level] * 1000));
+	freq_uv_table[level][2] = (int) previous_arm_volt / 1000;
 
 	return ret;
 }
@@ -845,6 +860,7 @@ static int __init s5pv210_cpufreq_driver_init(struct cpufreq_policy *policy)
 			sizeof(struct s3c_freq));
 	previous_arm_volt = exp_UV_mV[level]; //dvs_conf[level].arm_volt;
 //	previous_arm_volt = (dvs_conf[level].arm_volt + (exp_UV_mV[level] * 1000));
+	freq_uv_table[level][2] = (int) previous_arm_volt / 1000;
 
 #ifdef CONFIG_DVFS_LIMIT
         for(i = 0; i < DVFS_LOCK_TOKEN_NUM; i++)

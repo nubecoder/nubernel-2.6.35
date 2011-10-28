@@ -17,7 +17,6 @@ on init
     mkdir /data 0771 system system
     mkdir /cache
     #mkdir /efs
-    mkdir /tmp
     mkdir /dbdata
 
     mkdir /mnt 0775 root root
@@ -32,6 +31,9 @@ on init
 
 on early-fs
     mount tmpfs nodev /tmp
+
+    chmod 6755 /sbin/kexec
+    chmod 0755 /sbin/change_kernel.sh
 
     # rfs drivers
     insmod /lib/modules/fsr.ko
@@ -58,14 +60,14 @@ on fs
     #mount rfs /dev/block/stl9 /system rw noatime nodiratime check=no
     mount ext4 /dev/block/stl9 /system rw noatime nodiratime nodelalloc check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 # /data
-    mount rfs /dev/block/stl10 /data rw nosuid nodev crypt check=no
+#    mount rfs /dev/block/stl10 /data rw nosuid nodev crypt check=no
     #mount rfs /dev/block/stl10 /data rw noatime nodiratime nosuid nodev crypt check=no
     #mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt check=none errors=continue data=ordered nobh nobarrier noauto_da_alloc discard
-    mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt data=ordered nobarrier noauto_da_alloc
+#    mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt data=ordered nobarrier noauto_da_alloc
 # /cache
-    mount rfs /dev/block/stl11 /cache rw nosuid nodev check=no
+#    mount rfs /dev/block/stl11 /cache rw nosuid nodev check=no
     #mount rfs /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=no
-    mount ext4 /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
+#    mount ext4 /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 
 # SEC_DMCRYPT for MC_CRYPT_ROOT before apply_disk_policy or apply_sec_devenc_init
     #chown system system /efs
@@ -77,7 +79,7 @@ on fs
     exec apply_disk_policy
 
 on post-fs
-    mount rootfs rootfs / ro remount
+    #mount rootfs rootfs / ro remount
 
     write /proc/sys/kernel/panic_on_oops 1
     write /proc/sys/kernel/hung_task_timeout_secs 0
@@ -88,7 +90,6 @@ on post-fs
     write /proc/sys/kernel/sched_child_runs_first 0
 	
 on boot
-
     ifup lo
     hostname localhost
     domainname localdomain

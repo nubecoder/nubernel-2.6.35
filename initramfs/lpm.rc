@@ -39,8 +39,10 @@ on early-fs
 
 on fs
     mount tmpfs tmpfs /tmp
-    mount rfs /dev/block/stl9 /system check=no
-    #mount rfs /dev/block/stl9 /system ro remount
+# /system
+    mount rfs /dev/block/stl9 /system rw check=no
+    #mount rfs /dev/block/stl9 /system rw noatime nodiratime check=no
+    mount ext4 /dev/block/stl9 /system rw noatime nodiratime nodelalloc check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 
     exec apply_disk_policy
 
@@ -62,7 +64,7 @@ service playlpm /system/bin/playlpm
     user root
     oneshot
 
-service immvibed /system/bin/immvibed 
+service immvibed /system/bin/immvibed
     oneshot
 
 service lpmkey /system/bin/charging_mode

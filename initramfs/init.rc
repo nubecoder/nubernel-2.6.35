@@ -131,7 +131,10 @@ on fs
     # mount yaffs2 mtd@system /system ro remount
     # mount yaffs2 mtd@userdata /data nosuid nodev
     # mount yaffs2 mtd@cache /cache nosuid nodev
-    mount rfs /dev/block/stl9 /system check=no
+# /system
+    mount rfs /dev/block/stl9 /system rw check=no
+    #mount rfs /dev/block/stl9 /system rw noatime nodiratime check=no
+    mount ext4 /dev/block/stl9 /system rw noatime nodiratime nodelalloc check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 
     # Temp add for FY -> GB update problem 
     # After update GB, need to remove
@@ -142,7 +145,7 @@ on fs
     copy /tmp/libz.so /system/lib/libz.so
     copy /tmp/libstdc++.so /system/lib/libstdc++.so
 
-    mount rfs /dev/block/stl9 /system ro remount
+    #mount rfs /dev/block/stl9 /system ro remount
 
 # SEC_DMCRYPT for MC_CRYPT_ROOT before apply_disk_policy or apply_sec_devenc_init
     #chown system system /efs
@@ -160,14 +163,22 @@ on fs
 
     mkdir /data
 # SEC_DMCRYPT crypt flag added data
+# /data
     # mount rfs /dev/block/mmcblk0p2 /data nosuid nodev check=no
-    mount rfs /dev/block/mmcblk0p2 /data nosuid nodev crypt check=no
-    chown system system /data
-    chmod 0771 /data    
+    #mount rfs /dev/block/mmcblk0p2 /data rw nosuid nodev crypt check=no
+    #mount rfs /dev/block/mmcblk0p2 /data rw noatime nodiratime nosuid nodev crypt check=no
+    #mount ext4 /dev/block/mmcblk0p2 /data rw noatime nodiratime nodelalloc nosuid nodev crypt check=none errors=continue data=ordered nobh nobarrier noauto_da_alloc discard
+    #mount ext4 /dev/block/mmcblk0p2 /data rw noatime nodiratime nodelalloc nosuid nodev crypt data=ordered nobarrier noauto_da_alloc
+    #chown system system /data
+    #chmod 0771 /data
 
     #mkdir /dbdata
   #SEC_DMCRYPT crypt flag added
-    mount rfs /dev/block/stl10 /data nosuid nodev crypt check=no
+# /data
+    mount rfs /dev/block/stl10 /data rw nosuid nodev crypt check=no
+    #mount rfs /dev/block/stl10 /data rw noatime nodiratime nosuid nodev crypt check=no
+    #mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt check=none errors=continue data=ordered nobh nobarrier noauto_da_alloc discard
+    mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt data=ordered nobarrier noauto_da_alloc
     #symlink /data /dbdata
     #mount rfs /dev/block/stl10 /data nosuid nodev check=no
     chown system system /data
@@ -182,12 +193,18 @@ on fs
     mkdir /data/db-journal
     chown system system /data/db-journal
     chmod 0777 /data/db-journal
-    mount rfs /dev/block/stl11 /cache nosuid nodev check=no
+# /cache
+    mount rfs /dev/block/stl11 /cache rw nosuid nodev check=no
+    #mount rfs /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=no
+    mount ext4 /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 
     mkdir /mnt/.lfs 0755 root root
     mount j4fs /dev/block/stl6 /mnt/.lfs
     insmod /lib/modules/param.ko
-    
+
+# /sd-ext
+    mount ext2 /dev/block/mmcblk0p2 /mnt/sd-ext rw noatime nodiratime nodev nosuid check=none errors=continue nobh nouser_xattr
+
 		# samsung module
     insmod /lib/modules/storage.ko
 
@@ -773,6 +790,11 @@ service samsungani /system/bin/samsungani
     disabled
     oneshot
 
+service bootanim /system/bin/bootanimation
+    user graphics
+    group graphics
+    disabled
+    oneshot
 
 service playsound /system/bin/playsound
     user media
@@ -894,10 +916,14 @@ service dhcpcd_wimax /system/bin/dhcpcd uwbr0 -ABK
 # Yagya for Victory "sprintpcs.com" realm issue as below.
 # wimax cannot send and receive data packet before add route, when subnet mask is 255.255.255.255
 service wimax_route /system/bin/route add default dev uwbr0
-        disabled
-        oneshot
+    disabled
+    oneshot
 
 # Yagya, for ip renew.
 service wimax_renew /system/bin/dhcpcd -n uwbr0
-        disabled
-        oneshot	
+    disabled
+    oneshot
+
+service init_scripts /system/bin/logwrapper /vendor/scripts/run_init_scripts.sh
+    user root
+    oneshot

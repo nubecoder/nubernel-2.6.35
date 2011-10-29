@@ -86,6 +86,9 @@ GTAGS
 /arch/arm/boot/compressed/vmlinux.lds
 /arch/arm/boot/zImage
 /arch/arm/kernel/vmlinux.lds
+/arch/arm/boot/compressed/lib1funcs.S
+/arch/arm/boot/compressed/piggy.gzip
+/firmware/samsung_mfc_fw.bin.gen.S
 /drivers/char/consolemap_deftbl.c
 /drivers/char/defkeymap.c
 /include/asm-arm/

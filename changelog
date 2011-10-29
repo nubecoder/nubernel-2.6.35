@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-29-2011:
+Added a few files into kernel/.gitignore.
 Added kernel/.gitignore file.
 Changes to defconfig (IKCONFIG, LZMA compression, deadline IO scheduler, TUN, etc).
 Changes to initramfs (ext4, root, recovery, init.d, bootanimation.zip, etc).

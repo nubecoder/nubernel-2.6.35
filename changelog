@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-29-2011:
+Added bootlogo resources.
 Added recovery zip resources.
 Added victory_nubernel_defconfig (with initramfs path).
 Added leaked EH17 initramfs files.

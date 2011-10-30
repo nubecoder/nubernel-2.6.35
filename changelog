@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Changes to defconfig for Voodoo Sound.
 Voodoo Sound v10 (Supercurio via Tortel: https://github.com/Tortel/android_kernel_epic4g_gb_official/commit/1b813441c3dd600f203c579e24b479986b6a5e69).
 Move initramfs to initramfs_eh17 and adjust defconfig.
 Include cm7 initramfs and defconfig (Decad3nce: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/95099a856252aadf3e9d75f5304f35347e0b0072).

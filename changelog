@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Added ueventd.rc to cleanup init script.
 Fixing mounts in recovery.rc.
 Added helper scripts into scripts folder.
 Fixing /sbin/sh (should be a symlink to recovery / busybox).

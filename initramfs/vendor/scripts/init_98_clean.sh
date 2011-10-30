@@ -25,7 +25,7 @@ if [ "$1" = "recovery" ]; then
 	done
 
 	SEND_LOG "Remove unneccessary files in /"
-	for FILE in fota.rc init.rc init.rc.sdcard lpm.rc recovery.rc; do
+	for FILE in fota.rc init.rc init.rc.sdcard lpm.rc recovery.rc ueventd.rc; do
 		SEND_LOG "rm -f /$FILE"
 		busybox rm -f /$FILE
 	done
@@ -44,7 +44,7 @@ else
 	done
 
 	SEND_LOG "Remove unneccessary files in /"
-	for FILE in fota.rc init.rc init.rc.sdcard init.smdkc110.rc lpm.rc recovery.rc init init.log init.sh initlog.sh; do
+	for FILE in fota.rc init.rc init.rc.sdcard init.smdkc110.rc lpm.rc recovery.rc init init.log init.sh initlog.sh ueventd.rc; do
 		SEND_LOG "rm -f /$FILE"
 		busybox rm -f /$FILE
 	done

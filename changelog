@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Set ANDROID_LOGGER to module in defconfig.
 Loglevel set in defconfig for modular logging (gzub via myself: https://github.com/nubecoder/nubernel-kernel/commit/fb36275c454d48d9c780c012610a10b78d78e697).
 Quiet warning in /scripts/kconfig/conf.c (myself: https://github.com/nubecoder/nubernel-kernel/commit/e69b55a42c7124209df79296ad93d7727bba68b0).
 Fixing someone's typo (myself: https://github.com/nubecoder/nubernel-kernel/commit/9acfffb4cd17437869a203b9f459287b2885d62b).

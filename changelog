@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-29-2011:
+Fixing up busybox and root install (no room to install on stock /system).
 Fixing up ueventd symlink (was causing boot failure).
 
 10-29-2011:

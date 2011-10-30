@@ -26,6 +26,35 @@ else
 	SEND_LOG "Setting BB_PATH"
 	BB_PATH=/data/local/tmp
 
+	SEND_LOG "Ensuring there is room for busybox and root"
+	ITEMS="amazonmp3.apk"
+	ITEMS="$ITEMS BooksPhone.apk"
+	ITEMS="$ITEMS Gmail.apk"
+	ITEMS="$ITEMS Maps.apk"
+	ITEMS="$ITEMS Street.apk"
+	ITEMS="$ITEMS Talk.apk"
+	ITEMS="$ITEMS FBAndroid-1.5.4.apk"
+	ITEMS="$ITEMS install_flash_player.apk"
+	ITEMS="$ITEMS MediaHubV126.apk"
+	ITEMS="$ITEMS YouTube.apk"
+	ITEMS="$ITEMS Term1.apk"
+	ITEMS="$ITEMS Term1.odex"
+	ITEMS="$ITEMS Term2.apk"
+	ITEMS="$ITEMS Term2.odex"
+	ITEMS="$ITEMS Term3.apk"
+	ITEMS="$ITEMS Term3.odex"
+	ITEMS="$ITEMS Term4.apk"
+	ITEMS="$ITEMS Term4.odex"
+	ITEMS="$ITEMS Term5.apk"
+	ITEMS="$ITEMS Term5.odex"
+	SEND_LOG "  Removing market downloadable apps from /system/app"
+	for ITEM in $ITEMS; do
+		if /sbin/busybox test -f "/system/app/$ITEM"; then
+			SEND_LOG "  rm -f /system/app/$ITEM"
+			/sbin/busybox rm -f /system/app/$ITEM
+		fi
+	done
+
 	SEND_LOG "Installing temporary busybox"
 	/sbin/busybox ln -s /sbin/recovery $BB_PATH/busybox
 	$BB_PATH/busybox --install -s $BB_PATH/

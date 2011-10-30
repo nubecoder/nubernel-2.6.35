@@ -57,7 +57,15 @@ on fs
     mount rfs /dev/block/stl9 /system rw check=no
     #mount rfs /dev/block/stl9 /system rw noatime nodiratime check=no
     mount ext4 /dev/block/stl9 /system rw noatime nodiratime nodelalloc check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
-
+# /data
+    mount rfs /dev/block/stl10 /data rw nosuid nodev crypt check=no
+    #mount rfs /dev/block/stl10 /data rw noatime nodiratime nosuid nodev crypt check=no
+    #mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt check=none errors=continue data=ordered nobh nobarrier noauto_da_alloc discard
+    mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt data=ordered nobarrier noauto_da_alloc
+# /cache
+    mount rfs /dev/block/stl11 /cache rw nosuid nodev check=no
+    #mount rfs /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=no
+    mount ext4 /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 
 # SEC_DMCRYPT for MC_CRYPT_ROOT before apply_disk_policy or apply_sec_devenc_init
     #chown system system /efs

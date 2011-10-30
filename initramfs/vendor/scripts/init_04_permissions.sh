@@ -24,7 +24,7 @@ if [ "$1" = "recovery" ]; then
 		SEND_LOG "  chown root.system /$FILE"
 		busybox chown root.system /$FILE
 	done
-	for FOLDER in conf lib lib/modules modules res res/images sbin ; do
+	for FOLDER in conf lib lib/modules res res/images sbin ; do
 		SEND_LOG "  chown root.system /$FOLDER"
 		busybox chown root.system /$FOLDER
 		SEND_LOG "  chown root.system /$FOLDER/*"
@@ -38,7 +38,7 @@ else
 		SEND_LOG "  chown root.system /$FILE"
 		busybox chown root.system /$FILE
 	done
-	for FOLDER in lib lib/modules modules sbin ; do
+	for FOLDER in lib lib/modules sbin ; do
 		SEND_LOG "  chown root.system /$FOLDER"
 		busybox chown root.system /$FOLDER
 		SEND_LOG "  chown root.system /$FOLDER/*"

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Fixing update_modules.sh script for gingerbread modules.
 Select changes to initramfs (chris41g via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/5cbb6bb0ce6afae2fdaea2211af290a5e154c51c#diff-23).
 Adjusted update_modules.sh script for gingerbread modules.
 Adjusted "other" init script to set keybaord column_delay.

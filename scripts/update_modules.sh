@@ -10,7 +10,7 @@
 
 #define base paths
 P_DIR="$PWD/.."
-SRC_BASE="$P_DIR/Kernel/drivers"
+SRC_BASE="$P_DIR/kernel/drivers"
 DST_BASE="initramfs/lib/modules"
 CC_STRIP="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-strip"
 
@@ -40,29 +40,34 @@ SHOW_HELP()
 if [ "$1" == "cp" ] || [ "$1" == "copy" ] ; then
 	#copy modules
 	#COPY_WITH_ECHO "bluetooth/bthid/bthid.ko" "bthid.ko"
-	#COPY_WITH_ECHO "net/wireless/bcm4329/victory/dhd.ko" "dhd.ko"
+	COPY_WITH_ECHO "net/wireless/bcm4329/victory/dhd.ko" "dhd.ko"
+	COPY_WITH_ECHO "net/wireless/bcm4329/victory/src/wl/sys/hotspot_event_monitoring.ko" "hotspot_event_monitoring.ko"
 	COPY_WITH_ECHO "net/wireless/wimax/cmc7xx_sdio.ko" "cmc7xx_sdio.ko"
 	COPY_WITH_ECHO "net/wireless/wimaxgpio/wimax_gpio.ko" "wimax_gpio.ko"
 	COPY_WITH_ECHO "onedram/dpram_recovery/dpram_recovery.ko" "dpram_recovery.ko"
-	COPY_WITH_ECHO "onedram/victory/dpram.ko" "dpram.ko"
+	COPY_WITH_ECHO "onedram/dpram/dpram.ko" "dpram.ko"
 	#COPY_WITH_ECHO "onedram_svn/victory/modemctl/modemctl.ko" "modemctl.ko"
 	#COPY_WITH_ECHO "onedram_svn/victory/onedram/onedram.ko" "onedram.ko"
 	#COPY_WITH_ECHO "onedram_svn/victory/svnet/svnet.ko" "svnet.ko"
 	#COPY_WITH_ECHO "samsung/fm_si4709/Si4709_driver.ko" "Si4709_driver.ko"
-	COPY_WITH_ECHO "samsung/vibetonz/vibrator.ko" "vibrator.ko"
+	COPY_WITH_ECHO "misc/vibetonz/vibrator.ko" "vibrator.ko"
 	COPY_WITH_ECHO "scsi/scsi_wait_scan.ko" "scsi_wait_scan.ko"
 	COPY_WITH_ECHO "staging/android/logger.ko" "logger.ko"
 	#COPY_WITH_ECHO "net/tun.ko" "tun.ko"
 	# special case below =[
+	echo "Copying crypto/ansi_cprng.ko to $DST_BASE/ansi_cprng.ko"
+	cp "$P_DIR/kernel/crypto/ansi_cprng.ko" "$P_DIR/$DST_BASE/ansi_cprng.ko"
 	#echo "Copying fs/cifs/cifs.ko to $DST_BASE/cifs.ko"
-	#cp "$P_DIR/Kernel/fs/cifs/cifs.ko" "$DST_BASE/cifs.ko"
+	#cp "$P_DIR/kernel/fs/cifs/cifs.ko" "$P_DIR/$DST_BASE/cifs.ko"
 	exit 0
 fi
 
 if [ "$1" == "st" ] || [ "$1" == "strip" ] ; then
 	#strip modules
+	STRIP_WITH_ECHO "ansi_cprng.ko"
 	#STRIP_WITH_ECHO "bthid.ko"
-	#STRIP_WITH_ECHO "dhd.ko"
+	STRIP_WITH_ECHO "dhd.ko"
+	STRIP_WITH_ECHO "hotspot_event_monitoring.ko"
 	STRIP_WITH_ECHO "cmc7xx_sdio.ko"
 	STRIP_WITH_ECHO "wimax_gpio.ko"
 	STRIP_WITH_ECHO "dpram_recovery.ko"

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Move initramfs to initramfs_eh17 and adjust defconfig.
 Include cm7 initramfs and defconfig (Decad3nce: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/95099a856252aadf3e9d75f5304f35347e0b0072).
 Import init.local.rc (Decad3nce: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/aa7266f269abba1314bac9eb6494e20ae720a8d0).
 Ignore sound/soc/codec/victory/ files. Resolves mic feedback issue on CM7 (UberPinguin: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/b74df3644022033f565bcb55744e13f6e0089d00).

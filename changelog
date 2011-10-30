@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Changes to defconfig for kernel splash (bootlogo).
 Re-enable and add custom kernel splash (bootlogo).
 Changes to bootlogo/createBootLogo.sh for new layout.
 Added init.smdkc110.rc dummy file for killrecovery.sh Galaxy S detection.

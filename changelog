@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Added init.smdkc110.rc dummy file for killrecovery.sh Galaxy S detection.
 Reboot recovery kexecs the recovery image (Tortel: https://github.com/Tortel/android_kernel_epic4g_gb_official/commit/c9bda4b4587e4f45503b61eba5f7a5a70c406cc2).
 Compiler optimizations (Tortel: https://github.com/Tortel/android_kernel_epic4g_gb_official/commit/db704cf287e3b30d2699f3af7eb8c8723e4104d8).
 Changes to defconfig for Voodoo Sound.

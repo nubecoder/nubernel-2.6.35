@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Fixing up helper scripts for new initramfs folder structure.
 Fixing up failed cherry-pick for Voodoo Sound v10.
 Changes to defconfig for kernel splash (bootlogo).
 Re-enable and add custom kernel splash (bootlogo).

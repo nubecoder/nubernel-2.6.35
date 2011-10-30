@@ -39,16 +39,16 @@ SHOW_HELP()
 
 if [ "$1" == "cp" ] || [ "$1" == "copy" ] ; then
 	#copy modules
-	COPY_WITH_ECHO "bluetooth/bthid/bthid.ko" "bthid.ko"
+	#COPY_WITH_ECHO "bluetooth/bthid/bthid.ko" "bthid.ko"
 	#COPY_WITH_ECHO "net/wireless/bcm4329/victory/dhd.ko" "dhd.ko"
 	COPY_WITH_ECHO "net/wireless/wimax/cmc7xx_sdio.ko" "cmc7xx_sdio.ko"
 	COPY_WITH_ECHO "net/wireless/wimaxgpio/wimax_gpio.ko" "wimax_gpio.ko"
 	COPY_WITH_ECHO "onedram/dpram_recovery/dpram_recovery.ko" "dpram_recovery.ko"
 	COPY_WITH_ECHO "onedram/victory/dpram.ko" "dpram.ko"
-	COPY_WITH_ECHO "onedram_svn/victory/modemctl/modemctl.ko" "modemctl.ko"
-	COPY_WITH_ECHO "onedram_svn/victory/onedram/onedram.ko" "onedram.ko"
-	COPY_WITH_ECHO "onedram_svn/victory/svnet/svnet.ko" "svnet.ko"
-	COPY_WITH_ECHO "samsung/fm_si4709/Si4709_driver.ko" "Si4709_driver.ko"
+	#COPY_WITH_ECHO "onedram_svn/victory/modemctl/modemctl.ko" "modemctl.ko"
+	#COPY_WITH_ECHO "onedram_svn/victory/onedram/onedram.ko" "onedram.ko"
+	#COPY_WITH_ECHO "onedram_svn/victory/svnet/svnet.ko" "svnet.ko"
+	#COPY_WITH_ECHO "samsung/fm_si4709/Si4709_driver.ko" "Si4709_driver.ko"
 	COPY_WITH_ECHO "samsung/vibetonz/vibrator.ko" "vibrator.ko"
 	COPY_WITH_ECHO "scsi/scsi_wait_scan.ko" "scsi_wait_scan.ko"
 	COPY_WITH_ECHO "staging/android/logger.ko" "logger.ko"
@@ -61,16 +61,16 @@ fi
 
 if [ "$1" == "st" ] || [ "$1" == "strip" ] ; then
 	#strip modules
-	STRIP_WITH_ECHO "bthid.ko"
+	#STRIP_WITH_ECHO "bthid.ko"
 	#STRIP_WITH_ECHO "dhd.ko"
 	STRIP_WITH_ECHO "cmc7xx_sdio.ko"
 	STRIP_WITH_ECHO "wimax_gpio.ko"
 	STRIP_WITH_ECHO "dpram_recovery.ko"
 	STRIP_WITH_ECHO "dpram.ko"
-	STRIP_WITH_ECHO "modemctl.ko"
-	STRIP_WITH_ECHO "onedram.ko"
-	STRIP_WITH_ECHO "svnet.ko"
-	STRIP_WITH_ECHO "Si4709_driver.ko"
+	#STRIP_WITH_ECHO "modemctl.ko"
+	#STRIP_WITH_ECHO "onedram.ko"
+	#STRIP_WITH_ECHO "svnet.ko"
+	#STRIP_WITH_ECHO "Si4709_driver.ko"
 	STRIP_WITH_ECHO "vibrator.ko"
 	STRIP_WITH_ECHO "scsi_wait_scan.ko"
 	STRIP_WITH_ECHO "logger.ko"

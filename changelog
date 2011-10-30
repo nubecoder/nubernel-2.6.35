@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Adjusted update_modules.sh script for gingerbread modules.
 Adjusted "other" init script to set keybaord column_delay.
 Set column_delay & timer_delay to xda recommended values (Mike Kasick via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/418e6254bb528b7da179f37a50631b3201edcfff).
 Remove "Finger Up/Down" printks to avoid flooding kmsg log (Mike Kasick via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/c28b4b3d7d2a6003c90a3c65af5f91ff8aae1f9c).

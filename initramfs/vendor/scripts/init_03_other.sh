@@ -52,6 +52,7 @@ else
 		echo 5 > /data/local/timer_delay
 	fi
 	busybox cat /data/local/timer_delay > /sys/devices/platform/s3c-keypad/timer_delay
+	busybox cat /data/local/timer_delay > /sys/devices/platform/s3c-keypad/column_delay
 fi
 
 SEND_LOG "Sync filesystem"

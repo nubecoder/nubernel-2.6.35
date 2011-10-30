@@ -248,12 +248,12 @@ comment "Frame buffer hardware drivers"
 	depends on FB
 
 if !S5PV210_GARNETT_DELTA
-        source  "drivers/video/samsung/Kconfig"
+	source  "drivers/video/samsung/Kconfig"
 endif
 
-if S5PV210_GARNETT_DELTA
-	source "drivers/video/samsung_mipi/Kconfig"
-endif
+#if S5PV210_GARNETT_DELTA
+#	source "drivers/video/samsung_mipi/Kconfig"
+#endif
 
 config FB_CIRRUS
 	tristate "Cirrus Logic support"

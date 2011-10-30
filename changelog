@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Fixing /sbin/sh (should be a symlink to recovery / busybox).
 Minor change to .gitignore and fix date on changelog.
 Minor changes to init rc scripts (add /data/local/tmp to PATH, remove redundant code).
 Fixing up permissions init script (/modules folder no longer exists).

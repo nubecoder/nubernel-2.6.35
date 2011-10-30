@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Added helper scripts into scripts folder.
 Fixing /sbin/sh (should be a symlink to recovery / busybox).
 Minor change to .gitignore and fix date on changelog.
 Minor changes to init rc scripts (add /data/local/tmp to PATH, remove redundant code).

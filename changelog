@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-31-2011:
+Changes to ncBuildHelper script for stand-alone modules.
 Trimming down the stock kernel splash's size.
 Fixing up date in change log.
 Included stock kernel splash (bootlogo) from drivers/video/samsung_mipi/.

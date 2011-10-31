@@ -167,6 +167,31 @@ BUILD_MODULES()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "*"
 }
+REMOVE_STANDALONE_MODULES_FROM_INITRAMFS()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local T1=$(date +%s)
+	echo "Removing stand-alone modules from initramfs..." && echo ""
+	popd > /dev/null
+		local MODULES_PATH="initramfs_eh17/lib/modules"
+		local FILE_PATHS="$MODULES_PATH/cifs.ko"
+		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/fuse.ko"
+		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/slow-work.ko"
+		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/tun.ko"
+		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/xt_tcpmss.ko"
+		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/xt_TCPMSS.ko"
+		for FILE in $FILE_PATHS; do
+			if [ -f $FILE ]; then
+				echo "rm -f $FILE"
+				rm -f "$FILE"
+			fi
+		done
+	pushd kernel > /dev/null
+	local T2=$(date +%s)
+	echo "" && echo "removing modules took $(($T2 - $T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
 BUILD_ZIMAGE()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
@@ -174,6 +199,9 @@ BUILD_ZIMAGE()
 	echo "Begin building zImage..." && echo ""
 	pushd kernel > /dev/null
 		rm -f usr/initramfs_data.cpio.lzma
+		if [ "$DEFCONFIG" != "y" ] ; then
+			REMOVE_STANDALONE_MODULES_FROM_INITRAMFS
+		fi
 		if [ "$VERBOSE" = "y" ] ; then
 			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" 2>&1 | tee make.out
 		else

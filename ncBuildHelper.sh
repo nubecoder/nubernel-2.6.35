@@ -414,6 +414,11 @@ if [ "$WIRED_FLASH" = y ] ; then
 	WIRED_FLASH_SCRIPT
 fi
 
+# fix for module changing every build.
+if [ "$DEFCONFIG" != "y" ] ; then
+	git co -- initramfs_eh17/lib/modules/dhd.ko
+fi
+
 # show completed message
 SHOW_COMPLETED
 

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-31-2011:
+Minor changes to branchHelper script.
 Updating modules in initramfs_eh17.
 Changes to ncBuildHelper script for stand-alone modules.
 Trimming down the stock kernel splash's size.

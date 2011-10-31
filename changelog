@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Changes to SLOW_WORK for building as a module (mkasick: forum.xda-developers.com/showthread.php?t=966322).
 Added defconfig for building modules.
 Fixing up helper scripts for new initramfs folder structure.
 Fixing up failed cherry-pick for Voodoo Sound v10.

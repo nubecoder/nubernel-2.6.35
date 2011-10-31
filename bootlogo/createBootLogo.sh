@@ -8,7 +8,7 @@
 #
 
 # defines
-LOGO_PATH="$PWD/../Kernel/drivers/video/samsung"
+LOGO_PATH="$PWD/../kernel/drivers/video/samsung"
 LOGO_FILE="$LOGO_PATH/logo_rgb24_wvga_portrait_nubecoder.h"
 ERROR_MSG=
 

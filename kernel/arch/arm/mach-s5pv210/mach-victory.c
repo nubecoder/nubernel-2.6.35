@@ -158,7 +158,7 @@ static int victory_notifier_call(struct notifier_block *this,
 		else if (!strcmp((char *)_cmd, "arm9_fota"))
 			mode = REBOOT_MODE_ARM9_FOTA;
 		else if (!strcmp((char *)_cmd, "recovery"))
-			mode = REBOOT_MODE_RECOVERY;
+			mode = REBOOT_MODE_ARM11_FOTA;
 		else if (!strcmp((char *)_cmd, "bootloader"))
 			mode = REBOOT_MODE_FAST_BOOT;
 		else if (!strcmp((char *)_cmd, "download"))
@@ -3298,7 +3298,8 @@ static void __init victory_fixup(struct machine_desc *desc,
        	ram_console_start = mi->bank[1].start + mi->bank[1].size;
 	ram_console_size = SZ_1M - SZ_4K;
 #endif
-	pm_debug_scratchpad = ram_console_start + ram_console_size;
+	/* Leave 1K at 0x57fff000 for kexec hardboot page. */
+	pm_debug_scratchpad = ram_console_start + ram_console_size + SZ_1K;
 }
 
 /* this function are used to detect s5pc110 chip version temporally */

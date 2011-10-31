@@ -4,6 +4,7 @@
 
 # Each configuration option enables a list of files.
 
+subdir-ccflags-y += -O2
 obj-$(CONFIG_KEYBOARD_AAED2000)		+= aaed2000_kbd.o
 obj-$(CONFIG_KEYBOARD_ADP5520)		+= adp5520-keys.o
 obj-$(CONFIG_KEYBOARD_ADP5588)		+= adp5588-keys.o

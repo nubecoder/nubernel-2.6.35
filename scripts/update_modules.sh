@@ -11,7 +11,7 @@
 #define base paths
 P_DIR="$PWD/.."
 SRC_BASE="$P_DIR/kernel/drivers"
-DST_BASE="initramfs/lib/modules"
+DST_BASE="initramfs_eh17/lib/modules"
 CC_STRIP="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-strip"
 
 COPY_WITH_ECHO()

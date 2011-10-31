@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Fixing up update_modules script for new initramfs folder structure.
 Re-enable and add custom kernel splash (bootlogo) (correctly this time).
 Reverting all the kernel splash (bootlogo) changes in preparation of a single cleaner commit.
 Reverting "Re-enable and add custom kernel splash (bootlogo)" (commit ID: fa03f09).

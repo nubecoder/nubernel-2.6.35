@@ -15,7 +15,6 @@ SEND_LOG()
 
 #main
 SEND_LOG "Start"
-
 if [ "$1" = "recovery" ]; then
 	SEND_LOG "Fixing permissions and ownership"
 	SEND_LOG "chmod 0755 /sbin/*"
@@ -24,6 +23,8 @@ if [ "$1" = "recovery" ]; then
 		SEND_LOG "  chown root.system /$FILE"
 		busybox chown root.system /$FILE
 	done
+	SEND_LOG "chmod 6755 /sbin/kexec"
+	busybox chmod 6755 /sbin/kexec
 	for FOLDER in conf lib lib/modules res res/images sbin ; do
 		SEND_LOG "  chown root.system /$FOLDER"
 		busybox chown root.system /$FOLDER
@@ -38,6 +39,8 @@ else
 		SEND_LOG "  chown root.system /$FILE"
 		busybox chown root.system /$FILE
 	done
+	SEND_LOG "chmod 6755 /sbin/kexec"
+	busybox chmod 6755 /sbin/kexec
 	for FOLDER in lib lib/modules sbin ; do
 		SEND_LOG "  chown root.system /$FOLDER"
 		busybox chown root.system /$FOLDER

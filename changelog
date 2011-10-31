@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-31-2011:
+Setting permissions for kexec binary in init script.
 Select changes from "Reboot recovery kexecs the recovery image" (Tortel: https://github.com/Tortel/android_kernel_epic4g_gb_official/commit/c9bda4b4587e4f45503b61eba5f7a5a70c406cc2).
 Minor changes to branchHelper script.
 Updating modules in initramfs_eh17.

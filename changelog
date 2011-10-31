@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Update .gitignore file.
 Adjusting update_modules script for module building (and quieting the script).
 Fixing up update_modules script for new initramfs folder structure.
 Re-enable and add custom kernel splash (bootlogo) (correctly this time).

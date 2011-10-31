@@ -108,6 +108,13 @@ MODULE_PARM_DESC(bootloaderfb, "Address of booting logo image in Bootloader");
 static int s3cfb_draw_logo(struct fb_info *fb)
 {
 #ifdef CONFIG_FB_S3C_SPLASH_SCREEN
+
+#ifdef CONFIG_MACH_VICTORY
+	if (readl(S5P_INFORM5)) //LPM_CHARGING mode
+		memcpy(fb->screen_base, charging, fb->var.yres * fb->fix.line_length);
+	else
+		memcpy(fb->screen_base, LOGO_RGB24, fb->var.yres * fb->fix.line_length);
+#else
 	struct fb_fix_screeninfo *fix = &fb->fix;
 	struct fb_var_screeninfo *var = &fb->var;
 
@@ -144,6 +151,7 @@ static int s3cfb_draw_logo(struct fb_info *fb)
 			fb->screen_base[offset++] = 0;
 		}
 	}
+#endif	/* CONFIG_MACH_VICTORY */
 #endif
 /*
 	if (bootloaderfb) {
@@ -156,10 +164,6 @@ static int s3cfb_draw_logo(struct fb_info *fb)
 		iounmap(logo_virt_buf);
 	}
 */
-	/*if (readl(S5P_INFORM5)) //LPM_CHARGING mode
-		memcpy(fb->screen_base, charging, fb->var.yres * fb->fix.line_length);
-	else
-		//memcpy(fb->screen_base, LOGO_RGB24, fb->var.yres * fb->fix.line_length);*/
 	return 0;
 }
 #endif
@@ -911,13 +915,6 @@ static int s3cfb_register_framebuffer(struct s3cfb_global *ctrl)
 				s3cfb_draw_logo(ctrl->fb[j]);
 			}
 #endif
-#if defined(CONFIG_MACH_VICTORY)
-			if (j == pdata->default_win) {
-				s3cfb_check_var(&ctrl->fb[j]->var, ctrl->fb[j]);
-				s3cfb_set_par(ctrl->fb[j]);
-				s3cfb_draw_logo(ctrl->fb[j]);
-			}
-#endif /* CONFIG_MACH_VICTORY */
 	}
 
 	return 0;

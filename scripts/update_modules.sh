@@ -19,13 +19,13 @@ COPY_WITH_ECHO()
 	local SRC=$1
 	local DST=$2
 	echo "Copying $SRC to $DST_BASE/$DST"
-	cp "$SRC_BASE/$SRC" "$P_DIR/$DST_BASE/$DST"
+	cp "$SRC_BASE/$SRC" "$P_DIR/$DST_BASE/$DST" >/dev/null 2>&1
 }
 STRIP_WITH_ECHO()
 {
 	local DST=$1
 	echo "Stripping $DST_BASE/$DST"
-	$CC_STRIP -d --strip-unneeded "$P_DIR/$DST_BASE/$DST"
+	$CC_STRIP -d --strip-unneeded "$P_DIR/$DST_BASE/$DST" >/dev/null 2>&1
 }
 SHOW_HELP()
 {
@@ -53,12 +53,20 @@ if [ "$1" == "cp" ] || [ "$1" == "copy" ] ; then
 	COPY_WITH_ECHO "misc/vibetonz/vibrator.ko" "vibrator.ko"
 	COPY_WITH_ECHO "scsi/scsi_wait_scan.ko" "scsi_wait_scan.ko"
 	COPY_WITH_ECHO "staging/android/logger.ko" "logger.ko"
-	#COPY_WITH_ECHO "net/tun.ko" "tun.ko"
+	COPY_WITH_ECHO "net/tun.ko" "tun.ko"
 	# special case below =[
 	echo "Copying crypto/ansi_cprng.ko to $DST_BASE/ansi_cprng.ko"
-	cp "$P_DIR/kernel/crypto/ansi_cprng.ko" "$P_DIR/$DST_BASE/ansi_cprng.ko"
-	#echo "Copying fs/cifs/cifs.ko to $DST_BASE/cifs.ko"
-	#cp "$P_DIR/kernel/fs/cifs/cifs.ko" "$P_DIR/$DST_BASE/cifs.ko"
+	cp "$P_DIR/kernel/crypto/ansi_cprng.ko" "$P_DIR/$DST_BASE/ansi_cprng.ko" >/dev/null 2>&1
+	echo "Copying fs/cifs/cifs.ko to $DST_BASE/cifs.ko"
+	cp "$P_DIR/kernel/fs/cifs/cifs.ko" "$P_DIR/$DST_BASE/cifs.ko" >/dev/null 2>&1
+	echo "Copying fs/fuse/fuse.ko to $DST_BASE/fuse.ko"
+	cp "$P_DIR/kernel/fs/fuse/fuse.ko" "$P_DIR/$DST_BASE/fuse.ko" >/dev/null 2>&1
+	echo "Copying kernel/slow-work.ko to $DST_BASE/slow-work.ko"
+	cp "$P_DIR/kernel/kernel/slow-work.ko" "$P_DIR/$DST_BASE/slow-work.ko" >/dev/null 2>&1
+	echo "Copying net/netfilter/xt_TCPMSS.ko to $DST_BASE/xt_TCPMSS.ko"
+	cp "$P_DIR/kernel/net/netfilter/xt_TCPMSS.ko" "$P_DIR/$DST_BASE/xt_TCPMSS.ko" >/dev/null 2>&1
+	echo "Copying net/netfilter/xt_tcpmss.ko to $DST_BASE/xt_tcpmss.ko"
+	cp "$P_DIR/kernel/net/netfilter/xt_tcpmss.ko" "$P_DIR/$DST_BASE/xt_tcpmss.ko" >/dev/null 2>&1
 	exit 0
 fi
 
@@ -79,8 +87,12 @@ if [ "$1" == "st" ] || [ "$1" == "strip" ] ; then
 	STRIP_WITH_ECHO "vibrator.ko"
 	STRIP_WITH_ECHO "scsi_wait_scan.ko"
 	STRIP_WITH_ECHO "logger.ko"
-	#STRIP_WITH_ECHO "tun.ko"
-	#STRIP_WITH_ECHO "cifs.ko"
+	STRIP_WITH_ECHO "tun.ko"
+	STRIP_WITH_ECHO "cifs.ko"
+	STRIP_WITH_ECHO "fuse.ko"
+	STRIP_WITH_ECHO "slow-work.ko"
+	STRIP_WITH_ECHO "xt_TCPMSS.ko"
+	STRIP_WITH_ECHO "xt_tcpmss.ko"
 	exit 0
 fi
 

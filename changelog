@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Reverting "Reboot recovery kexecs the recovery image" (commit ID: 5d85c18).
 Update .gitignore file.
 Adjusting update_modules script for module building (and quieting the script).
 Fixing up update_modules script for new initramfs folder structure.

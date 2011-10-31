@@ -21,12 +21,8 @@ if busybox test "$1" = "recovery" ; then
 		SEND_LOG "Running: $x \"recovery\""
 		/system/bin/logwrapper "$x" "recovery"
 	done
-	#SEND_LOG "Execute recovery binary"
-	#/sbin/recovery
-	#/sbin/recovery
-	#Call the kernel change script instead of CWM
-	SEND_LOG "Execute change_kernel.sh (kexec to bml8)"
-	/sbin/change_kernel.sh
+	SEND_LOG "Execute recovery binary"
+	/sbin/recovery
 else
 	for x in vendor/scripts/init*; do
 		SEND_LOG "Running: $x"

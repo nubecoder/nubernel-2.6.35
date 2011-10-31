@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Re-enable and add custom kernel splash (bootlogo) (correctly this time).
 Reverting all the kernel splash (bootlogo) changes in preparation of a single cleaner commit.
 Reverting "Re-enable and add custom kernel splash (bootlogo)" (commit ID: fa03f09).
 Reverting "Changes to defconfig for kernel splash (bootlogo)" (commit ID: 31ddc22).

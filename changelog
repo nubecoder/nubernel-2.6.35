@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Included stock kernel splash (bootlogo) from drivers/video/samsung_mipi/.
 Fixing up helper scripts for toolbox rm.
 Force reboot recovery to boot bml8 (mkasick via ugothakd: https://github.com/ugothakd/android_kernel_epic4g_gb_official/commit/c92666bf187d50409746e1f5b52d523ecc4421b4).
 Reverting "Reboot recovery kexecs the recovery image" (commit ID: 5d85c18).

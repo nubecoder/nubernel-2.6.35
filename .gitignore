@@ -5,4 +5,5 @@ bootlogo/makelogo
 update/zImage
 source/*
 stand-alone modules/*
+firmware.info
 

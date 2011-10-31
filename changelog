@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-31-2011:
+Addition to .gitignore.
 Changes to feature list for v0.0.0.
 Small fix for dhd.ko and git (changes every build because of time stamp).
 Setting permissions for kexec binary in init script.

@@ -9,6 +9,10 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-30-2011:
+Reverting all the kernel splash (bootlogo) changes in preparation of a single cleaner commit.
+Reverting "Re-enable and add custom kernel splash (bootlogo)" (commit ID: fa03f09).
+Reverting "Changes to defconfig for kernel splash (bootlogo)" (commit ID: 31ddc22).
+Reverting "Fixing up the kernel splash (bootlogo) implementation" (commit ID: 9ea63be).
 Feature list for v0.0.0.
 Fixing up the kernel splash (bootlogo) implementation.
 Changes to modules defconfig for building stand-alone modules (mkasick: forum.xda-developers.com/showthread.php?t=966322).

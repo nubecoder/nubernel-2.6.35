@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-31-2011:
+Changes to feature list for v0.0.0.
 Small fix for dhd.ko and git (changes every build because of time stamp).
 Setting permissions for kexec binary in init script.
 Select changes from "Reboot recovery kexecs the recovery image" (Tortel: https://github.com/Tortel/android_kernel_epic4g_gb_official/commit/c9bda4b4587e4f45503b61eba5f7a5a70c406cc2).

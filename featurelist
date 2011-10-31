@@ -11,7 +11,7 @@ Feature list:
 nubernel-2.6.35_v0.0.0, stock base, minimal modifications.
 
 Includes a custom "Nubernel the kernel" bootlogo.
-Allows for battery charging values to be tweaked via the "Nubernel Battery Tweaker" app (available in the market).
+Includes kexec support.
 Ensures su is installed properly.
 Ensures superuser is installed properly.
 Ensures busybox is installed properly.

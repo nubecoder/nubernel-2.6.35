@@ -44,7 +44,6 @@
 #endif
 
 #define USE_PERF_LEVEL_KEYPAD 1 
-#define DEBUG_LOG_ENABLE 0
 #undef S3C_KEYPAD_DEBUG 
 
 #ifdef S3C_KEYPAD_DEBUG
@@ -80,6 +79,32 @@ static u32 keymask[KEYPAD_COLUMNS];
 static u32 prevmask[KEYPAD_COLUMNS];
 
 static int in_sleep = 0;
+
+#define COLUMN_DELAY_DEFAULT KEYPAD_DELAY
+#define COLUMN_DELAY_MAX     (1000000/(HZ*KEYPAD_COLUMNS))
+#define TIMER_DELAY_DEFAULT  (3*HZ/100)
+#define TIMER_DELAY_MAX      HZ
+
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_DELAYS
+#define COLUMN_DELAY column_delay
+#define TIMER_DELAY  timer_delay
+static unsigned long column_delay = COLUMN_DELAY_DEFAULT;
+static unsigned long timer_delay  = TIMER_DELAY_DEFAULT;
+#else
+#define COLUMN_DELAY COLUMN_DELAY_DEFAULT
+#define TIMER_DELAY  TIMER_DELAY_DEFAULT
+#endif
+
+#ifdef CONFIG_KEYPAD_S3C_SENSITIVE_PRINTKS
+static bool sensitive_printks = false;
+
+#define SENSITIVE(expr) do { \
+	if (sensitive_printks) \
+		(expr); \
+} while (0)
+#else
+#define SENSITIVE(expr) (expr)
+#endif
 
 //static ssize_t keyshort_test(struct device *dev, struct device_attribute *attr, char *buf);
 
@@ -175,7 +200,7 @@ static int keypad_scan(void)
 
 		writel(cval, key_base+S3C_KEYIFCOL);             // make that Normal output.
 								 // others shuld be High-Z output.
-		udelay(KEYPAD_DELAY);
+		udelay(COLUMN_DELAY);
 
 		// rval = ~(readl(key_base+S3C_KEYIFROW)) & ((1<<KEYPAD_ROWS)-1) ;
 
@@ -232,22 +257,16 @@ static void keypad_timer_handler(unsigned long data)
                         some_keys_pressed++;
 			if(some_keys_pressed < 3)
                       	input_report_key(dev,i+1,1);
-                             pr_err("[key_press] keycode=%d\n", i+1);
+                             SENSITIVE(pr_err("[key_press] keycode=%d\n", i+1));
 					}
 				else
 				{
 				if( i  != 5 &&i  != 15 &&i  != 25 &&i  != 35 &&i  != 44 )
 					{
 				input_report_key(dev,i+1,1);
-                             pr_err("[key_press_OFF] keycode=%d\n", i+1);
+                             SENSITIVE(pr_err("[key_press_OFF] keycode=%d\n", i+1));
 					}
 				}
-//#ifdef CONFIG_KERNEL_DEBUG_SEC
-#if DEBUG_LOG_ENABLE
-				printk(KERN_DEBUG"[KEYPAD] key Pressed  : key %d map %d\n",i, i+1);
-#else
-				printk(KERN_DEBUG"[KEYPAD] key Pressed\n");
-#endif
 			
 				/*input_report_key(dev,pdata->keycodes[i],1);
 				DPRINTK("\nkey Pressed  : key %d map %d\n",i, pdata->keycodes[i]); */
@@ -265,22 +284,16 @@ static void keypad_timer_handler(unsigned long data)
 			       if((i+1 == 35) || (i+1 == 36) || (i+1 == 46))
 			        some_keys_pressed--;
 				input_report_key(dev,i+1,0);
-                             pr_err("[key_release] keycode=%d\n", i+1);
+                             SENSITIVE(pr_err("[key_release] keycode=%d\n", i+1));
 				}
 				else
 				{
 				if( i  != 5 &&i  != 15 &&i  != 25 &&i  != 35 &&i  != 44 )				
 				{
 				input_report_key(dev,i+1,0);
-                             pr_err("[key_release_OFF] keycode=%d\n", i+1);
+                             SENSITIVE(pr_err("[key_release_OFF] keycode=%d\n", i+1));
 					}
 				}
-//#ifdef CONFIG_KERNEL_DEBUG_SEC
-#if DEBUG_LOG_ENABLE
-				printk(KERN_DEBUG"[KEYPAD] key Pressed  : %d  map %d\n",i, i+1);
-#else
-				printk(KERN_DEBUG"[KEYPAD] key Pressed\n");
-#endif                                
 
                     }
 			release_mask >>= 1;
@@ -293,7 +306,7 @@ static void keypad_timer_handler(unsigned long data)
 
 
 	if (restart_timer) {
-		mod_timer(&keypad_timer,jiffies + HZ/10);
+		mod_timer(&keypad_timer,jiffies + TIMER_DELAY);
 	} else {
                 is_timer_on = FALSE;
 		del_timer(&keypad_timer);	
@@ -310,7 +323,7 @@ static irqreturn_t s3c_keypad_isr(int irq, void *dev_id)
 	writel(readl(key_base+S3C_KEYIFCON) & ~(INT_F_EN|INT_R_EN), key_base+S3C_KEYIFCON);
 
 	//keypad_timer.expires = jiffies;
-      	keypad_timer.expires = jiffies + (3 * HZ/100); // victory froyo merge nandu
+	keypad_timer.expires = jiffies + TIMER_DELAY; // victory froyo merge nandu
 
 
 
@@ -485,6 +498,69 @@ static DEVICE_ATTR(key_pressed, S_IRUGO | S_IWUSR | S_IXOTH, keyshort_test, NULL
 static DEVICE_ATTR(brightness, S_IRUGO | S_IWUSR | S_IXOTH, NULL, key_led_control);
 // nandu froyo merge
 
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_DELAYS
+#define DELAY_ATTR(delay, delay_max) \
+static ssize_t delay##_show(struct device *dev, \
+                            struct device_attribute *attr, char *buf) \
+{ \
+	return snprintf(buf, PAGE_SIZE, "%lu\n", delay); \
+} \
+\
+static ssize_t delay##_store(struct device *dev, \
+                             struct device_attribute *attr, \
+                             const char *buf, size_t count) \
+{ \
+	unsigned long val; \
+	int res; \
+\
+	if ((res = strict_strtoul(buf, 10, &val)) < 0) \
+		return res; \
+\
+	if (val == 0 || val > delay_max) \
+		return -EINVAL; \
+\
+	delay = val; \
+\
+	return count; \
+} \
+\
+static DEVICE_ATTR(delay, S_IRUGO | S_IWUSR, delay##_show, delay##_store);
+
+DELAY_ATTR(column_delay, COLUMN_DELAY_MAX)
+DELAY_ATTR(timer_delay,  TIMER_DELAY_MAX)
+#undef DELAY_ATTR
+#endif
+
+#ifdef CONFIG_KEYPAD_S3C_SENSITIVE_PRINTKS
+static ssize_t sensitive_printks_show(struct device *dev,
+                                      struct device_attribute *attr,
+                                      char *buf)
+{
+	return snprintf(buf, PAGE_SIZE, "%u\n", sensitive_printks);
+}
+
+static ssize_t sensitive_printks_store(struct device *dev,
+                                       struct device_attribute *attr,
+                                       const char *buf, size_t count)
+{
+	unsigned long val;
+	int res;
+
+	if ((res = strict_strtoul(buf, 10, &val)) < 0)
+		return res;
+
+	if (val == 0 || val == 1)
+		sensitive_printks = val;
+	else
+		return -EINVAL;
+
+	return count;
+}
+
+static DEVICE_ATTR(sensitive_printks, S_IRUGO | S_IWUSR,
+                   sensitive_printks_show, sensitive_printks_store);
+#endif
+
 static int __init s3c_keypad_probe(struct platform_device *pdev)
 {
 	struct resource *res, *keypad_mem, *keypad_irq;
@@ -609,7 +685,7 @@ static int __init s3c_keypad_probe(struct platform_device *pdev)
                 goto out;
         }
 
-          keypad_timer.expires = jiffies + (3 * HZ/100);
+          keypad_timer.expires = jiffies + TIMER_DELAY;
 
 
           if (is_timer_on == FALSE) {
@@ -638,7 +714,18 @@ static int __init s3c_keypad_probe(struct platform_device *pdev)
         pr_err("Failed to create device file(%s)!\n", dev_attr_brightness.attr.name);
   	}
 
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_DELAYS
+	if (device_create_file(&pdev->dev, &dev_attr_column_delay) < 0)
+		pr_err("Unable to create \"%s\".\n", dev_attr_column_delay.attr.name);
 
+	if (device_create_file(&pdev->dev, &dev_attr_timer_delay) < 0)
+		pr_err("Unable to create \"%s\".\n", dev_attr_timer_delay.attr.name);
+#endif
+
+#ifdef CONFIG_KEYPAD_S3C_SENSITIVE_PRINTKS
+	if (device_create_file(&pdev->dev, &dev_attr_sensitive_printks) < 0)
+		pr_err("Unable to create \"%s\".\n", dev_attr_sensitive_printks.attr.name);
+#endif
 	
 	return 0;
 
@@ -676,6 +763,13 @@ static int s3c_keypad_remove(struct platform_device *pdev)
 		keypad_clock = NULL;
 	}
 
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_DELAYS
+	device_remove_file(&pdev->dev, &dev_attr_column_delay);
+	device_remove_file(&pdev->dev, &dev_attr_timer_delay);
+#endif
+#ifdef CONFIG_KEYPAD_S3C_VICTORY_SENSITIVE_PRINTKS
+	device_remove_file(&pdev->dev, &dev_attr_sensitive_printks);
+#endif
 	input_unregister_device(input_dev);
 	iounmap(key_base);
 	kfree(pdev->dev.platform_data);

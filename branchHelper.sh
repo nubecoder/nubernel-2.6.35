@@ -87,7 +87,7 @@ BRANCH_RELEASE()
 	local REPLACEMENT="${VERSION_STRING}$NEW_VERSION"
 	if [ "$VERBOSE" = "y" ]
 	then
-		sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
+		#sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
 		sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs/default.prop
 		sed -i "s/$PATTERN/$REPLACEMENT/g" kernel/update/META-INF/com/google/android/updater-script
 		sed -i "s/$PATTERN/$REPLACEMENT/g" kernel/update/META-INF/com/android/metadata
@@ -97,7 +97,7 @@ BRANCH_RELEASE()
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README
 		sed -i "s/$PATTERN/$REPLACEMENT/g" $0
 	else
-		sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
+		#sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
 		sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs/default.prop >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" kernel/update/META-INF/com/google/android/updater-script >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" kernel/update/META-INF/com/android/metadata >/dev/null 2>&1
@@ -110,7 +110,7 @@ BRANCH_RELEASE()
 	# git add changes
 	if [ "$VERBOSE" = "y" ]
 	then
-		git add build_kernel.sh
+		#git add build_kernel.sh
 		git add initramfs/default.prop
 		git add kernel/update/META-INF/com/google/android/updater-script
 		git add kernel/update/META-INF/com/android/metadata
@@ -120,7 +120,7 @@ BRANCH_RELEASE()
 		git add README
 		git add $0
 	else
-		git add build_kernel.sh >/dev/null 2>&1
+		#git add build_kernel.sh >/dev/null 2>&1
 		git add initramfs/default.prop >/dev/null 2>&1
 		git add kernel/update/META-INF/com/google/android/updater-script >/dev/null 2>&1
 		git add kernel/update/META-INF/com/android/metadata >/dev/null 2>&1

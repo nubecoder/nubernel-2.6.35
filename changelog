@@ -8,7 +8,90 @@ nubernel-2.6.35_v0.0.0
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+10-31-2011:
+Changes to feature list for v0.0.0.
+Small fix for dhd.ko and git (changes every build because of time stamp).
+Setting permissions for kexec binary in init script.
+Select changes from "Reboot recovery kexecs the recovery image" (Tortel: https://github.com/Tortel/android_kernel_epic4g_gb_official/commit/c9bda4b4587e4f45503b61eba5f7a5a70c406cc2).
+Minor changes to branchHelper script.
+Updating modules in initramfs_eh17.
+Changes to ncBuildHelper script for stand-alone modules.
+Trimming down the stock kernel splash's size.
+Fixing up date in change log.
+Included stock kernel splash (bootlogo) from drivers/video/samsung_mipi/.
+Fixing up helper scripts for toolbox rm.
+
+10-30-2011:
+Force reboot recovery to boot bml8 (mkasick via ugothakd: https://github.com/ugothakd/android_kernel_epic4g_gb_official/commit/c92666bf187d50409746e1f5b52d523ecc4421b4).
+Reverting "Reboot recovery kexecs the recovery image" (commit ID: 5d85c18).
+Update .gitignore file.
+Adjusting update_modules script for module building (and quieting the script).
+Fixing up update_modules script for new initramfs folder structure.
+Re-enable and add custom kernel splash (bootlogo) (correctly this time).
+Reverting all the kernel splash (bootlogo) changes in preparation of a single cleaner commit.
+Reverting "Re-enable and add custom kernel splash (bootlogo)" (commit ID: fa03f09).
+Reverting "Changes to defconfig for kernel splash (bootlogo)" (commit ID: 31ddc22).
+Reverting "Fixing up the kernel splash (bootlogo) implementation" (commit ID: 9ea63be).
+Feature list for v0.0.0.
+Fixing up the kernel splash (bootlogo) implementation.
+Changes to modules defconfig for building stand-alone modules (mkasick: forum.xda-developers.com/showthread.php?t=966322).
+Changes to SLOW_WORK for building as a module (mkasick: forum.xda-developers.com/showthread.php?t=966322).
+Added defconfig for building modules.
+Fixing up helper scripts for new initramfs folder structure.
+Fixing up failed cherry-pick for Voodoo Sound v10.
+Changes to defconfig for kernel splash (bootlogo).
+Re-enable and add custom kernel splash (bootlogo).
+Changes to bootlogo/createBootLogo.sh for new layout.
+Added init.smdkc110.rc dummy file for killrecovery.sh Galaxy S detection.
+Reboot recovery kexecs the recovery image (Tortel: https://github.com/Tortel/android_kernel_epic4g_gb_official/commit/c9bda4b4587e4f45503b61eba5f7a5a70c406cc2).
+Compiler optimizations (Tortel: https://github.com/Tortel/android_kernel_epic4g_gb_official/commit/db704cf287e3b30d2699f3af7eb8c8723e4104d8).
+Changes to defconfig for Voodoo Sound.
+Voodoo Sound v10 (Supercurio via Tortel: https://github.com/Tortel/android_kernel_epic4g_gb_official/commit/1b813441c3dd600f203c579e24b479986b6a5e69).
+Move initramfs to initramfs_eh17 and adjust defconfig.
+Include cm7 initramfs and defconfig (Decad3nce: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/95099a856252aadf3e9d75f5304f35347e0b0072).
+Import init.local.rc (Decad3nce: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/aa7266f269abba1314bac9eb6494e20ae720a8d0).
+Ignore sound/soc/codec/victory/ files. Resolves mic feedback issue on CM7 (UberPinguin: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/b74df3644022033f565bcb55744e13f6e0089d00).
+Changes to defconfig for kexec patches.
+Added kexec patches (Mike Kasick via ugothakd / Tortel: https://github.com/ugothakd/android_kernel_epic4g_gb_official/commit/6d513f22ba2c31acbb911212c2805b4945160201).
+Fixing permissions for bclean script.
+Fixing update_modules.sh script for gingerbread modules.
+Select changes to initramfs (chris41g via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/5cbb6bb0ce6afae2fdaea2211af290a5e154c51c#diff-23).
+Adjusted update_modules.sh script for gingerbread modules.
+Adjusted "other" init script to set keybaord column_delay.
+Set column_delay & timer_delay to xda recommended values (Mike Kasick via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/418e6254bb528b7da179f37a50631b3201edcfff).
+Remove "Finger Up/Down" printks to avoid flooding kmsg log (Mike Kasick via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/c28b4b3d7d2a6003c90a3c65af5f91ff8aae1f9c).
+Disable sensitive printks and allow them to be reenabled via sysfs (Mike Kasick via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/2583fe00e06018739ff0abc569d46513b86f1003).
+Export keypad column-switch and timer delays via sysfs (Mike Kasick via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/54b646e4c739008d4465cc1b0a50ed2a3901ade8).
+Set ANDROID_LOGGER to module in defconfig.
+Loglevel set in defconfig for modular logging (gzub via myself: https://github.com/nubecoder/nubernel-kernel/commit/fb36275c454d48d9c780c012610a10b78d78e697).
+Quiet warning in /scripts/kconfig/conf.c (myself: https://github.com/nubecoder/nubernel-kernel/commit/e69b55a42c7124209df79296ad93d7727bba68b0).
+Fixing someone's typo (myself: https://github.com/nubecoder/nubernel-kernel/commit/9acfffb4cd17437869a203b9f459287b2885d62b).
+Quiet warning in samsung_mipi driver config.
+Adjusting Makefile for toolchain (myself: https://github.com/nubecoder/nubernel-kernel/commit/48b74dea623507f7fe1a1c4969cef7c40297f99a).
+Makefile fix for non-gnueabi toolchains (nullghost via myself: https://github.com/nubecoder/nubernel-kernel/commit/62adb91fde258ce1d2565fbc9579ac654e43f1d3).
+Compile host OS tools with 03 (gzub via myself: https://github.com/nubecoder/nubernel-kernel/commit/50e04c62d84a61b3a5995f2083d51223de80eba4).
+Optimized config flags (gzub via myself: https://github.com/nubecoder/nubernel-kernel/commit/fdc0ddeb19f1fbabc705f750c64fc6dd355c2a1d).
+Set 4k read ahead in mtd_blkdevs.c (Rodderik via myself: https://github.com/nubecoder/nubernel-kernel/commit/4c45a265fd8e4d7f573dd178462a0e65ce862822).
+Changed swappiness from 60 to 10 (Rodderik via myself: https://github.com/nubecoder/nubernel-kernel/commit/0f95cb37dd56f922287be0d55158d8f7ed93dc15).
+Expose sysfs file for scaling_available_frequencies (nullghost via myself: https://github.com/nubecoder/nubernel-kernel/commit/e3ea2a07c023948b68585d27db6f1fdc7c44e9db).
+Added ueventd.rc to cleanup init script.
+Fixing mounts in recovery.rc.
+Added helper scripts into scripts folder.
+Fixing /sbin/sh (should be a symlink to recovery / busybox).
+Minor change to .gitignore and fix date on changelog.
+Minor changes to init rc scripts (add /data/local/tmp to PATH, remove redundant code).
+Fixing up permissions init script (/modules folder no longer exists).
+Fixing up busybox and root install (no room to install on stock /system).
+Fixing up ueventd symlink (was causing boot failure).
+
 10-29-2011:
+Minor change to .gitignore.
+Add TARGET_PRODUCT definition so that ce147-victory.c is used (Mike Kasick via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/d9947bb4eb84cc9baf604b5d661a2e8b82ee99d3).
+Add MODULE_LOOSE_VERMAGIC option for compatibility with EH17 vermagic (Mike Kasick via Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/570961a558726414985cca96d9ded965fd1436d0).
+Added a few files into kernel/.gitignore.
+Added kernel/.gitignore file.
+Changes to defconfig (IKCONFIG, LZMA compression, deadline IO scheduler, TUN, etc).
+Changes to initramfs (ext4, root, recovery, init.d, bootanimation.zip, etc).
 Added bootlogo resources.
 Added recovery zip resources.
 Added victory_nubernel_defconfig (with initramfs path).

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-31-2011:
+Updating modules in initramfs_eh17.
 Changes to ncBuildHelper script for stand-alone modules.
 Trimming down the stock kernel splash's size.
 Fixing up date in change log.

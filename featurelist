@@ -10,5 +10,36 @@ Feature list:
 
 nubernel-2.6.35_v0.0.0, stock base, minimal modifications.
 
+Includes a custom "Nubernel the kernel" bootlogo.
+Allows for battery charging values to be tweaked via the "Nubernel Battery Tweaker" app (available in the market).
+Ensures su is installed properly.
+Ensures superuser is installed properly.
+Ensures busybox is installed properly.
+Installs bash into /system/bin/ (if it is not found).
+Includes flash tools (redbend_ua and bmlwrite) in /sbin.
+Includes custom scripts in /vendor/bin.
+Supports the following:
+  bootanimation.zip, init.d scripts, RFS, EXT4, CIFS, TUN, Netfilter TCPMSS.
+Uses deadline as the default I/O scheduler.
+Includes the following I/O schedulers:
+  deadline, noop, cfq.
+Includes the following CPU frequencies:
+  100MHz, 200MHz, 400MHz, 800MHz, 1000MHz.
+Includes the following CPU governors (see notes below):
+  conservative, userspace, powersave, ondemand, performance.
+Uses ondemand as the default CPU governor.
+Loads the Android logger as a module.
+Includes patches and code, etc from the following people:
+  Voodoo Sound - supercurio
+  Kernel bootlogo creation binary - morfic.
+  Keyboard patches, RDNIS patch, kexec patch, etc - mkasick.
+  Various patches, scripting, etc - tanimn.
+  Various patches, scripting, etc - Tortel.
+  ClockworkMod recovery, initramfs, scripting, etc - DRockstar.
+  Compiler tweaks, compiler warnings, etc - gzub.
+  Various patches, scripting, initial help getting my kernel compiled, etc - RandyT / Bonsai.
+  scaling_available_frequencies sysfs, compile errors, scripting, etc - nullghost.
+  Boot from sdcard (Dual Boot), Re-enabled kernel splash (bootlogo), various patches - Rodderik.
+
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 10-31-2011:
+Fixing some spacing in updater-script.
 Fixing bootanimation.zip support.
 Addition to .gitignore.
 Changes to feature list for v0.0.0.

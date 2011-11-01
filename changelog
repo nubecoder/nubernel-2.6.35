@@ -8,7 +8,15 @@ nubernel-2.6.35_v0.0.0
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-01-2011:
+Loading android logger in init.rc.
+Ensuring bash resources are installed.
+Setting CONFIG_LOCALVERSION in defconfigs.
+Module related changes to build and helper scripts.
+
 10-31-2011:
+Fixing some spacing in updater-script.
+Fixing bootanimation.zip support.
 Addition to .gitignore.
 Changes to feature list for v0.0.0.
 Small fix for dhd.ko and git (changes every build because of time stamp).

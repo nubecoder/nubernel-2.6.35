@@ -32,6 +32,44 @@ else
 	busybox chmod 0755 /system/bin/bash
 	#busybox rm -f /sbin/bash
 
+	SEND_LOG "Ensuring bash resources are installed"
+	RESOURCE="/system/etc/bash.bashrc"
+	VENDOR_FILE="/vendor/files/bash.bashrc"
+	if [ ! -f "$RESOURCE" ]; then
+		SEND_LOG "Installing $RESOURCE"
+		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	fi
+	RESOURCE="/system/etc/profile"
+	VENDOR_FILE="/vendor/files/profile"
+	if [ ! -f "$RESOURCE" ]; then
+		SEND_LOG "Installing $RESOURCE"
+		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	fi
+	RESOURCE="/data/local/.bash_aliases"
+	VENDOR_FILE="/vendor/files/.bash_aliases"
+	if [ ! -f "$RESOURCE" ]; then
+		SEND_LOG "Installing $RESOURCE"
+		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	fi
+	RESOURCE="/data/local/.bashrc"
+	VENDOR_FILE="/vendor/files/.bashrc"
+	if [ ! -f "$RESOURCE" ]; then
+		SEND_LOG "Installing $RESOURCE"
+		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	fi
+	RESOURCE="/data/local/.inputrc"
+	VENDOR_FILE="/vendor/files/.inputrc"
+	if [ ! -f "$RESOURCE" ]; then
+		SEND_LOG "Installing $RESOURCE"
+		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	fi
+	RESOURCE="/data/local/.profile"
+	VENDOR_FILE="/vendor/files/.profile"
+	if [ ! -f "$RESOURCE" ]; then
+		SEND_LOG "Installing $RESOURCE"
+		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	fi
+
 	SEND_LOG "Checking for bash as default shell"
 	BASH_FOUND=$(busybox ls -l "/system/bin/sh" | busybox grep "/system/bin/bash")
 	if [ ! "$BASH_FOUND" = "" ] && [ -f "/system/bin/bash" ]; then

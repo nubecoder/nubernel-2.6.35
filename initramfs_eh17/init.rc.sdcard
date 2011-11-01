@@ -120,6 +120,9 @@ loglevel 3
 # SprintHotspot
     insmod /lib/modules/hotspot_event_monitoring.ko
 
+    # android logger
+    insmod /lib/modules/logger.ko
+
     #temp
     chown root root /sbin/fat.format
     chmod 750 /sbin/fat.format
@@ -798,7 +801,7 @@ service samsungani /system/bin/samsungani
 service bootanim /system/bin/bootanimation
     user graphics
     group graphics
-    disabled
+    critical
     oneshot
 
 service playsound /system/bin/playsound

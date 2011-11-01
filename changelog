@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-01-2011:
+Loading android logger in init.rc.
 Ensuring bash resources are installed.
 Setting CONFIG_LOCALVERSION in defconfigs.
 Module related changes to build and helper scripts.

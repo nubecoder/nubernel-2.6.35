@@ -10,6 +10,7 @@
 # define envvars
 TARGET="victory_nubernel"
 KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.0"
+INSTALL_MOD_PATH="../stand-alone\ modules"
 CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-"
 #sammy recommended below
 #CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2009q3-68/bin/arm-none-eabi-"
@@ -69,6 +70,7 @@ SHOW_SETTINGS()
 	TIME_START=$(date +%s)
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "build version  == $KBUILD_BUILD_VERSION"
+	echo "modules path   == $INSTALL_MOD_PATH"
 	echo "cross compile  == $CROSS_COMPILE"
 	echo "outfile path   == $OUTFILE_PATH"
 	echo "make clean     == $CLEAN"
@@ -164,6 +166,49 @@ BUILD_MODULES()
 	popd > /dev/null
 	local T2=$(date +%s)
 	echo "" && echo "building modules took $(($T2 - $T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
+INSTALL_MODULES()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local T1=$(date +%s)
+	echo "Begin installing modules..." && echo ""
+	pushd kernel > /dev/null
+		if [ "$VERBOSE" = "y" ] ; then
+			nice make V=1 -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
+		else
+			nice make -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
+		fi
+	popd > /dev/null
+	local T2=$(date +%s)
+	echo "" && echo "installing modules took $(($T2 - $T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
+COPY_MODULES()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local T1=$(date +%s)
+	echo "Begin copy modules..." && echo ""
+	pushd scripts > /dev/null
+		sh -c "update_modules.sh copy"
+	popd > /dev/null
+	local T2=$(date +%s)
+	echo "" && echo "Copy modules took $(($T2 - $T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
+STRIP_MODULES()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local T1=$(date +%s)
+	echo "Begin strip modules..." && echo ""
+	pushd scripts > /dev/null
+		sh -c "update_modules.sh strip"
+	popd > /dev/null
+	local T2=$(date +%s)
+	echo "" && echo "Strip modules took $(($T2 - $T1)) seconds."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "*"
 }
@@ -270,32 +315,6 @@ CREATE_ZIP()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "*"
 }
-COPY_MODULES()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin copy modules..." && echo ""
-	pushd scripts > /dev/null
-		sh -c "update_modules.sh copy"
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "Copy modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-STRIP_MODULES()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin strip modules..." && echo ""
-	pushd scripts > /dev/null
-		sh -c "update_modules.sh strip"
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "Strip modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
 WIFI_FLASH_SCRIPT()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
@@ -391,6 +410,7 @@ fi
 if [ "$BUILD_MODULES" = "y" ] ; then
 	BUILD_MODULES
 	if [ "$MODULE_ARGS" != "${MODULE_ARGS/c/}" ] ; then
+		INSTALL_MODULES
 		COPY_MODULES
 	fi
 	if [ "$MODULE_ARGS" != "${MODULE_ARGS/s/}" ] ; then

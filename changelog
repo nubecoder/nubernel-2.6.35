@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-01-2011:
+Setting CONFIG_LOCALVERSION in defconfigs.
 Module related changes to build and helper scripts.
 
 10-31-2011:

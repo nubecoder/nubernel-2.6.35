@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Rename vendor folder to "nubernel" (a pre-esixting vendor folder breaks the symlink to /system/vendor).
 Setting permissions for /vendor/bin.
 More elegant /system/app removal.
 Adding qik to the /system/app removal list.

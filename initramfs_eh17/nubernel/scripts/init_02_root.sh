@@ -15,8 +15,17 @@ SEND_LOG()
 ENSURE_SU()
 {
 	SU_PATH=$(busybox which su)
-#	SU_CHECK=$(busybox readlink $SU_PATH)
-#	if [ ! "$SU_CHECK" = "" ] && [ ! -f "$SU_PATH" ]; then
+	if [ -f "$SU_PATH" ]; then
+	SEND_LOG "  Checking su version"
+		SU_VER=$(su -v)
+		if [ -n $SU_VER ]; then
+			SEND_LOG "  su version: $SU_VER"
+			return 0;
+		else
+			SEND_LOG "  su version is null, rm -f $SU_PATH"
+			busybox rm -f $SU_PATH
+		fi
+	fi
 	if [ ! -f "$SU_PATH" ]; then
 		SEND_LOG "  Installing su to /system/bin/su"
 		busybox mv -f /nubernel/files/su-3.0 /system/bin/su

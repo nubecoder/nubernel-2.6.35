@@ -65,18 +65,18 @@ ENSURE_SUPERUSER()
 		busybox chown system.system /data/app/com.noshufou.android.su-1.apk
 		busybox chmod 0644 /data/app/com.noshufou.android.su-1.apk
 		SEND_LOG "Ensuring old Superuser app data is removed"
-		SU_APK_TEST=$(busybox find /data/data/ -iname "com.noshufou.android.su")
-		for SU_DATA_FOLDER in $SU_APK_TEST ; do
+		SU_APK_FIND=$(busybox find /data/data/ -iname "com.noshufou.android.su")
+		for SU_DATA_FOLDER in $SU_APK_FIND ; do
 			SEND_LOG "  Removing data folder: $SU_DATA_FOLDER"
 			busybox rm -rf "$SU_DATA_FOLDER"
 		done
-		SU_APK_TEST=$(busybox find /data/dalvik-cache/ -iname "*superuser.apk*.dex")
-		for SU_APK_FILE in $SU_APK_TEST ; do
+		SU_APK_FIND=$(busybox find /data/dalvik-cache/ -iname "*superuser.apk*.dex")
+		for SU_APK_FILE in $SU_APK_FIND ; do
 			SEND_LOG "  Removing data file: $SU_APK_FILE"
 			busybox rm -f "$SU_APK_FILE"
 		done
-		SU_APK_TEST=$(busybox find /data/dalvik-cache/ -iname "*com.noshufou.android.su*.dex")
-		for SU_APK_FILE in $SU_APK_TEST ; do
+		SU_APK_FIND=$(busybox find /data/dalvik-cache/ -iname "*com.noshufou.android.su*.dex")
+		for SU_APK_FILE in $SU_APK_FIND ; do
 			SEND_LOG "  Removing data file: $SU_APK_FILE"
 			busybox rm -f "$SU_APK_FILE"
 		done

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Minor changes to a couple init scripts.
 Renamed init scripts.
 Added "system_apps" init script (moved from "busybox" init script).
 Added su version check to "root" init script.

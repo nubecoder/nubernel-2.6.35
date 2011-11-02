@@ -41,8 +41,8 @@ MOVE_SYSTEM_APP()
 	fi
 	if /sbin/busybox test -f "/system/app/$APK.apk"; then
 		SEND_LOG "  Detected apk file, moving app to /data/app"
-		local EXISTING_APP_TEST=$(/sbin/busybox find /data/app -iname "${DATA}*")
-		for EXISTING_APP in $EXISTING_APP_TEST ; do
+		local EXISTING_APP_FIND=$(/sbin/busybox find /data/app -iname "${DATA}*")
+		for EXISTING_APP in $EXISTING_APP_FIND ; do
 			SEND_LOG "  rm -f $EXISTING_APP"
 			/sbin/busybox rm -f "$EXISTING_APP"
 		done

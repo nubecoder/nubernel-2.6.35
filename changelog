@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Removing Talk from the move /system/app list (can't DL from market).
 Minor changes to a couple init scripts.
 Renamed init scripts.
 Added "system_apps" init script (moved from "busybox" init script).

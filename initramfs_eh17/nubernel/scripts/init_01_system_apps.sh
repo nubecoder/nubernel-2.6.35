@@ -79,7 +79,6 @@ else
 	MOVE_SYSTEM_APP "MediaHubV126" "com.sdgtl.mediahub.spr" "system@app@MediaHubV126.apk@classes.dex"
 	MOVE_SYSTEM_APP "qik-8.66-release-ffc" "com.qikffc.android" "system@app@qik-8.66-release-ffc.apk@classes.dex"
 	MOVE_SYSTEM_APP "Street" "com.google.android.street" "system@app@Street.apk@classes.dex"
-	MOVE_SYSTEM_APP "Talk" "com.google.android.talk" "system@app@Talk.apk@classes.dex"
 	MOVE_SYSTEM_APP "YouTube" "com.google.android.youtube" "system@app@YouTube.apk@classes.dex"
 
 	SEND_LOG "  Removing 5 copys of Term.apk (why Samsung, why?)"

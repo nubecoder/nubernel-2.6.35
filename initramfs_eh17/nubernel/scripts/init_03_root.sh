@@ -1,6 +1,6 @@
 #!/system/bin/sh
 #
-# init_02_root.sh
+# init_03_root.sh
 #
 #
 # 2011 nubecoder
@@ -10,7 +10,7 @@
 #functions
 SEND_LOG()
 {
-	/system/bin/log -p i -t init:init_scripts "init_02_root : $1"
+	/system/bin/log -p i -t init:init_scripts "init_03_root : $1"
 }
 ENSURE_SU()
 {

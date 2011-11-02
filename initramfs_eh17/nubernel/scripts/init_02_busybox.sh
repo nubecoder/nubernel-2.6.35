@@ -1,6 +1,6 @@
 #!/system/bin/sh
 #
-# init_01_busybox.sh
+# init_02_busybox.sh
 #
 #
 # 2011 nubecoder
@@ -10,7 +10,7 @@
 #functions
 SEND_LOG()
 {
-	/system/bin/log -p i -t init:init_scripts "init_01_busybox : $1"
+	/system/bin/log -p i -t init:init_scripts "init_02_busybox : $1"
 }
 
 #main

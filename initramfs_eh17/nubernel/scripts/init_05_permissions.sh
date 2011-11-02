@@ -1,6 +1,6 @@
 #!/system/bin/sh
 #
-# init_04_permissions
+# init_05_permissions
 #
 #
 # 2011 nubecoder
@@ -10,7 +10,7 @@
 #functions
 SEND_LOG()
 {
-	/system/bin/log -p i -t init:init_scripts "init_04_permissions : $1"
+	/system/bin/log -p i -t init:init_scripts "init_05_permissions : $1"
 }
 
 #main

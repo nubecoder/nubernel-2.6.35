@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Adjusted "clean" init script to handle the nubernel folder (also some whitespace changes).
 Fixing up /system/app removal.
 Adjusting scripts for new folder name.
 Rename vendor folder to "nubernel" (a pre-esixting vendor folder breaks the symlink to /system/vendor).

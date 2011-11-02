@@ -20,13 +20,13 @@ if [ "$1" = "recovery" ]; then
 	SEND_LOG "Remove unneccessary files in /sbin"
 	for FILE in keytimer
 	do
-		SEND_LOG "  rm -f /sbin/$FILE"
+		SEND_LOG " rm -f /sbin/$FILE"
 		busybox rm -f /sbin/$FILE
 	done
 
 	SEND_LOG "Remove unneccessary files in /"
 	for FILE in fota.rc init.rc init.rc.sdcard lpm.rc recovery.rc ueventd.rc; do
-		SEND_LOG "rm -f /$FILE"
+		SEND_LOG " rm -f /$FILE"
 		busybox rm -f /$FILE
 	done
 
@@ -39,27 +39,27 @@ else
 	SEND_LOG "Remove unneccessary files in /sbin"
 	for FILE in bash
 	do
-		SEND_LOG "  rm -f /sbin/$FILE"
+		SEND_LOG " rm -f /sbin/$FILE"
 		busybox rm -f /sbin/$FILE
 	done
 
 	SEND_LOG "Remove unneccessary files in /"
 	for FILE in fota.rc init.rc init.rc.sdcard init.smdkc110.rc lpm.rc recovery.rc init init.log init.sh initlog.sh ueventd.rc; do
-		SEND_LOG "rm -f /$FILE"
+		SEND_LOG " rm -f /$FILE"
 		busybox rm -f /$FILE
 	done
 
 	SEND_LOG "Remove unneccessary folders in /"
 	for FOLDER in res; do
-		SEND_LOG "rm -rf /$FOLDER"
+		SEND_LOG " rm -rf /$FOLDER"
 		busybox rm -rf /$FOLDER
 	done
 fi
 
-SEND_LOG "Remove unneccessary folders in /nubernel/files/"
-for FILE in su-3.0 superuser.apk ; do
-	SEND_LOG "rm -f /nubernel/files/$FILE"
-	busybox rm -f /nubernel/files/$FILE
+SEND_LOG "Remove unneccessary folders in /nubernel/"
+for FOLDER in bin files; do
+	SEND_LOG " rm -rf /nubernel/$FOLDER"
+	busybox rm -rf /nubernel/$FOLDER
 done
 
 SEND_LOG "Sync filesystem"

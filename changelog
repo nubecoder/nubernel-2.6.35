@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Fixing up /system/app removal.
 Adjusting scripts for new folder name.
 Rename vendor folder to "nubernel" (a pre-esixting vendor folder breaks the symlink to /system/vendor).
 Setting permissions for /vendor/bin.

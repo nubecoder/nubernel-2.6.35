@@ -12,6 +12,28 @@ SEND_LOG()
 {
 	/system/bin/log -p i -t init:init_scripts "init_01_busybox : $1"
 }
+REMOVE_SYSTEM_APP()
+{
+	local APK="$1"
+	local DATA="$2"
+	local CACHE="$3"
+	if /sbin/busybox test -f "/system/app/$APK"; then
+		SEND_LOG "  rm -f /system/app/$APK"
+		/sbin/busybox rm -f /system/app/$APK
+	fi
+	if /sbin/busybox test -f "/system/app/$APK.odex"; then
+		SEND_LOG "  rm -f /system/app/$APK.odex"
+		/sbin/busybox rm -f /system/app/$APK.odex
+	fi
+	if /sbin/busybox test -d "/data/data/$DATA"; then
+		SEND_LOG "  rm -rf /data/data/$DATA"
+		/sbin/busybox rm -rf /data/data/$DATA
+	fi
+	if /sbin/busybox test -f "/data/dalvik-cache/$CACHE"; then
+		SEND_LOG "  rm -f /data/dalvik-cache/$CACHE"
+		/sbin/busybox rm -f /data/dalvik-cache/$CACHE
+	fi
+}
 
 #main
 SEND_LOG "Start"
@@ -23,38 +45,27 @@ if /sbin/busybox test "$1" = "recovery"; then
 	SEND_LOG "Sync filesystem"
 	sync
 else
+	SEND_LOG "Ensuring there is room for busybox and root"
+	SEND_LOG "  Removing market downloadable apps from /system/app"
+	REMOVE_SYSTEM_APP "amazonmp3.apk" "com.amazon.mp3" "system@app@amazonmp3.apk@classes.dex"
+	REMOVE_SYSTEM_APP "BooksPhone.apk" "com.google.android.apps.books" "system@app@BooksPhone.apk@classes.dex"
+	REMOVE_SYSTEM_APP "FBAndroid-1.5.4.apk" "com.facebook.katana" "system@app@FBAndroid-1.5.4.apk@classes.dex"
+	REMOVE_SYSTEM_APP "Gmail.apk" "com.google.android.gm" "system@app@Gmail.apk@classes.dex"
+	REMOVE_SYSTEM_APP "install_flash_player.apk" "com.adobe.flashplayer" "system@app@install_flash_player.apk@classes.dex"
+	REMOVE_SYSTEM_APP "Maps.apk" "com.google.android.apps.maps" "system@app@Maps.apk@classes.dex"
+	REMOVE_SYSTEM_APP "MediaHubV126.apk" "com.sdgtl.mediahub.spr" "system@app@MediaHubV126.apk@classes.dex"
+	REMOVE_SYSTEM_APP "qik-8.66-release-ffc.apk" "com.qikffc.android" "system@app@qik-8.66-release-ffc.apk@classes.dex"
+	REMOVE_SYSTEM_APP "Street.apk" "com.google.android.street" "system@app@Street.apk@classes.dex"
+	REMOVE_SYSTEM_APP "Talk.apk" "com.google.android.talk" "system@app@Talk.apk@classes.dex"
+	REMOVE_SYSTEM_APP "Term1.apk" "com.android.term1"
+	REMOVE_SYSTEM_APP "Term2.apk" "com.android.term2"
+	REMOVE_SYSTEM_APP "Term3.apk" "com.android.term3"
+	REMOVE_SYSTEM_APP "Term4.apk" "com.android.term4"
+	REMOVE_SYSTEM_APP "Term5.apk" "com.android.term5"
+	REMOVE_SYSTEM_APP "YouTube.apk" "com.google.android.youtube" "system@app@YouTube.apk@classes.dex"
+
 	SEND_LOG "Setting BB_PATH"
 	BB_PATH=/data/local/tmp
-
-	SEND_LOG "Ensuring there is room for busybox and root"
-	ITEMS="amazonmp3.apk"
-	ITEMS="$ITEMS BooksPhone.apk"
-	ITEMS="$ITEMS FBAndroid-1.5.4.apk"
-	ITEMS="$ITEMS Gmail.apk"
-	ITEMS="$ITEMS install_flash_player.apk"
-	ITEMS="$ITEMS Maps.apk"
-	ITEMS="$ITEMS MediaHubV126.apk"
-	ITEMS="$ITEMS qik-8.66-release-ffc.apk"
-	ITEMS="$ITEMS Street.apk"
-	ITEMS="$ITEMS Talk.apk"
-	ITEMS="$ITEMS Term1.apk"
-	ITEMS="$ITEMS Term1.odex"
-	ITEMS="$ITEMS Term2.apk"
-	ITEMS="$ITEMS Term2.odex"
-	ITEMS="$ITEMS Term3.apk"
-	ITEMS="$ITEMS Term3.odex"
-	ITEMS="$ITEMS Term4.apk"
-	ITEMS="$ITEMS Term4.odex"
-	ITEMS="$ITEMS Term5.apk"
-	ITEMS="$ITEMS Term5.odex"
-	ITEMS="$ITEMS YouTube.apk"
-	SEND_LOG "  Removing market downloadable apps from /system/app"
-	for ITEM in $ITEMS; do
-		if /sbin/busybox test -f "/system/app/$ITEM"; then
-			SEND_LOG "  rm -f /system/app/$ITEM"
-			/sbin/busybox rm -f /system/app/$ITEM
-		fi
-	done
 
 	SEND_LOG "Installing temporary busybox"
 	/sbin/busybox ln -s /sbin/recovery $BB_PATH/busybox

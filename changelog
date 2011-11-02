@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Setting permissions for /vendor/bin.
 More elegant /system/app removal.
 Adding qik to the /system/app removal list.
 Some cleanup to vendor/bin scripts.

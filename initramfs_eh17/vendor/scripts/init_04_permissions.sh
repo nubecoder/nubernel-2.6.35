@@ -35,6 +35,8 @@ else
 	SEND_LOG "Fixing permissions and ownership"
 	SEND_LOG "chmod 0755 /sbin/*"
 	busybox chmod 0755 /sbin/*
+	SEND_LOG "chmod 0755 /vendor/bin/*"
+	busybox chmod 0755 /vendor/bin/*
 	for FILE in default.prop init init.sh ; do
 		SEND_LOG "  chown root.system /$FILE"
 		busybox chown root.system /$FILE

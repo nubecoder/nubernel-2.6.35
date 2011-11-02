@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Adding qik to the /system/app removal list.
 Some cleanup to vendor/bin scripts.
 
 11-01-2011:

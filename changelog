@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.0
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-02-2011:
+Some cleanup to vendor/bin scripts.
+
 11-01-2011:
 Loading android logger in init.rc.
 Ensuring bash resources are installed.

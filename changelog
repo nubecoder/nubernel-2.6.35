@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Added "system_apps" init script (moved from "busybox" init script).
 Added su version check to "root" init script.
 Reorganized "root" init script a bit.
 Fixing up permissions for kexec.

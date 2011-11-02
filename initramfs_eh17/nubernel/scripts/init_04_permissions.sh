@@ -23,14 +23,16 @@ if [ "$1" = "recovery" ]; then
 		SEND_LOG "  chown root.system /$FILE"
 		busybox chown root.system /$FILE
 	done
-	SEND_LOG "chmod 6755 /sbin/kexec"
-	busybox chmod 6755 /sbin/kexec
 	for FOLDER in conf lib lib/modules res res/images sbin ; do
 		SEND_LOG "  chown root.system /$FOLDER"
 		busybox chown root.system /$FOLDER
 		SEND_LOG "  chown root.system /$FOLDER/*"
 		busybox chown root.system /$FOLDER/*
 	done
+	SEND_LOG "chown root.root /sbin/kexec"
+	busybox chown root.root /sbin/kexec
+	SEND_LOG "chmod 6755 /sbin/kexec"
+	busybox chmod 6755 /sbin/kexec
 else
 	SEND_LOG "Fixing permissions and ownership"
 	SEND_LOG "chmod 0755 /sbin/*"
@@ -41,14 +43,16 @@ else
 		SEND_LOG "  chown root.system /$FILE"
 		busybox chown root.system /$FILE
 	done
-	SEND_LOG "chmod 6755 /sbin/kexec"
-	busybox chmod 6755 /sbin/kexec
 	for FOLDER in lib lib/modules sbin ; do
 		SEND_LOG "  chown root.system /$FOLDER"
 		busybox chown root.system /$FOLDER
 		SEND_LOG "  chown root.system /$FOLDER/*"
 		busybox chown root.system /$FOLDER/*
 	done
+	SEND_LOG "chown root.root /sbin/kexec"
+	busybox chown root.root /sbin/kexec
+	SEND_LOG "chmod 6755 /sbin/kexec"
+	busybox chmod 6755 /sbin/kexec
 fi
 
 SEND_LOG "Sync filesystem"

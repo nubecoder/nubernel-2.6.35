@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Fixing up permissions for kexec.
 Adjusted "clean" init script to handle the nubernel folder (also some whitespace changes).
 Fixing up /system/app removal.
 Adjusting scripts for new folder name.

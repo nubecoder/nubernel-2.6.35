@@ -12,29 +12,24 @@ SEND_LOG()
 {
 	/system/bin/log -p i -t init:init_scripts "init_02_root : $1"
 }
-
-#main
-SEND_LOG "Start"
-
-if [ "$1" = "recovery" ]; then
-	# do nothing
-else
-	SEND_LOG "Ensuring su is properly installed"
+ENSURE_SU()
+{
 	SU_PATH=$(busybox which su)
 #	SU_CHECK=$(busybox readlink $SU_PATH)
 #	if [ ! "$SU_CHECK" = "" ] && [ ! -f "$SU_PATH" ]; then
 	if [ ! -f "$SU_PATH" ]; then
 		SEND_LOG "  Installing su to /system/bin/su"
 		busybox mv -f /nubernel/files/su-3.0 /system/bin/su
-		busybox chown 0.0 /system/bin/su
+		busybox chown root.root /system/bin/su
 		busybox chmod 6755 /system/bin/su
 		busybox rm -f /system/xbin/su
 		busybox rm -f /system/bin/jk-su
 		SEND_LOG "  Symlinking su in /system/xbin/su"
 		busybox ln -s /system/bin/su /system/xbin/su
 	fi
-	#busybox rm -f /nubernel/files/su
-	SEND_LOG "Ensuring user files are set up properly"
+}
+ENSURE_USERFILES()
+{
 	if [ ! -f "/system/etc/passwd" ]; then
 		SEND_LOG "  Setting up /etc/passwd"
 		echo "root::0:0:root:/:/sbin/sh" > /system/etc/passwd
@@ -42,6 +37,7 @@ else
 	fi
 	busybox chown root.root /system/etc/passwd
 	busybox chmod 0644 /system/etc/passwd
+
 	if [ ! -f "/system/etc/group" ]; then
 		SEND_LOG "  Setting up /etc/group"
 		echo "root::0:" > /system/etc/group
@@ -49,7 +45,9 @@ else
 	fi
 	busybox chown root.root /system/etc/group
 	busybox chmod 0644 /system/etc/group
-	SEND_LOG "Ensuring the Superuser app is installed"
+}
+ENSURE_SUPERUSER()
+{
 	if [ ! $(busybox find /system/app -iname "superuser.apk") ] &&\
 			[ ! $(busybox find /data/app -iname "superuser.apk") ] &&\
 			[ ! $(busybox find /data/app -iname "com.noshufou.android.su*") ]; then
@@ -74,7 +72,22 @@ else
 			busybox rm -f "$SU_APK_FILE"
 		done
 	fi
-	#busybox rm -f /nubernel/files/superuser.apk
+}
+
+#main
+SEND_LOG "Start"
+
+if [ "$1" = "recovery" ]; then
+	# do nothing
+else
+SEND_LOG "Ensuring su is properly installed"
+ENSURE_SU
+
+SEND_LOG "Ensuring the Superuser app is installed"
+ENSURE_SUPERUSER
+
+SEND_LOG "Ensuring user account and group files are installed"
+ENSURE_USERFILES
 fi
 
 SEND_LOG "Sync filesystem"

@@ -56,10 +56,10 @@ else
 	done
 fi
 
-SEND_LOG "Remove unneccessary folders in /vendor/files/"
+SEND_LOG "Remove unneccessary folders in /nubernel/files/"
 for FILE in su-3.0 superuser.apk ; do
-	SEND_LOG "rm -f /vendor/files/$FILE"
-	busybox rm -f /vendor/files/$FILE
+	SEND_LOG "rm -f /nubernel/files/$FILE"
+	busybox rm -f /nubernel/files/$FILE
 done
 
 SEND_LOG "Sync filesystem"

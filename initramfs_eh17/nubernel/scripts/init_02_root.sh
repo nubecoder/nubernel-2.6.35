@@ -25,7 +25,7 @@ else
 #	if [ ! "$SU_CHECK" = "" ] && [ ! -f "$SU_PATH" ]; then
 	if [ ! -f "$SU_PATH" ]; then
 		SEND_LOG "  Installing su to /system/bin/su"
-		busybox mv -f /vendor/files/su-3.0 /system/bin/su
+		busybox mv -f /nubernel/files/su-3.0 /system/bin/su
 		busybox chown 0.0 /system/bin/su
 		busybox chmod 6755 /system/bin/su
 		busybox rm -f /system/xbin/su
@@ -33,7 +33,7 @@ else
 		SEND_LOG "  Symlinking su in /system/xbin/su"
 		busybox ln -s /system/bin/su /system/xbin/su
 	fi
-	#busybox rm -f /vendor/files/su
+	#busybox rm -f /nubernel/files/su
 	SEND_LOG "Ensuring user files are set up properly"
 	if [ ! -f "/system/etc/passwd" ]; then
 		SEND_LOG "  Setting up /etc/passwd"
@@ -54,7 +54,7 @@ else
 			[ ! $(busybox find /data/app -iname "superuser.apk") ] &&\
 			[ ! $(busybox find /data/app -iname "com.noshufou.android.su*") ]; then
 		SEND_LOG "  Installing superuser.apk to /data/app/com.noshufou.android.su-1.apk"
-		busybox mv -f /vendor/files/superuser.apk /data/app/com.noshufou.android.su-1.apk
+		busybox mv -f /nubernel/files/superuser.apk /data/app/com.noshufou.android.su-1.apk
 		busybox chown system.system /data/app/com.noshufou.android.su-1.apk
 		busybox chmod 0644 /data/app/com.noshufou.android.su-1.apk
 		SEND_LOG "Ensuring old Superuser app data is removed"
@@ -74,7 +74,7 @@ else
 			busybox rm -f "$SU_APK_FILE"
 		done
 	fi
-	#busybox rm -f /vendor/files/superuser.apk
+	#busybox rm -f /nubernel/files/superuser.apk
 fi
 
 SEND_LOG "Sync filesystem"

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Fixing MOVE_SYSTEM_APP (only delete data when moving the app).
 Fixing su version check.
 Removing Talk from the move /system/app list (can't DL from market).
 Minor changes to a couple init scripts.

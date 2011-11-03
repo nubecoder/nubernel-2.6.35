@@ -50,14 +50,14 @@ MOVE_SYSTEM_APP()
 		/sbin/busybox mv -f /system/app/$APK.apk /data/app/${DATA}-1.apk
 		/sbin/busybox chown system.system /data/app/${DATA}-1.apk
 		/sbin/busybox chmod 0644 /data/app/${DATA}-1.apk
-	fi
-	if /sbin/busybox test -d "/data/data/$DATA"; then
-		SEND_LOG "  rm -rf /data/data/$DATA"
-		/sbin/busybox rm -rf /data/data/$DATA
-	fi
-	if /sbin/busybox test -f "/data/dalvik-cache/$CACHE"; then
-		SEND_LOG "  rm -f /data/dalvik-cache/$CACHE"
-		/sbin/busybox rm -f /data/dalvik-cache/$CACHE
+		if /sbin/busybox test -d "/data/data/$DATA"; then
+			SEND_LOG "  rm -rf /data/data/$DATA"
+			/sbin/busybox rm -rf /data/data/$DATA
+		fi
+		if /sbin/busybox test -f "/data/dalvik-cache/$CACHE"; then
+			SEND_LOG "  rm -f /data/dalvik-cache/$CACHE"
+			/sbin/busybox rm -f /data/dalvik-cache/$CACHE
+		fi
 	fi
 }
 

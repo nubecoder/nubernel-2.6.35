@@ -119,6 +119,7 @@ loglevel 3
 on fs
 # mount mtd partitions
     mount rfs /dev/block/stl9 /system check=no
+    mount ext4 /dev/block/stl9 /system
 
 # use movinand second partition as /data. d.moskvitin
     #temp
@@ -129,6 +130,7 @@ on fs
     chown system system /data
     chmod 0771 /data    
     mount rfs /dev/block/stl10 /data nosuid nodev check=no
+    mount ext4 /dev/block/stl10 /data wait nosuid noatime nodiratime noauto_da_alloc
     chown system system /data
     chmod 0771 /data
     chmod 0771 /data
@@ -142,6 +144,7 @@ on fs
     chown system system /data/db-journal
     chmod 0777 /data/db-journal
     mount rfs /dev/block/stl11 /cache nosuid nodev check=no
+    mount ext4 /dev/block/stl11 /cache wait nosuid noatime nodiratime noauto_da_alloc
 
     mkdir /mnt/.lfs 0755 root root
     mount j4fs /dev/block/stl6 /mnt/.lfs

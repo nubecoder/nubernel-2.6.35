@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-02-2011:
+Renaming kernel/ to Kernel/ (matching up with EpicCM) I hate that I'm doing this. =[
 Fixing MOVE_SYSTEM_APP (only delete data when moving the app).
 Fixing su version check.
 Removing Talk from the move /system/app list (can't DL from market).

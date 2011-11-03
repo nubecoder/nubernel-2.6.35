@@ -8,6 +8,25 @@ nubernel-2.6.35_v0.0.0
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-02-2011:
+Fixing MOVE_SYSTEM_APP (only delete data when moving the app).
+Fixing su version check.
+Removing Talk from the move /system/app list (can't DL from market).
+Minor changes to a couple init scripts.
+Renamed init scripts.
+Added "system_apps" init script (moved from "busybox" init script).
+Added su version check to "root" init script.
+Reorganized "root" init script a bit.
+Fixing up permissions for kexec.
+Adjusted "clean" init script to handle the nubernel folder (also some whitespace changes).
+Fixing up /system/app removal.
+Adjusting scripts for new folder name.
+Rename vendor folder to "nubernel" (a pre-esixting vendor folder breaks the symlink to /system/vendor).
+Setting permissions for /vendor/bin.
+More elegant /system/app removal.
+Adding qik to the /system/app removal list.
+Some cleanup to vendor/bin scripts.
+
 11-01-2011:
 Loading android logger in init.rc.
 Ensuring bash resources are installed.

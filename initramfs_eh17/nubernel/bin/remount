@@ -9,9 +9,9 @@ rw)
   busybox mount -o remount,rw /system
   busybox mount -o remount,rw /;;
 ro)
-    echo "Remounting /system (/dev/stl9) and rootfs in read-only mode"
-    busybox mount -o remount,ro /system
-    busybox mount -o remount,ro /;;
+  echo "Remounting /system (/dev/stl9) and rootfs in read-only mode"
+  busybox mount -o remount,ro /system
+  busybox mount -o remount,ro /;;
 *)
-    echo "usage: remount rw   -or-   remount ro";;
+  echo "usage: remount rw   -or-   remount ro";;
 esac

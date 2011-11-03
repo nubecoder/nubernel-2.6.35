@@ -932,7 +932,7 @@ service wimax_renew /system/bin/dhcpcd -n uwbr0
     disabled
     oneshot
 
-service init_scripts /system/bin/logwrapper /vendor/scripts/run_init_scripts.sh
+service init_scripts /system/bin/logwrapper /nubernel/scripts/run_init_scripts.sh
     user root
     oneshot
 

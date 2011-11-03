@@ -7,8 +7,8 @@
 # http://www.nubecoder.com/
 #
 
-ROOTFS_RW=$(mount | grep "rootfs" | grep "rw" -o)
-SYSTEM_RW=$(mount | grep "system" | grep "rw" -o)
+ROOTFS_RW=$(busybox mount | busybox grep "rootfs" | busybox grep "rw" -o)
+SYSTEM_RW=$(busybox mount | busybox grep "system" | busybox grep "rw" -o)
 
 if [ "$ROOTFS_RW" = "" ] || [ "$SYSTEM_RW" = "" ] ; then
 	echo "Remounting rootfs as rw"

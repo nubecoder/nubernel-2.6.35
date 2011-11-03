@@ -1,6 +1,6 @@
 #!/system/bin/sh
 #
-# init_03_other
+# init_04_other
 #
 #
 # 2011 nubecoder
@@ -10,7 +10,7 @@
 #functions
 SEND_LOG()
 {
-	/system/bin/log -p i -t init:init_scripts "init_03_other : $1"
+	/system/bin/log -p i -t init:init_scripts "init_04_other : $1"
 }
 
 #main
@@ -24,6 +24,9 @@ if [ "$1" = "recovery" ]; then
 	busybox mkdir /etc
 	busybox mv -f /res/etc/recovery.fstab /etc/recovery.fstab
 else
+	SEND_LOG "Installing scripts into /vendor/bin"
+	busybox mv -f /nubernel/bin/* /vendor/bin/
+
 	SEND_LOG "Ensuring bash is installed"
 	if [ ! -f "/system/bin/bash" ]; then
 		SEND_LOG "  Installing Bash to /system/bin/"
@@ -33,41 +36,41 @@ else
 	#busybox rm -f /sbin/bash
 
 	SEND_LOG "Ensuring bash resources are installed"
-	RESOURCE="/system/etc/bash.bashrc"
-	VENDOR_FILE="/vendor/files/bash.bashrc"
-	if [ ! -f "$RESOURCE" ]; then
-		SEND_LOG "Installing $RESOURCE"
-		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	DEST_FILE="/system/etc/bash.bashrc"
+	SOURCE_FILE="/nubernel/files/bash.bashrc"
+	if [ ! -f "$DEST_FILE" ]; then
+		SEND_LOG "Installing $DEST_FILE"
+		busybox mv "$SOURCE_FILE" "$DEST_FILE"
 	fi
-	RESOURCE="/system/etc/profile"
-	VENDOR_FILE="/vendor/files/profile"
-	if [ ! -f "$RESOURCE" ]; then
-		SEND_LOG "Installing $RESOURCE"
-		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	DEST_FILE="/system/etc/profile"
+	SOURCE_FILE="/nubernel/files/profile"
+	if [ ! -f "$DEST_FILE" ]; then
+		SEND_LOG "Installing $DEST_FILE"
+		busybox mv "$SOURCE_FILE" "$DEST_FILE"
 	fi
-	RESOURCE="/data/local/.bash_aliases"
-	VENDOR_FILE="/vendor/files/.bash_aliases"
-	if [ ! -f "$RESOURCE" ]; then
-		SEND_LOG "Installing $RESOURCE"
-		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	DEST_FILE="/data/local/.bash_aliases"
+	SOURCE_FILE="/nubernel/files/.bash_aliases"
+	if [ ! -f "$DEST_FILE" ]; then
+		SEND_LOG "Installing $DEST_FILE"
+		busybox mv "$SOURCE_FILE" "$DEST_FILE"
 	fi
-	RESOURCE="/data/local/.bashrc"
-	VENDOR_FILE="/vendor/files/.bashrc"
-	if [ ! -f "$RESOURCE" ]; then
-		SEND_LOG "Installing $RESOURCE"
-		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	DEST_FILE="/data/local/.bashrc"
+	SOURCE_FILE="/nubernel/files/.bashrc"
+	if [ ! -f "$DEST_FILE" ]; then
+		SEND_LOG "Installing $DEST_FILE"
+		busybox mv "$SOURCE_FILE" "$DEST_FILE"
 	fi
-	RESOURCE="/data/local/.inputrc"
-	VENDOR_FILE="/vendor/files/.inputrc"
-	if [ ! -f "$RESOURCE" ]; then
-		SEND_LOG "Installing $RESOURCE"
-		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	DEST_FILE="/data/local/.inputrc"
+	SOURCE_FILE="/nubernel/files/.inputrc"
+	if [ ! -f "$DEST_FILE" ]; then
+		SEND_LOG "Installing $DEST_FILE"
+		busybox mv "$SOURCE_FILE" "$DEST_FILE"
 	fi
-	RESOURCE="/data/local/.profile"
-	VENDOR_FILE="/vendor/files/.profile"
-	if [ ! -f "$RESOURCE" ]; then
-		SEND_LOG "Installing $RESOURCE"
-		busybox mv "$VENDOR_FILE" "$RESOURCE"
+	DEST_FILE="/data/local/.profile"
+	SOURCE_FILE="/nubernel/files/.profile"
+	if [ ! -f "$DEST_FILE" ]; then
+		SEND_LOG "Installing $DEST_FILE"
+		busybox mv "$SOURCE_FILE" "$DEST_FILE"
 	fi
 
 	SEND_LOG "Checking for bash as default shell"

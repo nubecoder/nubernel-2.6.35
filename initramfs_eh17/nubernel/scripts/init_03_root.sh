@@ -18,7 +18,7 @@ ENSURE_SU()
 	if [ -f "$SU_PATH" ]; then
 	SEND_LOG "  Checking su version"
 		SU_VER=$(su -v)
-		if [ -n $SU_VER ]; then
+		if [ "$SU_VER" != "" ]; then
 			SEND_LOG "  su version: $SU_VER"
 			return 0;
 		else

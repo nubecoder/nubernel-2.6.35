@@ -111,14 +111,14 @@ SHOW_ERROR()
 }
 REMOVE_DOTCONFIG()
 {
-	rm -f kernel/.config
+	rm -f Kernel/.config
 }
 MAKE_CLEAN()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin make clean..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		nice make V=1 -j"$THREADS" ARCH=arm clean 2>&1 >make.clean.out
 	popd > /dev/null
 	local T2=$(date +%s)
@@ -131,7 +131,7 @@ MAKE_DISTCLEAN()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin make distclean..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		nice make V=1 -j"$THREADS" ARCH=arm distclean 2>&1 >make.distclean.out
 	popd > /dev/null
 	local T2=$(date +%s)
@@ -144,7 +144,7 @@ MAKE_DEFCONFIG()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin make ${TARGET}_defconfig..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		nice make V=1 -j"$THREADS" ARCH=arm ${TARGET}_defconfig 2>&1 >make.defconfig.out
 	popd > /dev/null
 	local T2=$(date +%s)
@@ -157,7 +157,7 @@ BUILD_MODULES()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin building modules..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		if [ "$VERBOSE" = "y" ] ; then
 			nice make V=1 -j"$THREADS" ARCH=arm modules 2>&1 | tee make.out
 		else
@@ -174,7 +174,7 @@ INSTALL_MODULES()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin installing modules..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		if [ "$VERBOSE" = "y" ] ; then
 			nice make V=1 -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
 		else
@@ -231,7 +231,7 @@ REMOVE_STANDALONE_MODULES_FROM_INITRAMFS()
 				rm -f "$FILE"
 			fi
 		done
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 	local T2=$(date +%s)
 	echo "" && echo "removing modules took $(($T2 - $T1)) seconds."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
@@ -242,7 +242,7 @@ BUILD_ZIMAGE()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin building zImage..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		rm -f usr/initramfs_data.cpio.lzma
 		if [ "$DEFCONFIG" != "y" ] ; then
 			REMOVE_STANDALONE_MODULES_FROM_INITRAMFS
@@ -263,7 +263,7 @@ GENERATE_WARNINGS_FILE()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Generate warnings file..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		local MAKE_FILE=make.out
 		local WARN_FILE=warnings.out
 		cp $MAKE_FILE $WARN_FILE
@@ -289,7 +289,7 @@ CREATE_TAR()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin $TARGET-$VERSION.tar.md5 creation..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		tar -H ustar -c -C arch/arm/boot zImage >"$OUTFILE_PATH.tar.md5"
 		md5sum -t "$OUTFILE_PATH.tar.md5" >> "$OUTFILE_PATH.tar.md5"
 	popd > /dev/null
@@ -305,7 +305,7 @@ CREATE_ZIP()
 	echo "Begin $TARGET-$VERSION.zip creation..." && echo ""
 	rm -fr "$TARGET-$VERSION.zip"
 	rm -f update/zImage
-	cp kernel/arch/arm/boot/zImage update
+	cp Kernel/arch/arm/boot/zImage update
 	OUTFILE="$OUTFILE_PATH.zip"
 	pushd update > /dev/null
 		eval "$MKZIP" > /dev/null
@@ -404,7 +404,7 @@ fi
 if [ "$DISTCLEAN" = "y" ] ; then
 	MAKE_DISTCLEAN
 fi
-if [ "$DEFCONFIG" = "y" -o ! -f "kernel/.config" ] ; then
+if [ "$DEFCONFIG" = "y" -o ! -f "Kernel/.config" ] ; then
 	MAKE_DEFCONFIG
 fi
 if [ "$BUILD_MODULES" = "y" ] ; then

@@ -9,7 +9,7 @@
 
 # define envvars
 TARGET="victory_nubernel"
-KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.0"
+KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.1"
 INSTALL_MOD_PATH="../stand-alone\ modules"
 CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-"
 #sammy recommended below

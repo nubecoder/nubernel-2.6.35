@@ -2,13 +2,13 @@ Samsung SPH-D700 (Epic 4G) kernel by nubecoder
 
 http://www.nubecoder.com/
 
-nubernel-2.6.35_v0.0.0
+nubernel-2.6.35_v0.0.1
 
 
 Feature list:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
-nubernel-2.6.35_v0.0.0, stock base, minimal modifications.
+nubernel-2.6.35_v0.0.1
 
 Includes a custom "Nubernel the kernel" bootlogo.
 Includes kexec support.
@@ -16,10 +16,12 @@ Ensures su is installed properly.
 Ensures superuser is installed properly.
 Ensures busybox is installed properly.
 Installs bash into /system/bin/ (if it is not found).
+Installs bash resources if they do not already exist.
 Includes flash tools (redbend_ua and bmlwrite) in /sbin.
 Includes custom scripts in /vendor/bin.
+Recovery redirector, "reboot recovery" will boot to the recovery kernel (bml8).
 Supports the following:
-  bootanimation.zip, init.d scripts, RFS, EXT4, CIFS, TUN, Netfilter TCPMSS.
+  init.d scripts, RFS, EXT4, CIFS, TUN, Netfilter TCPMSS.
 Uses deadline as the default I/O scheduler.
 Includes the following I/O schedulers:
   deadline, noop, cfq.
@@ -29,13 +31,54 @@ Includes the following CPU governors (see notes below):
   conservative, userspace, powersave, ondemand, performance.
 Uses ondemand as the default CPU governor.
 Loads the Android logger as a module.
+Supports the following types of bootanimations (See notes):
+  bootanimation (bootanimation.zip).
+  samsungani (*.qmg).
+Bootanimation notes:
+  bootanimation.zip:
+    If you have both bootanimation.zip and boot*.qmg files, they will fight each other.
+    It's better than froyo was, in that, it will kind of randomly choose one or the other.
+    It's best to just remove the boot*.qmg files if using a bootanimation.zip animation.
+  Samsung boot*.qmg boot animations:
+    You must still fake out the kernel with a "blank" bootanimation.zip.
+    You still might see a small glimpse of the framework's animation (blue android logo).
+Includes system app mover and remover:
+  During boot, the init scripts make room to install root and recovery.
+  Apps that are moved will have their data removed (to prevent FC's).
+  Two list files are checked to determine what will be moved or removed:
+    /data/local/.mv_sys_apps
+    /data/local/.rm_sys_apps
+  The format of the list files is as follows:
+    Each line must contain two strings separated by a space:
+      #1 - The system app's apk file name with no extension.
+      #2 - The system app's packagename.
+    Example:
+      FreeHDGameDemos com.gameloft.microwidget
+  If the list files do not exist, defaults will be created.
+  Apps that will be moved from /system/app to /data/app by default:
+    Asphalt5_DEMO_SAMSUNG_D700_Sprint_ML_330 (Asphalt 5 Demo)
+    FreeHDGameDemos (Promo Widget)
+    nascar09-prod-release (Sprint Nascar)
+    qik-8.66-release-ffc (Qik video)
+    sfl-prod-release (Sprint NFL)
+    SprintTV
+    SprintTVWidget
+    SprintZone
+    TN6.2-sprint-handset-6201501 (Telenav Navigation)
+  Apps that will be removed by default:
+    Term1
+    Term2
+    Term3
+    Term4
+    Term5
 Includes patches and code, etc from the following people:
   Voodoo Sound - supercurio
   Kernel bootlogo creation binary - morfic.
-  Keyboard patches, RDNIS patch, kexec patch, etc - mkasick.
+  Keyboard patches, TARGET_PRODUCT fix, MODULE_LOOSE_VERMAGIC fix, kexec patch, etc - mkasick.
   Various patches, scripting, etc - tanimn.
   Various patches, scripting, etc - Tortel.
-  ClockworkMod recovery, initramfs, scripting, etc - DRockstar.
+  ClockworkMod recovery - koush.
+  ClockworkMod recovery (device specific), initramfs, scripting, etc - DRockstar.
   Compiler tweaks, compiler warnings, etc - gzub.
   Various patches, scripting, initial help getting my kernel compiled, etc - RandyT / Bonsai.
   scaling_available_frequencies sysfs, compile errors, scripting, etc - nullghost.

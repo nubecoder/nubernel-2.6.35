@@ -2,13 +2,14 @@ Samsung SPH-D700 (Epic 4G) kernel by nubecoder
 
 http://www.nubecoder.com/
 
-nubernel-2.6.35_v0.0.0
+nubernel-2.6.35_v0.0.1
 
 
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-06-2011:
+Feature list for v0.0.1.
 Fixing a typo in branchHelper script.
 Some changes to "system_apps" init script.
 Fixing up a versioning bug in branchHelper script.

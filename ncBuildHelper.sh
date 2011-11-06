@@ -9,7 +9,8 @@
 
 # define envvars
 TARGET="victory_nubernel"
-KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.0"
+KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.1"
+INSTALL_MOD_PATH="../stand-alone\ modules"
 CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-"
 #sammy recommended below
 #CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2009q3-68/bin/arm-none-eabi-"
@@ -69,6 +70,7 @@ SHOW_SETTINGS()
 	TIME_START=$(date +%s)
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "build version  == $KBUILD_BUILD_VERSION"
+	echo "modules path   == $INSTALL_MOD_PATH"
 	echo "cross compile  == $CROSS_COMPILE"
 	echo "outfile path   == $OUTFILE_PATH"
 	echo "make clean     == $CLEAN"
@@ -109,14 +111,14 @@ SHOW_ERROR()
 }
 REMOVE_DOTCONFIG()
 {
-	rm -f kernel/.config
+	rm -f Kernel/.config
 }
 MAKE_CLEAN()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin make clean..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		nice make V=1 -j"$THREADS" ARCH=arm clean 2>&1 >make.clean.out
 	popd > /dev/null
 	local T2=$(date +%s)
@@ -129,7 +131,7 @@ MAKE_DISTCLEAN()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin make distclean..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		nice make V=1 -j"$THREADS" ARCH=arm distclean 2>&1 >make.distclean.out
 	popd > /dev/null
 	local T2=$(date +%s)
@@ -142,7 +144,7 @@ MAKE_DEFCONFIG()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin make ${TARGET}_defconfig..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		nice make V=1 -j"$THREADS" ARCH=arm ${TARGET}_defconfig 2>&1 >make.defconfig.out
 	popd > /dev/null
 	local T2=$(date +%s)
@@ -155,7 +157,7 @@ BUILD_MODULES()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin building modules..." && echo ""
-	pushd kernel > /dev/null
+	pushd Kernel > /dev/null
 		if [ "$VERBOSE" = "y" ] ; then
 			nice make V=1 -j"$THREADS" ARCH=arm modules 2>&1 | tee make.out
 		else
@@ -167,106 +169,20 @@ BUILD_MODULES()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "*"
 }
-REMOVE_STANDALONE_MODULES_FROM_INITRAMFS()
+INSTALL_MODULES()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
-	echo "Removing stand-alone modules from initramfs..." && echo ""
-	popd > /dev/null
-		local MODULES_PATH="initramfs_eh17/lib/modules"
-		local FILE_PATHS="$MODULES_PATH/cifs.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/fuse.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/slow-work.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/tun.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/xt_tcpmss.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/xt_TCPMSS.ko"
-		for FILE in $FILE_PATHS; do
-			if [ -f $FILE ]; then
-				echo "rm -f $FILE"
-				rm -f "$FILE"
-			fi
-		done
-	pushd kernel > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "removing modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-BUILD_ZIMAGE()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin building zImage..." && echo ""
-	pushd kernel > /dev/null
-		rm -f usr/initramfs_data.cpio.lzma
-		if [ "$DEFCONFIG" != "y" ] ; then
-			REMOVE_STANDALONE_MODULES_FROM_INITRAMFS
-		fi
+	echo "Begin installing modules..." && echo ""
+	pushd Kernel > /dev/null
 		if [ "$VERBOSE" = "y" ] ; then
-			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" 2>&1 | tee make.out
+			nice make V=1 -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
 		else
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" 2>&1 | tee make.out
+			nice make -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
 		fi
 	popd > /dev/null
 	local T2=$(date +%s)
-	echo "" && echo "building zImage took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-GENERATE_WARNINGS_FILE()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Generate warnings file..." && echo ""
-	pushd kernel > /dev/null
-		local MAKE_FILE=make.out
-		local WARN_FILE=warnings.out
-		cp $MAKE_FILE $WARN_FILE
-		local ITEMS="CC LD AS CHK UPD GEN HOSTLD HOSTCC CALL MKELF TIMEC CONMK SHIPPED GZIP AR IKCFG MODPOST KSYM SYMLINK SYSMAP OBJCOPY Building Generating Kernel:"
-		for ITEM in $ITEMS; do
-			sed -ri "s/^\s*$ITEM.*//" $WARN_FILE
-		done
-		local ITEMS="scripts make WARNING:"
-		for ITEM in $ITEMS; do
-			sed -ri "s/^$ITEM.*//" $WARN_FILE
-		done
-		sed -ri "s/^To see full details build your kernel with:.*//" $WARN_FILE
-		sed -ri "s/^'make CONFIG_DEBUG_SECTION_MISMATCH=y'.*//" $WARN_FILE
-		sed -ri "/^\s*$/d" $WARN_FILE
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "generating warnings file took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-CREATE_TAR()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin $TARGET-$VERSION.tar.md5 creation..." && echo ""
-	pushd kernel > /dev/null
-		tar -H ustar -c -C arch/arm/boot zImage >"$OUTFILE_PATH.tar.md5"
-		md5sum -t "$OUTFILE_PATH.tar.md5" >> "$OUTFILE_PATH.tar.md5"
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "$TARGET-$VERSION.tar creation took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-CREATE_ZIP()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin $TARGET-$VERSION.zip creation..." && echo ""
-	rm -fr "$TARGET-$VERSION.zip"
-	rm -f update/zImage
-	cp kernel/arch/arm/boot/zImage update
-	OUTFILE="$OUTFILE_PATH.zip"
-	pushd update > /dev/null
-		eval "$MKZIP" > /dev/null
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "$TARGET-$VERSION.zip creation took $(($T2 - $T1)) seconds."
+	echo "" && echo "installing modules took $(($T2 - $T1)) seconds."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "*"
 }
@@ -293,6 +209,112 @@ STRIP_MODULES()
 	popd > /dev/null
 	local T2=$(date +%s)
 	echo "" && echo "Strip modules took $(($T2 - $T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
+REMOVE_STANDALONE_MODULES_FROM_INITRAMFS()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local T1=$(date +%s)
+	echo "Removing stand-alone modules from initramfs..." && echo ""
+	popd > /dev/null
+		local MODULES_PATH="initramfs_eh17/lib/modules"
+		local FILE_PATHS="$MODULES_PATH/cifs.ko"
+		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/fuse.ko"
+		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/slow-work.ko"
+		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/tun.ko"
+		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/xt_tcpmss.ko"
+		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/xt_TCPMSS.ko"
+		for FILE in $FILE_PATHS; do
+			if [ -f $FILE ]; then
+				echo "rm -f $FILE"
+				rm -f "$FILE"
+			fi
+		done
+	pushd Kernel > /dev/null
+	local T2=$(date +%s)
+	echo "" && echo "removing modules took $(($T2 - $T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
+BUILD_ZIMAGE()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local T1=$(date +%s)
+	echo "Begin building zImage..." && echo ""
+	pushd Kernel > /dev/null
+		rm -f usr/initramfs_data.cpio.lzma
+		if [ "$DEFCONFIG" != "y" ] ; then
+			REMOVE_STANDALONE_MODULES_FROM_INITRAMFS
+		fi
+		if [ "$VERBOSE" = "y" ] ; then
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" 2>&1 | tee make.out
+		else
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" 2>&1 | tee make.out
+		fi
+	popd > /dev/null
+# update zImage in update folder regardless of zip creation
+	rm -f update/zImage
+	cp Kernel/arch/arm/boot/zImage update/
+	local T2=$(date +%s)
+	echo "" && echo "building zImage took $(($T2 - $T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
+GENERATE_WARNINGS_FILE()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local T1=$(date +%s)
+	echo "Generate warnings file..." && echo ""
+	pushd Kernel > /dev/null
+		local MAKE_FILE=make.out
+		local WARN_FILE=warnings.out
+		cp $MAKE_FILE $WARN_FILE
+		local ITEMS="CC LD AS CHK UPD GEN HOSTLD HOSTCC CALL MKELF TIMEC CONMK SHIPPED GZIP AR IKCFG MODPOST KSYM SYMLINK SYSMAP OBJCOPY Building Generating Kernel:"
+		for ITEM in $ITEMS; do
+			sed -ri "s/^\s*$ITEM.*//" $WARN_FILE
+		done
+		local ITEMS="scripts make WARNING:"
+		for ITEM in $ITEMS; do
+			sed -ri "s/^$ITEM.*//" $WARN_FILE
+		done
+		sed -ri "s/^To see full details build your kernel with:.*//" $WARN_FILE
+		sed -ri "s/^'make CONFIG_DEBUG_SECTION_MISMATCH=y'.*//" $WARN_FILE
+		sed -ri "/^\s*$/d" $WARN_FILE
+	popd > /dev/null
+	local T2=$(date +%s)
+	echo "" && echo "generating warnings file took $(($T2 - $T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
+CREATE_TAR()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local T1=$(date +%s)
+	echo "Begin $TARGET-$VERSION.tar.md5 creation..." && echo ""
+	pushd Kernel > /dev/null
+		tar -H ustar -c -C arch/arm/boot zImage >"$OUTFILE_PATH.tar.md5"
+		md5sum -t "$OUTFILE_PATH.tar.md5" >> "$OUTFILE_PATH.tar.md5"
+	popd > /dev/null
+	local T2=$(date +%s)
+	echo "" && echo "$TARGET-$VERSION.tar creation took $(($T2 - $T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
+CREATE_ZIP()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local T1=$(date +%s)
+	echo "Begin $TARGET-$VERSION.zip creation..." && echo ""
+	rm -fr "$TARGET-$VERSION.zip"
+	rm -f update/zImage
+	cp Kernel/arch/arm/boot/zImage update/
+	OUTFILE="$OUTFILE_PATH.zip"
+	pushd update > /dev/null
+		eval "$MKZIP" > /dev/null
+	popd > /dev/null
+	local T2=$(date +%s)
+	echo "" && echo "$TARGET-$VERSION.zip creation took $(($T2 - $T1)) seconds."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "*"
 }
@@ -385,12 +407,13 @@ fi
 if [ "$DISTCLEAN" = "y" ] ; then
 	MAKE_DISTCLEAN
 fi
-if [ "$DEFCONFIG" = "y" -o ! -f "kernel/.config" ] ; then
+if [ "$DEFCONFIG" = "y" -o ! -f "Kernel/.config" ] ; then
 	MAKE_DEFCONFIG
 fi
 if [ "$BUILD_MODULES" = "y" ] ; then
 	BUILD_MODULES
 	if [ "$MODULE_ARGS" != "${MODULE_ARGS/c/}" ] ; then
+		INSTALL_MODULES
 		COPY_MODULES
 	fi
 	if [ "$MODULE_ARGS" != "${MODULE_ARGS/s/}" ] ; then

@@ -8,7 +8,7 @@
 #
 
 #define version string
-CURRENT_VERSION="nubernel-2.6.35_v0.0.0"
+CURRENT_VERSION="nubernel-2.6.35_v0.0.1"
 VERSION_STRING="nubernel-2.6.35_v"
 
 # defaults
@@ -20,6 +20,9 @@ VERBOSE="n"
 NEW_VERSION=
 FEATURE_NAME=
 ERROR_MSG=
+
+#temp
+AOSP="n"
 
 # functions
 SHOW_HELP()
@@ -88,9 +91,13 @@ BRANCH_RELEASE()
 	if [ "$VERBOSE" = "y" ]
 	then
 		#sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
-		sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs/default.prop
-		sed -i "s/$PATTERN/$REPLACEMENT/g" kernel/update/META-INF/com/google/android/updater-script
-		sed -i "s/$PATTERN/$REPLACEMENT/g" kernel/update/META-INF/com/android/metadata
+		if [ $AOSP = "y" ]; then
+			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_cm7/default.prop
+		else
+			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_eh17/default.prop
+		fi
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/google/android/updater-script
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/android/metadata
 		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh
 		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog
@@ -98,9 +105,13 @@ BRANCH_RELEASE()
 		sed -i "s/$PATTERN/$REPLACEMENT/g" $0
 	else
 		#sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
-		sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs/default.prop >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" kernel/update/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" kernel/update/META-INF/com/android/metadata >/dev/null 2>&1
+		if [ $AOSP = "y" ]; then
+			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_cm7/default.prop >/dev/null 2>&1
+		else
+			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_eh17/default.prop >/dev/null 2>&1
+		fi
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/google/android/updater-script >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/android/metadata >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog >/dev/null 2>&1
@@ -111,9 +122,13 @@ BRANCH_RELEASE()
 	if [ "$VERBOSE" = "y" ]
 	then
 		#git add build_kernel.sh
-		git add initramfs/default.prop
-		git add kernel/update/META-INF/com/google/android/updater-script
-		git add kernel/update/META-INF/com/android/metadata
+		if [ $AOSP = "y" ]; then
+			git add initramfs_cm7/default.prop
+		else
+			git add initramfs_eh17/default.prop
+		fi
+		git add update/META-INF/com/google/android/updater-script
+		git add update/META-INF/com/android/metadata
 		git add ncBuildHelper.sh
 		git add featurelist
 		git add changelog
@@ -121,9 +136,13 @@ BRANCH_RELEASE()
 		git add $0
 	else
 		#git add build_kernel.sh >/dev/null 2>&1
-		git add initramfs/default.prop >/dev/null 2>&1
-		git add kernel/update/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		git add kernel/update/META-INF/com/android/metadata >/dev/null 2>&1
+		if [ $AOSP = "y" ]; then
+			git add initramfs_cm7/default.prop >/dev/null 2>&1
+		else
+			git add initramfs_eh17/default.prop >/dev/null 2>&1
+		fi
+		git add update/META-INF/com/google/android/updater-script >/dev/null 2>&1
+		git add update/META-INF/com/android/metadata >/dev/null 2>&1
 		git add ncBuildHelper.sh >/dev/null 2>&1
 		git add featurelist >/dev/null 2>&1
 		git add changelog >/dev/null 2>&1

@@ -17,19 +17,19 @@ SEND_LOG()
 SEND_LOG "Start"
 
 if busybox test "$1" = "recovery" ; then
-	for x in vendor/scripts/init*; do
+	for x in /nubernel/scripts/init*; do
 		SEND_LOG "Running: $x \"recovery\""
 		/system/bin/logwrapper "$x" "recovery"
 	done
 	SEND_LOG "Execute recovery binary"
 	/sbin/recovery
 else
-	for x in vendor/scripts/init*; do
+	for x in /nubernel/scripts/init*; do
 		SEND_LOG "Running: $x"
 		/system/bin/logwrapper "$x"
 	done
-	SEND_LOG "Running: /vendor/scripts/run_parts.sh"
-	/system/bin/logwrapper /vendor/scripts/run_parts.sh
+	SEND_LOG "Running: /nubernel/scripts/run_parts.sh"
+	/system/bin/logwrapper /nubernel/scripts/run_parts.sh
 fi
 
 SEND_LOG "End"

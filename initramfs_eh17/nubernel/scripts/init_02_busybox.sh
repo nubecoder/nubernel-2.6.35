@@ -1,6 +1,6 @@
 #!/system/bin/sh
 #
-# init_01_busybox.sh
+# init_02_busybox.sh
 #
 #
 # 2011 nubecoder
@@ -10,7 +10,7 @@
 #functions
 SEND_LOG()
 {
-	/system/bin/log -p i -t init:init_scripts "init_01_busybox : $1"
+	/system/bin/log -p i -t init:init_scripts "init_02_busybox : $1"
 }
 
 #main
@@ -25,35 +25,6 @@ if /sbin/busybox test "$1" = "recovery"; then
 else
 	SEND_LOG "Setting BB_PATH"
 	BB_PATH=/data/local/tmp
-
-	SEND_LOG "Ensuring there is room for busybox and root"
-	ITEMS="amazonmp3.apk"
-	ITEMS="$ITEMS BooksPhone.apk"
-	ITEMS="$ITEMS Gmail.apk"
-	ITEMS="$ITEMS Maps.apk"
-	ITEMS="$ITEMS Street.apk"
-	ITEMS="$ITEMS Talk.apk"
-	ITEMS="$ITEMS FBAndroid-1.5.4.apk"
-	ITEMS="$ITEMS install_flash_player.apk"
-	ITEMS="$ITEMS MediaHubV126.apk"
-	ITEMS="$ITEMS YouTube.apk"
-	ITEMS="$ITEMS Term1.apk"
-	ITEMS="$ITEMS Term1.odex"
-	ITEMS="$ITEMS Term2.apk"
-	ITEMS="$ITEMS Term2.odex"
-	ITEMS="$ITEMS Term3.apk"
-	ITEMS="$ITEMS Term3.odex"
-	ITEMS="$ITEMS Term4.apk"
-	ITEMS="$ITEMS Term4.odex"
-	ITEMS="$ITEMS Term5.apk"
-	ITEMS="$ITEMS Term5.odex"
-	SEND_LOG "  Removing market downloadable apps from /system/app"
-	for ITEM in $ITEMS; do
-		if /sbin/busybox test -f "/system/app/$ITEM"; then
-			SEND_LOG "  rm -f /system/app/$ITEM"
-			/sbin/busybox rm -f /system/app/$ITEM
-		fi
-	done
 
 	SEND_LOG "Installing temporary busybox"
 	/sbin/busybox ln -s /sbin/recovery $BB_PATH/busybox

@@ -11,7 +11,7 @@
 CREATE_BUSYBOX_SYMLINK()
 {
 	echo "Creating /sbin/busybox symlink"
-	/system/bin/toolbox ln -s /sbin/recovery /sbin/busybox
+	toolbox ln -s /sbin/recovery /sbin/busybox
 }
 INSTALL_BUSYBOX()
 {
@@ -21,17 +21,17 @@ INSTALL_BUSYBOX()
 
 # main
 echo "Remounting rootfs as rw"
-/system/bin/toolbox mount -o remount,rw / /
+toolbox mount -o remount,rw / /
 echo "Remounting system as rw"
-busybox mount -o remount,rw /system /system
+toolbox mount -o remount,rw /system /system
 
 CREATE_BUSYBOX_SYMLINK
 INSTALL_BUSYBOX
 
 echo "Remounting rootfs as ro"
-/system/bin/toolbox mount -o remount,ro / /
+toolbox mount -o remount,ro / /
 echo "Remounting system as ro"
-busybox mount -o remount,ro /system /system
+toolbox mount -o remount,ro /system /system
 
 echo "Done"
 exit

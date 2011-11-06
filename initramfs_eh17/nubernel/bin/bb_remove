@@ -31,21 +31,21 @@ REMOVE_BUSYBOX()
 	FILE_LIST="$FILE_LIST udpsvd unexpand unlzma unxz vconfig vlock volname wall watchdog who xz xzcat zcip"
 	for FILE in $FILE_LIST; do
 		echo "  Removing file: $FILE"
-		/system/bin/rm /system/xbin/$FILE
+		toolbox rm /system/xbin/$FILE
 	done
-	/system/bin/rm /system/bin/busybox
-	/system/bin/rm /system/xbin/busybox
+	toolbox rm /system/bin/busybox
+	toolbox rm /system/xbin/busybox
 }
 
 # main
 echo "Remounting system as rw"
-/system/bin/toolbox mount -o remount,rw /system /system
+toolbox mount -o remount,rw /system /system
 
 echo "Removing busybox from /system/xbin/"
 REMOVE_BUSYBOX
 
 echo "Remounting system as ro"
-/system/bin/toolbox mount -o remount,ro /system /system
+toolbox mount -o remount,ro /system /system
 
 echo "Done"
 exit

@@ -2,13 +2,57 @@ Samsung SPH-D700 (Epic 4G) kernel by nubecoder
 
 http://www.nubecoder.com/
 
-nubernel-2.6.35_v0.0.0
+nubernel-2.6.35_v0.0.1
 
 
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-06-2011:
+Feature list for v0.0.1.
+Fixing a typo in branchHelper script.
+Some changes to "system_apps" init script.
+Fixing up a versioning bug in branchHelper script.
+
+11-05-2011:
+Fixing what I broke in update_modules.sh.
+Small addition to ncBuildHelper script (update zImage in update folder).
+Reworking the move /system/app code (less by default, more configurable).
+Quieting some helper scripts a bit.
+
+11-03-2011:
+Adjusting scripts for folder name change.
+
+11-02-2011:
+Renaming kernel/ to Kernel/ (matching up with EpicCM) I hate that I'm doing this. =[
+Fixing MOVE_SYSTEM_APP (only delete data when moving the app).
+Fixing su version check.
+Removing Talk from the move /system/app list (can't DL from market).
+Minor changes to a couple init scripts.
+Renamed init scripts.
+Added "system_apps" init script (moved from "busybox" init script).
+Added su version check to "root" init script.
+Reorganized "root" init script a bit.
+Fixing up permissions for kexec.
+Adjusted "clean" init script to handle the nubernel folder (also some whitespace changes).
+Fixing up /system/app removal.
+Adjusting scripts for new folder name.
+Rename vendor folder to "nubernel" (a pre-esixting vendor folder breaks the symlink to /system/vendor).
+Setting permissions for /vendor/bin.
+More elegant /system/app removal.
+Adding qik to the /system/app removal list.
+Some cleanup to vendor/bin scripts.
+
+11-01-2011:
+Loading android logger in init.rc.
+Ensuring bash resources are installed.
+Setting CONFIG_LOCALVERSION in defconfigs.
+Module related changes to build and helper scripts.
+
 10-31-2011:
+Fixing some spacing in updater-script.
+Fixing bootanimation.zip support.
+Addition to .gitignore.
 Changes to feature list for v0.0.0.
 Small fix for dhd.ko and git (changes every build because of time stamp).
 Setting permissions for kexec binary in init script.

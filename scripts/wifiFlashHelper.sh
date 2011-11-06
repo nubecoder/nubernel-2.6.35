@@ -18,7 +18,7 @@ IP="192.168.1.168"
 #define paths
 TMP_PATH="/data/local/tmp"
 
-ZIMAGE_SRC="$PWD/../kernel/arch/arm/boot/zImage"
+ZIMAGE_SRC="$PWD/../Kernel/arch/arm/boot/zImage"
 ZIMAGE_DEST="$TMP_PATH/zImage"
 
 REDBEND_SRC="$PWD/../initramfs_eh17/sbin/redbend_ua"
@@ -69,10 +69,10 @@ if [ "$ERROR" != "yes" ];
 then
 	#remove previous files
 	echo "Removing previous files."
-	$ADB_SHELL "rm " $ZIMAGE_DEST
-	$ADB_SHELL "rm " $REDBEND_DEST
-#	$ADB_SHELL "rm " $BMLWRITE_DEST
-	$ADB_SHELL "rm " $KERNELFLASH_DEST
+	$ADB_SHELL "rm " $ZIMAGE_DEST >/dev/null 2>&1
+	$ADB_SHELL "rm " $REDBEND_DEST >/dev/null 2>&1
+#	$ADB_SHELL "rm " $BMLWRITE_DEST >/dev/null 2>&1
+	$ADB_SHELL "rm " $KERNELFLASH_DEST >/dev/null 2>&1
 
 	#push new kernel to phone
 	echo "Pushing zImage, this may take a minute."

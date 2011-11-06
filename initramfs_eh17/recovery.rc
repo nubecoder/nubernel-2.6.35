@@ -104,7 +104,7 @@ service ueventd /sbin/ueventd
 
 #service recovery /sbin/recovery
 #service recovery /system/bin/recovery
-service init_scripts /vendor/scripts/run_init_scripts.sh recovery
+service init_scripts /nubernel/scripts/run_init_scripts.sh recovery
     user root
     oneshot
 

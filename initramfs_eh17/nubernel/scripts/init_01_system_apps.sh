@@ -23,17 +23,17 @@ REMOVE_SYSTEM_APP()
 	shift
 	local APK="$1"
 	local DATA="$2"
-	if /sbin/busybox test -f "/system/app/$APK.apk"; then
-		SEND_LOG "  rm -f /system/app/$APK.apk"
-		/sbin/busybox rm -f /system/app/$APK.apk
+	if /sbin/busybox test -f "/system/app/${APK}.apk"; then
+		SEND_LOG "  rm -f /system/app/${APK}.apk"
+		/sbin/busybox rm -f "/system/app/${APK}.apk"
 	fi
-	if /sbin/busybox test -f "/system/app/$APK.odex"; then
-		SEND_LOG "  rm -f /system/app/$APK.odex"
-		/sbin/busybox rm -f /system/app/$APK.odex
+	if /sbin/busybox test -f "/system/app/${APK}.odex"; then
+		SEND_LOG "  rm -f /system/app/${APK}.odex"
+		/sbin/busybox rm -f "/system/app/${APK}.odex"
 	fi
-	if /sbin/busybox test -d "/data/data/$DATA"; then
-		SEND_LOG "  rm -rf /data/data/$DATA"
-		/sbin/busybox rm -rf /data/data/$DATA
+	if /sbin/busybox test -d "/data/data/${DATA}"; then
+		SEND_LOG "  rm -rf /data/data/${DATA}"
+		/sbin/busybox rm -rf "data/data/${DATA}"
 	fi
 }
 MOVE_SYSTEM_APP()
@@ -44,35 +44,36 @@ MOVE_SYSTEM_APP()
 	local APK="$1"
 	local DATA="$2"
 	local CACHE="system@app@${APK}.apk@classes.dex"
-
-	SEND_LOG "APK[$APK] DATA[$DATA] CACHE[$CACHE]"
-
-	if /sbin/busybox test -f "/system/app/$APK.apk"; then
+	SEND_LOG "  test -f /system/app/${APK}.apk"
+	if /sbin/busybox test -f "/system/app/${APK}.apk"; then
 		SEND_LOG "  Detected apk file, moving to /data/app"
 		local EXISTING_APP_FIND=$(/sbin/busybox find /data/app -iname "${DATA}*")
 		for EXISTING_APP in $EXISTING_APP_FIND ; do
 			SEND_LOG "  rm -f $EXISTING_APP"
 			/sbin/busybox rm -f "$EXISTING_APP"
 		done
-		SEND_LOG "  mv -f /system/app/$APK.apk /data/app/${DATA}-1.apk"
-		/sbin/busybox mv -f "/system/app/$APK.apk" "/data/app/${DATA}-1.apk"
+		SEND_LOG "  mv -f /system/app/${APK}.apk /data/app/${DATA}-1.apk"
+		/sbin/busybox mv -f "/system/app/${APK}.apk" "/data/app/${DATA}-1.apk"
 		/sbin/busybox chown system.system "/data/app/${DATA}-1.apk"
 		/sbin/busybox chmod 0644 "/data/app/${DATA}-1.apk"
 
-		if /sbin/busybox test -f "/system/app/$APK.odex"; then
+		SEND_LOG "  test -f /system/app/${APK}.odex"
+		if /sbin/busybox test -f "/system/app/${APK}.odex"; then
 			SEND_LOG "  Detected odex file, moving to /data/app"
-			SEND_LOG "  mv -f /system/app/$APK.odex /data/app/${DATA}-1.odex"
-			/sbin/busybox mv -f "/system/app/$APK.odex" "/data/app/${DATA}-1.odex"
+			SEND_LOG "  mv -f /system/app/${APK}.odex /data/app/${DATA}-1.odex"
+			/sbin/busybox mv -f "/system/app/${APK}.odex" "/data/app/${DATA}-1.odex"
 			/sbin/busybox chown system.system "/data/app/${DATA}-1.odex"
 			/sbin/busybox chmod 0644 "/data/app/${DATA}-1.odex"
 		fi
-		if /sbin/busybox test -d "/data/data/$DATA"; then
-			SEND_LOG "  rm -rf /data/data/$DATA"
-			/sbin/busybox rm -rf "/data/data/$DATA"
+		SEND_LOG "  test -d /data/data/${DATA}"
+		if /sbin/busybox test -d "/data/data/${DATA}"; then
+			SEND_LOG "  rm -rf /data/data/${DATA}"
+			/sbin/busybox rm -rf "/data/data/${DATA}"
 		fi
-		if /sbin/busybox test -f "/data/dalvik-cache/$CACHE"; then
-			SEND_LOG "  rm -f /data/dalvik-cache/$CACHE"
-			/sbin/busybox rm -f "/data/dalvik-cache/$CACHE"
+		SEND_LOG "  test -f /data/dalvik-cache/${CACHE}"
+		if /sbin/busybox test -f "/data/dalvik-cache/${CACHE}"; then
+			SEND_LOG "  rm -f /data/dalvik-cache/${CACHE}"
+			/sbin/busybox rm -f "/data/dalvik-cache/${CACHE}"
 		fi
 	fi
 }

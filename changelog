@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-06-2011:
+Feature list for v0.0.1.
 Fixing a typo in branchHelper script.
 Some changes to "system_apps" init script.
 Fixing up a versioning bug in branchHelper script.

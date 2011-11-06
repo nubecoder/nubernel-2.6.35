@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-05-2011:
+Reworking the move /system/app code (less by default, more configurable).
 Quieting some helper scripts a bit.
 
 11-03-2011:

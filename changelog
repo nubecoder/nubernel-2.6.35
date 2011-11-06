@@ -8,6 +8,17 @@ nubernel-2.6.35_v0.0.0
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-06-2011:
+Fixing a typo in branchHelper script.
+Some changes to "system_apps" init script.
+Fixing up a versioning bug in branchHelper script.
+
+11-05-2011:
+Fixing what I broke in update_modules.sh.
+Small addition to ncBuildHelper script (update zImage in update folder).
+Reworking the move /system/app code (less by default, more configurable).
+Quieting some helper scripts a bit.
+
 11-03-2011:
 Adjusting scripts for folder name change.
 

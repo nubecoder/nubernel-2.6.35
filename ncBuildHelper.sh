@@ -253,6 +253,9 @@ BUILD_ZIMAGE()
 			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" 2>&1 | tee make.out
 		fi
 	popd > /dev/null
+# update zImage in update folder regardless of zip creation
+	rm -f update/zImage
+	cp Kernel/arch/arm/boot/zImage update/
 	local T2=$(date +%s)
 	echo "" && echo "building zImage took $(($T2 - $T1)) seconds."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
@@ -305,7 +308,7 @@ CREATE_ZIP()
 	echo "Begin $TARGET-$VERSION.zip creation..." && echo ""
 	rm -fr "$TARGET-$VERSION.zip"
 	rm -f update/zImage
-	cp Kernel/arch/arm/boot/zImage update
+	cp Kernel/arch/arm/boot/zImage update/
 	OUTFILE="$OUTFILE_PATH.zip"
 	pushd update > /dev/null
 		eval "$MKZIP" > /dev/null

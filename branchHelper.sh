@@ -137,9 +137,9 @@ BRANCH_RELEASE()
 	else
 		#git add build_kernel.sh >/dev/null 2>&1
 		if [ $AOSP = "y" ]; then
-			git add initramfs_eh17/default.prop >/dev/null 2>&1
-		else
 			git add initramfs_cm7/default.prop >/dev/null 2>&1
+		else
+			git add initramfs_eh17/default.prop >/dev/null 2>&1
 		fi
 		git add update/META-INF/com/google/android/updater-script >/dev/null 2>&1
 		git add update/META-INF/com/android/metadata >/dev/null 2>&1

@@ -29,7 +29,7 @@ ENSURE_SU()
 	if [ ! -f "$SU_PATH" ]; then
 		SEND_LOG "  Installing su to /system/bin/su"
 		busybox mv -f /nubernel/files/su-3.0 /system/bin/su
-		busybox chown root.root /system/bin/su
+		busybox chown 0.0 /system/bin/su
 		busybox chmod 6755 /system/bin/su
 		busybox rm -f /system/xbin/su
 		busybox rm -f /system/bin/jk-su
@@ -44,7 +44,7 @@ ENSURE_USERFILES()
 		echo "root::0:0:root:/:/sbin/sh" > /system/etc/passwd
 		echo "shell::2000:2000:shell:/data/local:/sbin/sh" >> /system/etc/passwd
 	fi
-	busybox chown root.root /system/etc/passwd
+	busybox chown 0.0 /system/etc/passwd
 	busybox chmod 0644 /system/etc/passwd
 
 	if [ ! -f "/system/etc/group" ]; then
@@ -52,14 +52,14 @@ ENSURE_USERFILES()
 		echo "root::0:" > /system/etc/group
 		echo "shell::2000:" >> /system/etc/group
 	fi
-	busybox chown root.root /system/etc/group
+	busybox chown 0.0 /system/etc/group
 	busybox chmod 0644 /system/etc/group
 }
 ENSURE_SUPERUSER()
 {
-	if [ ! $(busybox find /system/app -iname "superuser.apk") ] &&\
-			[ ! $(busybox find /data/app -iname "superuser.apk") ] &&\
-			[ ! $(busybox find /data/app -iname "com.noshufou.android.su*") ]; then
+	if [ ! $(busybox find /system/app/ -iname "superuser.apk") ] &&\
+			[ ! $(busybox find /data/app/ -iname "superuser.apk") ] &&\
+			[ ! $(busybox find /data/app/ -iname "com.noshufou.android.su*") ]; then
 		SEND_LOG "  Installing superuser.apk to /data/app/com.noshufou.android.su-1.apk"
 		busybox mv -f /nubernel/files/superuser.apk /data/app/com.noshufou.android.su-1.apk
 		busybox chown system.system /data/app/com.noshufou.android.su-1.apk

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-06-2011:
+Some changes to a couple init scripts (using hard coded users and groups for chown, and some trailing slashes for directories).
 Feature list for v0.0.1.
 Fixing a typo in branchHelper script.
 Some changes to "system_apps" init script.

@@ -135,9 +135,9 @@ on fs
     # mount yaffs2 mtd@userdata /data nosuid nodev
     # mount yaffs2 mtd@cache /cache nosuid nodev
 # /system
-    mount rfs /dev/block/stl9 /system rw check=no
-    #mount rfs /dev/block/stl9 /system rw noatime nodiratime check=no
-    mount ext4 /dev/block/stl9 /system rw noatime nodiratime nodelalloc check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
+    mount rfs /dev/block/mmcblk0p2 /system rw check=no
+    #mount rfs /dev/block/mmcblk0p2 /system rw noatime nodiratime check=no
+    mount ext4 /dev/block/mmcblk0p2 /system rw noatime nodiratime nodelalloc check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 
     # Temp add for FY -> GB update problem 
     # After update GB, need to remove
@@ -178,10 +178,10 @@ on fs
     #mkdir /dbdata
   #SEC_DMCRYPT crypt flag added
 # /data
-    mount rfs /dev/block/stl10 /data rw nosuid nodev crypt check=no
-    #mount rfs /dev/block/stl10 /data rw noatime nodiratime nosuid nodev crypt check=no
-    #mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt check=none errors=continue data=ordered nobh nobarrier noauto_da_alloc discard
-    mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt data=ordered nobarrier noauto_da_alloc
+    mount rfs /dev/block/mmcblk0p3 /data rw nosuid nodev crypt check=no
+    #mount rfs /dev/block/mmcblk0p3 /data rw noatime nodiratime nosuid nodev crypt check=no
+    #mount ext4 /dev/block/mmcblk0p3 /data rw noatime nodiratime nodelalloc nosuid nodev crypt check=none errors=continue data=ordered nobh nobarrier noauto_da_alloc discard
+    mount ext4 /dev/block/mmcblk0p3 /data rw noatime nodiratime nodelalloc nosuid nodev crypt data=ordered nobarrier noauto_da_alloc
     #symlink /data /dbdata
     #mount rfs /dev/block/stl10 /data nosuid nodev check=no
     chown system system /data
@@ -196,16 +196,16 @@ on fs
     chown system system /data/db-journal
     chmod 0777 /data/db-journal
 # /cache
-    mount rfs /dev/block/stl11 /cache rw nosuid nodev check=no
-    #mount rfs /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=no
-    mount ext4 /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
+    mount rfs /dev/block/mmcblk0p4 /cache rw nosuid nodev check=no
+    #mount rfs /dev/block/mmcblk0p4 /cache rw noatime nodiratime nosuid nodev check=no
+    mount ext4 /dev/block/mmcblk0p4 /cache rw noatime nodiratime nosuid nodev check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 
     mkdir /mnt/.lfs 0755 root root
     mount j4fs /dev/block/stl6 /mnt/.lfs
     insmod /lib/modules/param.ko
 
 # /sd-ext
-    mount ext2 /dev/block/mmcblk0p2 /mnt/sd-ext rw noatime nodiratime nodev nosuid check=none errors=continue nobh nouser_xattr
+    #mount ext2 /dev/block/mmcblk0p2 /mnt/sd-ext rw noatime nodiratime nodev nosuid check=none errors=continue nobh nouser_xattr
 
 		# samsung module
     insmod /lib/modules/storage.ko
@@ -651,7 +651,7 @@ on boot
 # for datarouter
     chown system system /dev/ttyGS0
     chown system system /dev/dun
-# +++++++++++++++++++++++++++++++++++++++++++      
+# +++++++++++++++++++++++++++++++++++++++++++
 
     write /sys/devices/platform/s3c-keypad/column_delay 5
     write /sys/devices/platform/s3c-keypad/timer_delay  5
@@ -737,6 +737,9 @@ service dhcpcd /system/bin/dhcpcd
     disabled
     oneshot
 
+service iprenew_eth0 /system/bin/dhcpcd -n
+    disabled
+    oneshot
 
 service servicemanager /system/bin/servicemanager
     user system

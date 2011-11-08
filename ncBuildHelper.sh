@@ -12,6 +12,7 @@ TARGET="victory_nubernel"
 KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.1"
 INSTALL_MOD_PATH="../stand-alone\ modules"
 CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-"
+LOCALVERSION=".nubernel_v0.0.1"
 #sammy recommended below
 #CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2009q3-68/bin/arm-none-eabi-"
 
@@ -248,9 +249,9 @@ BUILD_ZIMAGE()
 			REMOVE_STANDALONE_MODULES_FROM_INITRAMFS
 		fi
 		if [ "$VERBOSE" = "y" ] ; then
-			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" 2>&1 | tee make.out
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION" 2>&1 | tee make.out
 		else
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" 2>&1 | tee make.out
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION" 2>&1 | tee make.out
 		fi
 	popd > /dev/null
 # update zImage in update folder regardless of zip creation

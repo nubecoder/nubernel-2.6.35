@@ -30,11 +30,11 @@ COPY_WITH_ECHO()
 {
 	local SRC=$1
 	if [ $STAND_ALONE = "y" ]; then
-		local MOD_PATH="stand-alone modules/lib/modules/2.6.35.7-stand-alone+"
+		local MOD_PATH="stand-alone modules/lib/modules/2.6.35.7.stand-alone"
 		echo "Copying $SRC to $STAND_ALONE_PATH/"
 		cp "$MOD_PATH/$SRC" "$STAND_ALONE_PATH/"
 	else
-		local MOD_PATH="stand-alone modules/lib/modules/2.6.35.7-nubernel+"
+		local MOD_PATH="stand-alone modules/lib/modules/2.6.35.7+"
 		echo "Copying $SRC to $INITRAMFS_PATH/"
 		cp "$MOD_PATH/$SRC" "$INITRAMFS_PATH/"
 	fi

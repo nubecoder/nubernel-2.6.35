@@ -9,7 +9,7 @@
 
 
 #define base paths
-INITRAMFS_PATH="initramfs_eh17/lib/modules"
+INITRAMFS_PATH="initramfs_tw/lib/modules"
 STAND_ALONE_PATH="stand-alone modules"
 CC_STRIP="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-strip -d --strip-unneeded"
 

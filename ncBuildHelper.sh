@@ -218,7 +218,7 @@ REMOVE_STANDALONE_MODULES_FROM_INITRAMFS()
 	local T1=$(date +%s)
 	echo "Removing stand-alone modules from initramfs..." && echo ""
 	popd > /dev/null
-		local MODULES_PATH="initramfs_eh17/lib/modules"
+		local MODULES_PATH="initramfs_tw/lib/modules"
 		local FILE_PATHS="$MODULES_PATH/cifs.ko"
 		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/fuse.ko"
 		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/slow-work.ko"
@@ -439,7 +439,7 @@ fi
 
 # fix for module changing every build.
 if [ "$DEFCONFIG" != "y" ] ; then
-	git co -- initramfs_eh17/lib/modules/dhd.ko
+	git co -- initramfs_tw/lib/modules/dhd.ko
 fi
 
 # show completed message

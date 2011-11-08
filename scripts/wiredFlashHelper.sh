@@ -13,7 +13,7 @@
 TMP_PATH="/data/local/tmp"
 ZIMAGE_SRC="$PWD/../Kernel/arch/arm/boot/zImage"
 ZIMAGE_DEST="$TMP_PATH/zImage"
-REDBEND_SRC="$PWD/../initramfs_eh17/sbin/redbend_ua"
+REDBEND_SRC="$PWD/../initramfs_tw/sbin/redbend_ua"
 REDBEND_DEST="$TMP_PATH/redbend_ua"
 KERNELFLASH_SRC="$PWD/kernelFlash"
 KERNELFLASH_DEST="$TMP_PATH/kernelFlash"

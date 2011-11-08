@@ -94,7 +94,7 @@ BRANCH_RELEASE()
 		if [ $AOSP = "y" ]; then
 			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_cm7/default.prop
 		else
-			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_eh17/default.prop
+			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_tw/default.prop
 		fi
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/google/android/updater-script
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/android/metadata
@@ -108,7 +108,7 @@ BRANCH_RELEASE()
 		if [ $AOSP = "y" ]; then
 			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_cm7/default.prop >/dev/null 2>&1
 		else
-			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_eh17/default.prop >/dev/null 2>&1
+			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_tw/default.prop >/dev/null 2>&1
 		fi
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/google/android/updater-script >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/android/metadata >/dev/null 2>&1
@@ -125,7 +125,7 @@ BRANCH_RELEASE()
 		if [ $AOSP = "y" ]; then
 			git add initramfs_cm7/default.prop
 		else
-			git add initramfs_eh17/default.prop
+			git add initramfs_tw/default.prop
 		fi
 		git add update/META-INF/com/google/android/updater-script
 		git add update/META-INF/com/android/metadata
@@ -139,7 +139,7 @@ BRANCH_RELEASE()
 		if [ $AOSP = "y" ]; then
 			git add initramfs_cm7/default.prop >/dev/null 2>&1
 		else
-			git add initramfs_eh17/default.prop >/dev/null 2>&1
+			git add initramfs_tw/default.prop >/dev/null 2>&1
 		fi
 		git add update/META-INF/com/google/android/updater-script >/dev/null 2>&1
 		git add update/META-INF/com/android/metadata >/dev/null 2>&1

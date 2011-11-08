@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-08-2011:
+Some changes to system_apps init script (some logging and don't move apps that are odexed).
 Changes to mount_ro init script (remove other init scripts before Remount ro).
 
 11-07-2011:

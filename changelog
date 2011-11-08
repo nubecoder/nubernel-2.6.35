@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-07-2011:
+Updating initramfs to EI22.
 Renamed initramfs_eh17 to initramfs_tw (including needed defconfig and script changes).
 Some changes to DRockstar's rclean script.
 

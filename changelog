@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-08-2011:
+Changes to mount_ro init script (remove other init scripts before Remount ro).
+
 11-07-2011:
 Updating initramfs to EI22.
 Renamed initramfs_eh17 to initramfs_tw (including needed defconfig and script changes).

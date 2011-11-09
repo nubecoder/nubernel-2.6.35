@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-09-2011:
+Netarchy's interactive adjustment, applied to interactiveX (netarchy: https://github.com/netarchy/nexus-s/commit/7bd7b9ae76b98c3ec8c71dc11bfd4e62b04ae7a3).
 Changes to defconfig for the new governors.
 Changes to smartass2 governor for compatibility with Epic 4G.
 Changes to smartass governor.

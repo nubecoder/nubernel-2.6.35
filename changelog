@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-09-2011:
+Changes to smartass governor.
 Minor changes to interactiveX governor (whitespace, debugging fixup, etc) (me: https://github.com/nubecoder/nubernel-kernel/commit/398dfc22a3ddb38a8a4c259f55b3c45a193eaf76).
 Added some debugging to interactiveX governor (me: https://github.com/nubecoder/nubernel-kernel/commit/fd45743765a41c80ed73f7b7b8abe82d1e3a5cba).
 Added some error checking to interactiveX governor (me: https://github.com/nubecoder/nubernel-kernel/commit/b953ef89b9b57ad0e3a6e65eb5be0d3f8667c75c).

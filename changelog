@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-09-2011:
+Changes to defconfig for the new governors.
 Changes to smartass2 governor for compatibility with Epic 4G.
 Changes to smartass governor.
 Minor changes to interactiveX governor (whitespace, debugging fixup, etc) (me: https://github.com/nubecoder/nubernel-kernel/commit/398dfc22a3ddb38a8a4c259f55b3c45a193eaf76).

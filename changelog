@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-09-2011:
+Enabled SIO (Simple IO) scheduler in defconfig.
 Enabled BFQ scheduler in defconfig.
 Enabled sched_autogroup in defconfig.
 Automated per tty task groups patch (sched_autogroup) (Mike Galbraith via netarchy: https://github.com/netarchy/nexus-s/commit/2734fc445a01383f09769a64a1de6742efabe3dd).

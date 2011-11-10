@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-09-2011:
+Manual revert of "Modify sysfs vdd interface so that the user can set vdd directly" (commitID: f56c4ed).
 Reverting "S5PC11X : CPUFREQ : add platform data interface to dvfs" (commitID: 511e4b8).
 Add a #define for NUM_FREQ (gzub via me: https://github.com/nubecoder/nubernel-kernel/commit/d4f29f53410ce2d7bf9293c01233797faa21c15a).
 Fixing some errors I introduced in the cpufreq sysfs entries.

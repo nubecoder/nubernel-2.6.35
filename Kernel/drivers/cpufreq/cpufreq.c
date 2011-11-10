@@ -38,9 +38,9 @@
 
 /* UV */
 extern unsigned int freq_uv_table[NUM_FREQ][3];
-int exp_UV_mV[NUM_FREQ] =     { 1450000, 1400000, 1350000, 1300000, 1275000, 1225000, 1200000, 1175000, 1050000, 950000, 950000 };
+int exp_UV_mV[NUM_FREQ] =     {       0,       0,       0,       0,       0,       0,       0,        0,      0,      0,      0 };
 int enabled_freqs[NUM_FREQ] = {       0,       0,       0,       1,       1,       1,       1,        1,      1,      1,      1 };
-/*  clock freqs         {  1.4GHz,  1.3GHz,  1.2GHz,  1.1GHz,  1.0GHz,  900MHz,  800MHz,  600MHz,  400MHz, 200MHz, 100MHz } */
+/*  clock freqs               {  1.4GHz,  1.3GHz,  1.2GHz,  1.1GHz,  1.0GHz,  900MHz,  800MHz,  600MHz,  400MHz, 200MHz, 100MHz } */
 
 /**
  * The "cpufreq driver" - the arch- or hardware-dependent low
@@ -659,19 +659,16 @@ static ssize_t show_scaling_setspeed(struct cpufreq_policy *policy, char *buf)
 
 /* sysfs interface for UV control */
 static ssize_t show_UV_mV_table(struct cpufreq_policy *policy, char *buf) {
-
-	return sprintf(buf, "1400mhz: %d mV\n1300mhz: %d mV\n1200mhz: %d mV\n1100mhz: %d mV\n1000mhz: %d mV\n\
-900mhz: %d mV\n800mhz: %d mV\n600mhz: %d mV\n400mhz: %d mV\n200mhz: %d mV\n100mhz: %d mV\n",
-			(exp_UV_mV[0]/1000), (exp_UV_mV[1]/1000), (exp_UV_mV[2]/1000), (exp_UV_mV[3]/1000), (exp_UV_mV[4]/1000),
-			(exp_UV_mV[5]/1000), (exp_UV_mV[6]/1000), (exp_UV_mV[7]/1000), (exp_UV_mV[8]/1000), (exp_UV_mV[9]/1000),
-			(exp_UV_mV[10]/1000));
+	return sprintf(buf, "%d %d %d %d %d %d %d %d %d %d %d\n",
+			exp_UV_mV[0], exp_UV_mV[1], exp_UV_mV[2], exp_UV_mV[3], exp_UV_mV[4],
+			exp_UV_mV[5], exp_UV_mV[6], exp_UV_mV[7], exp_UV_mV[8], exp_UV_mV[9],
+			exp_UV_mV[10]);
 }
 
 static ssize_t store_UV_mV_table(struct cpufreq_policy *policy,
 					const char *buf, size_t count) {
 
 	unsigned int ret = -EINVAL;
-	int i = 0;
 	ret = sscanf(buf, "%d %d %d %d %d %d %d %d %d %d %d",
 			&exp_UV_mV[0], &exp_UV_mV[1], &exp_UV_mV[2], &exp_UV_mV[3],
 			&exp_UV_mV[4], &exp_UV_mV[5], &exp_UV_mV[6], &exp_UV_mV[7],
@@ -679,12 +676,7 @@ static ssize_t store_UV_mV_table(struct cpufreq_policy *policy,
 	if(ret != NUM_FREQ) {
 		return -EINVAL;
 	}
-	else {
-		for(i = 0; i < NUM_FREQ; i++)
-		{
-		   exp_UV_mV[i] *= 1000;
-		}
-	}
+	else
 		return count;
 }
 

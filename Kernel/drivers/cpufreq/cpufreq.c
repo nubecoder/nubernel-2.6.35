@@ -1380,6 +1380,10 @@ static unsigned int __cpufreq_get(unsigned int cpu)
 
 	ret_freq = cpufreq_driver->get(cpu);
 
+#ifdef NC_DEBUG
+	printk("FREQ: %s: ret_freq: %uMHz, policy->cur: %uMHz \n", __func__, (ret_freq/1000), (policy->cur/1000));
+#endif
+
 	if (ret_freq && policy->cur &&
 		!(cpufreq_driver->flags & CPUFREQ_CONST_LOOPS)) {
 		/* verify no discrepancy between actual and

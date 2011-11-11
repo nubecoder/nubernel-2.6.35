@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-12-2011:
+Added some cpufreq debugging and syntax fixes.
+
 11-10-2011:
 Implementing the use of enabled_freqs (active_states_table) along with some debugging.
 

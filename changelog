@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-10-2011:
+Changes to kmsg script (use wired adb).
+
 11-08-2011:
 Begin using localversion for versioning (removed from default.prop).
 Some changes to system_apps init script (some logging and don't move apps that are odexed).

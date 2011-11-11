@@ -32,10 +32,10 @@ fi
 ERROR="no"
 
 #kill adb, start, and connect to wireless
-echo "Killing adb server."
-$ADB_KILL
-echo "Connect to $IP."
-$ADB_CONNECT $IP >/dev/null
+#echo "Killing adb server."
+#$ADB_KILL
+#echo "Connect to $IP."
+#$ADB_CONNECT $IP >/dev/null
 
 # check for device (taken from the OneClickRoot: http://forum.xda-developers.com/showthread.php?t=897612)
 CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
@@ -51,6 +51,7 @@ if [ "$ERROR" != "yes" ];
 then
 	$ADB_SHELL $ADB_KMSG | tee $LOG_PATH
 else
-	echo "Please enable wireless adb and verify the IP matches: $IP."
+	echo "Please connect your phone."
+#	echo "Please enable wireless adb and verify the IP matches: $IP."
 fi
 

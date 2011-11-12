@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-12-2011:
+Change reboot recovery to boot bml8 instead of bml7 and changed bml7 reboot mode from recovery to bml7recovery (based on mkasick's patch) (noobnl: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/ea1dbf2c9be977aeb6f78d871e0b05d989bfad59).
 Add ext4 support to init.rc (jt1134: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/fc5bb62ed7a581bf9b2b089e951c680384d71470).
 Remove in_frame_map from mfc input structures since it is not compatible with aries OMX libraries (jt1134: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/0bd9435b026f000e0bc08b5b5596468a9ab2cb26).
 Add delays for kb -- other changes (Decad3nce: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/a949c3f6a5fcf24aee00ee4536cad2aad36c8b1b).

@@ -8,7 +8,32 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-09-2011:
+Netarchy's interactive adjustment, applied to interactiveX (netarchy: https://github.com/netarchy/nexus-s/commit/7bd7b9ae76b98c3ec8c71dc11bfd4e62b04ae7a3).
+Changes to defconfig for the new governors.
+Changes to smartass2 governor for compatibility with Epic 4G.
+Changes to smartass governor.
+Minor changes to interactiveX governor (whitespace, debugging fixup, etc) (me: https://github.com/nubecoder/nubernel-kernel/commit/398dfc22a3ddb38a8a4c259f55b3c45a193eaf76).
+Added some debugging to interactiveX governor (me: https://github.com/nubecoder/nubernel-kernel/commit/fd45743765a41c80ed73f7b7b8abe82d1e3a5cba).
+Added some error checking to interactiveX governor (me: https://github.com/nubecoder/nubernel-kernel/commit/b953ef89b9b57ad0e3a6e65eb5be0d3f8667c75c).
+Changes to interactiveX governor for compatibility with Epic 4G (me: https://github.com/nubecoder/nubernel-kernel/commit/5fb629dfa8a33653df3df2e97bc3c1613ae1c514).
+Fixing a typo in interactiveX governor (me: https://github.com/nubecoder/nubernel-kernel/commit/0b61c8f0c319b72adc7a085b55f222caf948e4b3).
+cpufreq: smartass: New 'smartass' governor (syncing up with erasmux) (erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/87270f22ba6b6efd6bd9fe2c9bf7c63cb4bf7ac2).
+Add interactiveX governor (imoseyon via erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/0f8231644179cc7f874766cb58aa43f9f9ce08bb).
+cpufreq: add smartassV2 governor (erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/2ade635b0607acc1ab0ec7f4d274855a9487af57).
+
 11-08-2011:
+Small tweak to ondemand default up threshold (netarchy: https://github.com/netarchy/nexus-s/commit/63fa22148e0c29d989e4c9120fd3b84fae4cf924).
+Interactive adjustments (netarchy: https://github.com/netarchy/nexus-s/commit/7bd7b9ae76b98c3ec8c71dc11bfd4e62b04ae7a3).
+More adjustments for smartass (netarchy: https://github.com/netarchy/nexus-s/commit/86a3adea41b089c9a2439bb3db237be185f49759).
+Smartass adjustments (netarchy: https://github.com/netarchy/nexus-s/commit/54dcfef94a96bc3043aac6f66339a1dd24d77301).
+Add TheEscapists modified smartass governor, and fix the scaling for the 400mhz-800mhz gap (TheEscapist13 via netarchy: https://github.com/netarchy/nexus-s/commit/1f3ee7b3b5172cdd9e9e60fec8afa03ea4d8098f).
+Tweaks to ondemand defaults (netarchy: https://github.com/netarchy/nexus-s/commit/3d9a7418598d5eda3a60e9b415676bfe077b8a88).
+Tweaking conservative governor defaults (netarchy: https://github.com/netarchy/nexus-s/commit/ee6f881f29eb660aa41b8cfa4481ddc69f33ea4d).
+Fix compile errors with interactive governor (netarchy: https://github.com/netarchy/nexus-s/commit/51259e9997e892d343166d7999fef0aeb50c42a1).
+cpufreq interactive governor: fix crash on CPU shutdown (Todd Poynor via netarchy: https://github.com/netarchy/nexus-s/commit/627ebb25780b7aa3d8d5d3d181a89c66f69b7443).
+cpufreq interactive governor save/restore IRQs around cpumask spinlocks (Todd Poynor via netarchy: https://github.com/netarchy/nexus-s/commit/4620008ae098748acd0e6f1c6013634ab592dbc8).
+Add new 'interactive' governor (Mike Chan via netarchy: https://github.com/netarchy/nexus-s/commit/b6a49be1525390890813808a4b4966438bb7b4e8).
 Begin using localversion for versioning (removed from default.prop).
 Some changes to system_apps init script (some logging and don't move apps that are odexed).
 Changes to mount_ro init script (remove other init scripts before Remount ro).

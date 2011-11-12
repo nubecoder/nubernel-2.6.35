@@ -15,6 +15,14 @@ Added some cpufreq debugging and syntax fixes.
 Implementing the use of enabled_freqs (active_states_table) along with some debugging.
 
 11-09-2011:
+Enabled SIO (Simple IO) scheduler in defconfig.
+Enabled BFQ scheduler in defconfig.
+Enabled sched_autogroup in defconfig.
+Automated per tty task groups patch (sched_autogroup) (Mike Galbraith via netarchy: https://github.com/netarchy/nexus-s/commit/2734fc445a01383f09769a64a1de6742efabe3dd).
+Switch from BFQ-v2 to BFQ-v2-r1 (Paolo Valente via netarchy: https://github.com/netarchy/nexus-s/commit/0006595793a65ba82046d100a64fd15d8b239b23).
+Updated BFQ to v2. (thalamus via netarchy: https://github.com/netarchy/nexus-s/commit/42aebccf504700c7ba6f0a54dd02f6c1734a6b42).
+Add BFQ IO Scheduler (Paolo Valente via netarchy: https://github.com/netarchy/nexus-s/commit/7acd3e3e3b7f344d7e69a8186159148935fce07f).
+Add Simple IO Scheduler (Miguel Boton via netarchy: https://github.com/netarchy/nexus-s/commit/50ca05184f28a31805edcaecc74808a69245d289).
 Manual revert of "Modify sysfs vdd interface so that the user can set vdd directly" (commitID: f56c4ed).
 Reverting "S5PC11X : CPUFREQ : add platform data interface to dvfs" (commitID: 511e4b8).
 Add a #define for NUM_FREQ (gzub via me: https://github.com/nubecoder/nubernel-kernel/commit/d4f29f53410ce2d7bf9293c01233797faa21c15a).

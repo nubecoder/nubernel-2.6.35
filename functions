@@ -7,8 +7,28 @@
 # http://www.nubecoder.com/
 #
 
-# functions
-SHOW_HELP()
+# helper functions
+function ECHO_BEGIN()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local __RESULTVAR=$1
+	local __VALUE=$(date +%s)
+	eval $__RESULTVAR="'$__VALUE'"
+	shift 1
+	echo "Begin $@..."
+	echo ""
+}
+function ECHO_END()
+{
+	echo ""
+	local __T1=$1
+	local __T2=$(date +%s)
+	shift 1
+	echo "$@ took $(($__T2 - $__T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
+function SHOW_HELP()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "Usage options for $0:"
@@ -30,14 +50,14 @@ SHOW_HELP()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	exit 1
 }
-SHOW_SETTINGS()
+function SHOW_SETTINGS()
 {
 	TIME_START=$(date +%s)
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "build version  == $KBUILD_BUILD_VERSION"
 	echo "modules path   == $INSTALL_MOD_PATH"
 	echo "cross compile  == $CROSS_COMPILE"
-	echo "outfile path   == $OUTFILE_PATH"
+	echo "outfile path   == $PWD/$TARGET-$VERSION.*"
 	echo "make clean     == $CLEAN"
 	echo "make distclean == $DISTCLEAN"
 	echo "use defconfig  == $DEFCONFIG"
@@ -53,11 +73,11 @@ SHOW_SETTINGS()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "*"
 }
-NOTIFY_COMPLETED()
+function NOTIFY_COMPLETED()
 {
 	aplay notify.wav >/dev/null 2>&1
 }
-SHOW_COMPLETED()
+function SHOW_COMPLETED()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "Script completed."
@@ -67,61 +87,55 @@ SHOW_COMPLETED()
 	NOTIFY_COMPLETED
 	exit
 }
-SHOW_ERROR()
+function SHOW_ERROR()
 {
 	if [ -n "$ERROR_MSG" ] ; then
 		echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 		echo "$ERROR_MSG"
 	fi
 }
-REMOVE_DOTCONFIG()
+function REMOVE_DOTCONFIG()
 {
 	rm -f Kernel/.config
 }
-MAKE_CLEAN()
+function ZIMAGE_UPDATE()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin make clean..." && echo ""
+	rm -f update/zImage
+	cp Kernel/arch/arm/boot/zImage update/
+}
+
+#functions
+function MAKE_CLEAN()
+{
+	local F1="make clean"
+	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
 		nice make V=1 -j"$THREADS" ARCH=arm clean 2>&1 >make.clean.out
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "make clean took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-MAKE_DISTCLEAN()
+function MAKE_DISTCLEAN()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin make distclean..." && echo ""
+	local F1="make distclean"
+	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
 		nice make V=1 -j"$THREADS" ARCH=arm distclean 2>&1 >make.distclean.out
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "make distclean took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-MAKE_DEFCONFIG()
+function MAKE_DEFCONFIG()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin make ${TARGET}_defconfig..." && echo ""
+	local F1="make ${TARGET}_defconfig"
+	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
 		nice make V=1 -j"$THREADS" ARCH=arm ${TARGET}_defconfig 2>&1 >make.defconfig.out
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "make ${TARGET}_defconfig took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-BUILD_MODULES()
+function BUILD_MODULES()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin building modules..." && echo ""
+	local F1="building modules"
+	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
 		if [ "$VERBOSE" = "y" ] ; then
 			nice make V=1 -j"$THREADS" ARCH=arm modules 2>&1 | tee make.out
@@ -129,16 +143,12 @@ BUILD_MODULES()
 			nice make -j"$THREADS" ARCH=arm modules 2>&1 | tee make.out
 		fi
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "building modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-INSTALL_MODULES()
+function INSTALL_MODULES()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin installing modules..." && echo ""
+	local F1="installing modules"
+	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
 		if [ "$VERBOSE" = "y" ] ; then
 			nice make V=1 -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
@@ -146,91 +156,44 @@ INSTALL_MODULES()
 			nice make -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
 		fi
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "installing modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-COPY_MODULES()
+function COPY_MODULES()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin copy modules..." && echo ""
+	local F1="coping modules"
+	ECHO_BEGIN T1 $F1
 	pushd scripts > /dev/null
 		sh -c "update_modules.sh copy"
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "Copy modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-STRIP_MODULES()
+function STRIP_MODULES()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin strip modules..." && echo ""
+	local F1="striping modules"
+	ECHO_BEGIN T1 $F1
 	pushd scripts > /dev/null
 		sh -c "update_modules.sh strip"
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "Strip modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-REMOVE_STANDALONE_MODULES_FROM_INITRAMFS()
+function BUILD_ZIMAGE()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Removing stand-alone modules from initramfs..." && echo ""
-	popd > /dev/null
-		local MODULES_PATH="initramfs_tw/lib/modules"
-		local FILE_PATHS="$MODULES_PATH/cifs.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/fuse.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/slow-work.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/tun.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/xt_tcpmss.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/xt_TCPMSS.ko"
-		for FILE in $FILE_PATHS; do
-			if [ -f $FILE ]; then
-				echo "rm -f $FILE"
-				rm -f "$FILE"
-			fi
-		done
-	pushd Kernel > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "removing modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-BUILD_ZIMAGE()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin building zImage..." && echo ""
+	local F1="building zImage"
+	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
 		rm -f usr/initramfs_data.cpio.lzma
-		if [ "$DEFCONFIG" != "y" ] ; then
-			REMOVE_STANDALONE_MODULES_FROM_INITRAMFS
-		fi
 		if [ "$VERBOSE" = "y" ] ; then
 			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION" 2>&1 | tee make.out
 		else
 			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION" 2>&1 | tee make.out
 		fi
 	popd > /dev/null
-# update zImage in update folder regardless of zip creation
-	rm -f update/zImage
-	cp Kernel/arch/arm/boot/zImage update/
-	local T2=$(date +%s)
-	echo "" && echo "building zImage took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-GENERATE_WARNINGS_FILE()
+function GENERATE_WARNINGS_FILE()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Generate warnings file..." && echo ""
+	local F1="generating warnings file"
+	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
 		local MAKE_FILE=make.out
 		local WARN_FILE=warnings.out
@@ -247,68 +210,50 @@ GENERATE_WARNINGS_FILE()
 		sed -ri "s/^'make CONFIG_DEBUG_SECTION_MISMATCH=y'.*//" $WARN_FILE
 		sed -ri "/^\s*$/d" $WARN_FILE
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "generating warnings file took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-CREATE_TAR()
+function CREATE_TAR()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin $TARGET-$VERSION.tar.md5 creation..." && echo ""
 	local OUTFILE="$PWD/$TARGET-$VERSION"
+	rm -f "$OUTFILE"
+	local F1="$TARGET-$VERSION.tar.md5 creation"
+	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
 		tar -H ustar -c -C arch/arm/boot zImage > "$OUTFILE.tar"
 		md5sum -t "$OUTFILE.tar" >> "$OUTFILE.tar"
 		mv "$OUTFILE.tar" "$OUTFILE.tar.md5"
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "$TARGET-$VERSION.tar.md5 creation took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-CREATE_ZIP()
+function CREATE_ZIP()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin $TARGET-$VERSION.zip creation..." && echo ""
-	rm -f "$TARGET-$VERSION.zip"
+	local OUTFILE="$PWD/$TARGET-$VERSION.zip"
+	rm -f "$OUTFILE"
+	local F1="$TARGET-$VERSION.zip creation"
+	ECHO_BEGIN T1 $F1
 	rm -f update/zImage
 	cp Kernel/arch/arm/boot/zImage update/
-	local OUTFILE="$PWD/$TARGET-$VERSION.zip"
 	pushd update > /dev/null
 		eval "$MKZIP" > /dev/null
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "$TARGET-$VERSION.zip creation took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-WIFI_FLASH_SCRIPT()
+function WIFI_FLASH_SCRIPT()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin Wifi kernel flash helper script..." && echo ""
+	local F1="wifi kernel flash helper script"
+	ECHO_BEGIN T1 $F1
 	pushd scripts > /dev/null
 		sh -c "wifiFlashHelper.sh"
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "Wifi kernel flash took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
-WIRED_FLASH_SCRIPT()
+function WIRED_FLASH_SCRIPT()
 {
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin Wired kernel flash helper script..." && echo ""
+	local F1="wired kernel flash helper script"
+	ECHO_BEGIN T1 $F1
 	pushd scripts > /dev/null
 		sh -c "wiredFlashHelper.sh"
 	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "Wired kernel flash took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
+	ECHO_END $T1 $F1
 }
 

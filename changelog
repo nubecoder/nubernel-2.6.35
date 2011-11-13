@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-13-2011:
+Some scripting changes to ncBuildHelper and functions.
 Splitting the functions out of ncBuildHelper and sourcing them in.
 
 11-12-2011:

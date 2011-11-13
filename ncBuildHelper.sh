@@ -121,6 +121,7 @@ fi
 if [ "$BUILD_KERNEL" = "y" ] ; then
 	BUILD_ZIMAGE
 	GENERATE_WARNINGS_FILE
+	ZIMAGE_UPDATE
 fi
 if [ "$PRODUCE_TAR" = y ] ; then
 	CREATE_TAR

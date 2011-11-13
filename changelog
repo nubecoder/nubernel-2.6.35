@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-12-2011:
+Changes to ncBuildHelper script (fixing OUTFILE, atempting to fix tar.md5 creation for Odin).
+
 11-10-2011:
 Changes to kmsg script (use wired adb).
 

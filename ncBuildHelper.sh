@@ -37,9 +37,6 @@ ERROR_MSG=
 TIME_START=
 TIME_END=
 
-# define outfile path
-OUTFILE_PATH="$PWD/$TARGET-$VERSION"
-
 # exports
 export KBUILD_BUILD_VERSION
 
@@ -293,12 +290,14 @@ CREATE_TAR()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin $TARGET-$VERSION.tar.md5 creation..." && echo ""
+	local OUTFILE="$PWD/$TARGET-$VERSION"
 	pushd Kernel > /dev/null
-		tar -H ustar -c -C arch/arm/boot zImage >"$OUTFILE_PATH.tar.md5"
-		md5sum -t "$OUTFILE_PATH.tar.md5" >> "$OUTFILE_PATH.tar.md5"
+		tar -H ustar -c -C arch/arm/boot zImage > "$OUTFILE.tar"
+		md5sum -t "$OUTFILE.tar" >> "$OUTFILE.tar"
+		mv "$OUTFILE.tar" "$OUTFILE.tar.md5"
 	popd > /dev/null
 	local T2=$(date +%s)
-	echo "" && echo "$TARGET-$VERSION.tar creation took $(($T2 - $T1)) seconds."
+	echo "" && echo "$TARGET-$VERSION.tar.md5 creation took $(($T2 - $T1)) seconds."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "*"
 }
@@ -307,10 +306,10 @@ CREATE_ZIP()
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	local T1=$(date +%s)
 	echo "Begin $TARGET-$VERSION.zip creation..." && echo ""
-	rm -fr "$TARGET-$VERSION.zip"
+	rm -f "$TARGET-$VERSION.zip"
 	rm -f update/zImage
 	cp Kernel/arch/arm/boot/zImage update/
-	OUTFILE="$OUTFILE_PATH.zip"
+	local OUTFILE="$PWD/$TARGET-$VERSION.zip"
 	pushd update > /dev/null
 		eval "$MKZIP" > /dev/null
 	popd > /dev/null
@@ -347,7 +346,7 @@ WIRED_FLASH_SCRIPT()
 }
 
 # main
-while getopts  ":bcCd:hj:m:tuvwz" flag
+while getopts ":bcCd:hj:m:tuvwz" flag
 do
 	case "$flag" in
 	b)

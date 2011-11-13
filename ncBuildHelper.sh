@@ -112,14 +112,36 @@ if [ "$BUILD_MODULES" = "y" ] ; then
 	BUILD_MODULES
 	if [ "$MODULE_ARGS" != "${MODULE_ARGS/c/}" ] ; then
 		INSTALL_MODULES
-		COPY_MODULES
+		COPY_ARG="nubernel"
+		if [ $TARGET = "victory_nubernel" ]; then
+			COPY_ARG="nubernel"
+		elif [ $TARGET = "victory_modules" ]; then
+			COPY_ARG="stand-alone"
+		elif [ $TARGET = "cyanogenmod_epic" ]; then
+			COPY_ARG="cyanogenmod"
+		fi
+		COPY_MODULES $COPY_ARG
 	fi
 	if [ "$MODULE_ARGS" != "${MODULE_ARGS/s/}" ] ; then
-		STRIP_MODULES
+		STRIP_ARG="nubernel"
+		if [ $TARGET = "victory_nubernel" ]; then
+			STRIP_ARG="nubernel"
+		elif [ $TARGET = "victory_modules" ]; then
+			STRIP_ARG="stand-alone"
+		elif [ $TARGET = "cyanogenmod_epic" ]; then
+			STRIP_ARG="cyanogenmod"
+		fi
+		STRIP_MODULES $STRIP_ARG
 	fi
 fi
 if [ "$BUILD_KERNEL" = "y" ] ; then
-	BUILD_ZIMAGE
+	ZIMAGE_ARG="$LOCALVERSION"
+	if [ $TARGET = "cyanogenmod_epic" ]; then
+		ZIMAGE_ARG="$LOCALVERSION.cm7"
+	else
+		ZIMAGE_ARG="$LOCALVERSION"
+	fi
+	BUILD_ZIMAGE $ZIMAGE_ARG
 	GENERATE_WARNINGS_FILE
 	ZIMAGE_UPDATE
 fi
@@ -139,6 +161,7 @@ fi
 # fix for module changing every build.
 if [ "$DEFCONFIG" != "y" ] ; then
 	git co -- initramfs_tw/lib/modules/dhd.ko
+	git co -- initramfs_cm7/lib/modules/dhd.ko
 fi
 
 # show completed message

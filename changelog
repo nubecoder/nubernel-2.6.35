@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-13-2011:
+Disabling DEBUG_INFO in cm defconfig.
 Updating cyanogenmod_epic defconfig with all the new features included in this kernel (IKCONFIG, SCHED_AUTOGROUP, schedulers, governors, TUN, Voodoo Sound, etc).
 Enable kexec in cyanogenmod_epic defconfig (kernel would not boot without it).
 

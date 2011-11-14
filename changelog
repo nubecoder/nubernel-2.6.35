@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-14-2011:
+Small change to .gitignore.
 Tweaking EXT4 mounts in init.rc for cm7.
 
 11-13-2011:

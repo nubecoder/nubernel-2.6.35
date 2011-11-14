@@ -159,6 +159,8 @@ static int victory_notifier_call(struct notifier_block *this,
 			mode = REBOOT_MODE_ARM9_FOTA;
 		else if (!strcmp((char *)_cmd, "recovery"))
 			mode = REBOOT_MODE_ARM11_FOTA;
+		else if (!strcmp((char *)_cmd, "bml7recovery"))
+			mode = REBOOT_MODE_RECOVERY;
 		else if (!strcmp((char *)_cmd, "bootloader"))
 			mode = REBOOT_MODE_FAST_BOOT;
 		else if (!strcmp((char *)_cmd, "download"))

@@ -10,9 +10,11 @@
 # define envvars
 TARGET="victory_nubernel"
 KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.1"
+LOCALVERSION=".nubernel_v0.0.1"
 INSTALL_MOD_PATH="../stand-alone\ modules"
 CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-"
-LOCALVERSION=".nubernel_v0.0.1"
+#prebuilt aosp from cm
+#CROSS_COMPILE="/home/nubecoder/cm_android/system/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin/arm-eabi-"
 #sammy recommended below
 #CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2009q3-68/bin/arm-none-eabi-"
 
@@ -159,7 +161,7 @@ if [ "$WIRED_FLASH" = y ] ; then
 fi
 
 # fix for module changing every build.
-if [ "$DEFCONFIG" != "y" ] ; then
+if [ "$DEFCONFIG" != "victory_modules" ] && [ "$BUILD_MODULES" = "y" ]; then
 	git co -- initramfs_tw/lib/modules/dhd.ko
 	git co -- initramfs_cm7/lib/modules/dhd.ko
 fi

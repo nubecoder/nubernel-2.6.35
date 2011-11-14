@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-14-2011:
+Manually added new EI22 modules to initramfs_cm7 to stay sync'd with EpicCM (noobnl: https://github.com/EpicCM/android_device_samsung_epic/commit/41f9094b032b68d99ef166d9f6df15bfdfb8b65b).
 Small change to .gitignore.
 Tweaking EXT4 mounts in init.rc for cm7.
 

@@ -8,10 +8,17 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-13-2011:
+Changing scripts to better support building for cyanogenmod and building stand-alone modules.
+Some scripting changes to ncBuildHelper and functions.
+Splitting the functions out of ncBuildHelper and sourcing them in.
+
 11-12-2011:
+Changes to ncBuildHelper script (fixing OUTFILE, atempting to fix tar.md5 creation for Odin).
 Added some cpufreq debugging and syntax fixes.
 
 11-10-2011:
+Changes to kmsg script (use wired adb).
 Implementing the use of enabled_freqs (active_states_table) along with some debugging.
 
 11-09-2011:

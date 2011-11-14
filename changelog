@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-13-2011:
+Enable kexec in cyanogenmod_epic defconfig (kernel would not boot without it).
+
 11-12-2011:
 Adjusting reboot flags for compatibility.
 Change reboot recovery to boot bml8 instead of bml7 and changed bml7 reboot mode from recovery to bml7recovery (based on mkasick's patch) (noobnl: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/ea1dbf2c9be977aeb6f78d871e0b05d989bfad59).

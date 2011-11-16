@@ -12,28 +12,38 @@ nubernel-2.6.35_v0.0.2
 
 Includes a custom "Nubernel the kernel" bootlogo.
 Includes kexec support.
-Ensures su is installed properly.
-Ensures superuser is installed properly.
-Ensures busybox is installed properly.
-Installs bash into /system/bin/ (if it is not found).
-Installs bash resources if they do not already exist.
-Includes flash tools (redbend_ua and bmlwrite) in /sbin.
-Includes custom scripts in /vendor/bin.
+Ensures su is installed properly. (tw build only!)
+Ensures superuser is installed properly. (tw build only!)
+Ensures busybox is installed properly. (tw build only!)
+Installs bash into /system/bin/ (if it is not found). (tw build only!)
+Installs bash resources if they do not already exist. (tw build only!)
+Includes flash tools (redbend_ua and bmlwrite) in /sbin. (tw build only!)
+Includes custom scripts in /vendor/bin. (tw build only!)
 Recovery redirector, "reboot recovery" will boot to the recovery kernel (bml8).
 Supports the following:
-  init.d scripts, RFS, EXT4, CIFS, TUN, Netfilter TCPMSS.
-Uses deadline as the default I/O scheduler.
+  init.d scripts, init.local.rc, RFS, EXT4, CIFS, TUN, Netfilter TCPMSS (init.d scripts = tw build only).
+Fully supports VoltageControl and SetCPU (see SetCPU notes below).
+SetCPU notes:
+  SetCPU aparently uses "cpuinfo_cur_freq" rather than "scaling_cur_freq" for it's live readout.
+  For some reason, "cpuinfo_cur_freq" reports being at some strange frequencies (75MHz, 150MHz, 300MHz).
+  I have no idea why this is happening, or how to fix it as of now, sorry.
 Includes the following I/O schedulers:
-  deadline, noop, cfq.
+  noop, deadline, cfq, bfq, sio.
+Uses deadline as the default I/O scheduler.
 Includes the following CPU frequencies:
-  100MHz, 200MHz, 400MHz, 800MHz, 1000MHz.
+  100MHz, 200MHz, 400MHz, 600MHz, 800MHz, 900MHz, 1000MHz, 1100MHz, 1200MHz, 1300MHz, 1400MHz.
+The following CPU frequencies are disabled by default (use an app to enable them):
+  1200MHz, 1300MHz, 1400MHz.
 Includes the following CPU governors (see notes below):
-  conservative, userspace, powersave, ondemand, performance.
+  smartassV2, smartass, interactiveX, interactive, conservative, userspace, powersave, ondemand, performance.
 Uses ondemand as the default CPU governor.
-Loads the Android logger as a module.
+CPU governor notes:
+  There seems to be a scaling problem with smartass (not V2).
+  It likes to hang out at 900MHz, I'll try to fix it later.
+Loads the Android logger as a module. (tw build only!)
 Supports the following types of bootanimations (See notes):
   bootanimation (bootanimation.zip).
-  samsungani (*.qmg).
+  samsungani (*.qmg). (tw build only!)
 Bootanimation notes:
   bootanimation.zip:
     If you have both bootanimation.zip and boot*.qmg files, they will fight each other.
@@ -42,8 +52,8 @@ Bootanimation notes:
   Samsung boot*.qmg boot animations:
     You must still fake out the kernel with a "blank" bootanimation.zip.
     You still might see a small glimpse of the framework's animation (blue android logo).
-Includes system app mover and remover:
-  During boot, the init scripts make room to install root and recovery.
+Includes system app mover and remover: (tw build only!)
+  During boot, the init scripts make room to install root and recovery. (tw build only!)
   Apps that are moved will have their data removed (to prevent FC's).
   Two list files are checked to determine what will be moved or removed:
     /data/local/.mv_sys_apps
@@ -83,6 +93,12 @@ Includes patches and code, etc from the following people:
   Various patches, scripting, initial help getting my kernel compiled, etc - RandyT / Bonsai.
   scaling_available_frequencies sysfs, compile errors, scripting, etc - nullghost.
   Boot from sdcard (Dual Boot), Re-enabled kernel splash (bootlogo), various patches - Rodderik.
+  Various patches / code, scripting, cyanogenmod, etc:
+    chris41g / Decad3nce / DevinXtreme / DRockstar / jt1134
+    noobnl / nullghost / Rodderik / UberPinguin / wispoffates
+  Miscellaneous somethings - Anyone I may have missed.
+
+Thanks to all the above!
 
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 

@@ -2,11 +2,15 @@ Samsung SPH-D700 (Epic 4G) kernel by nubecoder
 
 http://www.nubecoder.com/
 
-nubernel-2.6.35_v0.0.1
+nubernel-2.6.35_v0.0.2
 
 
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
+
+11-16-2011:
+Feature list for v0.0.2.
+Disable custom debugging for release.
 
 11-15-2011:
 Changes to CREATE_ZIP function for CM7's build.prop.

@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-15-2011:
+Disabling automatic stock recovery installation in *.rc files (install-recovery.sh).
+
 11-14-2011:
 Changes to the metadata for the update.zip (I doubt this matters at all).
 Minor changes to ncBuildHelper script.

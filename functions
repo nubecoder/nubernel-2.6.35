@@ -242,7 +242,19 @@ function CREATE_ZIP()
 	rm -f update/zImage
 	cp Kernel/arch/arm/boot/zImage update/
 	pushd update > /dev/null
+		if [ $TARGET = "cyanogenmod_epic" ]; then
+			# adjust for CM device check
+			local PATTERN="SPH-D700"
+			local REPLACEMENT="epic"
+			sed -i "s/$PATTERN/$REPLACEMENT/g" META-INF/com/google/android/updater-script
+		fi
 		eval "$MKZIP" > /dev/null
+		if [ $TARGET = "cyanogenmod_epic" ]; then
+			# revert back from CM device check
+			local PATTERN="epic"
+			local REPLACEMENT="SPH-D700"
+			sed -i "s/$PATTERN/$REPLACEMENT/g" META-INF/com/google/android/updater-script
+		fi
 	popd > /dev/null
 	ECHO_END $T1 $F1
 }

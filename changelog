@@ -8,6 +8,10 @@ nubernel-2.6.35_v0.0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-15-2011:
+Changes to CREATE_ZIP function for CM7's build.prop.
+Disabling automatic stock recovery installation in *.rc files (install-recovery.sh).
+
 11-14-2011:
 Use header file to determine debugging.
 Manually added new EI22 modules to initramfs_cm7 to stay sync'd with EpicCM (noobnl: https://github.com/EpicCM/android_device_samsung_epic/commit/41f9094b032b68d99ef166d9f6df15bfdfb8b65b).

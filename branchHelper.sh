@@ -8,8 +8,8 @@
 #
 
 #define version string
-CURRENT_VERSION="nubernel-2.6.35_v0.0.1"
 VERSION_STRING="nubernel-2.6.35_v"
+CURRENT_VERSION="0.0.2"
 
 # defaults
 RELEASE="n"
@@ -41,9 +41,8 @@ SHOW_HELP()
 SHOW_SETTINGS()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	if [ "$RELEASE" = "y" ]
-	then
-		echo "Old Version  == $CURRENT_VERSION"
+	if [ "$RELEASE" = "y" ]; then
+		echo "Old Version  == ${VERSION_STRING}$CURRENT_VERSION"
 		echo "Vew Version  == ${VERSION_STRING}$NEW_VERSION"
 		echo "Verbose Mode == $VERBOSE"
 	fi
@@ -64,7 +63,7 @@ SHOW_COMPLETED()
 }
 SHOW_ERROR()
 {
-	if [ -n "$ERROR_MSG" ] ; then
+	if [ -n "$ERROR_MSG" ]; then
 		echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 		echo "$ERROR_MSG"
 	fi
@@ -79,74 +78,69 @@ BRANCH_RELEASE()
 	local RESULT=$(git checkout -b release-v${NEW_VERSION} dev 2>&1 >/dev/null)
 	# check for errors
 	local FIND_ERR="error: "
-	if [ "$RESULT" != "${RESULT/$FIND_ERR/}" ]
-	then
+	if [ "$RESULT" != "${RESULT/$FIND_ERR/}" ]; then
 		ERROR_MSG=${RESULT/$FIND_ERR/}
 		SHOW_ERROR
 		SHOW_COMPLETED
 	fi
 	# update files
-	local PATTERN="$CURRENT_VERSION"
+	local PATTERN="${VERSION_STRING}$CURRENT_VERSION"
 	local REPLACEMENT="${VERSION_STRING}$NEW_VERSION"
-	if [ "$VERBOSE" = "y" ]
-	then
+	if [ "$VERBOSE" = "y" ]; then
 		#sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
-		if [ $AOSP = "y" ]; then
-			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_cm7/default.prop
-		else
-			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_eh17/default.prop
-		fi
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/google/android/updater-script
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/android/metadata
 		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh
 		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README
-		sed -i "s/$PATTERN/$REPLACEMENT/g" $0
 	else
 		#sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
-		if [ $AOSP = "y" ]; then
-			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_cm7/default.prop >/dev/null 2>&1
-		else
-			sed -i "s/$PATTERN/$REPLACEMENT/g" initramfs_eh17/default.prop >/dev/null 2>&1
-		fi
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/google/android/updater-script >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/android/metadata >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README >/dev/null 2>&1
+	fi
+
+	local PATTERN="nubernel_v$CURRENT_VERSION"
+	local REPLACEMENT="nubernel_v$NEW_VERSION"
+	if [ "$VERBOSE" = "y" ]; then
+		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh
+	else
+		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh >/dev/null 2>&1
+	fi
+	local PATTERN="CURRENT_VERSION=\"$CURRENT_VERSION\""
+	local REPLACEMENT="CURRENT_VERSION=\"$NEW_VERSION\""
+	if [ "$VERBOSE" = "y" ]; then
+		sed -i "s/$PATTERN/$REPLACEMENT/g" $0
+	else
 		sed -i "s/$PATTERN/$REPLACEMENT/g" $0 >/dev/null 2>&1
 	fi
 	# git add changes
 	if [ "$VERBOSE" = "y" ]
 	then
 		#git add build_kernel.sh
-		if [ $AOSP = "y" ]; then
-			git add initramfs_cm7/default.prop
-		else
-			git add initramfs_eh17/default.prop
-		fi
 		git add update/META-INF/com/google/android/updater-script
 		git add update/META-INF/com/android/metadata
 		git add ncBuildHelper.sh
 		git add featurelist
 		git add changelog
 		git add README
+		git add scripts/update_modules.sh
+		git add Kernel/arch/arm/config/victory_nubernel_defconfig
 		git add $0
 	else
 		#git add build_kernel.sh >/dev/null 2>&1
-		if [ $AOSP = "y" ]; then
-			git add initramfs_cm7/default.prop >/dev/null 2>&1
-		else
-			git add initramfs_eh17/default.prop >/dev/null 2>&1
-		fi
 		git add update/META-INF/com/google/android/updater-script >/dev/null 2>&1
 		git add update/META-INF/com/android/metadata >/dev/null 2>&1
 		git add ncBuildHelper.sh >/dev/null 2>&1
 		git add featurelist >/dev/null 2>&1
 		git add changelog >/dev/null 2>&1
 		git add README >/dev/null 2>&1
+		git add scripts/update_modules.sh >/dev/null 2>&1
+		git add Kernel/arch/arm/config/victory_nubernel_defconfig >/dev/null 2>&1
 		git add $0 >/dev/null 2>&1
 	fi
 	# show some info
@@ -175,8 +169,7 @@ BRANCH_FEATURE()
 	local RESULT=$(git checkout -b feature-${FEATURE_NAME} dev 2>&1 >/dev/null)
 	# check for errors
 	local FIND_ERR="error: "
-	if [ "$RESULT" != "${RESULT/$FIND_ERR/}" ]
-	then
+	if [ "$RESULT" != "${RESULT/$FIND_ERR/}" ]; then
 		ERROR_MSG=${RESULT/$FIND_ERR/}
 		SHOW_ERROR
 		SHOW_COMPLETED
@@ -196,8 +189,7 @@ BRANCH_FEATURE()
 
 
 # main
-while getopts  ":f:hr:v" flag
-do
+while getopts  ":f:hr:v" flag; do
 	case "$flag" in
 	f)
 		FEATURE="y"
@@ -223,19 +215,16 @@ do
 	esac
 done
 
-if [ "$RELEASE" = "y" ]
-then
+if [ "$RELEASE" = "y" ]; then
 	SHOW_SETTINGS
 	BRANCH_RELEASE
 fi
-if [ "$FEATURE" = "y" ]
-then
+if [ "$FEATURE" = "y" ]; then
 	SHOW_SETTINGS
 	BRANCH_FEATURE
 fi
 
-if [ "$RELEASE" = "n" -a "$FEATURE" = "n" ]
-then
+if [ "$RELEASE" = "n" -a "$FEATURE" = "n" ]; then
 	SHOW_HELP
 fi
 

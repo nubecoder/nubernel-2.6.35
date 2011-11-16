@@ -20,17 +20,17 @@ if [ "$1" = "recovery" ]; then
 	SEND_LOG "chmod 0755 /sbin/*"
 	busybox chmod 0755 /sbin/*
 	for FILE in default.prop init init.sh init.smdkc110.rc ; do
-		SEND_LOG "  chown root.system /$FILE"
-		busybox chown root.system /$FILE
+		SEND_LOG "  chown 0.2000 /$FILE"
+		busybox chown 0.2000 /$FILE
 	done
 	for FOLDER in conf lib lib/modules res res/images sbin ; do
-		SEND_LOG "  chown root.system /$FOLDER"
-		busybox chown root.system /$FOLDER
-		SEND_LOG "  chown root.system /$FOLDER/*"
-		busybox chown root.system /$FOLDER/*
+		SEND_LOG "  chown 0.2000 /$FOLDER"
+		busybox chown 0.2000 /$FOLDER
+		SEND_LOG "  chown 0.2000 /$FOLDER/*"
+		busybox chown 0.2000 /$FOLDER/*
 	done
-	SEND_LOG "chown root.root /sbin/kexec"
-	busybox chown root.root /sbin/kexec
+	SEND_LOG "chown 0.0 /sbin/kexec"
+	busybox chown 0.0 /sbin/kexec
 	SEND_LOG "chmod 6755 /sbin/kexec"
 	busybox chmod 6755 /sbin/kexec
 else
@@ -40,17 +40,17 @@ else
 	SEND_LOG "chmod 0755 /vendor/bin/*"
 	busybox chmod 0755 /vendor/bin/*
 	for FILE in default.prop init init.sh ; do
-		SEND_LOG "  chown root.system /$FILE"
-		busybox chown root.system /$FILE
+		SEND_LOG "  chown 0.2000 /$FILE"
+		busybox chown 0.2000 /$FILE
 	done
 	for FOLDER in lib lib/modules sbin ; do
-		SEND_LOG "  chown root.system /$FOLDER"
-		busybox chown root.system /$FOLDER
-		SEND_LOG "  chown root.system /$FOLDER/*"
-		busybox chown root.system /$FOLDER/*
+		SEND_LOG "  chown 0.2000 /$FOLDER"
+		busybox chown 0.2000 /$FOLDER
+		SEND_LOG "  chown 0.2000 /$FOLDER/*"
+		busybox chown 0.2000 /$FOLDER/*
 	done
-	SEND_LOG "chown root.root /sbin/kexec"
-	busybox chown root.root /sbin/kexec
+	SEND_LOG "chown 0.0 /sbin/kexec"
+	busybox chown 0.0 /sbin/kexec
 	SEND_LOG "chmod 6755 /sbin/kexec"
 	busybox chmod 6755 /sbin/kexec
 fi

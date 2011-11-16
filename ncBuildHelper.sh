@@ -9,9 +9,12 @@
 
 # define envvars
 TARGET="victory_nubernel"
-KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.1"
+KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.2"
+LOCALVERSION=".nubernel_v0.0.2"
 INSTALL_MOD_PATH="../stand-alone\ modules"
 CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-"
+#prebuilt aosp from cm
+#CROSS_COMPILE="/home/nubecoder/cm_android/system/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin/arm-eabi-"
 #sammy recommended below
 #CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2009q3-68/bin/arm-none-eabi-"
 
@@ -36,317 +39,14 @@ ERROR_MSG=
 TIME_START=
 TIME_END=
 
-# define outfile path
-OUTFILE_PATH="$PWD/$TARGET-$VERSION"
-
 # exports
 export KBUILD_BUILD_VERSION
 
-# functions
-SHOW_HELP()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "Usage options for $0:"
-	echo "-b : Build zImage (kernel)."
-	echo "-c : Run 'make clean'."
-	echo "-C : Run 'make distclean'."
-	echo "-d : Use specified config."
-	echo "     For example, use -d myconfig to 'make myconfig_defconfig'."
-	echo "-h : Print this help info."
-	echo "-j : Number of threads (auto detected by default)."
-	echo "     For example, use -j4 to make with 4 threads."
-	echo "-m : Build, copy and / or strip modules."
-	echo "     To copy use 'c', to strip use 's', for both use 'cs'."
-	echo "-t : Produce tar file suitable for flashing with Odin."
-	echo "-u : Wired (USB) Flash, expects a device to be connected."
-	echo "-v : Show verbose output while building zImage (kernel)."
-	echo "-w : Wifi Flash, for use with adb wireless."
-	echo "-z : Produce zip file suitable for flashing via Recovery."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	exit 1
-}
-SHOW_SETTINGS()
-{
-	TIME_START=$(date +%s)
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "build version  == $KBUILD_BUILD_VERSION"
-	echo "modules path   == $INSTALL_MOD_PATH"
-	echo "cross compile  == $CROSS_COMPILE"
-	echo "outfile path   == $OUTFILE_PATH"
-	echo "make clean     == $CLEAN"
-	echo "make distclean == $DISTCLEAN"
-	echo "use defconfig  == $DEFCONFIG"
-	echo "build target   == $TARGET"
-	echo "make threads   == $THREADS"
-	echo "verbose output == $VERBOSE"
-	echo "build modules  == $BUILD_MODULES"
-	echo "build kernel   == $BUILD_KERNEL"
-	echo "create tar     == $PRODUCE_TAR"
-	echo "create zip     == $PRODUCE_ZIP"
-	echo "wifi flash     == $WIFI_FLASH"
-	echo "wired flash    == $WIRED_FLASH"
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-NOTIFY_COMPLETED()
-{
-	aplay notify.wav >/dev/null 2>&1
-}
-SHOW_COMPLETED()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "Script completed."
-	TIME_END=$(date +%s)
-	echo "" && echo "Total time: $(($TIME_END - $TIME_START)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	NOTIFY_COMPLETED
-	exit
-}
-SHOW_ERROR()
-{
-	if [ -n "$ERROR_MSG" ] ; then
-		echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-		echo "$ERROR_MSG"
-	fi
-}
-REMOVE_DOTCONFIG()
-{
-	rm -f Kernel/.config
-}
-MAKE_CLEAN()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin make clean..." && echo ""
-	pushd Kernel > /dev/null
-		nice make V=1 -j"$THREADS" ARCH=arm clean 2>&1 >make.clean.out
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "make clean took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-MAKE_DISTCLEAN()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin make distclean..." && echo ""
-	pushd Kernel > /dev/null
-		nice make V=1 -j"$THREADS" ARCH=arm distclean 2>&1 >make.distclean.out
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "make distclean took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-MAKE_DEFCONFIG()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin make ${TARGET}_defconfig..." && echo ""
-	pushd Kernel > /dev/null
-		nice make V=1 -j"$THREADS" ARCH=arm ${TARGET}_defconfig 2>&1 >make.defconfig.out
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "make ${TARGET}_defconfig took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-BUILD_MODULES()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin building modules..." && echo ""
-	pushd Kernel > /dev/null
-		if [ "$VERBOSE" = "y" ] ; then
-			nice make V=1 -j"$THREADS" ARCH=arm modules 2>&1 | tee make.out
-		else
-			nice make -j"$THREADS" ARCH=arm modules 2>&1 | tee make.out
-		fi
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "building modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-INSTALL_MODULES()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin installing modules..." && echo ""
-	pushd Kernel > /dev/null
-		if [ "$VERBOSE" = "y" ] ; then
-			nice make V=1 -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
-		else
-			nice make -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
-		fi
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "installing modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-COPY_MODULES()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin copy modules..." && echo ""
-	pushd scripts > /dev/null
-		sh -c "update_modules.sh copy"
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "Copy modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-STRIP_MODULES()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin strip modules..." && echo ""
-	pushd scripts > /dev/null
-		sh -c "update_modules.sh strip"
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "Strip modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-REMOVE_STANDALONE_MODULES_FROM_INITRAMFS()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Removing stand-alone modules from initramfs..." && echo ""
-	popd > /dev/null
-		local MODULES_PATH="initramfs_eh17/lib/modules"
-		local FILE_PATHS="$MODULES_PATH/cifs.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/fuse.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/slow-work.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/tun.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/xt_tcpmss.ko"
-		local FILE_PATHS="$FILE_PATHS $MODULES_PATH/xt_TCPMSS.ko"
-		for FILE in $FILE_PATHS; do
-			if [ -f $FILE ]; then
-				echo "rm -f $FILE"
-				rm -f "$FILE"
-			fi
-		done
-	pushd Kernel > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "removing modules took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-BUILD_ZIMAGE()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin building zImage..." && echo ""
-	pushd Kernel > /dev/null
-		rm -f usr/initramfs_data.cpio.lzma
-		if [ "$DEFCONFIG" != "y" ] ; then
-			REMOVE_STANDALONE_MODULES_FROM_INITRAMFS
-		fi
-		if [ "$VERBOSE" = "y" ] ; then
-			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" 2>&1 | tee make.out
-		else
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" 2>&1 | tee make.out
-		fi
-	popd > /dev/null
-# update zImage in update folder regardless of zip creation
-	rm -f update/zImage
-	cp Kernel/arch/arm/boot/zImage update/
-	local T2=$(date +%s)
-	echo "" && echo "building zImage took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-GENERATE_WARNINGS_FILE()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Generate warnings file..." && echo ""
-	pushd Kernel > /dev/null
-		local MAKE_FILE=make.out
-		local WARN_FILE=warnings.out
-		cp $MAKE_FILE $WARN_FILE
-		local ITEMS="CC LD AS CHK UPD GEN HOSTLD HOSTCC CALL MKELF TIMEC CONMK SHIPPED GZIP AR IKCFG MODPOST KSYM SYMLINK SYSMAP OBJCOPY Building Generating Kernel:"
-		for ITEM in $ITEMS; do
-			sed -ri "s/^\s*$ITEM.*//" $WARN_FILE
-		done
-		local ITEMS="scripts make WARNING:"
-		for ITEM in $ITEMS; do
-			sed -ri "s/^$ITEM.*//" $WARN_FILE
-		done
-		sed -ri "s/^To see full details build your kernel with:.*//" $WARN_FILE
-		sed -ri "s/^'make CONFIG_DEBUG_SECTION_MISMATCH=y'.*//" $WARN_FILE
-		sed -ri "/^\s*$/d" $WARN_FILE
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "generating warnings file took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-CREATE_TAR()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin $TARGET-$VERSION.tar.md5 creation..." && echo ""
-	pushd Kernel > /dev/null
-		tar -H ustar -c -C arch/arm/boot zImage >"$OUTFILE_PATH.tar.md5"
-		md5sum -t "$OUTFILE_PATH.tar.md5" >> "$OUTFILE_PATH.tar.md5"
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "$TARGET-$VERSION.tar creation took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-CREATE_ZIP()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin $TARGET-$VERSION.zip creation..." && echo ""
-	rm -fr "$TARGET-$VERSION.zip"
-	rm -f update/zImage
-	cp Kernel/arch/arm/boot/zImage update/
-	OUTFILE="$OUTFILE_PATH.zip"
-	pushd update > /dev/null
-		eval "$MKZIP" > /dev/null
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "$TARGET-$VERSION.zip creation took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-WIFI_FLASH_SCRIPT()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin Wifi kernel flash helper script..." && echo ""
-	pushd scripts > /dev/null
-		sh -c "wifiFlashHelper.sh"
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "Wifi kernel flash took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
-WIRED_FLASH_SCRIPT()
-{
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	local T1=$(date +%s)
-	echo "Begin Wired kernel flash helper script..." && echo ""
-	pushd scripts > /dev/null
-		sh -c "wiredFlashHelper.sh"
-	popd > /dev/null
-	local T2=$(date +%s)
-	echo "" && echo "Wired kernel flash took $(($T2 - $T1)) seconds."
-	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "*"
-}
+#source functions
+source $PWD/functions
 
 # main
-while getopts  ":bcCd:hj:m:tuvwz" flag
+while getopts ":bcCd:hj:m:tuvwz" flag
 do
 	case "$flag" in
 	b)
@@ -414,15 +114,38 @@ if [ "$BUILD_MODULES" = "y" ] ; then
 	BUILD_MODULES
 	if [ "$MODULE_ARGS" != "${MODULE_ARGS/c/}" ] ; then
 		INSTALL_MODULES
-		COPY_MODULES
+		COPY_ARG="nubernel"
+		if [ $TARGET = "victory_nubernel" ]; then
+			COPY_ARG="nubernel"
+		elif [ $TARGET = "victory_modules" ]; then
+			COPY_ARG="stand-alone"
+		elif [ $TARGET = "cyanogenmod_epic" ]; then
+			COPY_ARG="cyanogenmod"
+		fi
+		COPY_MODULES $COPY_ARG
 	fi
 	if [ "$MODULE_ARGS" != "${MODULE_ARGS/s/}" ] ; then
-		STRIP_MODULES
+		STRIP_ARG="nubernel"
+		if [ $TARGET = "victory_nubernel" ]; then
+			STRIP_ARG="nubernel"
+		elif [ $TARGET = "victory_modules" ]; then
+			STRIP_ARG="stand-alone"
+		elif [ $TARGET = "cyanogenmod_epic" ]; then
+			STRIP_ARG="cyanogenmod"
+		fi
+		STRIP_MODULES $STRIP_ARG
 	fi
 fi
 if [ "$BUILD_KERNEL" = "y" ] ; then
-	BUILD_ZIMAGE
+	ZIMAGE_ARG="$LOCALVERSION"
+	if [ $TARGET = "cyanogenmod_epic" ]; then
+		ZIMAGE_ARG="$LOCALVERSION.cm7"
+	else
+		ZIMAGE_ARG="$LOCALVERSION"
+	fi
+	BUILD_ZIMAGE $ZIMAGE_ARG
 	GENERATE_WARNINGS_FILE
+	ZIMAGE_UPDATE
 fi
 if [ "$PRODUCE_TAR" = y ] ; then
 	CREATE_TAR
@@ -438,8 +161,9 @@ if [ "$WIRED_FLASH" = y ] ; then
 fi
 
 # fix for module changing every build.
-if [ "$DEFCONFIG" != "y" ] ; then
-	git co -- initramfs_eh17/lib/modules/dhd.ko
+if [ "$DEFCONFIG" != "victory_modules" ] && [ "$BUILD_MODULES" = "y" ]; then
+	git co -- initramfs_tw/lib/modules/dhd.ko
+	git co -- initramfs_cm7/lib/modules/dhd.ko
 fi
 
 # show completed message

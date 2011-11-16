@@ -1,4 +1,2 @@
-modver=SPH-D700_nubernel-2.6.35_v0.0.1
-post-build=google/soju/crespo:2.3.3/GRI54/105536:user/release-keys
-post-timestamp=0
-pre-device=epic
+modver=SPH-D700_nubernel-2.6.35_v0.0.2
+pre-device=SPH-D700

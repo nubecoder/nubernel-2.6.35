@@ -9,12 +9,14 @@
 
 
 #define base paths
-INITRAMFS_PATH="initramfs_eh17/lib/modules"
+INITRAMFS_TW_PATH="initramfs_tw/lib/modules"
+INITRAMFS_CM_PATH="initramfs_cm7/lib/modules"
 STAND_ALONE_PATH="stand-alone modules"
 CC_STRIP="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-strip -d --strip-unneeded"
 
 #defines
 STAND_ALONE="n"
+BUILD_CM="n"
 
 #functions
 SHOW_HELP()
@@ -29,30 +31,35 @@ SHOW_HELP()
 COPY_WITH_ECHO()
 {
 	local SRC=$1
-	if [ $STAND_ALONE = "y" ]; then
-		local MOD_PATH="stand-alone modules/lib/modules/2.6.35.7-stand-alone+"
+	local MOD_PATH="$STAND_ALONE_PATH/lib/modules/2.6.35.7+"
+	if [ "$STAND_ALONE" = "y" ]; then
 		echo "Copying $SRC to $STAND_ALONE_PATH/"
 		cp "$MOD_PATH/$SRC" "$STAND_ALONE_PATH/"
+	elif [ "$BUILD_CM" = "y" ]; then
+		echo "Copying $SRC to $INITRAMFS_CM_PATH/"
+		cp "$MOD_PATH/$SRC" "$INITRAMFS_CM_PATH/"
 	else
-		local MOD_PATH="stand-alone modules/lib/modules/2.6.35.7-nubernel+"
-		echo "Copying $SRC to $INITRAMFS_PATH/"
-		cp "$MOD_PATH/$SRC" "$INITRAMFS_PATH/"
+		echo "Copying $SRC to $INITRAMFS_TW_PATH/"
+		cp "$MOD_PATH/$SRC" "$INITRAMFS_TW_PATH/"
 	fi
 }
 STRIP_WITH_ECHO()
 {
 	local DST=$1
-	if [ $STAND_ALONE = "y" ]; then
+	if [ "$STAND_ALONE" = "y" ]; then
 		echo "Stripping $STAND_ALONE_PATH/$DST"
 		$CC_STRIP "$STAND_ALONE_PATH/$DST"
+	elif [ "$BUILD_CM" = "y" ]; then
+		echo "Stripping $INITRAMFS_CM_PATH/$DST"
+		$CC_STRIP "$INITRAMFS_CM_PATH/$DST"
 	else
-		echo "Stripping $INITRAMFS_PATH/$DST"
-		$CC_STRIP "$INITRAMFS_PATH/$DST"
+		echo "Stripping $INITRAMFS_TW_PATH/$DST"
+		$CC_STRIP "$INITRAMFS_TW_PATH/$DST"
 	fi
 }
 COPY_MODULES()
 {
-	if [ $STAND_ALONE = "y" ]; then
+	if [ "$STAND_ALONE" = "y" ]; then
 		local PARTS="kernel/drivers/net/tun.ko"
 		local PARTS="$PARTS kernel/fs/cifs/cifs.ko"
 		local PARTS="$PARTS kernel/fs/fuse/fuse.ko"
@@ -72,7 +79,9 @@ COPY_MODULES()
 		local PARTS="$PARTS kernel/drivers/onedram/dpram/dpram.ko"
 		local PARTS="$PARTS kernel/drivers/onedram/dpram_recovery/dpram_recovery.ko"
 		local PARTS="$PARTS kernel/drivers/scsi/scsi_wait_scan.ko"
-		local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
+		if [ "$BUILD_CM" != "y" ]; then
+			local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
+		fi
 		#local PARTS="$PARTS kernel/drivers/bluetooth/bthid/bthid.ko"
 		#local PARTS="$PARTS kernel/drivers/onedram_svn/victory/modemctl/modemctl.ko"
 		#local PARTS="$PARTS kernel/drivers/onedram_svn/victory/onedram/onedram.ko"
@@ -85,7 +94,7 @@ COPY_MODULES()
 }
 STRIP_MODULES()
 {
-	if [ $STAND_ALONE = "y" ]; then
+	if [ "$STAND_ALONE" = "y" ]; then
 		local PARTS="tun.ko"
 		local PARTS="$PARTS cifs.ko"
 		local PARTS="$PARTS fuse.ko"
@@ -105,7 +114,9 @@ STRIP_MODULES()
 		local PARTS="$PARTS dpram.ko"
 		local PARTS="$PARTS dpram_recovery.ko"
 		local PARTS="$PARTS scsi_wait_scan.ko"
-		local PARTS="$PARTS logger.ko"
+		if [ "$BUILD_CM" != "y" ]; then
+			local PARTS="$PARTS logger.ko"
+		fi
 		#local PARTS="$PARTS bthid.ko"
 		#local PARTS="$PARTS modemctl.ko"
 		#local PARTS="$PARTS onedram.ko"
@@ -118,18 +129,20 @@ STRIP_MODULES()
 }
 
 #main
-if [ "$2" == "sa" ] || [ "$2" == "stand-alone" ] ; then
+if [ "$2" == "sa" ] || [ "$2" == "stand-alone" ]; then
 	STAND_ALONE="y"
+elif [ "$2" == "cm" ] || [ "$2" == "cyanogenmod" ]; then
+	BUILD_CM="y"
 fi
 
-if [ "$1" == "cp" ] || [ "$1" == "copy" ] ; then
+if [ "$1" == "cp" ] || [ "$1" == "copy" ]; then
 	pushd .. > /dev/null
 		COPY_MODULES
 	popd > /dev/null
 	exit 0
 fi
 
-if [ "$1" == "st" ] || [ "$1" == "strip" ] ; then
+if [ "$1" == "st" ] || [ "$1" == "strip" ]; then
 	pushd .. > /dev/null
 		STRIP_MODULES
 	popd > /dev/null

@@ -119,6 +119,7 @@ loglevel 3
 on fs
 # mount mtd partitions
     mount rfs /dev/block/stl9 /system check=no
+    mount ext4 /dev/block/stl9 /system noatime nodiratime nodelalloc check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 
 # use movinand second partition as /data. d.moskvitin
     #temp
@@ -129,8 +130,8 @@ on fs
     chown system system /data
     chmod 0771 /data    
     mount rfs /dev/block/stl10 /data nosuid nodev check=no
+    mount ext4 /dev/block/stl10 /data wait noatime nodiratime nodelalloc nosuid nodev crypt data=ordered nobarrier noauto_da_alloc
     chown system system /data
-    chmod 0771 /data
     chmod 0771 /data
     mkdir /data/databases
     chown system system /data/databases
@@ -142,11 +143,12 @@ on fs
     chown system system /data/db-journal
     chmod 0777 /data/db-journal
     mount rfs /dev/block/stl11 /cache nosuid nodev check=no
+    mount ext4 /dev/block/stl11 /cache wait noatime nodiratime nosuid nodev check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 
     mkdir /mnt/.lfs 0755 root root
     mount j4fs /dev/block/stl6 /mnt/.lfs
     insmod /lib/modules/param.ko
-    
+
 		# samsung module
     insmod /lib/modules/storage.ko
 
@@ -561,6 +563,12 @@ on boot
     chown system system /dev/dun
 # +++++++++++++++++++++++++++++++++++++++++++      
 
+# Include extra init file
+    import /system/etc/init.local.rc
+
+    write /sys/devices/platform/s3c-keypad/column_delay 5
+    write /sys/devices/platform/s3c-keypad/timer_delay  5
+
     class_start default
 
 ## Daemon processes to be run by init.
@@ -753,6 +761,10 @@ service orientationd /system/bin/orientationd
 service geomagneticd /system/bin/geomagneticd
     user compass
     group system input
+
+service tvout /system/bin/tvoutserver
+    user system
+    group graphics
     
 service gps-daemon /system/vendor/bin/gpsd
 	user system

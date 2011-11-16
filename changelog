@@ -2,13 +2,115 @@ Samsung SPH-D700 (Epic 4G) kernel by nubecoder
 
 http://www.nubecoder.com/
 
-nubernel-2.6.35_v0.0.1
+nubernel-2.6.35_v0.0.2
 
 
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-16-2011:
+Feature list for v0.0.2.
+Disable custom debugging for release.
+
+11-15-2011:
+Changes to CREATE_ZIP function for CM7's build.prop.
+Disabling automatic stock recovery installation in *.rc files (install-recovery.sh).
+
+11-14-2011:
+Use header file to determine debugging.
+Manually added new EI22 modules to initramfs_cm7 to stay sync'd with EpicCM (noobnl: https://github.com/EpicCM/android_device_samsung_epic/commit/41f9094b032b68d99ef166d9f6df15bfdfb8b65b).
+Changes to the metadata for the update.zip (I doubt this matters at all).
+Minor changes to ncBuildHelper script.
+Small change to .gitignore.
+Tweaking EXT4 mounts in init.rc for cm7.
+
+11-13-2011:
+Disabling DEBUG_INFO in cm defconfig.
+Updating cyanogenmod_epic defconfig with all the new features included in this kernel (IKCONFIG, SCHED_AUTOGROUP, schedulers, governors, TUN, Voodoo Sound, etc).
+Enable kexec in cyanogenmod_epic defconfig (kernel would not boot without it).
+Changing scripts to better support building for cyanogenmod and building stand-alone modules.
+Some scripting changes to ncBuildHelper and functions.
+Splitting the functions out of ncBuildHelper and sourcing them in.
+
+11-12-2011:
+Adjusting reboot flags for compatibility.
+Change reboot recovery to boot bml8 instead of bml7 and changed bml7 reboot mode from recovery to bml7recovery (based on mkasick's patch) (noobnl: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/ea1dbf2c9be977aeb6f78d871e0b05d989bfad59).
+Add ext4 support to init.rc (jt1134: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/fc5bb62ed7a581bf9b2b089e951c680384d71470).
+Remove in_frame_map from mfc input structures since it is not compatible with aries OMX libraries (jt1134: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/0bd9435b026f000e0bc08b5b5596468a9ab2cb26).
+Add delays for kb -- other changes (Decad3nce: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/a949c3f6a5fcf24aee00ee4536cad2aad36c8b1b).
+Update prebuilt modules (UberPinguin: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/17b1f8244a6ce6e338e97e22844626b3d2d60869).
+Move init.local.rc to later in init.rc (UberPinguin: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/0a848424b9b7553f8af4ea1ba8480eed0c07037d).
+Import init.local.rc (Decad3nce: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/aa7266f269abba1314bac9eb6494e20ae720a8d0).
+Changes to ncBuildHelper script (fixing OUTFILE, atempting to fix tar.md5 creation for Odin).
+Added some cpufreq debugging and syntax fixes.
+
+11-10-2011:
+Changes to kmsg script (use wired adb).
+Implementing the use of enabled_freqs (active_states_table) along with some debugging.
+
+11-09-2011:
+Enabled SIO (Simple IO) scheduler in defconfig.
+Enabled BFQ scheduler in defconfig.
+Enabled sched_autogroup in defconfig.
+Automated per tty task groups patch (sched_autogroup) (Mike Galbraith via netarchy: https://github.com/netarchy/nexus-s/commit/2734fc445a01383f09769a64a1de6742efabe3dd).
+Switch from BFQ-v2 to BFQ-v2-r1 (Paolo Valente via netarchy: https://github.com/netarchy/nexus-s/commit/0006595793a65ba82046d100a64fd15d8b239b23).
+Updated BFQ to v2. (thalamus via netarchy: https://github.com/netarchy/nexus-s/commit/42aebccf504700c7ba6f0a54dd02f6c1734a6b42).
+Add BFQ IO Scheduler (Paolo Valente via netarchy: https://github.com/netarchy/nexus-s/commit/7acd3e3e3b7f344d7e69a8186159148935fce07f).
+Add Simple IO Scheduler (Miguel Boton via netarchy: https://github.com/netarchy/nexus-s/commit/50ca05184f28a31805edcaecc74808a69245d289).
+Manual revert of "Modify sysfs vdd interface so that the user can set vdd directly" (commitID: f56c4ed).
+Reverting "S5PC11X : CPUFREQ : add platform data interface to dvfs" (commitID: 511e4b8).
+Add a #define for NUM_FREQ (gzub via me: https://github.com/nubecoder/nubernel-kernel/commit/d4f29f53410ce2d7bf9293c01233797faa21c15a).
+Fixing some errors I introduced in the cpufreq sysfs entries.
+S5PC11X : CPUFREQ : add platform data interface to dvfs (Minsu Kim via netarchy: https://github.com/netarchy/nexus-s/commit/bfbe3ffe8a31842daadb7e242d87802a2633055e).
+Added 900MHz frequency.
+Added 600MHz and 1.1GHz frequencies, etc (Rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/3b8db907f484fc45d92b3cbfdb23b915e487f82c).
+Netarchy's interactive adjustment, applied to interactiveX (netarchy: https://github.com/netarchy/nexus-s/commit/7bd7b9ae76b98c3ec8c71dc11bfd4e62b04ae7a3).
+Changes to defconfig for the new governors.
+Changes to smartass2 governor for compatibility with Epic 4G.
+Changes to smartass governor.
+Minor changes to interactiveX governor (whitespace, debugging fixup, etc) (me: https://github.com/nubecoder/nubernel-kernel/commit/398dfc22a3ddb38a8a4c259f55b3c45a193eaf76).
+Added some debugging to interactiveX governor (me: https://github.com/nubecoder/nubernel-kernel/commit/fd45743765a41c80ed73f7b7b8abe82d1e3a5cba).
+Added some error checking to interactiveX governor (me: https://github.com/nubecoder/nubernel-kernel/commit/b953ef89b9b57ad0e3a6e65eb5be0d3f8667c75c).
+Changes to interactiveX governor for compatibility with Epic 4G (me: https://github.com/nubecoder/nubernel-kernel/commit/5fb629dfa8a33653df3df2e97bc3c1613ae1c514).
+Fixing a typo in interactiveX governor (me: https://github.com/nubecoder/nubernel-kernel/commit/0b61c8f0c319b72adc7a085b55f222caf948e4b3).
+cpufreq: smartass: New 'smartass' governor (syncing up with erasmux) (erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/87270f22ba6b6efd6bd9fe2c9bf7c63cb4bf7ac2).
+Add interactiveX governor (imoseyon via erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/0f8231644179cc7f874766cb58aa43f9f9ce08bb).
+cpufreq: add smartassV2 governor (erasmux: https://github.com/erasmux/hero-kernel-2.6.35/commit/2ade635b0607acc1ab0ec7f4d274855a9487af57).
+
+11-08-2011:
+Some clock frequency cleanup, frequency_voltage_table sysfs, and states_enabled_table sysfs (via rodderik: https://github.com/Rodderik/android_kernel_epic4g_gb_official/commit/91f1e74d7d123fff6a9b4ae82d2d5dfcb2bff0f4).
+Modify sysfs vdd interface so that the user can set vdd directly (netarchy: https://github.com/netarchy/nexus-s/commit/b16cbfdeab73f27e05d100c7afbc1fdb32dc0917).
+Raise arm voltage cap for adventurous over-volting individuals (netarchy: https://github.com/netarchy/nexus-s/commit/94215cb9f00e5680019fb5c1648b3101e4664d1a).
+Commenting out spammy printk used for vdd verification during testing (netarchy: https://github.com/netarchy/nexus-s/commit/8ccf4ec96ed195a9404c131c31d9764b9c3d1230).
+Correct some voltage settings and add the ability to modify voltages via sysfs based on work by TheEscapistxda (netarchy: https://github.com/netarchy/nexus-s/commit/3a9a272a0f3d3c048a7a364b327eb49f6680c4fd).
+Add 1.3ghz and 1.4ghz frequencies to the table (via netarchy: https://github.com/netarchy/nexus-s/commit/bea38ab5ed2fd4366f111d6c2c60295a043fb7fa).
+Define safe initial min and max speeds on boot (netarchy: https://github.com/netarchy/nexus-s/commit/3b1bcb430e45ad0610d0b5346f8eb4af2298b922).
+Overclock tweaks (via netarchy: https://github.com/netarchy/nexus-s/commit/161bcc7b7b7c54fb4ee896fd52cc90509ccfde8f).
+Fixed 1.2ghz overclock (via netarchy: https://github.com/netarchy/nexus-s/commit/6b66678fa196d0ce7550c38fdb6566da57d46d95).
+Add 1.2ghz to frequency table (via netarchy: https://github.com/netarchy/nexus-s/commit/31f213e584da005be66a376603e24915d53ca73e).
+ARM: S5PC11X: CPUFREQ: Fix power suspend cpu frequency (coolbho3k via netarchy: https://github.com/netarchy/nexus-s/commit/e434b50998753930d302988a0444ffce92623500).
+Small tweak to ondemand default up threshold (netarchy: https://github.com/netarchy/nexus-s/commit/63fa22148e0c29d989e4c9120fd3b84fae4cf924).
+Interactive adjustments (netarchy: https://github.com/netarchy/nexus-s/commit/7bd7b9ae76b98c3ec8c71dc11bfd4e62b04ae7a3).
+More adjustments for smartass (netarchy: https://github.com/netarchy/nexus-s/commit/86a3adea41b089c9a2439bb3db237be185f49759).
+Smartass adjustments (netarchy: https://github.com/netarchy/nexus-s/commit/54dcfef94a96bc3043aac6f66339a1dd24d77301).
+Add TheEscapists modified smartass governor, and fix the scaling for the 400mhz-800mhz gap (TheEscapist13 via netarchy: https://github.com/netarchy/nexus-s/commit/1f3ee7b3b5172cdd9e9e60fec8afa03ea4d8098f).
+Tweaks to ondemand defaults (netarchy: https://github.com/netarchy/nexus-s/commit/3d9a7418598d5eda3a60e9b415676bfe077b8a88).
+Tweaking conservative governor defaults (netarchy: https://github.com/netarchy/nexus-s/commit/ee6f881f29eb660aa41b8cfa4481ddc69f33ea4d).
+Fix compile errors with interactive governor (netarchy: https://github.com/netarchy/nexus-s/commit/51259e9997e892d343166d7999fef0aeb50c42a1).
+cpufreq interactive governor: fix crash on CPU shutdown (Todd Poynor via netarchy: https://github.com/netarchy/nexus-s/commit/627ebb25780b7aa3d8d5d3d181a89c66f69b7443).
+cpufreq interactive governor save/restore IRQs around cpumask spinlocks (Todd Poynor via netarchy: https://github.com/netarchy/nexus-s/commit/4620008ae098748acd0e6f1c6013634ab592dbc8).
+Add new 'interactive' governor (Mike Chan via netarchy: https://github.com/netarchy/nexus-s/commit/b6a49be1525390890813808a4b4966438bb7b4e8).
+Begin using localversion for versioning (removed from default.prop).
+Some changes to system_apps init script (some logging and don't move apps that are odexed).
+Changes to mount_ro init script (remove other init scripts before Remount ro).
+
+11-07-2011:
+Updating initramfs to EI22.
+Renamed initramfs_eh17 to initramfs_tw (including needed defconfig and script changes).
+Some changes to DRockstar's rclean script.
+
 11-06-2011:
+Some changes to a couple init scripts (using hard coded users and groups for chown, and some trailing slashes for directories).
 Feature list for v0.0.1.
 Fixing a typo in branchHelper script.
 Some changes to "system_apps" init script.

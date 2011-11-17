@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-20-2011:
+Redirect "reboot bootloader" to reboot into download mode (noobnl: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/7a8cc34ace48375624a9fffc02ca76cedf588d05).
 Added charge-control script to initramfs_tw/nubernel/bin/.
 Revised the batt_info script a bit.
 Fixing some things I broke when switching to using CONFIG_DEBUG_NUBERNEL.

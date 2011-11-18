@@ -45,6 +45,8 @@
 #include <linux/android_alarm.h>
 #include "s5pc110_battery.h"
 
+#define NC_DEBUG
+
 #define BAT_POLLING_INTERVAL	10000
 #define BAT_WAITING_INTERVAL	20000	/* 20 sec */
 #define BAT_WAITING_COUNT	(BAT_WAITING_INTERVAL / BAT_POLLING_INTERVAL)
@@ -317,61 +319,136 @@ static int max8998_charging_control(struct chg_data *chg)
 	int ret;
 	int topoff;
 
-	if ((prev_charging == chg->charging) && (prev_cable == chg->cable_status))
+#ifdef NC_DEBUG
+	printk(KERN_INFO "CHRG:CR: %s: [ Charge rate begin ] \n", __func__);
+#endif
+	if ((prev_charging == chg->charging) && (prev_cable == chg->cable_status)) {
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: (prev_charging [%d] == chg->charging [%d]) && (prev_cable [%d] == chg->cable_status [%d]) \n",
+				prev_charging, chg->charging, prev_cable, chg->cable_status);
+		printk(KERN_INFO "CHRG:CR: %s: [ Charge rate end ] \n", __func__);
+#endif
 		return 0;
+	}
 
 	bat_info("%s : chg(%d) cable(%d) dis(%X) bat(%d,%d,%d), esafe(%d)\n", __func__,
 		chg->charging, chg->cable_status, chg->bat_info.dis_reason,
 		chg->bat_info.batt_soc, chg->set_batt_full, chg->bat_info.batt_is_full,
 		chg->esafe);
-
+#ifdef NC_DEBUG
+	printk(KERN_INFO "CHRG:CR: chg [%d] cable [%d] dis[%X] bat(soc [%d], set_full [%d], is_full [%d]), esafe[%d] \n",
+			chg->charging, chg->cable_status, chg->bat_info.dis_reason,
+			chg->bat_info.batt_soc, chg->set_batt_full, chg->bat_info.batt_is_full,
+			chg->esafe);
+#endif
 	if (!chg->charging) {
 		/* disable charging */
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: %s: [ disable charging ] \n", __func__);
+#endif
 		s3c_clean_chg_current(chg);
 
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d] value [%d] \n",
+				MAX8998_REG_CHGR2,
+				((chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
+				(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
+				(MAX8998_CHGEN_DISABLE	<< MAX8998_SHIFT_CHGEN)));
+#endif
 		ret = max8998_write_reg(i2c, MAX8998_REG_CHGR2,
 			(chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
 			(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
 			(MAX8998_CHGEN_DISABLE	<< MAX8998_SHIFT_CHGEN));
 		if (ret < 0)
 			goto err;
-	} else {
+	}
+	else {
 		/* enable charging */
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: %s: [ enable charging ] \n", __func__);
+#endif
 		if (chg->cable_status == CABLE_TYPE_AC) {
+#ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: %s: [ CABLE_TYPE_AC ] \n", __func__);
+#endif
 			/* termination current adc NOT used to detect full-charging */
-			if (chg->pdata->termination_curr_adc > 0)
+			if (chg->pdata->termination_curr_adc > 0) {
 				topoff = MAX8998_TOPOFF_10;
-			else
+#ifdef NC_DEBUG
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_10 [%d] \n", topoff);
+#endif
+			}
+			else {
 				topoff = MAX8998_TOPOFF_30;
-
+#ifdef NC_DEBUG
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_30 [%d] \n", topoff);
+#endif
+			}
 			/* ac */
+#ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
+					MAX8998_REG_CHGR1,
+					((topoff	<< MAX8998_SHIFT_TOPOFF) |
+					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
+					(MAX8998_ICHG_600	<< MAX8998_SHIFT_ICHG)));
+#endif
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 				(topoff	<< MAX8998_SHIFT_TOPOFF) |
 				(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
 				(MAX8998_ICHG_600	<< MAX8998_SHIFT_ICHG));
 			if (ret < 0)
 				goto err;
-
+#ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d] value [%d] \n",
+					MAX8998_REG_CHGR2,
+					((chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
+					(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
+					(MAX8998_CHGEN_ENABLE	<< MAX8998_SHIFT_CHGEN)));
+#endif
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR2,
 				(chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
 				(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
 				(MAX8998_CHGEN_ENABLE	<< MAX8998_SHIFT_CHGEN));
 			if (ret < 0)
 				goto err;
-		} else {
-			if (chg->pdata->termination_curr_adc > 0)
+		}
+		else {
+#ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: %s: [ ! CABLE_TYPE_AC ] \n", __func__);
+#endif
+			if (chg->pdata->termination_curr_adc > 0) {
 				topoff = MAX8998_TOPOFF_10;
-			else
+#ifdef NC_DEBUG
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_10 [%d] \n", topoff);
+#endif
+			}
+			else {
 				topoff = MAX8998_TOPOFF_35;
-
+#ifdef NC_DEBUG
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_35 [%d] \n", topoff);
+#endif
+			}
 			/* usb */
+#ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
+					MAX8998_REG_CHGR1,
+					((topoff	<< MAX8998_SHIFT_TOPOFF) |
+					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
+					(MAX8998_ICHG_475	<< MAX8998_SHIFT_ICHG)));
+#endif
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 				(topoff	<< MAX8998_SHIFT_TOPOFF) |
 				(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
 				(MAX8998_ICHG_475	<< MAX8998_SHIFT_ICHG));
 			if (ret < 0)
 				goto err;
-
+#ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d] value [%d] \n",
+					MAX8998_REG_CHGR2,
+					((chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
+					(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
+					(MAX8998_CHGEN_ENABLE	<< MAX8998_SHIFT_CHGEN)));
+#endif
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR2,
 				(chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
 				(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
@@ -380,13 +457,23 @@ static int max8998_charging_control(struct chg_data *chg)
 				goto err;
 		}
 	}
-
 	prev_charging = chg->charging;
+#ifdef NC_DEBUG
+	printk(KERN_INFO "CHRG:CR: prev_charging [%d] \n", prev_charging);
+#endif
 	prev_cable = chg->cable_status;
-
+#ifdef NC_DEBUG
+	printk(KERN_INFO "CHRG:CR: prev_cable [%d] \n", prev_cable);
+#endif
+#ifdef NC_DEBUG
+	printk(KERN_INFO "CHRG:CR: %s: [ Charge rate end ] \n", __func__);
+#endif
 	return 0;
 err:
 	pr_err("max8998_read_reg error\n");
+#ifdef NC_DEBUG
+	printk(KERN_INFO "CHRG:CR: %s: [ Charge rate end ] \n", __func__);
+#endif
 	return ret;
 }
 

@@ -336,7 +336,7 @@ static int max8998_charging_control(struct chg_data *chg)
 		chg->bat_info.batt_soc, chg->set_batt_full, chg->bat_info.batt_is_full,
 		chg->esafe);
 #ifdef NC_DEBUG
-	printk(KERN_INFO "CHRG:CR: chg [%d] cable [%d] dis[%X] bat(soc [%d], set_full [%d], is_full [%d]), esafe[%d] \n",
+	printk(KERN_INFO "CHRG:CR: chg [%d] cable [%d] dis [%X] bat(soc [%d], set_full [%d], is_full [%d]), esafe [%d] \n",
 			chg->charging, chg->cable_status, chg->bat_info.dis_reason,
 			chg->bat_info.batt_soc, chg->set_batt_full, chg->bat_info.batt_is_full,
 			chg->esafe);
@@ -349,6 +349,10 @@ static int max8998_charging_control(struct chg_data *chg)
 		s3c_clean_chg_current(chg);
 
 #ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d], chg->esafe [%d], MAX8998_SHIFT_ESAFEOUT [%d], MAX8998_CHGTIME_7HR [%d] \n",
+				MAX8998_REG_CHGR2, chg->esafe, MAX8998_SHIFT_ESAFEOUT, MAX8998_CHGTIME_7HR);
+			printk(KERN_INFO "																			MAX8998_SHIFT_FT [%d], MAX8998_CHGEN_DISABLE [%d], MAX8998_SHIFT_CHGEN [%d] \n",
+				MAX8998_SHIFT_FT, MAX8998_CHGEN_DISABLE, MAX8998_SHIFT_CHGEN);
 		printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d] value [%d] \n",
 				MAX8998_REG_CHGR2,
 				((chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
@@ -386,6 +390,10 @@ static int max8998_charging_control(struct chg_data *chg)
 			}
 			/* ac */
 #ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
+					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], MAX8998_ICHG_600 [%d], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, MAX8998_ICHG_600, MAX8998_SHIFT_ICHG);
 			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
 					MAX8998_REG_CHGR1,
 					((topoff	<< MAX8998_SHIFT_TOPOFF) |
@@ -399,6 +407,10 @@ static int max8998_charging_control(struct chg_data *chg)
 			if (ret < 0)
 				goto err;
 #ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d], chg->esafe [%d], MAX8998_SHIFT_ESAFEOUT [%d], MAX8998_CHGTIME_7HR [%d] \n",
+					MAX8998_REG_CHGR2, chg->esafe, MAX8998_SHIFT_ESAFEOUT, MAX8998_CHGTIME_7HR);
+			printk(KERN_INFO "																			MAX8998_SHIFT_FT [%d], MAX8998_CHGEN_ENABLE [%d], MAX8998_SHIFT_CHGEN [%d] \n",
+					MAX8998_SHIFT_FT, MAX8998_CHGEN_ENABLE, MAX8998_SHIFT_CHGEN);
 			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d] value [%d] \n",
 					MAX8998_REG_CHGR2,
 					((chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
@@ -430,6 +442,10 @@ static int max8998_charging_control(struct chg_data *chg)
 			}
 			/* usb */
 #ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
+					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], MAX8998_ICHG_475 [%d], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, MAX8998_ICHG_475, MAX8998_SHIFT_ICHG);
 			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
 					MAX8998_REG_CHGR1,
 					((topoff	<< MAX8998_SHIFT_TOPOFF) |
@@ -443,6 +459,10 @@ static int max8998_charging_control(struct chg_data *chg)
 			if (ret < 0)
 				goto err;
 #ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d], chg->esafe [%d], MAX8998_SHIFT_ESAFEOUT [%d], MAX8998_CHGTIME_7HR [%d] \n",
+					MAX8998_REG_CHGR2, chg->esafe, MAX8998_SHIFT_ESAFEOUT, MAX8998_CHGTIME_7HR);
+			printk(KERN_INFO "																			MAX8998_SHIFT_FT [%d], MAX8998_CHGEN_ENABLE [%d], MAX8998_SHIFT_CHGEN [%d] \n",
+					MAX8998_SHIFT_FT, MAX8998_CHGEN_ENABLE, MAX8998_SHIFT_CHGEN);
 			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d] value [%d] \n",
 					MAX8998_REG_CHGR2,
 					((chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
@@ -1582,7 +1602,9 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
         struct i2c_client *i2c = chg->iodev->i2c;
 
 	bat_info("%s\n", __func__);
-
+#ifdef NC_DEBUG
+	printk(KERN_INFO "CHRG:CR: %s: [ max8998_int_work_func begin ] \n", __func__);
+#endif
 	ret = max8998_bulk_read(i2c, MAX8998_REG_IRQ1, MAX8998_NUM_IRQ_REGS, data);
 	if (ret < 0)
 		goto err;
@@ -1590,6 +1612,9 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 	wake_lock(&chg->work_wake_lock);
 
 	if (data[MAX8998_REG_IRQ3] & MAX8998_IRQ_TOPOFFR_MASK) {
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: %s: [ (data[MAX8998_REG_IRQ3] & MAX8998_IRQ_TOPOFFR_MASK) ] \n", __func__);
+#endif
 		bat_info("%s : topoff intr(%d)\n", __func__, chg->set_batt_full);
 #ifndef CONFIG_MACH_FORTE
 		if (s3c_bat_check_v_f(chg) == 0)
@@ -1600,6 +1625,9 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 	{
 		
 		bat_info("%s : topoff stop charging ******* %d \n", __func__,data2);
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: %s: [ topoff stop charging ] \n", __func__);
+#endif
 		writel(readl(S5P_INFORM6)& 0xFFFF00FF, S5P_INFORM6);
 		#ifdef CONFIG_KERNEL_DEBUG_SEC
 		kernel_sec_clear_upload_magic_number();
@@ -1611,24 +1639,68 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 	}
 #endif
 
-		if (chg->set_batt_full)
+		if (chg->set_batt_full) {
 			chg->bat_info.batt_is_full = true;
+#ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: %s: [ chg->set_batt_full ] \n", __func__);
+#endif
+		}
 		else {
+#ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: %s: [ ! chg->set_batt_full ] \n", __func__);
+#endif
 			chg->set_batt_full = true;
 
-			if (chg->pdata->termination_curr_adc > 0)
+			if (chg->pdata->termination_curr_adc > 0) {
 				topoff = MAX8998_TOPOFF_10;
-			else if (chg->cable_status == CABLE_TYPE_AC)
+#ifdef NC_DEBUG
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_10 [%d] \n", topoff);
+#endif
+			}
+			else if (chg->cable_status == CABLE_TYPE_AC) {
 				topoff = MAX8998_TOPOFF_30;
-			else 
+#ifdef NC_DEBUG
+				printk(KERN_INFO "CHRG:CR: %s: [ CABLE_TYPE_AC ] \n", __func__);
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_30 [%d] \n", topoff);
+#endif
+			}
+			else {
 				topoff = MAX8998_TOPOFF_35;
+#ifdef NC_DEBUG
+				printk(KERN_INFO "CHRG:CR: %s: [ ! CABLE_TYPE_AC ] \n", __func__);
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_35 [%d] \n", topoff);
+#endif
+			}
 
-			if (chg->cable_status == CABLE_TYPE_AC)
+			if (chg->cable_status == CABLE_TYPE_AC) {
+#ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
+					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], MAX8998_ICHG_600 [%d], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, MAX8998_ICHG_600, MAX8998_SHIFT_ICHG);
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
+					MAX8998_REG_CHGR1,
+					((topoff	<< MAX8998_SHIFT_TOPOFF) |
+					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
+					(MAX8998_ICHG_600	<< MAX8998_SHIFT_ICHG)));
+#endif
 				max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 					(topoff	<< MAX8998_SHIFT_TOPOFF) |
 					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
 					(MAX8998_ICHG_600	<< MAX8998_SHIFT_ICHG));
+			}
 			else if (chg->cable_status == CABLE_TYPE_USB)
+#ifdef NC_DEBUG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
+					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], MAX8998_ICHG_475 [%d], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, MAX8998_ICHG_475, MAX8998_SHIFT_ICHG);
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
+					MAX8998_REG_CHGR1,
+					((topoff	<< MAX8998_SHIFT_TOPOFF) |
+					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
+					(MAX8998_ICHG_475	<< MAX8998_SHIFT_ICHG)));
+#endif
 				max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 					(topoff	<< MAX8998_SHIFT_TOPOFF) |
 					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
@@ -1636,18 +1708,31 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 		}
 	}
 
-	if (data[MAX8998_REG_IRQ4] & MAX8998_IRQ_LOBAT1_MASK)
+	if (data[MAX8998_REG_IRQ4] & MAX8998_IRQ_LOBAT1_MASK) {
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: %s: [ max8998_lowbat_warning ] \n", __func__);
+#endif
 		max8998_lowbat_warning(chg);
+	}
 
-	if (data[MAX8998_REG_IRQ4] & MAX8998_IRQ_LOBAT2_MASK)
+	if (data[MAX8998_REG_IRQ4] & MAX8998_IRQ_LOBAT2_MASK) {
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: %s: [ max8998_lowbat_critical ] \n", __func__);
+#endif
 		max8998_lowbat_critical(chg);
+	}
 
 end:
 	queue_work(chg->monitor_wqueue, &chg->bat_work);
-
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: %s: [ max8998_int_work_func end ] \n", __func__);
+#endif
 	return IRQ_HANDLED;
 err:
 	pr_err("%s : pmic read error\n", __func__);
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:CR: %s: [ max8998_int_work_func end ] \n", __func__);
+#endif
 	return IRQ_HANDLED;
 }
 

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-17-2011:
+Added more charge rate debug logging.
 Added some charge rate debug logging.
 Added some Fuelgauge calculation debug logging.
 

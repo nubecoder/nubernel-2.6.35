@@ -1133,7 +1133,8 @@ static void s3c_bat_work(struct work_struct *work)
 
 #if defined( CONFIG_MACH_ATLAS) || defined(CONFIG_MACH_FORTE)
 	/* low battery check by voltage */
-	if ((chg->bat_info.batt_vcell < 3400000) && (chg->cable_status == CABLE_TYPE_NONE))
+	//if ((chg->bat_info.batt_vcell < 3400000) && (chg->cable_status == CABLE_TYPE_NONE))
+	if ((chg->bat_info.batt_vcell < LOW_BATT_COND_VOLTAGE) && (chg->cable_status == CABLE_TYPE_NONE))
 		cnt++;
 	else
 		cnt = 0;

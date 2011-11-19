@@ -202,11 +202,7 @@ static void max17040_get_soc(struct i2c_client *client)
 	pure_soc = msb * 100 + ((lsb * 100) / 256);
 
 	if (pure_soc >= 0) {
-#ifdef CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT
 		adj_soc = ((pure_soc * 10000) - 140) / (BATTERY_FG_ADJUSTMENT - 140);
-#else
-		adj_soc = ((pure_soc * 10000) - 140) / (9430 - 140);
-#endif /* CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT */
 	}
 	else {
 		adj_soc = 0;

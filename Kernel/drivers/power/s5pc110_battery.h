@@ -132,6 +132,9 @@ enum {
 #define LOW_BATT_COND_VOLTAGE		(3400 * 1000)
 #define LOW_BATT_COND_LEVEL		0
 
+// over-charge protection
+#define OVER_CHARGE_COND_VOLTAGE (4210 * 1000)
+
 // charge rate
 #define CHARGE_RATE_AC_DEFAULT 5
 #define CHARGE_RATE_USB_DEFAULT 2

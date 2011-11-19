@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-18-2011:
+Use the LOW_BATT_COND_VOLTAGE define for this check.
+
 11-17-2011:
 Added more charge rate debug logging.
 Added some charge rate debug logging.

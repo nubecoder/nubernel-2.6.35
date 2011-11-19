@@ -213,13 +213,17 @@ static void max17040_get_soc(struct i2c_client *client)
 	if (pure_soc >= 0) {
 #ifdef CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT
 		adj_soc = ((pure_soc * 10000) - 140) / (BATTERY_FG_ADJUSTMENT - 140);
+#ifdef NC_DEBUG
+		printk(KERN_INFO "CHRG:FG: adj_soc [%d] { ((pure_soc [%d] * 10000) - 140) /  (%lu - 140) } \n",
+				adj_soc, pure_soc, BATTERY_FG_ADJUSTMENT);
+#endif
 #else
 		adj_soc = ((pure_soc * 10000) - 140) / (9430 - 140);
-#endif /* CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT */
 #ifdef NC_DEBUG
 		printk(KERN_INFO "CHRG:FG: adj_soc [%d] { ((pure_soc [%d] * 10000) - 140) /  (9430 - 140) } \n",
 				adj_soc, pure_soc);
 #endif
+#endif /* CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT */
 	}
 	else {
 		adj_soc = 0;

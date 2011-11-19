@@ -415,13 +415,13 @@ static int max8998_charging_control(struct chg_data *chg)
 #ifdef NC_DEBUG
 			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
 					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
-			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], MAX8998_ICHG_600 [%d], MAX8998_SHIFT_ICHG [%d] \n",
-					MAX8998_SHIFT_RSTR, MAX8998_ICHG_600, MAX8998_SHIFT_ICHG);
-			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], CHARGE_RATE_AC [%lu], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, CHARGE_RATE_AC, MAX8998_SHIFT_ICHG);
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%lu] \n",
 					MAX8998_REG_CHGR1,
 					((topoff	<< MAX8998_SHIFT_TOPOFF) |
 					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-					(MAX8998_ICHG_600	<< MAX8998_SHIFT_ICHG)));
+					(CHARGE_RATE_AC	<< MAX8998_SHIFT_ICHG)));
 #endif
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 				(topoff	<< MAX8998_SHIFT_TOPOFF) |
@@ -467,13 +467,13 @@ static int max8998_charging_control(struct chg_data *chg)
 #ifdef NC_DEBUG
 			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
 					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
-			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], MAX8998_ICHG_475 [%d], MAX8998_SHIFT_ICHG [%d] \n",
-					MAX8998_SHIFT_RSTR, MAX8998_ICHG_475, MAX8998_SHIFT_ICHG);
-			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], CHARGE_RATE_USB [%lu], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, CHARGE_RATE_USB, MAX8998_SHIFT_ICHG);
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%lu] \n",
 					MAX8998_REG_CHGR1,
 					((topoff	<< MAX8998_SHIFT_TOPOFF) |
 					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-					(MAX8998_ICHG_475	<< MAX8998_SHIFT_ICHG)));
+					(CHARGE_RATE_USB	<< MAX8998_SHIFT_ICHG)));
 #endif
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 				(topoff	<< MAX8998_SHIFT_TOPOFF) |
@@ -825,10 +825,22 @@ static unsigned long s3c_read_temp(struct chg_data *chg)
 static unsigned long s3c_read_chg_current(struct chg_data *chg)
 {
 	int adc = 0;
+#ifdef NC_DEBUG
+	unsigned long ret;
+#endif
 
 	adc = s3c_bat_get_adc_data(chg->s3c_adc_channel.s3c_adc_chg_current);
+#ifdef NC_DEBUG
+	printk(KERN_INFO "CHRG:CUR: %s: adc [ %d ] \n", __func__, adc);
+#endif
 
+#ifdef NC_DEBUG
+	ret = calculate_average_adc(chg->s3c_adc_channel.s3c_adc_chg_current, adc, chg);
+	printk(KERN_INFO "CHRG:CUR: %s: avg_adc [ %lu ] \n", __func__, ret);
+	return ret;
+#else
 	return calculate_average_adc(chg->s3c_adc_channel.s3c_adc_chg_current, adc, chg);
+#endif
 }
 
 static int s3c_get_chg_current(struct chg_data *chg)
@@ -1861,13 +1873,13 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 #ifdef NC_DEBUG
 			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
 					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
-			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], MAX8998_ICHG_600 [%d], MAX8998_SHIFT_ICHG [%d] \n",
-					MAX8998_SHIFT_RSTR, MAX8998_ICHG_600, MAX8998_SHIFT_ICHG);
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], CHARGE_RATE_AC [%d], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, CHARGE_RATE_AC, MAX8998_SHIFT_ICHG);
 			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
 					MAX8998_REG_CHGR1,
 					((topoff	<< MAX8998_SHIFT_TOPOFF) |
 					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-					(MAX8998_ICHG_600	<< MAX8998_SHIFT_ICHG)));
+					(CHARGE_RATE_AC	<< MAX8998_SHIFT_ICHG)));
 #endif
 				max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 					(topoff	<< MAX8998_SHIFT_TOPOFF) |
@@ -1878,13 +1890,13 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 #ifdef NC_DEBUG
 			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
 					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
-			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], MAX8998_ICHG_475 [%d], MAX8998_SHIFT_ICHG [%d] \n",
-					MAX8998_SHIFT_RSTR, MAX8998_ICHG_475, MAX8998_SHIFT_ICHG);
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], CHARGE_RATE_USB [%d], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, CHARGE_RATE_USB, MAX8998_SHIFT_ICHG);
 			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
 					MAX8998_REG_CHGR1,
 					((topoff	<< MAX8998_SHIFT_TOPOFF) |
 					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-					(MAX8998_ICHG_475	<< MAX8998_SHIFT_ICHG)));
+					(CHARGE_RATE_USB	<< MAX8998_SHIFT_ICHG)));
 #endif
 				max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 					(topoff	<< MAX8998_SHIFT_TOPOFF) |

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-19-2011:
+Some debugging fixes and additions.
 Added battery over-charge protection (at 4210mV).
 Implement battery charge control via sysfs.
 

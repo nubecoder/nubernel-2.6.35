@@ -45,6 +45,29 @@
 #include <linux/android_alarm.h>
 #include "s5pc110_battery.h"
 
+#ifdef CONFIG_BATTERY_S5PC110_CHARGE_CONTROL
+// charge rate
+#define CHARGE_RATE_AC         charge_rate_ac
+#define CHARGE_RATE_USB         charge_rate_usb
+unsigned long charge_rate_ac = CHARGE_RATE_AC_DEFAULT;
+unsigned long charge_rate_usb = CHARGE_RATE_USB_DEFAULT;
+// charge control
+#define FULL_CHARGE_COND_VOLTAGE charge_full_voltage
+#define FULL_CHARGE_COND_CURRENT charge_full_current
+#define RECHARGE_COND_VOLTAGE    charge_recharge_voltage
+unsigned long charge_full_voltage = FULL_CHARGE_COND_VOLTAGE_DEFAULT;
+unsigned long charge_full_current = FULL_CHARGE_COND_CURRENT_DEFAULT;
+unsigned long charge_recharge_voltage = RECHARGE_COND_VOLTAGE_DEFAULT;
+#else
+// charge rate
+#define CHARGE_RATE_AC  CHARGE_RATE_AC_DEFAULT
+#define CHARGE_RATE_USB CHARGE_RATE_USB_DEFAULT
+// charge control
+#define FULL_CHARGE_COND_VOLTAGE FULL_CHARGE_COND_VOLTAGE_DEFAULT
+#define FULL_CHARGE_COND_CURRENT FULL_CHARGE_COND_CURRENT_DEFAULT
+#define RECHARGE_COND_VOLTAGE    RECHARGE_COND_VOLTAGE_DEFAULT
+#endif /* CONFIG_BATTERY_S5PC110_CHARGE_CONTROL */
+
 #define BAT_POLLING_INTERVAL	10000
 #define BAT_WAITING_INTERVAL	20000	/* 20 sec */
 #define BAT_WAITING_COUNT	(BAT_WAITING_INTERVAL / BAT_POLLING_INTERVAL)
@@ -348,7 +371,7 @@ static int max8998_charging_control(struct chg_data *chg)
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 				(topoff	<< MAX8998_SHIFT_TOPOFF) |
 				(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-				(MAX8998_ICHG_600	<< MAX8998_SHIFT_ICHG));
+				(CHARGE_RATE_AC	<< MAX8998_SHIFT_ICHG));
 			if (ret < 0)
 				goto err;
 
@@ -368,7 +391,7 @@ static int max8998_charging_control(struct chg_data *chg)
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 				(topoff	<< MAX8998_SHIFT_TOPOFF) |
 				(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-				(MAX8998_ICHG_475	<< MAX8998_SHIFT_ICHG));
+				(CHARGE_RATE_USB	<< MAX8998_SHIFT_ICHG));
 			if (ret < 0)
 				goto err;
 
@@ -713,8 +736,10 @@ static int s3c_get_chg_current(struct chg_data *chg)
 		if (chg->pdata->termination_curr_adc <= 0)
 			goto skip;
 
-		if ((chg->bat_info.batt_vcell / 1000 > 4000)
-			&& (chg->bat_info.chg_current_adc < chg->pdata->termination_curr_adc)) {
+		//if ((chg->bat_info.batt_vcell / 1000 > 4000)
+			//&& (chg->bat_info.chg_current_adc < chg->pdata->termination_curr_adc)) {
+		if ((chg->bat_info.batt_vcell > FULL_CHARGE_COND_VOLTAGE)
+			&& (chg->bat_info.chg_current_adc < FULL_CHARGE_COND_CURRENT)) {
 			count++;
 			if (count > 2) {
 				chg->bat_info.batt_is_full = true;
@@ -998,7 +1023,7 @@ static int s3c_cable_status_update(struct chg_data *chg)
 		#ifdef CONFIG_KERNEL_DEBUG_SEC
         	// Clear upload magic number to protect from sudden power-off...
         	if ((chg->bat_info.batt_soc <= LOW_BATT_COND_LEVEL) &&
-                    (chg->bat_info.batt_vcell/1000 + 35 <= LOW_BATT_COND_VOLTAGE))          
+                    (chg->bat_info.batt_vcell + 35 <= LOW_BATT_COND_VOLTAGE))
         		{
                 		kernel_sec_clear_upload_magic_number();
         		}
@@ -1485,6 +1510,155 @@ succeed:
 	return rc;
 }
 
+#ifdef CONFIG_BATTERY_S5PC110_CHARGE_CONTROL
+static ssize_t s3c_bat_show_control_attrs(struct device *dev,
+					struct device_attribute *attr, char *buf);
+
+static ssize_t s3c_bat_store_control_attrs(struct device *dev, struct device_attribute *attr,
+					const char *buf, size_t count);
+
+#define SEC_BATTERY_CONTROL_ATTR(_name) \
+{ \
+	.attr = { .name = #_name, .mode = 0664, .owner = THIS_MODULE }, \
+	.show = s3c_bat_show_control_attrs, \
+	.store = s3c_bat_store_control_attrs, \
+}
+
+static struct device_attribute s3c_battery_control_attrs[] = {
+	SEC_BATTERY_CONTROL_ATTR(charge_rate_ac),
+	SEC_BATTERY_CONTROL_ATTR(charge_rate_usb),
+	SEC_BATTERY_CONTROL_ATTR(charge_full_voltage),
+	SEC_BATTERY_CONTROL_ATTR(charge_full_current),
+	SEC_BATTERY_CONTROL_ATTR(charge_recharge_voltage),
+};
+#undef SEC_BATTERY_CONTROL_ATTR
+
+static ssize_t s3c_bat_show_control_attrs(struct device *dev,
+					struct device_attribute *attr, char *buf)
+{
+	unsigned long val;
+	int i = 0;
+	const ptrdiff_t off = attr - s3c_battery_control_attrs;
+
+	switch (off) {
+	case BATT_CHARGE_RATE_AC:
+		val = charge_rate_ac;
+		i += scnprintf(buf + i, PAGE_SIZE - i, "%lu\n", val);
+		break;
+	case BATT_CHARGE_RATE_USB:
+		val = charge_rate_usb;
+		i += scnprintf(buf + i, PAGE_SIZE - i, "%lu\n", val);
+		break;
+	case BATT_CHARGE_FULL_VOLTAGE:
+		val = (charge_full_voltage / 1000);
+		i += scnprintf(buf + i, PAGE_SIZE - i, "%lu\n", val);
+		break;
+	case BATT_CHARGE_FULL_CURRENT:
+		val = charge_full_current;
+		i += scnprintf(buf + i, PAGE_SIZE - i, "%lu\n", val);
+		break;
+	case BATT_CHARGE_RECHARGE_VOLTAGE:
+		val = (charge_recharge_voltage / 1000);
+		i += scnprintf(buf + i, PAGE_SIZE - i, "%lu\n", val);
+		break;
+	default:
+		i = -EINVAL;
+	}
+	return i;
+}
+
+static ssize_t s3c_bat_store_control_attrs(struct device *dev, struct device_attribute *attr,
+				   const char *buf, size_t count)
+{
+	unsigned long val;
+	int res;
+	int ret = 0;
+	const ptrdiff_t off = attr - s3c_battery_control_attrs;
+
+	switch (off) {
+	case BATT_CHARGE_RATE_AC:
+		if ((res = strict_strtoul(buf, 10, &val)) < 0) {
+			ret = res;
+			break;
+		}
+		if ((val < CHARGE_RATE_MIN) || (val > CHARGE_RATE_MAX)) {
+			ret = -EINVAL;
+			break;
+		}
+		charge_rate_ac = val;
+		ret = count;
+		break;
+	case BATT_CHARGE_RATE_USB:
+		if ((res = strict_strtoul(buf, 10, &val)) < 0) {
+			ret = res;
+			break;
+		}
+		if ((val < CHARGE_RATE_MIN) || (val > CHARGE_RATE_MAX)) {
+			ret = -EINVAL;
+			break;
+		}
+		charge_rate_usb = val;
+		ret = count;
+		break;
+	case BATT_CHARGE_FULL_VOLTAGE:
+		if ((res = strict_strtoul(buf, 10, &val)) < 0) {
+			ret = res;
+			break;
+		}
+		if (((val * 1000) < FULL_CHARGE_COND_VOLTAGE_DEFAULT) || ((val * 1000) > FULL_CHARGE_COND_VOLTAGE_MAX)) {
+			ret = -EINVAL;
+			break;
+		}
+		charge_full_voltage = (val * 1000);
+		ret = count;
+		break;
+	case BATT_CHARGE_FULL_CURRENT:
+		if ((res = strict_strtoul(buf, 10, &val)) < 0) {
+			ret = res;
+			break;
+		}
+		if ((val < FULL_CHARGE_COND_CURRENT_MIN) || (val > FULL_CHARGE_COND_CURRENT_DEFAULT)) {
+			ret = -EINVAL;
+			break;
+		}
+		charge_full_current = val;
+		ret = count;
+		break;
+	case BATT_CHARGE_RECHARGE_VOLTAGE:
+		if ((res = strict_strtoul(buf, 10, &val)) < 0) {
+			ret = res;
+			break;
+		}
+		if (((val * 1000) < RECHARGE_COND_VOLTAGE_DEFAULT) || ((val * 1000) > RECHARGE_COND_VOLTAGE_MAX)) {
+			ret = -EINVAL;
+			break;
+		}
+		charge_recharge_voltage = (val * 1000);
+		ret = count;
+		break;
+	default:
+		ret = -EINVAL;
+	}
+	return ret;
+}
+
+static int s3c_bat_create_control_attrs(struct device *dev)
+{
+	int i, rc;
+	for (i = 0; i < ARRAY_SIZE(s3c_battery_control_attrs); i++) {
+		rc = device_create_file(dev, &s3c_battery_control_attrs[i]);
+		if (rc)
+			goto s3c_control_attrs_failed;
+	}
+	goto control_attrs_succeed;
+s3c_control_attrs_failed:
+	while (i--)
+		device_remove_file(dev, &s3c_battery_control_attrs[i]);
+control_attrs_succeed:
+	return rc;
+}
+#endif /* CONFIG_BATTERY_S5PC110_CHARGE_CONTROL */
+
 static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 {
 	int ret;
@@ -1541,12 +1715,12 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 				max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 					(topoff	<< MAX8998_SHIFT_TOPOFF) |
 					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-					(MAX8998_ICHG_600	<< MAX8998_SHIFT_ICHG));
+					(CHARGE_RATE_AC	<< MAX8998_SHIFT_ICHG));
 			else if (chg->cable_status == CABLE_TYPE_USB)
 				max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 					(topoff	<< MAX8998_SHIFT_TOPOFF) |
 					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-					(MAX8998_ICHG_475	<< MAX8998_SHIFT_ICHG));
+					(CHARGE_RATE_USB	<< MAX8998_SHIFT_ICHG));
 		}
 	}
 
@@ -1728,6 +1902,14 @@ static __devinit int max8998_charger_probe(struct platform_device *pdev)
 		pr_err("%s : Failed to create_attrs\n", __func__);
 		goto err_irq;
 	}
+
+#ifdef CONFIG_BATTERY_S5PC110_CHARGE_CONTROL
+	ret = s3c_bat_create_control_attrs(chg->psy_bat.dev);
+	if (ret) {
+		pr_err("%s : Failed to create_control_attrs\n", __func__);
+		goto err_irq;
+	}
+#endif /* CONFIG_BATTERY_S5PC110_CHARGE_CONTROL */
 
 	chg->callbacks.set_cable = max8998_set_cable;
 	chg->callbacks.set_jig = max8998_set_jig;

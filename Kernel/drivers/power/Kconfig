@@ -130,6 +130,14 @@ config BATTERY_MAX17040
 	  in handheld and portable equipment. The MAX17040 is configured
 	  to operate with a single lithium cell
 
+config BATTERY_MAX17040_FG_ADJUSTMENT
+	bool "Maxim MAX17040 Fuel Gauge Adjustment"
+	depends on BATTERY_MAX17040
+	default y
+	help
+	  Say Y to enable support for controlling the fuel gauge adjustment
+	  value via sysfs.
+
 config BATTERY_Z2
 	tristate "Z2 battery driver"
 	depends on I2C && MACH_ZIPIT2
@@ -147,6 +155,14 @@ config BATTERY_S5PC110
 	depends on ARCH_S5PV210
 	help
 	  Say Y to enable support for batteries with s5pc110 chip.	  
+
+config BATTERY_S5PC110_CHARGE_CONTROL
+	bool "S5PC110 Battery Charge Control"
+	depends on BATTERY_S5PC110
+	default y
+	help
+	  Say Y to enable support for controlling battery charging
+	  values via sysfs.
 
 config CHARGER_PCF50633
 	tristate "NXP PCF50633 MBC"

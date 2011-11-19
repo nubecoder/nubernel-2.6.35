@@ -843,6 +843,16 @@ static int s3c_get_chg_current(struct chg_data *chg)
 		if (chg->pdata->termination_curr_adc <= 0)
 			goto skip;
 
+		// over-charge protection
+		if ((chg->bat_info.batt_vcell > OVER_CHARGE_COND_VOLTAGE)) {
+			count++;
+			if (count > 2) {
+				chg->bat_info.batt_is_full = true;
+				chg->set_batt_full = true;
+				count = 0;
+			}
+		}
+
 		//if ((chg->bat_info.batt_vcell / 1000 > 4000)
 			//&& (chg->bat_info.chg_current_adc < chg->pdata->termination_curr_adc)) {
 		if ((chg->bat_info.batt_vcell > FULL_CHARGE_COND_VOLTAGE)

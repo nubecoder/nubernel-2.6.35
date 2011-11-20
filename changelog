@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-19-2011:
+Re-applying "Remove in_frame_map from mfc input structures since it is not compatible with aries OMX libraries" for CONFIG_CYANOGENMOD=y builds only.
 Reverting "Remove in_frame_map from mfc input structures since it is not compatible with aries OMX libraries" (commitID: 1b2f882).
 Create CYANOGENMOD entry in init/Kconfig; Add and enable CONFIG_CYANOGENMOD in cm defconfig.
 Create DEBUG_NUBERNEL entry in lib/Kconfig.debug, add CONFIG_DEBUG_NUBERNEL into defconfig, and begin using it.

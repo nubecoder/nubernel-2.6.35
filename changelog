@@ -9,17 +9,30 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-20-2011:
+Use CONFIG_DEBUG_NUBERNEL to check if debugging.
 Added charge-control script to initramfs_tw/nubernel/bin/.
 Revised the batt_info script a bit.
 Fixing some things I broke when switching to using CONFIG_DEBUG_NUBERNEL.
 
 11-19-2011:
+Removing some redundant code in max17040_battery.c.
+Some debugging fixes and additions.
+Added battery over-charge protection (at 4210mV).
+Implement battery charge control via sysfs.
 Removing a useless script from initramfs_tw/nubernel/bin/.
 Re-applying "Remove in_frame_map from mfc input structures since it is not compatible with aries OMX libraries" for CONFIG_CYANOGENMOD=y builds only.
 Reverting "Remove in_frame_map from mfc input structures since it is not compatible with aries OMX libraries" (commitID: 1b2f882).
 Create CYANOGENMOD entry in init/Kconfig; Add and enable CONFIG_CYANOGENMOD in cm defconfig.
 Create DEBUG_NUBERNEL entry in lib/Kconfig.debug, add CONFIG_DEBUG_NUBERNEL into defconfig, and begin using it.
 Initial version of batt_info script.
+
+11-18-2011:
+Use the LOW_BATT_COND_VOLTAGE define for this check.
+
+11-17-2011:
+Added more charge rate debug logging.
+Added some charge rate debug logging.
+Added some Fuelgauge calculation debug logging.
 
 11-16-2011:
 Rearranging the list of credits in featurelist (also added netarchy to list).

@@ -23,6 +23,13 @@
 #include <linux/time.h>
 #include <linux/fs.h>
 
+#ifdef CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT
+#define BATTERY_FG_ADJUSTMENT    battery_fg_adjustment
+unsigned long battery_fg_adjustment = BATTERY_FG_ADJUSTMENT_DEFAULT;
+#else
+#define BATTERY_FG_ADJUSTMENT    BATTERY_FG_ADJUSTMENT_DEFAULT
+#endif /* CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT */
+
 #define MAX17040_VCELL_MSB	0x02
 #define MAX17040_VCELL_LSB	0x03
 #define MAX17040_SOC_MSB	0x04
@@ -192,17 +199,40 @@ static void max17040_get_soc(struct i2c_client *client)
 	**Adj_soc = (SOC%-EMPTY)/(FULL-EMPTY)*100
 	*/
 
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk(KERN_INFO "CHRG:FG: %s: [ Fuelgauge calculation begin ] \n", __func__);
+#endif
 	pure_soc = msb * 100 + ((lsb * 100) / 256);
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk(KERN_INFO "CHRG:FG: pure_soc [%d] { msb [%u] * 100 + ((lsb [%u] * 100) / 256) } \n",
+			pure_soc, msb, lsb);
+#endif
 
-	if (pure_soc >= 0)
-		adj_soc = ((pure_soc * 10000) - 140) / (9430 - 140);
-	else
+	if (pure_soc >= 0) {
+		adj_soc = ((pure_soc * 10000) - 140) / (BATTERY_FG_ADJUSTMENT - 140);
+#ifdef CONFIG_DEBUG_NUBERNEL
+		printk(KERN_INFO "CHRG:FG: adj_soc [%d] { ((pure_soc [%d] * 10000) - 140) /  (%lu - 140) } \n",
+				adj_soc, pure_soc, BATTERY_FG_ADJUSTMENT);
+#endif
+	}
+	else {
 		adj_soc = 0;
+#ifdef CONFIG_DEBUG_NUBERNEL
+		printk(KERN_INFO "CHRG:FG: adj_soc [%d] { adj_soc = 0 } \n", adj_soc);
+#endif
+	}
 
 	soc = adj_soc / 100;
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk(KERN_INFO "CHRG:FG: soc [%d] { adj_soc [%d] / 100 } \n", soc, adj_soc);
+#endif
 
-	if (adj_soc % 100 >= 50)
+	if (adj_soc % 100 >= 50) {
 		soc += 1;
+#ifdef CONFIG_DEBUG_NUBERNEL
+		printk(KERN_INFO "CHRG:FG: soc [%d] { adj_soc [%d] % 100 >= 50 } \n", soc, adj_soc);
+#endif
+	}
 
 #else
 
@@ -225,6 +255,12 @@ static void max17040_get_soc(struct i2c_client *client)
 #endif
 
 	chip->soc = min(soc, 100);
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk(KERN_INFO "CHRG:FG: chip->soc: %d { min(%d, 100) } \n", chip->soc, soc);
+#endif
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk(KERN_INFO "CHRG:FG: %s: [ Fuelgauge calculation end ] \n", __func__);
+#endif
 }
 
 static void max17040_get_version(struct i2c_client *client)
@@ -328,6 +364,30 @@ static ssize_t max17040_show_fg_reset(struct device *device,
 static DEVICE_ATTR(set_fuel_gauage_reset, 0664,
 		   max17040_show_fg_reset, NULL);
 
+#ifdef CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT
+static ssize_t battery_fg_adjustment_show(struct device *device, struct device_attribute *attr, char *buf)
+{
+  unsigned long val;
+  val = battery_fg_adjustment;
+  return snprintf(buf, PAGE_SIZE, "%lu\n", val);
+}
+
+static ssize_t battery_fg_adjustment_store(struct device *device, struct device_attribute *attr, const char *buf, size_t count)
+{
+	unsigned long val;
+	int res;
+	if ((res = strict_strtoul(buf, 10, &val)) < 0)
+		return res;
+	if (val < BATTERY_FG_ADJUSTMENT_MIN || val > BATTERY_FG_ADJUSTMENT_MAX)
+		return -EINVAL;
+	battery_fg_adjustment = val;
+	return count;
+}
+
+static DEVICE_ATTR(battery_fg_adjustment, 0664,
+			 battery_fg_adjustment_show, battery_fg_adjustment_store);
+#endif /* CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT */
+
 static enum power_supply_property max17040_battery_props[] = {
 	POWER_SUPPLY_PROP_STATUS,
 	POWER_SUPPLY_PROP_ONLINE,
@@ -394,8 +454,18 @@ static int __devinit max17040_probe(struct i2c_client *client,
 	if (ret)
 		goto err_fg_reset;
 
+#ifdef CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT
+	ret = device_create_file(chip->fg_atcmd, &dev_attr_battery_fg_adjustment);
+	if (ret)
+		goto err_battery_fg_adjustment;
+#endif /* CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT */
+
 	return 0;
 
+#ifdef CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT
+err_battery_fg_adjustment:
+	device_remove_file(chip->fg_atcmd, &dev_attr_set_fuel_gauage_reset);
+#endif /* CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT */
 err_fg_reset:
 	device_remove_file(chip->fg_atcmd, &dev_attr_set_fuel_gauage_read);
 err_fg_read:
@@ -416,6 +486,9 @@ static int __devexit max17040_remove(struct i2c_client *client)
 {
 	struct max17040_chip *chip = i2c_get_clientdata(client);
 
+#ifdef CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT
+	device_remove_file(chip->fg_atcmd, &dev_attr_battery_fg_adjustment);
+#endif /* CONFIG_BATTERY_MAX17040_FG_ADJUSTMENT */
 	device_remove_file(chip->fg_atcmd, &dev_attr_set_fuel_gauage_reset);
 	device_remove_file(chip->fg_atcmd, &dev_attr_set_fuel_gauage_read);
 	device_destroy(sec_class, MKDEV(MAX17040_MAJOR, 0));

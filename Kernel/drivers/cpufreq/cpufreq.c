@@ -29,6 +29,10 @@
 #include <linux/completion.h>
 #include <linux/mutex.h>
 
+#ifdef CONFIG_MACH_VICTORY
+#include <mach/cpu-freq-v210.h>
+#endif
+
 #define dprintk(msg...) cpufreq_debug_printk(CPUFREQ_DEBUG_CORE, \
 						"cpufreq-core", msg)
 

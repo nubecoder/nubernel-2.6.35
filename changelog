@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-20-2011:
+Fixing some things I broke when switching to using CONFIG_DEBUG_NUBERNEL.
+
 11-19-2011:
 Removing a useless script from initramfs_tw/nubernel/bin/.
 Re-applying "Remove in_frame_map from mfc input structures since it is not compatible with aries OMX libraries" for CONFIG_CYANOGENMOD=y builds only.

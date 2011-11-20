@@ -14,6 +14,10 @@
 #include <linux/init.h>
 #include <linux/cpufreq.h>
 
+#ifdef CONFIG_MACH_VICTORY
+#include <mach/cpu-freq-v210.h>
+#endif
+
 #define dprintk(msg...) \
 	cpufreq_debug_printk(CPUFREQ_DEBUG_CORE, "freq-table", msg)
 

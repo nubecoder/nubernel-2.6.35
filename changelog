@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 11-20-2011:
+Revised the batt_info script a bit.
 Fixing some things I broke when switching to using CONFIG_DEBUG_NUBERNEL.
 
 11-19-2011:

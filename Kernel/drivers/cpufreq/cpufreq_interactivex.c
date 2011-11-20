@@ -28,10 +28,6 @@
 
 #include <asm/cputime.h>
 
-#ifdef CONFIG_MACH_VICTORY
-#include <mach/cpu-freq-v210.h>
-#endif
-
 static void (*pm_idle_old)(void);
 static atomic_t active_count = ATOMIC_INIT(0);
 
@@ -210,7 +206,7 @@ static void cpufreq_interactivex_freq_change_time_work(struct work_struct *work)
 	cpumask_t tmp_mask = work_cpumask;
 
 	for_each_cpu(cpu, tmp_mask) {
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL
 		printk(KERN_INFO "GOV:InteractiveX: early target_freq: %dMHz \n",target_freq/1000);
 #endif
 		if (!suspended && (target_freq >= freq_threshold || target_freq == policy->max) ) {
@@ -222,35 +218,35 @@ static void cpufreq_interactivex_freq_change_time_work(struct work_struct *work)
 				cpumask_clear_cpu(cpu, &work_cpumask);
 				return;
 			}
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL
 			printk(KERN_INFO "GOV:InteractiveX: !suspended: using policy->max: %dMHz \n",policy->max/1000);
 #endif
 			__cpufreq_driver_target(policy, policy->max, CPUFREQ_RELATION_H);
 		} else {
 			if (!suspended) {
 				target_freq = cpufreq_interactivex_calc_freq(cpu);
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL
 				printk(KERN_INFO "GOV:InteractiveX: !suspended: using target_freq: %dMHz \n",target_freq/1000);
 #endif
 				__cpufreq_driver_target(policy, target_freq, CPUFREQ_RELATION_L);
 			} else {  // special care when suspended
 				if (target_freq > suspendfreq) {
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL
 					printk(KERN_INFO "GOV:InteractiveX: suspended: using suspendfreq: %dMHz \n",suspendfreq/1000);
 #endif
 					__cpufreq_driver_target(policy, suspendfreq, CPUFREQ_RELATION_H);
 				} else {
 					target_freq = cpufreq_interactivex_calc_freq(cpu);
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL
 					printk(KERN_INFO "GOV:InteractiveX: suspended: target_freq: %dMHz \n",target_freq/1000);
 #endif
 					if (target_freq < policy->cur) {
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL
 						printk(KERN_INFO "GOV:InteractiveX: suspended: using target_freq: %dMHz \n",target_freq/1000);
 #endif
 						__cpufreq_driver_target(policy, target_freq, CPUFREQ_RELATION_H);
 					}
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL
 					printk(KERN_INFO "GOV:InteractiveX: suspended: no change \n");
 #endif
 				}

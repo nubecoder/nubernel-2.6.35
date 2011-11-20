@@ -118,7 +118,7 @@ int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
 	dprintk("request for target %u kHz (relation: %u) for cpu %u\n",
 					target_freq, relation, policy->cpu);
 
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL
 	printk("FREQ: request for target %u MHz (relation: %u) for cpu %u\n",
 					(target_freq/1000), relation, policy->cpu);
 #endif
@@ -139,7 +139,7 @@ int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
 		unsigned int freq = table[i].frequency;
 
 		if(enabled_freqs[i] == 0) {
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL
 	printk("FREQ: skip disabled: %uMHz (target: %uMHz) \n",
 					(freq/1000), (target_freq/1000));
 #endif
@@ -188,7 +188,7 @@ int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
 	dprintk("target is %u (%u kHz, %u)\n", *index, table[*index].frequency,
 		table[*index].index);
 
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL
 	printk("FREQ: target is %u (%u MHz, %u)\n", *index, (table[*index].frequency/1000),
 		table[*index].index);
 #endif

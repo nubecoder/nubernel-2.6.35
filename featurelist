@@ -83,15 +83,16 @@ Includes system app mover and remover: (tw build only!)
     Term5
 Includes patches and code, etc from the following people:
   Voodoo Sound - supercurio
-  Kernel bootlogo creation binary - morfic.
-  Keyboard patches, TARGET_PRODUCT fix, MODULE_LOOSE_VERMAGIC fix, kexec patch, etc - mkasick.
+  ClockworkMod recovery - koush.
+  Various patches / code, etc - netarchy
   Various patches, scripting, etc - tanimn.
   Various patches, scripting, etc - Tortel.
-  ClockworkMod recovery - koush.
-  ClockworkMod recovery (device specific), initramfs, scripting, etc - DRockstar.
+  Kernel bootlogo creation binary - morfic.
   Compiler tweaks, compiler warnings, etc - gzub.
-  Various patches, scripting, initial help getting my kernel compiled, etc - RandyT / Bonsai.
+  ClockworkMod recovery (device specific), initramfs, scripting, etc - DRockstar.
   scaling_available_frequencies sysfs, compile errors, scripting, etc - nullghost.
+  Various patches, scripting, initial help getting my kernel compiled, etc - RandyT / Bonsai.
+  Keyboard patches, TARGET_PRODUCT fix, MODULE_LOOSE_VERMAGIC fix, kexec patch, etc - mkasick.
   Boot from sdcard (Dual Boot), Re-enabled kernel splash (bootlogo), various patches - Rodderik.
   Various patches / code, scripting, cyanogenmod, etc:
     chris41g / Decad3nce / DevinXtreme / DRockstar / jt1134

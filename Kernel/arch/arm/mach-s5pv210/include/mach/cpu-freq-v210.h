@@ -30,8 +30,6 @@
 
 #define NUM_FREQ 11
 
-//#define NC_DEBUG
-
 enum perf_level {
 	L0 = 0,	// 1.4GHz
 	L1,	// 1.3GHz

@@ -23,6 +23,13 @@ config CONSTRUCTORS
 
 menu "General setup"
 
+config CYANOGENMOD
+	bool
+	default n
+	help
+	  Enable this when building CyanogenMod (needed to enable some CM
+	  specific changes which break things in non-CM builds).
+
 config EXPERIMENTAL
 	bool "Prompt for development and/or incomplete code/drivers"
 	---help---

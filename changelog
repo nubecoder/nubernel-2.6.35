@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+12-08-2011:
+STAGING: brcm80211 fix TX Queue overflow  & STAGING: brcm80211 remove dhd_doflow (Grant Grundler via toadlife: https://github.com/toadlife/Epic-4G-EI22-Kernel-CleanGB/commit/c25bb9776a8e6f8b2b7e9835b3d77a86997b4657).
+
 12-07-2011:
 3 button reboot, all fixed up and working.
 3 button reboot, correcting key code for POWER key.

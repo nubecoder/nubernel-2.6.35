@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+11-30-2011:
+Commenting out all references to ttyCIQ.
+
 11-21-2011:
 Atempting to fix the "mmc_delayed_work" kernel wakelock.
 

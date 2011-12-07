@@ -9,6 +9,8 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-07-2011:
+3 button reboot, all fixed up and working.
+3 button reboot, correcting key code for POWER key.
 Porting the 3 button reboot from Froyo.
 
 11-30-2011:

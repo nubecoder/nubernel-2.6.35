@@ -451,7 +451,8 @@ void input_event(struct input_dev *dev,
 
 #ifdef USE_PSEUDO_HARD_RESET
 	if((dev->name) != 0) {
-		if(strcmp(dev->name,"s3c-keypad")==0)
+		if(strcmp(dev->name,"s3c-keypad")==0 ||
+			strcmp(dev->name,"victory-keypad") == 0)
 		{
 			//Checking Hard Reset Condition
 			input_chk_hardreset(code, value);

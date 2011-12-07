@@ -8,6 +8,15 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+12-07-2011:
+Porting the 3 button reboot from Froyo.
+
+11-30-2011:
+Commenting out all references to ttyCIQ.
+
+11-21-2011:
+Atempting to fix the "mmc_delayed_work" kernel wakelock.
+
 11-20-2011:
 Redirect "reboot bootloader" to reboot into download mode (noobnl: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/7a8cc34ace48375624a9fffc02ca76cedf588d05).
 Use CONFIG_DEBUG_NUBERNEL to check if debugging.

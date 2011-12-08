@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-14-2012:
+Added optimized CRC32 algorithm (via Ezekeel: https://github.com/Ezekeel/GLaDOS-nexus-s/commit/f04fc2475aa96b9133cf8cfd42597cf511bd2c74).
+
 04-13-2012:
 sched: Fix update_curr_rt() (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/ee8487a1c27e22dd6be26fad37c468404ad02e09).
 vmscan: prevent background aging of anon page in no swap system (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/8a2bf870ca7697c149d23ea2749da234e2cd2a2c).

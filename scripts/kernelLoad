@@ -1,0 +1,39 @@
+#!/system/bin/sh
+#
+# kernelLoad
+# Derrived from Tortel's "change_kernel.sh" script.
+#
+#
+# 2011 nubecoder
+# http://www.nubecoder.com/
+#
+
+#defines
+ZIMAGE="$1"
+
+# functions
+SHOW_HELP()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "Usage: $0 <zImage>"
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	exit 1
+}
+
+KEXEC_BOOT_ZIMAGE()
+{
+	local FILE="$1"
+	chmod 777 "$FILE"
+	/sbin/kexec --load-hardboot --mem-min=0x50000000 --append="console=ttySAC2,115200 loglevel=4" "$FILE"
+#	/sbin/kexec --load-hardboot --mem-min=0x50000000 --append=bootmode=2 "$FILE"
+	sync
+	/sbin/kexec -e
+}
+
+# main
+if busybox test -f "$ZIMAGE"; then
+	KEXEC_BOOT_ZIMAGE "$ZIMAGE"
+fi
+
+SHOW_HELP
+

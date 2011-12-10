@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-10-2011:
+Some changes to the kernelLoad script.
 Added kernel loading (kexec) support to the build script.
 Added kernel load helper scripts (kexec functionality).
 

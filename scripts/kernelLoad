@@ -24,6 +24,10 @@ KEXEC_BOOT_ZIMAGE()
 {
 	local FILE="$1"
 	chmod 777 "$FILE"
+	mount -ro remount /dev/block/stl6 /mnt/.lfs
+	mount -ro remount /dev/block/stl9 /system
+	mount -ro remount /dev/block/stl10 /data
+	mount -ro remount /dev/block/stl11 /cache
 	/sbin/kexec --load-hardboot --mem-min=0x50000000 --append="console=ttySAC2,115200 loglevel=4" "$FILE"
 #	/sbin/kexec --load-hardboot --mem-min=0x50000000 --append=bootmode=2 "$FILE"
 	sync

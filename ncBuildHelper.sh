@@ -30,6 +30,7 @@ PRODUCE_ZIP=n
 VERBOSE=n
 WIFI_FLASH=n
 WIRED_FLASH=n
+USE_KEXEC=n
 
 # define vars
 MKZIP='7z -mx9 -mmt=1 a "$OUTFILE" .'
@@ -46,7 +47,7 @@ export KBUILD_BUILD_VERSION
 source $PWD/functions
 
 # main
-while getopts ":bcCd:hj:m:tuvwz" flag
+while getopts ":bcCd:hj:km:tuvwz" flag
 do
 	case "$flag" in
 	b)
@@ -67,6 +68,9 @@ do
 		;;
 	j)
 		THREADS=$OPTARG
+		;;
+	k)
+		USE_KEXEC=y
 		;;
 	m)
 		BUILD_MODULES=y
@@ -154,10 +158,18 @@ if [ "$PRODUCE_ZIP" = y ] ; then
 	CREATE_ZIP
 fi
 if [ "$WIFI_FLASH" = y ] ; then
-	WIFI_FLASH_SCRIPT
+	if [ "$USE_KEXEC" = y ] ; then
+		WIFI_KERNEL_LOAD_SCRIPT
+	else
+		WIFI_FLASH_SCRIPT
+	fi
 fi
 if [ "$WIRED_FLASH" = y ] ; then
-	WIRED_FLASH_SCRIPT
+	if [ "$USE_KEXEC" = y ] ; then
+		WIRED_KERNEL_LOAD_SCRIPT
+	else
+		WIRED_FLASH_SCRIPT
+	fi
 fi
 
 # fix for module changing every build.

@@ -53,7 +53,6 @@
 #define DEBUG_MAKE_RAW					0 /* Making Dec/Enc Debugging Files */
 #define ENABLE_DEBUG_MFC_INIT				0
 #define ENABLE_MFC_REGISTER_DEBUG			0 /* 0: Disable	1: Enable */
-#define ENABLE_ENC_MB					1
 
 #define ENABLE_CHECK_START_CODE				1
 #define ENABLE_CHECK_NULL_STREAM			1

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-23-2011:
+Changes to defconfig for cm mtd (UberPinguin: https://github.com/EpicCM/android_kernel_samsung_victory/commit/3cdfc992b5c2e0ee53417731ea16577991155862).
 Fix variances for the bastard galaxy s device (Decad3nce: https://github.com/EpicCM/android_kernel_samsung_victory/commit/c25fc40e9fc474885f0cbf520ffa3a9cada9ac4d).
 Updated mfc drivers to remove buffer cache (Decad3nce: https://github.com/EpicCM/android_kernel_samsung_victory/commit/8bb05079bc5177b8ba629d2542af007c7bc5c6dd).
 

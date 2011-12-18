@@ -276,4 +276,22 @@ function WIRED_FLASH_SCRIPT()
 	popd > /dev/null
 	ECHO_END $T1 $F1
 }
+function WIFI_KERNEL_LOAD_SCRIPT()
+{
+	local F1="wifi kernel load helper script"
+	ECHO_BEGIN T1 $F1
+	pushd scripts > /dev/null
+		sh -c "wifiKernelLoader.sh"
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function WIRED_KERNEL_LOAD_SCRIPT()
+{
+	local F1="wired kernel load helper script"
+	ECHO_BEGIN T1 $F1
+	pushd scripts > /dev/null
+		sh -c "wiredKernelLoader.sh"
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
 

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-12-2012:
+Increased default readahead value to 1024kB (Ezekeel: https://github.com/Ezekeel/GLaDOS-nexus-s-ics/commit/f5b052e79c50e2c490a5e24b5b36a2ca05c0ac8a).
 Tweak readahead (netarchy: https://github.com/netarchy/nexus-s/commit/e21f80e8455cde8dde5a685d59bee8ecf8f0f443).
 
 04-10-2012:

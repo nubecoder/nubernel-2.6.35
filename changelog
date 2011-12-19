@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+12-19-2011:
+Moving CROSS_COMPILE into the defconfigs (still setting it on the command line).
+
 12-10-2011:
 Some changes to the kernelLoad script.
 Added kernel loading (kexec) support to the build script.

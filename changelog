@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-19-2011:
+More adjustments to cflags.
 cflag adjustment (via netarchy: https://github.com/netarchy/nexus-s/commit/e87e538efbe5b098a0c2009c6661074070a28f29).
 Select changes from "Makefile comments for personal reference" (via netarchy: https://github.com/netarchy/nexus-s/commit/08fb7777ea4cbc430e8e9f716dd5832db4a98f48).
 Changing cflags (via netarchy: https://github.com/netarchy/nexus-s/commit/1ba4d5c9ea8ecfa2cae1be3acad68293ad516ca6).

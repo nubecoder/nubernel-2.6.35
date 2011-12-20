@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-12-2012:
+Tweak readahead (netarchy: https://github.com/netarchy/nexus-s/commit/e21f80e8455cde8dde5a685d59bee8ecf8f0f443).
+
 04-10-2012:
 Fixing up the 600MHz frequency step.
 

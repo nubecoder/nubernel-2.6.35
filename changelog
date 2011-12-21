@@ -9,6 +9,8 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-21-2011:
+Changes to defconfig for MTD.
+Add support for MTD/YAFFS2 to kernel.
 Reverting "Set 4k read ahead in mtd_blkdevs.c".
 
 12-10-2011:

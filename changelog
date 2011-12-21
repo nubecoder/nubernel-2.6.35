@@ -12,6 +12,8 @@ Changelog:
 Changing initramfs path in CM mtd defconfig.
 
 12-21-2011:
+Fixing fix_permissions' shebang for use in cm-recovery.
+Add initramfs_cwm from CM7.
 Sync initramfs_cm7 with CM7.
 Changes to defconfig for MTD.
 Add support for MTD/YAFFS2 to kernel.

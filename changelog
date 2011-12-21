@@ -12,13 +12,10 @@ Changelog:
 Changing initramfs path in CM mtd defconfig.
 
 12-21-2011:
+Sync initramfs_cm7 with CM7.
 Changes to defconfig for MTD.
 Add support for MTD/YAFFS2 to kernel.
 Reverting "Set 4k read ahead in mtd_blkdevs.c".
-
-12-10-2011:
-Add boot.img creation support to the build script.
-Add needed files to allow packaging a boot.img (MTD).
 
 12-10-2011:
 Some changes to the kernelLoad script.

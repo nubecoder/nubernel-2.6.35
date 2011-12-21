@@ -7,6 +7,11 @@ sysclktz 0
 
 loglevel 3
 
+   # Tweak background writeout
+    write /proc/sys/vm/dirty_writeback_centisecs 2000
+    write /proc/sys/vm/dirty_expire_centisecs 1000
+    write /proc/sys/vm/dirty_ratio 90
+
 # setup the global environment
     export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
     export LD_LIBRARY_PATH /vendor/lib:/system/lib
@@ -94,20 +99,11 @@ loglevel 3
     write /dev/cpuctl/bg_non_interactive/cpu.shares 52
 
 
-    insmod /lib/modules/fsr.ko
-    insmod /lib/modules/fsr_stl.ko
-    insmod /lib/modules/rfs_glue.ko
-    insmod /lib/modules/rfs_fat.ko
     insmod /lib/modules/dpram.ko
-    insmod /lib/modules/j4fs.ko
-
-    insmod /lib/modules/Si4709_driver.ko
 
     # ko files for vibrator
     insmod /lib/modules/vibrator.ko
 
-    # ko files for bthid
-    insmod /lib/modules/bthid.ko
 
 # SprintHotspot
     insmod /lib/modules/hotspot_event_monitoring.ko
@@ -118,9 +114,7 @@ loglevel 3
 
 on fs
 # mount mtd partitions
-    mount rfs /dev/block/stl9 /system check=no
-    mount ext4 /dev/block/stl9 /system noatime nodiratime nodelalloc check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
-
+    mount yaffs2 mtd@system /system
 # use movinand second partition as /data. d.moskvitin
     #temp
     chown root root /sbin/fat.format
@@ -129,8 +123,8 @@ on fs
     mkdir /data
     chown system system /data
     chmod 0771 /data    
-    mount rfs /dev/block/stl10 /data nosuid nodev check=no
-    mount ext4 /dev/block/stl10 /data wait noatime nodiratime nodelalloc nosuid nodev crypt data=ordered nobarrier noauto_da_alloc
+    mount yaffs2 mtd@userdata /data nosuid nodev
+
     chown system system /data
     chmod 0771 /data
     mkdir /data/databases
@@ -142,25 +136,20 @@ on fs
     mkdir /data/db-journal
     chown system system /data/db-journal
     chmod 0777 /data/db-journal
-    mount rfs /dev/block/stl11 /cache nosuid nodev check=no
-    mount ext4 /dev/block/stl11 /cache wait noatime nodiratime nosuid nodev check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
+    mount yaffs2 mtd@cache /cache nosuid nodev
 
-    mkdir /mnt/.lfs 0755 root root
-    mount j4fs /dev/block/stl6 /mnt/.lfs
     insmod /lib/modules/param.ko
 
-		# samsung module
-    insmod /lib/modules/storage.ko
 
 #  Wimax modules
  	
-    insmod /lib/modules/wimax_gpio.ko
-    insmod /lib/modules/cmc7xx_sdio.ko
+#    insmod /lib/modules/wimax_gpio.ko
+#    insmod /lib/modules/cmc7xx_sdio.ko
 	
 
 on post-fs
     # once everything is setup, no need to modify /
-    mount rootfs rootfs / ro remount
+#    mount rootfs rootfs / ro remount
 
     # We chown/chmod /data again so because mount is run as root + defaults
     chown system system /data
@@ -222,8 +211,8 @@ on post-fs
     mkdir /data/misc/wifi 0771 wifi wifi  
     chmod 0777 /data/misc/wifi/
     chmod 0777 /data/wifi/
-    mkdir /data/misc/dhcp 0777 dhcp dhcp
-    mkdir /data/misc/wifi/sockets 0777 wifi wifi
+    mkdir /data/misc/dhcp 0770 dhcp dhcp
+    mkdir /data/misc/wifi/sockets 0770 wifi wifi
     chmod 0664 /system/etc/wifi/wpa_supplicant.conf
     chown dhcp dhcp /data/misc/dhcp
     mkdir /data/misc/dhcpcd 0771 dhcp dhcp 
@@ -343,6 +332,15 @@ on boot
 # set RLIMIT_NICE to allow priorities from 19 to -20
     setrlimit 13 40 40
 
+# fake some battery state
+    setprop status.battery.state Slow
+    setprop status.battery.level 5
+    setprop status.battery.level_raw  50
+    setprop status.battery.level_scale 9
+
+# phone
+    setprop ro.telephony.call_ring.multiple 0
+
 # Define the oom_adj values for the classes of processes that can be
 # killed by the kernel.  These are used in ActivityManagerService.
     setprop ro.FOREGROUND_APP_ADJ 0
@@ -357,6 +355,8 @@ on boot
 
 # to enable wifi
      setprop wifi.interface "eth0"
+     #setprop wifi.driver.status "ok"
+
 
 # Define the memory thresholds at which the above process classes will
 # be killed.  These numbers are in pages (4k).
@@ -382,10 +382,6 @@ on boot
 
     # Set init its forked children's oom_adj.
     write /proc/1/oom_adj -16
-
-    # Tweak background writeout
-    write /proc/sys/vm/dirty_expire_centisecs 200
-    write /proc/sys/vm/dirty_background_ratio  5
 
 
 #change permissions for USB
@@ -531,6 +527,13 @@ on boot
     setprop net.tcp.buffersize.gprs    4092,8760,11680,4096,8760,11680
     #setprop net.tcp.buffersize.wimax   4092,87380,1520768,4092,16384,1520768
     
+
+# Include extra init file
+    import /system/etc/init.local.rc
+
+# Run sysinit for cm stuffs
+    exec /system/bin/sysinit
+
 # +++++++++++++++++++++++++++++++++++++++++++
 # for Bluetooth
     chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
@@ -557,17 +560,19 @@ on boot
     chown bluetooth bluetooth /sys/class/rfkill/rfkill2/type
     chown bluetooth bluetooth /sys/class/rfkill/rfkill3/type
    
+# allow system to modify cpufreq control files
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
+    chown root system /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+
 # +++++++++++++++++++++++++++++++++++++++++++
 # for datarouter
     chown system system /dev/ttyGS0
     chown system system /dev/dun
 # +++++++++++++++++++++++++++++++++++++++++++      
-
-# Include extra init file
-    import /system/etc/init.local.rc
-
-    write /sys/devices/platform/s3c-keypad/column_delay 5
-    write /sys/devices/platform/s3c-keypad/timer_delay  5
 
     class_start default
 
@@ -633,6 +638,8 @@ service wpa_supplicant /system/bin/wpa_supplicant -Dwext -ieth0 -c/data/misc/wif
 service dhcpcd_eth0 /system/bin/dhcpcd -ABKL eth0
     disabled
     oneshot
+
+#service iprenew_eth0 /system/bin/dhcpcd -n
 
 service servicemanager /system/bin/servicemanager
     user system
@@ -761,10 +768,6 @@ service orientationd /system/bin/orientationd
 service geomagneticd /system/bin/geomagneticd
     user compass
     group system input
-
-service tvout /system/bin/tvoutserver
-    user system
-    group graphics
     
 service gps-daemon /system/vendor/bin/gpsd
 	user system
@@ -794,3 +797,11 @@ on property:ril.cdma.data_ready=true
 on property:ril.cdma.data_ready=false
     stop pppd_cdma
 
+service tvout /system/bin/tvoutserver
+    user system
+    group graphics
+
+service tvouthack /system/bin/tvouthack
+    user system
+    group graphics
+    disabled

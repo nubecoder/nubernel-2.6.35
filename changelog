@@ -17,6 +17,9 @@ Add support for MTD/YAFFS2 to kernel.
 Reverting "Set 4k read ahead in mtd_blkdevs.c".
 
 12-10-2011:
+Add needed files to allow packaging a boot.img (MTD).
+
+12-10-2011:
 Some changes to the kernelLoad script.
 Added kernel loading (kexec) support to the build script.
 Added kernel load helper scripts (kexec functionality).

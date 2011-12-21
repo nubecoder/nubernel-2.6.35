@@ -31,6 +31,7 @@ VERBOSE=n
 WIFI_FLASH=n
 WIRED_FLASH=n
 USE_KEXEC=n
+USE_MTD=n
 
 # define vars
 MKZIP='7z -mx9 -mmt=1 a "$OUTFILE" .'
@@ -47,7 +48,7 @@ export KBUILD_BUILD_VERSION
 source $PWD/functions
 
 # main
-while getopts ":bcCd:hj:km:tuvwz" flag
+while getopts ":bcCd:hj:km:Mtuvwz" flag
 do
 	case "$flag" in
 	b)
@@ -75,6 +76,9 @@ do
 	m)
 		BUILD_MODULES=y
 		MODULE_ARGS="$OPTARG"
+		;;
+	M)
+		USE_MTD=y
 		;;
 	t)
 		PRODUCE_TAR=y
@@ -150,6 +154,24 @@ if [ "$BUILD_KERNEL" = "y" ] ; then
 	BUILD_ZIMAGE $ZIMAGE_ARG
 	GENERATE_WARNINGS_FILE
 	ZIMAGE_UPDATE
+fi
+if [ "$USE_MTD" = y ] ; then
+	# CyanogenMod,   Touchwiz,     Recovery
+	# initramfs_cm7, initramfs_tw, initramfs_cmr
+	#
+	# default to initramfs_tw
+	KERNEL_INITRD="initramfs_tw"
+	RECOVERY_INITRD="initramfs_cmr"
+	if [ $TARGET = "victory_nubernel" ]; then
+		KERNEL_INITRD="initramfs_tw"
+	elif [ $TARGET = "cyanogenmod_epic" ]; then
+		KERNEL_INITRD="initramfs_cm7"
+	fi
+	PACKAGE_BOOTIMG "$KERNEL_INITRD" "$RECOVERY_INITRD"
+	if [ $? != 0 ] ; then
+		SHOW_ERROR
+		SHOW_COMPLETED
+	fi
 fi
 if [ "$PRODUCE_TAR" = y ] ; then
 	CREATE_TAR

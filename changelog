@@ -17,6 +17,7 @@ Add support for MTD/YAFFS2 to kernel.
 Reverting "Set 4k read ahead in mtd_blkdevs.c".
 
 12-10-2011:
+Add boot.img creation support to the build script.
 Add needed files to allow packaging a boot.img (MTD).
 
 12-10-2011:

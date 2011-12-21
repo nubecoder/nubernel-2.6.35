@@ -12,6 +12,7 @@ Changelog:
 Changing initramfs path in CM mtd defconfig.
 
 12-21-2011:
+Add initramfs_stage1 for MTD support.
 Fixing fix_permissions' shebang for use in cm-recovery.
 Add initramfs_cwm from CM7.
 Sync initramfs_cm7 with CM7.

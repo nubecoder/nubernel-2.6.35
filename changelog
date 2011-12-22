@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+12-22-2011:
+Changing initramfs path in CM mtd defconfig.
+
 12-21-2011:
 Changes to defconfig for MTD.
 Add support for MTD/YAFFS2 to kernel.

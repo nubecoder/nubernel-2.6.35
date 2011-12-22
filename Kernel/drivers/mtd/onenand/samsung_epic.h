@@ -13,9 +13,9 @@ struct mtd_partition s3c_partition_info[] = {
    the modem like IMSI we don't touch it for now, but we need the data from it, we create a partition
    for that and copy the data from it. For this you need a image from it and mount it as vfat or copy
    it on a kernel with rfs support on the phone.
-   
+
    Partitions on the lower NAND adresses:
-   
+
    0x00000000 - 0x0003FFFF = first stage bootloader
    0x00040000 - 0x0007FFFF = PIT for second stage bootloader
    0x00080000 - 0x00A7FFFF = EFS: IMSI and NVRAM for the modem
@@ -27,9 +27,9 @@ struct mtd_partition s3c_partition_info[] = {
    #########################################################################################
    ###### NEVER TOUCH THE FIRST 2 256k PAGES! THEY CONTAIN THE FIRST STAGE BOOTLOADER ######
    #########################################################################################
-   #########################################################################################*/ 
-                                                                   
-        {
+   #########################################################################################*/
+
+	{
 		.name		= "boot",
 		.offset		= (72*SZ_256K),
 		.size		= (30*SZ_256K), //101
@@ -39,12 +39,12 @@ struct mtd_partition s3c_partition_info[] = {
 		.offset		= (102*SZ_256K),
 		.size		= (30*SZ_256K), //131
 	},
-	{	
+	{
 		.name		= "system",
 		.offset		= (132*SZ_256K),
 		.size		= (1074*SZ_256K), //1205
 	},
-	{	
+	{
 		.name		= "userdata",
 		.offset		= (1206*SZ_256K),
 		.size		= (2706*SZ_256K), //3911

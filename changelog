@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-24-2011:
+Fixing a changelog entry leftover from a rebase.
 Add bml8 defconfig (based on cm7 defconfig).
 Add initramfs_bml8 for bml8 MTD fix (jt1134, mkasick and noobnl: https://github.com/EpicCM/epic3buttonfix).
 
@@ -26,7 +27,6 @@ Add initramfs_stage1 for MTD support.
 Fixing fix_permissions' shebang for use in cm-recovery.
 Add initramfs_cwm from CM7.
 Sync initramfs_cm7 with CM7.
-Changes to defconfig for MTD.
 Add support for MTD/YAFFS2 to kernel.
 Reverting "Set 4k read ahead in mtd_blkdevs.c".
 

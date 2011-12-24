@@ -629,6 +629,7 @@ static int cpufreq_governor_interactive(struct cpufreq_policy *new_policy,
 
 static int __init cpufreq_interactive_init(void)
 {
+	int err;
 	unsigned int i;
 	struct cpufreq_interactive_cpuinfo *pcpu;
 	struct sched_param param = { .sched_priority = MAX_RT_PRIO-1 };
@@ -671,7 +672,12 @@ static int __init cpufreq_interactive_init(void)
 	dbg_proc->read_proc = dbg_proc_read;
 #endif
 
-	return cpufreq_register_governor(&cpufreq_gov_interactive);
+	err = cpufreq_register_governor(&cpufreq_gov_interactive);
+	if (err) {
+		put_task_struct(up_task);
+		destroy_workqueue(down_wq);
+	}
+	return err;
 
 err_freeuptask:
 	put_task_struct(up_task);

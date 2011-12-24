@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-24-2011:
+Added some error checking to the smartass2 governor.
 Added some error checking to the smartass governor.
 Added some error checking to the interactive governor.
 Add SLQB (Nick Piggin via netarchy: https://github.com/netarchy/nexus-s/commit/db7daf96ad654265272ae2c0733e7b29104fe228).

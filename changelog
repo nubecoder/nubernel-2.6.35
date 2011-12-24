@@ -9,6 +9,19 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-24-2011:
+Update changelog.
+Set default timer to 1000hz when using s5p hi-res timers (netarchy: https://github.com/netarchy/nexus-s/commit/363cea48af03abb20c6196d2ec2b2fb05e041024).
+S5PC11X: USB: Remove unnecessary code for USB Tethering (sb223.kang via netarchy: https://github.com/netarchy/nexus-s/commit/cffd6dc859595618113470a1cf2dbb574813f10e).
+Some more debugging cleanup in smartass governor (GOV: tag) (myself: https://github.com/nubecoder/nubernel-kernel/commit/8af22af9cc323113444528569852d9be01c18e6e).
+Squashing a bug in smartass governor (myself: https://github.com/nubecoder/nubernel-kernel/commit/2ef926ed43f43357758d2abfc1eb2a70fef6c0fc).
+More debugging fixes and clean up (myself: https://github.com/nubecoder/nubernel-kernel/commit/8688002c4da6eba9e0cc8663200666f46a509571).
+Added extra debugging to smartass governor (myself: https://github.com/nubecoder/nubernel-kernel/commit/49642c075ed43b6f0c412f0c5bf47e66706233cb).
+Fixing someone's typo.
+More changes to smartass governor.  Make debug more readable (myself: https://github.com/nubecoder/nubernel-kernel/commit/c21e9fc20e6e3f653a5d8c215698eb1121a20391).
+Added DEFAULT_DEBUG_MASK and Kconfig option for smartass governor (myself: https://github.com/nubecoder/nubernel-kernel/commit/6bd05bd9a14d576d2a7c720da7fcd80ca184acb4).
+smartass governor: fixed sysfs interface and added Kconfig options (Ziggy471 via myself: https://github.com/nubecoder/nubernel-kernel/commit/3c7679c684dba15eda38cd891462a558c2d81680).
+Fixing up the debugging a bit in smartass governor (myself: https://github.com/nubecoder/nubernel-kernel/commit/676437550fb117664a6ab785a7a64447329c3eec).
+Squashing the up_min_freq bug in smartass governor (myself: https://github.com/nubecoder/nubernel-kernel/commit/abb9e1faac647f2a012b0622f3ddcd828472ccb6).
 Added some error checking to the smartass2 governor.
 Added some error checking to the smartass governor.
 Added some error checking to the interactive governor.

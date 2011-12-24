@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 12-24-2011:
+Changes to defconfigs for smartass governor.
 Update changelog.
 Set default timer to 1000hz when using s5p hi-res timers (netarchy: https://github.com/netarchy/nexus-s/commit/363cea48af03abb20c6196d2ec2b2fb05e041024).
 S5PC11X: USB: Remove unnecessary code for USB Tethering (sb223.kang via netarchy: https://github.com/netarchy/nexus-s/commit/cffd6dc859595618113470a1cf2dbb574813f10e).

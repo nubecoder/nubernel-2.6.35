@@ -8,6 +8,10 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+12-24-2011:
+Add bml8 defconfig (based on cm7 defconfig).
+Add initramfs_bml8 for bml8 MTD fix (jt1134, mkasick and noobnl: https://github.com/EpicCM/epic3buttonfix).
+
 12-22-2011:
 Add mtd defconfig.
 Changing initramfs path in CM mtd defconfig.

@@ -64,7 +64,7 @@ typedef struct wl_iw_extra_params {
 #define SOFTAP 1
 
 
-#define FEATURE_HOTSPOT_EVENT
+//#define FEATURE_HOTSPOT_EVENT
 #define	WL_IW_RSSI_MINVAL		-200	
 #define	WL_IW_RSSI_NO_SIGNAL	-91	
 #define	WL_IW_RSSI_VERY_LOW	-80	

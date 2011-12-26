@@ -85,8 +85,7 @@ KBUILD_CFLAGS += -I$(LINUXDIR)/include -I$(shell pwd)
 
 
 #obj-$(CONFIG_BROADCOM_WIFI)-m	+= dhd.o
-obj-m	+= src/wl/sys/hotspot_event_monitoring.o \
-	dhd.o
+obj-m	+=  dhd.o
 
 dhd-y := src/dhd/sys/dhd_linux.o \
          src/dhd/sys/dhd_common.o \

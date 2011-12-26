@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-01-2012:
+wm8994: voodoo: Fix compile of voodoo sound (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/265325bba6eb5ba78b2e92de0314cf471d488dde).
 wm8994: Port crespo's GB wm8994 driver (via mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/42bdadfed5105753440b5d3d2ab10ec9c2f4d2d0).
 initramfs: CM7: stage1: Whitespace.
 initramfs: CM7: stage1: Clean up first stage init (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/01ea906d5dd18b44cfe5e1f59d874470ae2bcc42).

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-01-2012:
+bcm4329: Fix for compiling along with rest of platform (via UberPinguin: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/c84ca67726b20b191d5c75da60acc6d14fa48aee).
 initramfs: CM7: stage1: Whitespace.
 initramfs: CM7: Add stage1 initramfs to Kernel/usr/epicmtd_initramfs/ (syncing with CM7).
 initramfs_cm7: Whitespace.

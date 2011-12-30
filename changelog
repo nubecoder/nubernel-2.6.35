@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-08-2012:
+Remove .ko and intergrate them to kernel, added mkasick dummy param to kernel (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/09630ef668fee8a643b03ee4615885f2371886e0).
 Fix warning for pagemap.h (imoseyon: https://github.com/imoseyon/leanKernel-i500-gingerbread/commit/70c7addd1943f44cc85fbdeafc2cd47c8740938b).
 Updating initramfs_tw modules.
 Toolchain related changes.

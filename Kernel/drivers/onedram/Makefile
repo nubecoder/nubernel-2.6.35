@@ -13,4 +13,4 @@ obj-$(CONFIG_SAMSUNG_PHONE_TTY) +=dpram/dpram.o
 endif
 #obj-$(CONFIG_SAMSUNG_PHONE_TTY) +=victory/multipdp.o
 
-obj-m	+= dpram_recovery/
+#obj-m	+= dpram_recovery/

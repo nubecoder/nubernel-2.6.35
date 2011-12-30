@@ -110,7 +110,7 @@ function MAKE_CLEAN()
 	local F1="make clean"
 	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
-		nice make V=1 -j"$THREADS" ARCH=arm clean 2>&1 >make.clean.out
+		nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" clean 2>&1 >make.clean.out
 	popd > /dev/null
 	ECHO_END $T1 $F1
 }
@@ -119,7 +119,7 @@ function MAKE_DISTCLEAN()
 	local F1="make distclean"
 	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
-		nice make V=1 -j"$THREADS" ARCH=arm distclean 2>&1 >make.distclean.out
+		nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" distclean 2>&1 >make.distclean.out
 	popd > /dev/null
 	ECHO_END $T1 $F1
 }
@@ -128,7 +128,7 @@ function MAKE_DEFCONFIG()
 	local F1="make ${TARGET}_defconfig"
 	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
-		nice make V=1 -j"$THREADS" ARCH=arm ${TARGET}_defconfig 2>&1 >make.defconfig.out
+		nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" ${TARGET}_defconfig 2>&1 >make.defconfig.out
 	popd > /dev/null
 	ECHO_END $T1 $F1
 }
@@ -138,9 +138,9 @@ function BUILD_MODULES()
 	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
 		if [ "$VERBOSE" = "y" ] ; then
-			nice make V=1 -j"$THREADS" ARCH=arm modules 2>&1 | tee make.out
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" modules 2>&1 | tee make.out
 		else
-			nice make -j"$THREADS" ARCH=arm modules 2>&1 | tee make.out
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" modules 2>&1 | tee make.out
 		fi
 	popd > /dev/null
 	ECHO_END $T1 $F1
@@ -151,9 +151,9 @@ function INSTALL_MODULES()
 	ECHO_BEGIN T1 $F1
 	pushd Kernel > /dev/null
 		if [ "$VERBOSE" = "y" ] ; then
-			nice make V=1 -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
 		else
-			nice make -j"$THREADS" ARCH=arm INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
 		fi
 	popd > /dev/null
 	ECHO_END $T1 $F1

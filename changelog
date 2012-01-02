@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+01-01-2012:
+Toolchain related changes to build script and Makefile.
+
 12-30-2011:
 Add missing CROSS_COMPILE cmd line args in functions.
 

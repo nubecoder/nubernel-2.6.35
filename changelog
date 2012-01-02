@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-10-2012:
+Add voodoo color (bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/90da0f3af77e648d07719504bf7d3ea86243f856).
+
 04-08-2012:
 Updating initramfs_tw modules.
 Toolchain related changes.

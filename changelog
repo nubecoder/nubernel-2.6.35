@@ -8,6 +8,10 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+
+01-02-2012:
+Fixing up helper script calls from functions.
+
 01-01-2012:
 Toolchain related changes to build script and Makefile.
 

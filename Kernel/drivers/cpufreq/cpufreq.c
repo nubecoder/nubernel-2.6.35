@@ -1913,7 +1913,7 @@ int cpufreq_update_policy(unsigned int cpu)
 	if (cpufreq_driver->get) {
 		policy.cur = cpufreq_driver->get(cpu);
 		if (!data->cur) {
-			dprintk("Driver did not initialize current freq");
+			dprintk("Driver did not initialize current freq\n");
 			data->cur = policy.cur;
 		} else {
 			if (data->cur != policy.cur)

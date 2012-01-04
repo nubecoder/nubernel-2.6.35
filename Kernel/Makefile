@@ -357,7 +357,6 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -pipe \
 		   -mfloat-abi=softfp \
 		   -march=armv7-a \
-		   -mcpu=cortex-a8 \
 		   -mtune=cortex-a8 \
 		   -mfpu=neon
 

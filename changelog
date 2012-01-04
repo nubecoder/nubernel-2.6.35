@@ -9,6 +9,9 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 
+01-04-2012:
+Reverting "Fixing a permission error on the backlight brightness sysfs entry" (commitID: 8d41454).
+
 01-02-2012:
 Changing hardcoded wifi IP address.
 Fixing up helper script calls from functions.
@@ -25,7 +28,6 @@ Added kernel loading (kexec) support to the build script.
 Added kernel load helper scripts (kexec functionality).
 
 12-09-2011:
-Fixing a permission error on the backlight brightness sysfs entry.
 Updated dpram module (ttyCIQ removal) in initramfs_tw.
 
 12-08-2011:

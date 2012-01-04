@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 01-04-2012:
+Changes to -march CFLAG.
 Updating initramfs_tw modules.
 Reverting "Fixing a permission error on the backlight brightness sysfs entry" (commitID: 8d41454).
 

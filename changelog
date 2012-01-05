@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-08-2012:
+epicmtd: quiet vibrator kernel drivers and merge wimax gpio driver to kernel (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/c62d0939c835d2d0095261876762d73a74826cd5).
 Include TUN, CIFS, FUSE, & TCPMSS in CM7 defconfig (via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/7d62c83ea867fc1508e5e0c0d7ced810523b3c02).
 Applying previous patch to my defconfigs.
 Remove .ko and intergrate them to kernel, added mkasick dummy param to kernel (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/09630ef668fee8a643b03ee4615885f2371886e0).

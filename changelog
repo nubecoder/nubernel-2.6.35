@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-01-2012:
+initramfs: CM7: stage1: Clean up first stage init (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/01ea906d5dd18b44cfe5e1f59d874470ae2bcc42).
 bcm4329: Merge wifi driver from aries (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/5f87cbd547d4187cba7ae6d0039f0d8a7f76fddd).
 bcm4329: Fix for compiling along with rest of platform (via UberPinguin: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/c84ca67726b20b191d5c75da60acc6d14fa48aee).
 initramfs: CM7: stage1: Whitespace.

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-08-2012:
+Fixed 600mhz step (toadlife: https://github.com/toadlife/CleanGB-Kernel/commit/69ca8ab02937235e310e8e82d6653275d23d8a54).
 Fixed CPU frequency tables (toadlife: https://github.com/toadlife/CleanGB-Kernel/commit/1510b5ac031c0d1ceb2787db5470f67e41e2ce25).
 Remove hotspot_event_monitoring related code in dhd.ko module (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/5e20f7116822f5fd586158acde237baa6c297a74).
 epicmtd: Force higher dvfs limit for stable hd recording on some devices (Decad3nce via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/44b1e0caf917ce03c345d33529ee850bf41a74f9).

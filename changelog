@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-08-2012:
+Update defconfig to add additional BT profiles (wispoffates via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/f8c123e0ce940ec332dfdde395c4a58164d98f3a).
 Add POKE_REC_BOOT_MAGIC Kconfig option. (mkasick via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/a540cdd1285efa527701f8d6ae4549217945ed40).
 Add poke_rec_boot_magic() to boot recovery on reboot(..., "recovery") (mkasick via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/c942f235e73aa710cc3b401ca31410c2490199f7).
 epicmtd: quiet vibrator kernel drivers and merge wimax gpio driver to kernel (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/c62d0939c835d2d0095261876762d73a74826cd5).

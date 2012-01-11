@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-08-2012:
+epicmtd: Force higher dvfs limit for stable hd recording on some devices (Decad3nce via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/44b1e0caf917ce03c345d33529ee850bf41a74f9).
 Fix RNDIS support for linux (bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/82627780c4481e8b148201e2d46ce29996f08235).
 Disable btsdio (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/c31656f239a1f377ddbc624af8f66c740eb5a02c).
 victory: less modules please (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/135f568ff4f7e0231294554f84a23a17eefc3b94).

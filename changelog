@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-08-2012:
+Disable btsdio (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/c31656f239a1f377ddbc624af8f66c740eb5a02c).
 victory: less modules please (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/135f568ff4f7e0231294554f84a23a17eefc3b94).
 Update defconfig to add additional BT profiles (wispoffates via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/f8c123e0ce940ec332dfdde395c4a58164d98f3a).
 Add POKE_REC_BOOT_MAGIC Kconfig option. (mkasick via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/a540cdd1285efa527701f8d6ae4549217945ed40).

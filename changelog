@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-09-2012:
+Add support for dock audio (xcaliburninhand via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/22e2321f630f8af43c3b42f7ed0ef2595dc019d4).
 Minor changes to build script and functions.
 Add missing defconfig entries for the hw keyboard patches.
 Applying recent patches to defconfigs.

@@ -53,6 +53,8 @@
 #define HDMI_USE_AUDIO
 #endif
 
+bool _dockredir = false;
+
 /*
  *Definitions of clock related.
 */
@@ -122,7 +124,7 @@ select_route universal_wm8994_playback_paths[] = {
 	wm8994_disable_path, wm8994_set_playback_receiver,
 	wm8994_set_playback_speaker, wm8994_set_playback_headset,
 	wm8994_set_playback_headset, wm8994_set_playback_bluetooth,
-	wm8994_set_playback_speaker_headset
+	wm8994_set_playback_speaker_headset, wm8994_set_playback_extra_dock_speaker
 };
 
 select_route universal_wm8994_voicecall_paths[] = {
@@ -566,7 +568,7 @@ static int wm899x_inpga_put_volsw_vu(struct snd_kcontrol *kcontrol,
 #define MAX_VOICECALL_PATH 5
 static const char *playback_path[] = {
 	"OFF", "RCV", "SPK", "HP", "HP_NO_MIC", "BT", "SPK_HP",
-	"RING_SPK", "RING_HP", "RING_NO_MIC", "RING_SPK_HP"
+	"RING_SPK", "RING_HP", "RING_NO_MIC", "RING_SPK_HP", "EXTRA_DOCK_SPEAKER"
 };
 static const char *voicecall_path[] = { "OFF", "RCV", "SPK", "HP",
 					"HP_NO_MIC", "BT" };
@@ -647,6 +649,8 @@ static int wm8994_set_path(struct snd_kcontrol *kcontrol,
 		DEBUG_LOG_ERR("Unknown Path\n");
 		return -ENODEV;
 	}
+	if (path_num == 4 && _dockredir)
+		path_num = 11;
 
 	switch (path_num) {
 	case OFF:
@@ -671,6 +675,11 @@ static int wm8994_set_path(struct snd_kcontrol *kcontrol,
 	case RING_SPK_HP:
 		DEBUG_LOG("routing to %s\n", mc->texts[path_num]);
 		wm8994->ringtone_active = RING_ON;
+		path_num -= 4;
+		break;
+	case EXTRA_DOCK_SPEAKER:
+		DEBUG_LOG("routing to %s\n", mc->texts[path_num]);
+		wm8994->ringtone_active = RING_OFF;
 		path_num -= 4;
 		break;
 	default:
@@ -708,6 +717,39 @@ static int wm8994_set_path(struct snd_kcontrol *kcontrol,
 
 	return 0;
 }
+
+static ssize_t get_dockredir_kernel_support(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	return sprintf(buf,"%u\n",1);
+}
+
+static ssize_t store_usedock(struct device *dev, struct device_attribute *attr, const char *buf, size_t size)
+{
+	unsigned short enable;
+	if (sscanf(buf, "%hu", &enable) == 1)
+	{
+		_dockredir = enable == 0 ? false : true;
+	}
+	return size;
+}
+
+static DEVICE_ATTR(usedock, S_IWUGO , NULL, store_usedock);
+static DEVICE_ATTR(dockredir_support, S_IRUGO , get_dockredir_kernel_support, NULL);
+
+static struct attribute *dockredir_attributes[] = {
+	&dev_attr_usedock.attr,
+	&dev_attr_dockredir_support.attr,
+	NULL
+};
+
+static struct attribute_group dockredir_group = {
+	.attrs = dockredir_attributes,
+};
+
+static struct miscdevice dockredir_device = {
+	.minor = MISC_DYNAMIC_MINOR,
+	.name = "dockredir",
+};
 
 static int wm8994_get_voice_path(struct snd_kcontrol *kcontrol,
 				 struct snd_ctl_elem_value *ucontrol)
@@ -3375,6 +3417,9 @@ static int wm8994_i2c_probe(struct i2c_client *i2c,
 		dev_err(&i2c->dev, "failed to initialize WM8994\n");
 		goto err_init;
 	}
+
+	misc_register(&dockredir_device);
+	sysfs_create_group(&dockredir_device.this_device->kobj, &dockredir_group);
 
 	return ret;
 

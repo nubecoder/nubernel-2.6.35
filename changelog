@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-08-2012:
+Fix RNDIS support for linux (bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/82627780c4481e8b148201e2d46ce29996f08235).
 Disable btsdio (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/c31656f239a1f377ddbc624af8f66c740eb5a02c).
 victory: less modules please (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/135f568ff4f7e0231294554f84a23a17eefc3b94).
 Update defconfig to add additional BT profiles (wispoffates via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/f8c123e0ce940ec332dfdde395c4a58164d98f3a).

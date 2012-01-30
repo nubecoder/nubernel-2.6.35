@@ -12,7 +12,7 @@ TARGET="victory_nubernel"
 KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.2"
 LOCALVERSION=".nubernel_v0.0.2"
 INSTALL_MOD_PATH="../stand-alone\ modules"
-CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-"
+CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-eabi-4.4.3/bin/arm-eabi-"
 #prebuilt aosp from cm
 #CROSS_COMPILE="/home/nubecoder/cm_android/system/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin/arm-eabi-"
 #sammy recommended below

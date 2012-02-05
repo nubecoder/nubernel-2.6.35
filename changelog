@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-24-2012:
+Add ext4/jbd2 patches from crespo GB kernel (via mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/3a879fe9389ae1647910ef93a14175befa682d23).
 Epicmtd: add missing encyrpting support to kernel for device encyrption (noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/4c814f7fbe96ade607d9621d55a2693ea60f127e).
 lowmemkiller: Reverting the idiotic change Samsung added in the FC09 source.
 Patching sources up to FC09.

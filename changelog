@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-14-2012:
+Add adb_rndis USB gadget mode, fix rndis support on Linux USB hosts (mkasick via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/5372af6f0042d0336034340a7d3503e4b427d81d).
 Whitespace fix.
 Add CONFIG_USB_CSW_HACK to defconfigs, but keep disabled for now.
 USB: android gadget: mass_storage: read/write performance enhancement (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/2cb75a41df67b4a0c63c5d5e38fe554051973327).

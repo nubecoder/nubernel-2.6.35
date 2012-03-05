@@ -659,7 +659,32 @@ struct gain_info_t playback_gain_table[PLAYBACK_GAIN_NUM] = {
 		.reg  = WM8994_RIGHT_OPGA_VOLUME,   /* 21h */
 		.mask = WM8994_MIXOUTR_VOL_MASK,
 		.gain = WM8994_MIXOUT_VU | 0x39
-    },
+	}, { /* DOCK */
+		.mode = PLAYBACK_EXTRA_DOCK_SPEAKER,
+		.reg  = WM8994_OUTPUT_MIXER_5,          /* 31h */
+		.mask = WM8994_DACL_MIXOUTL_VOL_MASK,
+		.gain = 0x0 << WM8994_DACL_MIXOUTL_VOL_SHIFT
+	}, {
+		.mode = PLAYBACK_EXTRA_DOCK_SPEAKER,
+		.reg  = WM8994_OUTPUT_MIXER_6,          /* 32h */
+		.mask = WM8994_DACR_MIXOUTR_VOL_MASK,
+		.gain = 0x0 << WM8994_DACR_MIXOUTR_VOL_SHIFT
+	}, {
+		.mode = PLAYBACK_EXTRA_DOCK_SPEAKER,
+		.reg  = WM8994_LEFT_OPGA_VOLUME,        /* 20h */
+		.mask = WM8994_MIXOUTL_VOL_MASK,
+		.gain = WM8994_MIXOUT_VU | 0x39
+	}, {
+		.mode = PLAYBACK_EXTRA_DOCK_SPEAKER,
+		.reg  = WM8994_RIGHT_OPGA_VOLUME,       /* 21h */
+		.mask = WM8994_MIXOUTR_VOL_MASK,
+		.gain = WM8994_MIXOUT_VU | 0x39
+	}, {
+		.mode = PLAYBACK_EXTRA_DOCK_SPEAKER,
+		.reg  = WM8994_LINE_OUTPUTS_VOLUME,     /* 1Eh */
+		.mask = WM8994_LINEOUT2_VOL_MASK,
+		.gain = 0x0 << WM8994_LINEOUT2_VOL_SHIFT
+	},
 };
 
 struct gain_info_t voicecall_gain_table[VOICECALL_GAIN_NUM] = {
@@ -2071,6 +2096,37 @@ void wm8994_set_playback_headset(struct snd_soc_codec *codec)
 	val &= ~(WM8994_AIF1DAC1_MUTE_MASK | WM8994_AIF1DAC1_MONO_MASK);
 	val |= WM8994_AIF1DAC1_UNMUTE;
 	wm8994_write(codec, WM8994_AIF1_DAC1_FILTERS_1, val);
+
+
+}
+
+void wm8994_set_playback_extra_dock_speaker(struct snd_soc_codec *codec)
+{
+	/* Volume Setting */
+	wm8994_write(codec, 0x0031, 0x0000);    // Output Mixer 5
+	wm8994_write(codec, 0x0032, 0x0000);    // Output Mixer 6
+	wm8994_write(codec, 0x0020, 0x0177);    // Left OPGA Volume
+	wm8994_write(codec, 0x0021, 0x0177);    // Right OPGA Volume
+	wm8994_write(codec, 0x001E, 0x0000);    // Lineout Volume
+	wm8994_write(codec, 0x0610, 0x01C0);    // DAC1 Left Volume
+	wm8994_write(codec, 0x0611, 0x01C0);    // DAC 1 Right Volume
+	wm8994_write(codec, 0x0402, 0x01C0);    // AIF1 DAC 1 Left Volume
+	wm8994_write(codec, 0x0403, 0x01C0);    // AIF1 DAC 1 Rigt Volume
+
+	/* Output Path Routing */
+	wm8994_write(codec, 0x002D, 0x0001);    // Output Mixer1
+	wm8994_write(codec, 0x002E, 0x0001);    // Output Mixer2
+	wm8994_write(codec, 0x0035, 0x0031);    // Line Mixer 2
+	wm8994_write(codec, 0x0005, 0x0303);    // Power Management5
+	wm8994_write(codec, 0x0601, 0x0001);    // DAC1 Left Mixer Routing
+	wm8994_write(codec, 0x0602, 0x0001);    // DAC1 Right Mixer Routing
+	wm8994_write(codec, 0x0208, 0x000A);    // Clocking 1
+	wm8994_write(codec, 0x0003, 0x0CF0);    // Power Management 3
+	wm8994_write(codec, 0x0420, 0x0000);    // DAC1 Filter
+
+	/* Channel Seperation */
+	wm8994_write(codec, 0x0037, 0x0000);    // Lineout Control
+	wm8994_write(codec, 0x0038, 0x0080);    // AntiPop1
 
 }
 
@@ -3835,6 +3891,9 @@ int wm8994_set_codec_gain(struct snd_soc_codec *codec, u16 mode, u16 device)
 			break;
 		case PLAYBACK_HP_NO_MIC:
 			gain_set_bits |= PLAYBACK_HP_NO_MIC;
+			break;
+		case PLAYBACK_EXTRA_DOCK_SPEAKER:
+			gain_set_bits |= PLAYBACK_EXTRA_DOCK_SPEAKER;
 			break;
 		default:
 			pr_err("playback modo gain flag is wrong\n");

@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-05-2012:
+Compress kernel with xz (via wtogami: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/2e1435ef143cd0cf686f713ef45e91f8511c2b40).
+
 05-02-2012:
 bcm4329: Re-merge wifi driver from aries (w/o removing tw support).
 Reverting "bcm4329: Merge wifi driver from aries" (commitID: f998a60).

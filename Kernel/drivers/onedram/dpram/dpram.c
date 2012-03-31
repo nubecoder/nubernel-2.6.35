@@ -2992,7 +2992,7 @@ static struct tty_driver* get_tty_driver_by_id(struct pdp_info *dev)
 		case 1:		index = 0;	break;
 		case 7:		index = 1;	break;
 		case 9:		index = 2;	break;
-		case 27:	index = 3;	break;
+		//case 27:	index = 3;	break;
 		default:	index = 0;
 	}
 
@@ -3007,7 +3007,7 @@ static int get_minor_start_index(int id)
 		case 1:		start = 0;	break;
 		case 7:		start = 1;	break;
 		case 9:		start = 2;	break;
-		case 27:	start = 3;	break;
+		//case 27:	start = 3;	break;
 		default:	start = 0;
 	}
 

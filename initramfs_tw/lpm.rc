@@ -47,6 +47,9 @@ on fs
     exec apply_disk_policy
 
 on boot
+# UART debugging
+    write /sys/class/sec/switch/uart_sel PDA
+    write /sys/class/sec/switch/usb_sel PDA
 
     ifup lo
     hostname localhost

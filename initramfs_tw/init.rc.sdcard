@@ -425,6 +425,10 @@ on post-fs
     chown system input /dev/i2c-1
 
 on boot
+# UART debugging
+    write /sys/class/sec/switch/uart_sel PDA
+    write /sys/class/sec/switch/usb_sel PDA
+
 # basic network init
     ifup lo
     hostname localhost

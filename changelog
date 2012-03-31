@@ -8,6 +8,10 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+01-30-2012:
+Switching toolchain (aosp arm-eabi-4.4.3).
+Enabled UART debugging in initramfs_tw.
+
 01-22-2012:
 Fixing removal of ttyCIQ in dpram.c.
 

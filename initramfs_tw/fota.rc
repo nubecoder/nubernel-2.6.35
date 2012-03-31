@@ -80,6 +80,9 @@ on post-fs
     write /proc/sys/kernel/sched_child_runs_first 0
 	
 on boot
+# UART debugging
+    write /sys/class/sec/switch/uart_sel PDA
+    write /sys/class/sec/switch/usb_sel PDA
 
     ifup lo
     hostname localhost

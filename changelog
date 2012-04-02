@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-02-2012:
+Patching sources up to EL30.
+
 01-30-2012:
 Switching toolchain (aosp arm-eabi-4.4.3).
 Enabled UART debugging in initramfs_tw.

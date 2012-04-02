@@ -48,6 +48,9 @@
 #include <plat/media.h>
 #define BOOT_FB_WINDOW	0
 
+#ifdef CONFIG_MACH_FORTE
+extern void Read_Regulators(void);
+#endif
 /*
  *  Mark for GetLog (tkhwang)
  */
@@ -1292,7 +1295,9 @@ void s3cfb_early_suspend(struct early_suspend *h)
 	regulator_disable(fbdev->vlcd);
 	regulator_disable(fbdev->vcc_lcd);
 	regulator_disable(fbdev->regulator);
-
+#ifdef CONFIG_MACH_FORTE
+	Read_Regulators();
+#endif	
 	return ;
 }
 

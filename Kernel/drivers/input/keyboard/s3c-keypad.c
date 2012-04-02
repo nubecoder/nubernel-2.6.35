@@ -267,7 +267,7 @@ static void keypad_timer_handler(unsigned long data)
                              SENSITIVE(pr_err("[key_press_OFF] keycode=%d\n", i+1));
 					}
 				}
-			
+
 				/*input_report_key(dev,pdata->keycodes[i],1);
 				DPRINTK("\nkey Pressed  : key %d map %d\n",i, pdata->keycodes[i]); */
 			} 

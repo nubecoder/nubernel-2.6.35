@@ -35,7 +35,11 @@
 #include <linux/regulator/consumer.h>
 #include <mach/param.h>
 #include <plat/devs.h>
-
+#ifdef CONFIG_MACH_FORTE
+#include <mach/gpio-forte.h>
+#include <plat/gpio-cfg.h>
+#include <mach/gpio.h>
+#endif
 /* FSA9480 I2C registers */
 #define FSA9480_REG_DEVID		0x01
 #define FSA9480_REG_CTRL		0x02
@@ -723,6 +727,13 @@ static int __devinit fsa9480_probe(struct i2c_client *client,
 	struct i2c_adapter *adapter = to_i2c_adapter(client->dev.parent);
 	struct fsa9480_usbsw *usbsw;
 	int ret = 0;
+#ifdef CONFIG_MACH_FORTE 
+        s3c_gpio_cfgpin(GPIO_USB_SCL_28V, S3C_GPIO_OUTPUT);
+        s3c_gpio_setpull(GPIO_USB_SCL_28V, S3C_GPIO_PULL_NONE);
+
+        s3c_gpio_cfgpin(GPIO_USB_SDA_28V, S3C_GPIO_OUTPUT);
+        s3c_gpio_setpull(GPIO_USB_SDA_28V, S3C_GPIO_PULL_NONE);
+#endif
 
 	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE_DATA))
 		return -EIO;
@@ -768,16 +779,18 @@ static int __devinit fsa9480_probe(struct i2c_client *client,
 #endif
         switch_dev_register(&indicator_dev);
 
+#if defined(CONFIG_MACH_VICTORY)
+		ret = switch_dev_register(&wimax_cable);
+		wimax_cable.print_state = wimax_cable_type; 
+#endif
+
 	/* device detection */
 	fsa9480_detect_dev(usbsw);
 	
 	// set fsa9480 init flag.
 	if (usbsw->pdata->set_init_flag)
 		usbsw->pdata->set_init_flag();
-#if defined(CONFIG_MACH_VICTORY)
-	ret = switch_dev_register(&wimax_cable);
-	wimax_cable.print_state = wimax_cable_type;	
-#endif
+
 	return 0;
 
 fail2:

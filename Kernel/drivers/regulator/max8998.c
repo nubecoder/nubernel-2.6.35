@@ -118,6 +118,73 @@ static const struct voltage_map_desc *ldo_voltage_map[] = {
 
 static struct i2c_client *i2c_info;
 
+
+#ifdef CONFIG_MACH_FORTE
+void set_ldo12_reg(int onoff)
+{
+        int on_off_reg = 0;
+
+	printk("LDO12 Set/Clear is handled\n");
+        
+	if(onoff)
+        {
+		printk("LDO 12 disable\n");
+                max8998_read_reg (i2c_info, MAX8998_REG_ONOFF2,  &on_off_reg);
+                on_off_reg |= 0x02;
+                max8998_write_reg (i2c_info, MAX8998_REG_ONOFF2, on_off_reg);
+        }
+        else
+        {
+		printk("LDO 12 enable\n");
+                max8998_read_reg (i2c_info, MAX8998_REG_ONOFF2,  &on_off_reg);
+                on_off_reg &= 0xFD;
+                max8998_write_reg (i2c_info, MAX8998_REG_ONOFF2, on_off_reg);
+        }
+
+}
+EXPORT_SYMBOL(set_ldo12_reg);
+#endif
+#ifdef CONFIG_MACH_FORTE
+void Set_Regulators(void)
+{
+	int on_off_reg = 0;	
+
+	max8998_write_reg (i2c_info, MAX8998_REG_ONOFF1, 0XEA);
+	max8998_write_reg (i2c_info, MAX8998_REG_ONOFF2, 0XD8);
+	max8998_write_reg (i2c_info, MAX8998_REG_ONOFF3, 0x14);
+	max8998_write_reg (i2c_info, MAX8998_REG_ONOFF4, 0XF9);
+	
+	max8998_read_reg (i2c_info, MAX8998_REG_ONOFF1,  &on_off_reg);
+	printk("ON_OFF1=%X\n",on_off_reg);
+	max8998_read_reg (i2c_info, MAX8998_REG_ONOFF2,  &on_off_reg);
+	printk("ON_OFF2=%X\n",on_off_reg);
+	max8998_read_reg (i2c_info, MAX8998_REG_ONOFF3,  &on_off_reg);
+	printk("ON_OFF3=%X\n",on_off_reg);
+	max8998_read_reg (i2c_info, MAX8998_REG_ONOFF4,  &on_off_reg);
+	printk("ON_OFF4=%X\n",on_off_reg);
+}
+EXPORT_SYMBOL(Set_Regulators);
+
+
+void Read_Regulators()
+{
+	int on_off_reg = 0;
+	int i = 0;
+	max8998_read_reg (i2c_info, MAX8998_REG_ONOFF1,  &on_off_reg);
+	printk("ON_OFF1=%X\n",on_off_reg);
+    	max8998_read_reg (i2c_info, MAX8998_REG_ONOFF2,  &on_off_reg);
+    	printk("ON_OFF2=%X\n",on_off_reg);
+    	max8998_read_reg (i2c_info, MAX8998_REG_ONOFF3,  &on_off_reg);
+    	printk("ON_OFF3=%X\n",on_off_reg);
+    	max8998_read_reg (i2c_info, MAX8998_REG_ONOFF4,  &on_off_reg);
+    	printk("ON_OFF4=%X\n",on_off_reg);
+	max8998_read_reg (i2c_info, MAX8998_REG_CHGR2,  &on_off_reg);
+	printk("CHGR2=%X\n",on_off_reg);
+
+}
+EXPORT_SYMBOL(Read_Regulators);
+#endif
+
 /*for WIMAX USB MODEM*******/
 int max8998_read_wimax_reg(u8 reg, u8 *data, u8 length,u8 flag)
 {

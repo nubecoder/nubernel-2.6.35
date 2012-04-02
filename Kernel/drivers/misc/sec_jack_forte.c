@@ -463,7 +463,7 @@ static void jack_detect_timer_handler(unsigned long arg)
 			jack_detect_timer.expires = DETECTION_CHECK_TIME;
 			add_timer(&jack_detect_timer);
 			jack_detect_timer_token++;
-			gpio_set_value(GPIO_MICBIAS_EN, 1); //suik_Fix for saving Sleep current  SUNISH
+			//gpio_set_value(GPIO_MICBIAS_EN, 1); //suik_Fix for saving Sleep current  SUNISH
 		}
 		else if(jack_detect_timer_token == DETECTION_CHECK_COUNT)
 		{
@@ -653,7 +653,7 @@ static ssize_t select_jack_store(struct device *dev, struct device_attribute *at
 	return size;
 
 }
-static DEVICE_ATTR(select_jack, S_IRUGO | S_IWUSR | S_IWOTH | S_IXOTH, select_jack_show, select_jack_store);
+static DEVICE_ATTR(select_jack, S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH, select_jack_show, select_jack_store);
 static int sec_jack_probe(struct platform_device *pdev)
 {
 	int ret;

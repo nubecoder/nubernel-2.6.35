@@ -1664,12 +1664,12 @@ void wm8994_shutdown(struct snd_pcm_substream *substream,
 		return;
 #endif	
 	/* check and sync the capture flag */
-	if ((substream->stream == SNDRV_PCM_STREAM_CAPTURE) && !(wm8994->codec_state & CALL_ACTIVE)) {
+	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE) {
 		wm8994->stream_state &=  ~(PCM_STREAM_CAPTURE);
 		wm8994->codec_state &= ~(CAPTURE_ACTIVE);
 		
 		/* disable only rec path when other scenario is active */
-		if (wm8994->codec_state)	
+		if ((wm8994->codec_state & ~(CALL_ACTIVE)))
 			wm8994_disable_rec_path(codec);
 	}
 

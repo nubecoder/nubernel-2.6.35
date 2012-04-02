@@ -572,7 +572,7 @@ static struct regulator_init_data forte_ldo7_data = {
 		.min_uV		= 1800000,
 		.max_uV		= 1800000,
 		.apply_uV	= 1,
-//                .always_on      = 1,
+                .always_on      = 0,
 		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
 	.state_mem	= {
 			.disabled = 1,
@@ -702,9 +702,9 @@ static struct regulator_init_data forte_ldo17_data = {
 		.name		= "VCC_3.0V_LCD",
 		.min_uV		= 1600000,
 		.max_uV		= 3600000,
-//		.apply_uV	= 1,
+		.apply_uV	= 1,
+                .always_on      = 0,
 		.valid_ops_mask = REGULATOR_CHANGE_STATUS,
-                .always_on      = 1,
 		.state_mem	= {
 			.disabled = 1,
 		},
@@ -914,7 +914,8 @@ static struct max8998_charger_data forte_charger = {
 	.register_callbacks = &max8998_charger_register_callbacks,
 	.adc_table		= temper_table,
 	.adc_array_size		= ARRAY_SIZE(temper_table),
-	.termination_curr_adc	= 0,
+//	.termination_curr_adc	= 0,
+	.termination_curr_adc	= 70,
 };
 
 static struct adc_channel_type s3c_adc_channel = {
@@ -2797,6 +2798,13 @@ EXPORT_SYMBOL(hw_version_check);
 
 static void __init fsa9480_gpio_init(void)
 {
+#if 1 
+         s3c_gpio_cfgpin(GPIO_USB_SCL_28V, S3C_GPIO_OUTPUT);
+        s3c_gpio_setpull(GPIO_USB_SCL_28V, S3C_GPIO_PULL_NONE);
+
+        s3c_gpio_cfgpin(GPIO_USB_SDA_28V, S3C_GPIO_OUTPUT);
+        s3c_gpio_setpull(GPIO_USB_SDA_28V, S3C_GPIO_PULL_NONE);
+#endif
 	s3c_gpio_cfgpin(GPIO_USB_SEL, S3C_GPIO_OUTPUT);
 	s3c_gpio_setpull(GPIO_USB_SEL, S3C_GPIO_PULL_NONE);
 	s3c_gpio_cfgpin(GPIO_UART_SEL, S3C_GPIO_OUTPUT);
@@ -2951,11 +2959,12 @@ static void __init forte_machine_init(void)
 #ifdef CONFIG_S5PV210_SETUP_SDHCI
 	s3c_sdhci_set_platdata();
 #endif
+#if 1
         s3c_gpio_cfgpin( GPIO_AP_SCL_28V, 1 );
         s3c_gpio_setpull( GPIO_AP_SCL_28V, S3C_GPIO_PULL_UP);
         s3c_gpio_cfgpin( GPIO_AP_SDA_28V, 1 );
         s3c_gpio_setpull( GPIO_AP_SDA_28V, S3C_GPIO_PULL_UP);
-
+#endif
 	register_reboot_notifier(&forte_reboot_notifier);
 //         smdk_backlight_register();
 	forte_switch_init();

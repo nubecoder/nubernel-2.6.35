@@ -82,8 +82,9 @@
 #include <linux/netdevice.h>
 /* Device node name for application interface */
 #define APP_DEVNAME				"multipdp"
+
 /* number of PDP context */
-#define NUM_PDP_CONTEXT			4
+#define NUM_PDP_CONTEXT			2
 
 /* Device types */
 #define DEV_TYPE_NET			0 /* network device for IP data */
@@ -136,7 +137,7 @@ struct pdp_info {
 	union {
 		/* Virtual serial interface */
 		struct {
-			struct tty_driver	tty_driver[NUM_PDP_CONTEXT];	// CSD, CDMA, TRFB, CIQ
+			struct tty_driver	tty_driver[NUM_PDP_CONTEXT];	// CSD, CDMA
 			int			refcount;
 			struct tty_struct	*tty_table[1];
 			struct ktermios		*termios[1];
@@ -364,7 +365,7 @@ static inline void byte_align(unsigned long dest, unsigned long src)
 	}
 
 	else {
-		dprintk(KERN_ERR "oops.~\n");
+		//dprintk(KERN_ERR "oops.~\n");
 	}
 }
 
@@ -2991,8 +2992,6 @@ static struct tty_driver* get_tty_driver_by_id(struct pdp_info *dev)
 	switch (dev->id) {
 		case 1:		index = 0;	break;
 		case 7:		index = 1;	break;
-		case 9:		index = 2;	break;
-		//case 27:	index = 3;	break;
 		default:	index = 0;
 	}
 
@@ -3006,8 +3005,6 @@ static int get_minor_start_index(int id)
 	switch (id) {
 		case 1:		start = 0;	break;
 		case 7:		start = 1;	break;
-		case 9:		start = 2;	break;
-		//case 27:	start = 3;	break;
 		default:	start = 0;
 	}
 
@@ -3155,8 +3152,6 @@ static int multipdp_init(void)
 	pdp_arg_t pdp_args[NUM_PDP_CONTEXT] = {
 		{ .id = 1, .ifname = "ttyCSD" },
 		{ .id = 7, .ifname = "ttyCDMA" },
-		{ .id = 9, .ifname = "ttyTRFB" },
-		//{ .id = 27, .ifname = "ttyCIQ" },
 	};
 
 
@@ -3327,6 +3322,8 @@ static int __devinit dpram_probe(struct platform_device *dev)
 {
 	int retval;
 	/* @LDK@ register dpram (tty) driver */
+
+	printk("enter dpram_probe\n");
 	retval = register_dpram_driver();
 	if (retval) {
 		dprintk(KERN_ERR "failed to register dpram (tty) driver.\n");
@@ -3359,6 +3356,10 @@ static int __devinit dpram_probe(struct platform_device *dev)
 
 	dpram_shared_bank_remap();
 
+	
+    spin_lock_init(&mem_cpy_lock);
+	spin_lock_init(&mem_cmp_lock);
+
 	/* @LDK@ register interrupt handler */
 	if ((retval = register_interrupt_handler()) < 0) {
 		return -1;
@@ -3375,8 +3376,8 @@ static int __devinit dpram_probe(struct platform_device *dev)
 	//check_miss_interrupt();
 	gpio_set_value(GPIO_PDA_ACTIVE, GPIO_LEVEL_HIGH);
 
-    spin_lock_init(&mem_cpy_lock);
-	spin_lock_init(&mem_cmp_lock);
+    printk("exit dpram_probe\n");
+
 	
 	return 0;
 }

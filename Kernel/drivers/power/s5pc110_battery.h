@@ -111,7 +111,11 @@ enum {
 };
 #endif /* CONFIG_BATTERY_S5PC110_CHARGE_CONTROL */
 
+#ifdef CONFIG_MACH_FORTE
+#define TOTAL_CHARGING_TIME	(5*60*60)	/* 5 hours */
+#else
 #define TOTAL_CHARGING_TIME	(6*60*60)	/* 6 hours */
+#endif
 #define TOTAL_RECHARGING_TIME	  (2*60*60)	/* 2 hours */
 
 #define COMPENSATE_VIBRATOR		19
@@ -157,3 +161,8 @@ enum {
 #define RECHARGE_COND_VOLTAGE_MAX    (4180 * 1000)
 #endif /* CONFIG_BATTERY_S5PC110_CHARGE_CONTROL */
 
+#ifdef CONFIG_MACH_FORTE
+#define CHG_CURRENT_COUNT 20
+#else
+#define CHG_CURRENT_COUNT 2
+#endif

@@ -104,6 +104,9 @@ struct pwm_device	*vib_pwm;
 
 struct vibrator_platform_data vib_plat_data;
 
+#ifdef CONFIG_MACH_FORTE
+extern void set_ldo12_reg(int);
+#endif
 static int set_vibetonz(int timeout)
 {
         //gpio_request(GPIO_VIBTONE_EN1, "GPIO_VIBTONE_EN1");
@@ -112,6 +115,9 @@ static int set_vibetonz(int timeout)
                 pwm_disable(Immvib_pwm);
                 printk("[VIBETONZ] DISABLE\n");
                 gpio_set_value(vib_plat_data.vib_enable_gpio, 0);
+		#if defined(CONFIG_MACH_FORTE)
+      		set_ldo12_reg(0);
+		#endif
                 gpio_direction_input(vib_plat_data.vib_enable_gpio);
                 s3c_gpio_setpull(vib_plat_data.vib_enable_gpio,S3C_GPIO_PULL_DOWN);
         }
@@ -121,6 +127,9 @@ static int set_vibetonz(int timeout)
 
                 printk("[VIBETONZ] ENABLE\n");
                 gpio_direction_output(vib_plat_data.vib_enable_gpio, 0);
+		#if defined(CONFIG_MACH_FORTE)
+      		set_ldo12_reg(1);
+		#endif
                 mdelay(1);
                 gpio_set_value(vib_plat_data.vib_enable_gpio, 1);
         }

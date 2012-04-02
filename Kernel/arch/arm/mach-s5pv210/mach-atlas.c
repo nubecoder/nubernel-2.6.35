@@ -1637,9 +1637,9 @@ static void touch_keypad_onoff(int onoff)
 	gpio_direction_output(_3_GPIO_TOUCH_EN, onoff);
 
 	if (onoff == TOUCHKEY_OFF)
-		msleep(30);
+		msleep(250);
 	else
-		msleep(25);
+		msleep(100);
 }
 
 static const int touch_keypad_code[] = {

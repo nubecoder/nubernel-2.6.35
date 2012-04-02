@@ -43,6 +43,10 @@
 #include <mach/adc.h>
 #include <plat/gpio-cfg.h>
 #include <linux/android_alarm.h>
+#ifdef CONFIG_MACH_FORTE
+#include <linux/earlysuspend.h>
+#include <mach/regs-power.h>
+#endif
 #include "s5pc110_battery.h"
 
 #ifdef CONFIG_BATTERY_S5PC110_CHARGE_CONTROL
@@ -94,6 +98,10 @@ unsigned long charge_recharge_voltage = RECHARGE_COND_VOLTAGE_DEFAULT;
 
 #define USE_MODULE_TIMEOUT      (10*60*1000)    // 10 min (DG05_FINAL: 1 min -> 10 min)
 
+#ifdef CONFIG_MACH_FORTE
+extern void otg_phy_off(void);        /*added to power-off PHY in case of LPM charging */
+#endif
+
 #ifdef __SOC_TEST__
 static int soc_test = 100;
 #endif
@@ -110,6 +118,15 @@ extern void kernel_sec_clear_upload_magic_number(void);
 extern void kernel_sec_set_upload_magic_number(void);   
 #endif
 struct s5p_batt_block_temp *s5p_battery_block_temp; 
+#ifdef CONFIG_MACH_FORTE
+struct battery_driver
+{
+        struct early_suspend    early_suspend;
+};
+struct battery_driver *battery = NULL;
+extern void Set_Regulators(void);
+extern void Read_Regulators(void);
+#endif
 struct battery_info {
 	u32 batt_temp;		/* Battery Temperature (C) from ADC */
 	u32 batt_temp_adc;	/* Battery Temperature ADC value */
@@ -362,6 +379,13 @@ static int max8998_charging_control(struct chg_data *chg)
 			chg->bat_info.batt_soc, chg->set_batt_full, chg->bat_info.batt_is_full,
 			chg->esafe);
 #endif
+
+#ifdef CONFIG_MACH_FORTE
+	if(lpm_charging_mode)
+	{
+		chg->esafe = 0;
+	}	
+#endif	
 	if (!chg->charging) {
 		/* disable charging */
 #ifdef CONFIG_DEBUG_NUBERNEL
@@ -386,8 +410,16 @@ static int max8998_charging_control(struct chg_data *chg)
 			(MAX8998_CHGEN_DISABLE	<< MAX8998_SHIFT_CHGEN));
 		if (ret < 0)
 			goto err;
-	}
-	else {
+	} else {
+	
+		/* Turn OFF PHY in case of LPM charging */
+#ifdef CONFIG_MACH_FORTE		
+		if (lpm_charging_mode)
+		{
+			printk("\nLNT DEBUG OTG PHY OFF");
+			otg_phy_off();
+		}
+#endif		
 		/* enable charging */
 #ifdef CONFIG_DEBUG_NUBERNEL
 		printk(KERN_INFO "CHRG:CR: %s: [ enable charging ] \n", __func__);
@@ -438,10 +470,17 @@ static int max8998_charging_control(struct chg_data *chg)
 					(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
 					(MAX8998_CHGEN_ENABLE	<< MAX8998_SHIFT_CHGEN)));
 #endif
+#ifndef CONFIG_MACH_FORTE
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR2,
 				(chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
 				(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
 				(MAX8998_CHGEN_ENABLE	<< MAX8998_SHIFT_CHGEN));
+#else
+			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR2,
+				(chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
+				(MAX8998_CHGTIME_DISABLE << MAX8998_SHIFT_FT) |
+				(MAX8998_CHGEN_ENABLE	<< MAX8998_SHIFT_CHGEN));
+#endif				
 			if (ret < 0)
 				goto err;
 		}
@@ -498,6 +537,7 @@ static int max8998_charging_control(struct chg_data *chg)
 				goto err;
 		}
 	}
+
 	prev_charging = chg->charging;
 #ifdef CONFIG_DEBUG_NUBERNEL
 	printk(KERN_INFO "CHRG:CR: prev_charging [%d] \n", prev_charging);
@@ -610,8 +650,16 @@ static bool max8998_set_esafe(struct max8998_charger_callbacks *ptr, u8 esafe)
 		return 0;
 	}
 	chg->esafe = esafe;
+#ifdef CONFIG_MACH_FORTE
+	if(!lpm_charging_mode)
+	{
+		max8998_update_reg(chg->iodev->i2c, MAX8998_REG_CHGR2,
+			(esafe << MAX8998_SHIFT_ESAFEOUT), MAX8998_MASK_ESAFEOUT);
+	}
+#else	
 	max8998_update_reg(chg->iodev->i2c, MAX8998_REG_CHGR2,
 		(esafe << MAX8998_SHIFT_ESAFEOUT), MAX8998_MASK_ESAFEOUT);
+#endif	
 	bat_info("%s : esafe = %d\n", __func__, esafe);
 	return 1;
 }
@@ -856,7 +904,7 @@ static int s3c_get_chg_current(struct chg_data *chg)
 		// over-charge protection
 		if ((chg->bat_info.batt_vcell > OVER_CHARGE_COND_VOLTAGE)) {
 			count++;
-			if (count > 2) {
+			if (count > CHG_CURRENT_COUNT) {
 				chg->bat_info.batt_is_full = true;
 				chg->set_batt_full = true;
 				count = 0;
@@ -868,7 +916,7 @@ static int s3c_get_chg_current(struct chg_data *chg)
 		if ((chg->bat_info.batt_vcell > FULL_CHARGE_COND_VOLTAGE)
 			&& (chg->bat_info.chg_current_adc < FULL_CHARGE_COND_CURRENT)) {
 			count++;
-			if (count > 2) {
+			if (count > CHG_CURRENT_COUNT) {
 				chg->bat_info.batt_is_full = true;
 				chg->set_batt_full = true;
 				count = 0;
@@ -1275,7 +1323,18 @@ static void s3c_bat_work(struct work_struct *work)
 	struct chg_data *chg = container_of(work, struct chg_data, bat_work);
 	int ret;
 	static int cnt = 0;
+	u32 con = 0;
+	
 	mutex_lock(&chg->mutex);
+
+	#ifdef CONFIG_MACH_FORTE
+	if(lpm_charging_mode)
+	{
+		Read_Regulators();
+		con = readl(S5P_NORMAL_CFG);
+		printk("\n NORMAL CFG = %X",con);
+	}
+	#endif
 
 	s3c_get_bat_temp(chg);
   #ifndef CONFIG_MACH_FORTE
@@ -1816,7 +1875,7 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 			goto end;
 #else
 	ret = max8998_read_reg(i2c, MAX8998_REG_STATUS2, &data2);//FET disable flag is set after battery removal
-	if(data2 & 0x28)
+	if(data2 & 0x08)
 	{
 		
 		bat_info("%s : topoff stop charging ******* %d \n", __func__,data2);
@@ -1931,6 +1990,36 @@ err:
 	return IRQ_HANDLED;
 }
 
+#ifdef CONFIG_MACH_FORTE
+static void battery_early_suspend(struct early_suspend *h)
+{
+        u32 con;
+
+        /*hsmmc clock disable*/
+        con = readl(S5P_CLKGATE_IP2);
+        con &= ~(S5P_CLKGATE_IP2_HSMMC3|S5P_CLKGATE_IP2_HSMMC2|S5P_CLKGATE_IP2_HSMMC1 \
+                |S5P_CLKGATE_IP2_HSMMC0);
+        writel(con, S5P_CLKGATE_IP2);
+
+        /*g3d clock disable*/
+        con = readl(S5P_CLKGATE_IP0);
+        con &= ~S5P_CLKGATE_IP0_G3D;
+        writel(con, S5P_CLKGATE_IP0);
+
+        /*power gating*/
+        con = readl(S5P_NORMAL_CFG);
+        con &= ~(S5PC110_POWER_DOMAIN_G3D|S5PC110_POWER_DOMAIN_MFC|S5PC110_POWER_DOMAIN_TV \
+                |S5PC110_POWER_DOMAIN_CAM|S5PC110_POWER_DOMAIN_AUDIO);
+        writel(con , S5P_NORMAL_CFG);
+
+}
+
+static void battery_late_resume(struct early_suspend *h)
+{
+
+        // do nothing!
+}
+#endif
 static __devinit int max8998_charger_probe(struct platform_device *pdev)
 {
 	struct max8998_dev *iodev = dev_get_drvdata(pdev->dev.parent);
@@ -1938,6 +2027,10 @@ static __devinit int max8998_charger_probe(struct platform_device *pdev)
 	struct chg_data *chg;
         struct i2c_client *i2c = iodev->i2c;
 	int ret = 0;
+	
+#ifdef CONFIG_MACH_FORTE	
+	u32 con = 0;
+#endif	
 
 	bat_info("%s : MAX8998 Charger Driver Loading\n", __func__);
 
@@ -1986,6 +2079,11 @@ static __devinit int max8998_charger_probe(struct platform_device *pdev)
 	chg->cable_status = CABLE_TYPE_NONE;
 	chg->jig_status = false;
 	chg->esafe = MAX8998_USB_VBUS_AP_ON;
+
+#ifdef CONFIG_MACH_FORTE
+	if(charging_mode_get())
+		chg->esafe = MAX8998_ESAFE_ALLOFF;      /* esafe regulator off in LPM charging*/
+#endif
 
 	chg->s3c_adc_channel.s3c_adc_voltage = pdata->s3c_adc_channel->s3c_adc_voltage;
 	chg->s3c_adc_channel.s3c_adc_chg_current = pdata->s3c_adc_channel->s3c_adc_chg_current;
@@ -2056,6 +2154,22 @@ static __devinit int max8998_charger_probe(struct platform_device *pdev)
 	}
 
 	check_lpm_charging_mode(chg);
+#ifdef CONFIG_MACH_FORTE
+	if(charging_mode_get())
+        {
+                battery = kzalloc(sizeof(struct battery_driver), GFP_KERNEL);
+                battery->early_suspend.level = EARLY_SUSPEND_LEVEL_DISABLE_FB + 1;
+                battery->early_suspend.suspend = battery_early_suspend;
+                battery->early_suspend.resume = battery_late_resume;
+                register_early_suspend(&battery->early_suspend);
+				
+		/* Made initial setting LPM charging as per Froyo */
+		Set_Regulators();	
+		writel(0xFFFFFF8D , S5P_NORMAL_CFG);
+		con = readl(S5P_NORMAL_CFG);
+        }
+	
+#endif
 
 	/* init power supplier framework */
 	ret = power_supply_register(&pdev->dev, &chg->psy_bat);

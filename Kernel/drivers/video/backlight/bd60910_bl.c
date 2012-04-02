@@ -120,7 +120,10 @@ static void bd60910_bl_set_backlight(struct bd60910_bl_data *data, int brightnes
    }
 
     /* change max 160 */
-    brightness = (148*brightness)/255; //160->148
+    if(brightness<80)
+	brightness = (63*brightness)/255;
+    else
+    	brightness = (145*brightness)/255; //150 default
     //printk(KERN_ERR "brightness change =%d\n", brightness) ;
 
     i2c_smbus_write_byte_data(data->i2c, 0x03, ((brightness >> 1) & 0x7F)) ;    /* (0~255) --> (0~127) */

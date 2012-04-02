@@ -139,10 +139,10 @@ void kernel_sec_set_upload_magic_number(void)
 
 	int *magic_virt_addr = (int *)LOKE_BOOT_USB_DWNLD_V_ADDR;
 
-//#if defined(CONFIG_MACH_ATLAS) || defined(CONFIG_MACH_FORTE) || defined(CONFIG_MACH_VICTORY)
-//	*magic_virt_addr = 0;
-//	printk(KERN_EMERG"KERNEL:magic_number=0x%x DEBUG LEVEL low!!\n",*magic_virt_addr);
-//#else
+#if defined(CONFIG_MACH_ATLAS) || defined(CONFIG_MACH_FORTE) || defined(CONFIG_MACH_VICTORY)
+	*magic_virt_addr = 0;
+	printk(KERN_EMERG"KERNEL:magic_number=0x%x DEBUG LEVEL low!!\n",*magic_virt_addr);
+#else
 	if ((KERNEL_SEC_DEBUG_LEVEL_MID == kernel_sec_get_debug_level()) || 
 			(KERNEL_SEC_DEBUG_LEVEL_HIGH == kernel_sec_get_debug_level())) {
 		*magic_virt_addr = LOKE_BOOT_USB_DWNLDMAGIC_NO; /* SET */
@@ -151,7 +151,7 @@ void kernel_sec_set_upload_magic_number(void)
 		*magic_virt_addr = 0;	
 		printk(KERN_EMERG"KERNEL:magic_number=0x%x DEBUG LEVEL low!!\n",*magic_virt_addr);
 	}
-//#endif
+#endif
 }
 EXPORT_SYMBOL(kernel_sec_set_upload_magic_number);
 

@@ -20,8 +20,8 @@
 #include <linux/types.h>
 #include <linux/ioctl.h>
 
-#ifndef CONFIG_MACH_VICTORY
-#define ADD_SYSTEM_TIMEINFO
+#if !defined(CONFIG_MACH_VICTORY) && !defined(CONFIG_MACH_ATLAS) 
+//#define ADD_SYSTEM_TIMEINFO
 #endif
 
 struct logger_entry {

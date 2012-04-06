@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-06-2012:
+Changes to update_modules script for 2.6.35.13.
+
 12-09-2011:
 Update to 2.6.35.13 (via netarchy: https://github.com/netarchy/nexus-s/commit/ffc637c319ee4e01d83c429b3ec0f4aaffdb077c).
 Update to 2.6.35.12 (via netarchy: https://github.com/netarchy/nexus-s/commit/ef9d1f0439cc71b9a4a2a4d25f8fde435beccd32).

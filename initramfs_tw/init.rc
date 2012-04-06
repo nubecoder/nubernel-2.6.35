@@ -188,13 +188,13 @@ on fs
     chmod 0771 /data
     mkdir /data/databases
     chown system system /data/databases
-    chmod 0777 /data/databases
+    chmod 0775 /data/databases
     mkdir /data/system
     chown system system /data/system
     chmod 0775 /data/system
     mkdir /data/db-journal
     chown system system /data/db-journal
-    chmod 0777 /data/db-journal
+    chmod 0775 /data/db-journal
 # /cache
     mount rfs /dev/block/stl11 /cache rw nosuid nodev check=no
     #mount rfs /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=no
@@ -281,13 +281,13 @@ on post-fs
     mkdir /data/misc/vpn/profiles 0770 system system
     mkdir /data/misc/radio 0771 radio radio
     # give system access to wpa_supplicant.conf for backup and restore
-    mkdir /data/wifi 0777 wifi wifi
+    mkdir /data/wifi 0771 wifi wifi
 #    mkdir /data/misc/wifi 0771 wifi system
     mkdir /data/misc/wifi 0771 wifi wifi  
-    chmod 0777 /data/misc/wifi/
-    chmod 0777 /data/wifi/
-    mkdir /data/misc/dhcp 0777 dhcp dhcp
-    mkdir /data/misc/wifi/sockets 0777 wifi wifi
+#    chmod 0777 /data/misc/wifi/
+#    chmod 0777 /data/wifi/
+    mkdir /data/misc/dhcp 0775 dhcp dhcp
+    mkdir /data/misc/wifi/sockets 0775 wifi wifi
     chmod 0664 /system/etc/wifi/wpa_supplicant.conf
     chown dhcp dhcp /data/misc/dhcp
     mkdir /data/misc/dhcpcd 0771 dhcp dhcp 
@@ -305,10 +305,11 @@ on post-fs
     chown system system /data/app   
 
     # create log system
-    mkdir /data/log 0777 system system
+    mkdir /data/log 0775 system log
+    chown system log /data/log
 
-    chmod 0777 /data/log
-    chmod 0777 /data/anr
+    chmod 0775 /data/log
+    chmod 0775 /data/anr
     
     chmod 0662 /dev/log/radio
     chmod 0662 /dev/log/main
@@ -355,7 +356,7 @@ on post-fs
     chmod 0775 /data/data/.drm/.divxdrm
 
 # video play for m.youtube.com
-    mkdir /data/data/.youtube 0777
+    mkdir /data/data/.youtube 0775
 
     # for wimax
     chown system system /dev/swmxctl
@@ -655,7 +656,7 @@ on boot
 # for datarouter
     chown system system /dev/ttyGS0
     chown system system /dev/dun
-# +++++++++++++++++++++++++++++++++++++++++++      
+# +++++++++++++++++++++++++++++++++++++++++++
 
     write /sys/devices/platform/s3c-keypad/column_delay 5
     write /sys/devices/platform/s3c-keypad/timer_delay  5

@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-17-2012:
+wm8994: Adjust external-speaker playback-gain levels to match EL30 (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/184383f4f1367a642a0085ab3544e92cff08f713).
+
 05-13-2012:
 initramfs: TW: Update modified proprietary modules for TW BML (hacked for 2.6.35.14 vermagic).
 scripting: modules: Update VERSION_PATH define for 2.6.35.14.

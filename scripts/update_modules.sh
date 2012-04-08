@@ -12,6 +12,7 @@
 INITRAMFS_TW_PATH="initramfs_tw/lib/modules"
 INITRAMFS_CM_PATH="initramfs_cm7/lib/modules"
 STAND_ALONE_PATH="stand-alone modules"
+VERSION_PATH="lib/modules/2.6.35.13+"
 CC_STRIP="/home/nubecoder/android/kernel_dev/toolchains/arm-eabi-4.4.3/bin/arm-eabi-strip -d --strip-unneeded"
 
 #defines
@@ -31,7 +32,7 @@ SHOW_HELP()
 COPY_WITH_ECHO()
 {
 	local SRC=$1
-	local MOD_PATH="$STAND_ALONE_PATH/lib/modules/2.6.35.7+"
+	local MOD_PATH="$STAND_ALONE_PATH/$VERSION_PATH"
 	if [ "$STAND_ALONE" = "y" ]; then
 		echo "Copying $SRC to $STAND_ALONE_PATH/"
 		cp "$MOD_PATH/$SRC" "$STAND_ALONE_PATH/"

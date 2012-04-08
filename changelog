@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-08-2012:
+Updating initramfs_tw to EL30.
+
 04-02-2012:
 Patching sources up to EL30.
 

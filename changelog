@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-07-2012:
+Adding vermagic hacked proprietary modules for 2.6.35.13.
+
 04-06-2012:
 Changes to update_modules script for 2.6.35.13.
 

@@ -17,7 +17,6 @@ on init
     mkdir /data 0771 system system
     mkdir /cache
     #mkdir /efs
-    mkdir /tmp
     mkdir /dbdata
 
     mkdir /mnt 0775 root root

@@ -13,7 +13,8 @@ INITRAMFS_TW_PATH="initramfs_tw/lib/modules"
 INITRAMFS_CM_PATH="initramfs_cm7/lib/modules"
 STAND_ALONE_PATH="stand-alone modules"
 VERSION_PATH="lib/modules/2.6.35.13+"
-CC_STRIP="/home/nubecoder/android/kernel_dev/toolchains/arm-eabi-4.4.3/bin/arm-eabi-strip -d --strip-unneeded"
+CROSS_COMPILE="/home/nubecoder/android/toolchains/arm-eabi-4.4.3/bin/arm-eabi-"
+CC_STRIP="${CROSS_COMPILE}strip -d --strip-unneeded"
 
 #defines
 STAND_ALONE="n"

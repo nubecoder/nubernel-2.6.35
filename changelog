@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-08-2012:
+Updating initramfs_tw modules.
 Toolchain related changes.
 Updating initramfs_tw to FC09.
 Updating initramfs_tw to EL30.

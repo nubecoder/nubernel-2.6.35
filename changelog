@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-10-2012:
+Fixing up the 600MHz frequency step.
+
 04-09-2012:
 Add support for dock audio (xcaliburninhand via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/22e2321f630f8af43c3b42f7ed0ef2595dc019d4).
 Minor changes to build script and functions.

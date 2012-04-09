@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-09-2012:
+Applying recent patches to defconfigs.
 Fixed 600mhz step (toadlife: https://github.com/toadlife/CleanGB-Kernel/commit/69ca8ab02937235e310e8e82d6653275d23d8a54).
 Fixed CPU frequency tables (toadlife: https://github.com/toadlife/CleanGB-Kernel/commit/1510b5ac031c0d1ceb2787db5470f67e41e2ce25).
 Remove hotspot_event_monitoring related code in dhd.ko module (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/5e20f7116822f5fd586158acde237baa6c297a74).

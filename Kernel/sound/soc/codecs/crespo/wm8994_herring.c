@@ -354,12 +354,12 @@ struct gain_info_t cdma_voicecall_gain_table[VOICECALL_GAIN_NUM] = {
 		.mode = VOICECALL_HP,
 		.reg  = WM8994_RIGHT_LINE_INPUT_1_2_VOLUME,	/* 1Ah */
 		.mask = WM8994_IN1R_VOL_MASK,
-		.gain = WM8994_IN1R_VU | 0x1D
+		.gain = WM8994_IN1R_VU | 0x17		/* +18dB */
 	}, {
 		.mode = VOICECALL_HP,
 		.reg  = WM8994_INPUT_MIXER_4,		/* 2Ah */
 		.mask = WM8994_IN1R_MIXINR_VOL_MASK | WM8994_MIXOUTR_MIXINR_VOL_MASK,
-		.gain = 0x0
+		.gain = 0x10				/* +30dB */
 	}, {
 		.mode = VOICECALL_HP,
 		.reg  = WM8994_LEFT_OPGA_VOLUME,	/* 20h */

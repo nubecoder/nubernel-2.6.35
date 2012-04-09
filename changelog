@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-17-2012:
+wm8994: Adjust headset-mic voicecall-gain levels to match EL30 (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/f7d905d5abd40c803e2f5b1f12719f6340a0b4a5).
 wm8994: Adjust external-speaker playback-gain levels to match EL30 (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/184383f4f1367a642a0085ab3544e92cff08f713).
 
 05-13-2012:

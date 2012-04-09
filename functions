@@ -160,7 +160,7 @@ function INSTALL_MODULES()
 }
 function COPY_MODULES()
 {
-	local F1="coping modules"
+	local F1="copying modules"
 	ECHO_BEGIN T1 $F1
 	pushd scripts > /dev/null
 		if [ "$1" != "" ]; then

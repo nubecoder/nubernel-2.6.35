@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-09-2012:
+Minor changes to build script and functions.
 Add missing defconfig entries for the hw keyboard patches.
 Applying recent patches to defconfigs.
 Fixed 600mhz step (toadlife: https://github.com/toadlife/CleanGB-Kernel/commit/69ca8ab02937235e310e8e82d6653275d23d8a54).

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-11-2012:
+Added keypad_info script to initramfs_tw.
 Enabling the pseudo hardreset keys sysfs export in defconfigs.
 Enabling pseudo hard reset in defconfigs.
 

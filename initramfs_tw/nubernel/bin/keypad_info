@@ -1,0 +1,125 @@
+#!/system/bin/sh
+#
+# keypad_info
+#
+#
+# 2011 nubecoder
+# http://www.nubecoder.com/
+#
+
+#defines
+KEYPAD_SYSFS_PATH="/sys/devices/platform/s3c-keypad"
+
+#functions
+DISPLAY_KEYPAD_SETTINGS()
+{
+	local FILE_LIST="column_delay"
+	local FILE_LIST="$FILE_LIST timer_delay"
+	local FILE_LIST="$FILE_LIST sensitive_printks"
+	local FILE_LIST="$FILE_LIST kernel_sec_hardreset_key1"
+	local FILE_LIST="$FILE_LIST kernel_sec_hardreset_key2"
+	local FILE_LIST="$FILE_LIST kernel_sec_hardreset_key3"
+#	local FILE_LIST="$FILE_LIST key_pressed"
+#	local FILE_LIST="$FILE_LIST modalias"
+#	local FILE_LIST="$FILE_LIST uevent"
+	echo "Keypad Settings:"
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	for FILE in $FILE_LIST ; do
+		echo "	$FILE: $(cat $KEYPAD_SYSFS_PATH/$FILE)"
+	done
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	return 0
+}
+DISPLAY_KEYPAD_KEY_CODES()
+{
+	echo "Key Codes:"
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "	Keypad keys:"
+
+	echo "		Row 0 (numbers):"
+	echo "			PAD_KEY_NUM_1 = 1"
+	echo "			PAD_KEY_NUM_2 = 2"
+	echo "			PAD_KEY_NUM_3 = 3"
+	echo "			PAD_KEY_NUM_4 = 4"
+	echo "			PAD_KEY_NUM_5 = 5"
+	echo "			PAD_KEY_NUM_6 = 6"
+	echo "			PAD_KEY_NUM_7 = 7"
+	echo "			PAD_KEY_NUM_8 = 8"
+	echo "			PAD_KEY_NUM_9 = 9"
+	echo "			PAD_KEY_NUM_0 = 10"
+
+	echo "		Row 1:"
+	echo "			PAD_KEY_Q = 11"
+	echo "			PAD_KEY_W = 12"
+	echo "			PAD_KEY_E = 13"
+	echo "			PAD_KEY_R = 14"
+	echo "			PAD_KEY_T = 15"
+	echo "			PAD_KEY_Y = 16"
+	echo "			PAD_KEY_U = 17"
+	echo "			PAD_KEY_I = 18"
+	echo "			PAD_KEY_O = 19"
+	echo "			PAD_KEY_P = 20"
+
+	echo "		Row 2:"
+	echo "			PAD_KEY_A = 21"
+	echo "			PAD_KEY_S = 22"
+	echo "			PAD_KEY_D = 23"
+	echo "			PAD_KEY_F = 24"
+	echo "			PAD_KEY_G = 25"
+	echo "			PAD_KEY_H = 26"
+	echo "			PAD_KEY_J = 27"
+	echo "			PAD_KEY_K = 28"
+	echo "			PAD_KEY_L = 29"
+	echo "			PAD_KEY_BACKSPACE = 30"
+
+	echo "		Row 3:"
+	echo "			PAD_KEY_FUNC = 31"
+	echo "			PAD_KEY_Z = 32"
+	echo "			PAD_KEY_X = 33"
+	echo "			PAD_KEY_C = 34"
+	echo "			PAD_KEY_V = 35"
+	echo "			PAD_KEY_B = 36"
+	echo "			PAD_KEY_N = 37"
+	echo "			PAD_KEY_M = 38"
+	echo "			PAD_KEY_ARROW_UP = 39"
+	echo "			PAD_KEY_ENTER = 40"
+
+	echo "		Row 4:"
+	echo "			PAD_KEY_SHIFT = 41"
+	echo "			PAD_KEY_SMILEY = 42"
+	echo "			PAD_KEY_SYM = 43"
+	echo "			PAD_KEY_COMMA = 44"
+	echo "			PAD_KEY_SPACE = 45"
+	echo "			PAD_KEY_PERIOD = 47"
+	echo "			PAD_KEY_ARROW_LEFT = 48"
+	echo "			PAD_KEY_ARROW_DOWN = 49"
+	echo "			PAD_KEY_AROW_RIGHT = 50"
+
+	echo "		Extras:"
+	echo "			PAD_KEY_HOME = 53"
+	echo "			PAD_KEY_SEARCH = 54"
+	echo "			PAD_KEY_MENU = 55"
+	echo "			PAD_KEY_BACK = 57"
+
+	echo "	Side keys:"
+	echo "		SIDE_KEY_VOLUME_UP = 51"
+	echo "		SIDE_KEY_VOLUME_DOWN = 52"
+	echo "		SIDE_KEY_CAMERA_FOCUS = 56"
+	echo "		SIDE_KEY_CAMERA_SHUTTER = 46"
+	echo "		SIDE_KEY_POWER = 116"
+
+	echo "	Face keys:"
+	echo "		FACE_KEY_MENU = 139"
+	echo "		FACE_KEY_HOME = 102"
+	echo "		FACE_KEY_BACK = 158"
+	echo "		FACE_KEY_SEARCH = 217"
+
+
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	return 0
+}
+
+#main
+DISPLAY_KEYPAD_KEY_CODES
+DISPLAY_KEYPAD_SETTINGS
+

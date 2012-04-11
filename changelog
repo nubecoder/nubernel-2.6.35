@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-11-2012:
+Lowering KERNEL_SEC_HARDRESET_KEY_MAX and removing face keys from keypad_info output (face keys can't trigger the hardreset).
 Added keypad_info script to initramfs_tw.
 Enabling the pseudo hardreset keys sysfs export in defconfigs.
 Enabling pseudo hard reset in defconfigs.

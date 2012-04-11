@@ -108,12 +108,11 @@ DISPLAY_KEYPAD_KEY_CODES()
 	echo "		SIDE_KEY_CAMERA_SHUTTER = 46"
 	echo "		SIDE_KEY_POWER = 116"
 
-	echo "	Face keys:"
-	echo "		FACE_KEY_MENU = 139"
-	echo "		FACE_KEY_HOME = 102"
-	echo "		FACE_KEY_BACK = 158"
-	echo "		FACE_KEY_SEARCH = 217"
-
+#	echo "	Face keys:"
+#	echo "		FACE_KEY_MENU = 139"
+#	echo "		FACE_KEY_HOME = 102"
+#	echo "		FACE_KEY_BACK = 158"
+#	echo "		FACE_KEY_SEARCH = 217"
 
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	return 0

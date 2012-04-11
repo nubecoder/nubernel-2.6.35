@@ -55,7 +55,11 @@ ifeq ($(CONFIG_SND_SOC_WM8994_ARIES),y)
 snd-soc-wm8994-objs := wm8994_samsung.o wm8994_aries.o
 endif
 ifeq ($(CONFIG_SND_SOC_WM8994_CRESPO),y)
+ifeq ($(CONFIG_SND_VOODOO),y)
+snd-soc-wm8994-objs := crespo/wm8994_samsung.o crespo/wm8994_herring.o crespo/wm8994_voodoo.o
+else
 snd-soc-wm8994-objs := crespo/wm8994_samsung.o crespo/wm8994_herring.o
+endif
 endif
 ifeq ($(CONFIG_SND_SOC_WM8994_VICTORY),y)
 ifeq ($(CONFIG_SND_VOODOO),y)

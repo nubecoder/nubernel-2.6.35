@@ -459,6 +459,29 @@ config KEYPAD_S3C_FORTE
         help
         Forte Product Key Board
 
+config KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+	bool "Export the pseudo hardreset keys via sysfs"
+	depends on KEYPAD_S3C && SYSFS && INPUT_USE_PSEUDO_HARD_RESET
+	default n
+	---help---
+	  Allows runtime configuration of the pseudo hardreset keys
+	  via sysfs exported variables.
+
+	  The current hardreset keys may be read with:
+	    cat /sys/devices/platform/s3c-keypad/kernel_sec_hardreset_key1
+	    cat /sys/devices/platform/s3c-keypad/kernel_sec_hardreset_key2
+	    cat /sys/devices/platform/s3c-keypad/kernel_sec_hardreset_key3
+	  and new hardreset keys may be set with:
+	    echo # > /sys/devices/platform/s3c-keypad/kernel_sec_hardreset_key1
+	    echo # > /sys/devices/platform/s3c-keypad/kernel_sec_hardreset_key2
+	    echo # > /sys/devices/platform/s3c-keypad/kernel_sec_hardreset_key3
+	  where # is the numeric value of the key.
+
+	  The default hardreset keys are:
+	    kernel_sec_hardreset_key1 = 51 (Volume Up)
+	    kernel_sec_hardreset_key2 = 116 (PWR)
+	    kernel_sec_hardreset_key3 = 46 (Camera)
+
 config KEYPAD_S3C_EXPORT_DELAYS
 	bool "Export keypad column-switch and timer delays via sysfs"
 	depends on KEYPAD_S3C && SYSFS

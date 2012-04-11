@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-10-2012:
+Exporting the pseudo hardreset keys via sysfs.
 Implementing pseudo hard reset as a Kconfig option.
 
 04-08-2012:

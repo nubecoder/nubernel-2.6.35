@@ -42,6 +42,19 @@ MODULE_LICENSE("GPL");
 #define QKEY_U          17
 #endif
 
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+#define KERNEL_SEC_HARDRESET_KEY1 kernel_sec_hardreset_key1
+#define KERNEL_SEC_HARDRESET_KEY2 kernel_sec_hardreset_key2
+#define KERNEL_SEC_HARDRESET_KEY3 kernel_sec_hardreset_key3
+unsigned long kernel_sec_hardreset_key1 = KERNEL_SEC_HARDRESET_KEY1_DEFAULT;
+unsigned long kernel_sec_hardreset_key2 = KERNEL_SEC_HARDRESET_KEY2_DEFAULT;
+unsigned long kernel_sec_hardreset_key3 = KERNEL_SEC_HARDRESET_KEY3_DEFAULT;
+#else
+#define KERNEL_SEC_HARDRESET_KEY1 KERNEL_SEC_HARDRESET_KEY1_DEFAULT
+#define KERNEL_SEC_HARDRESET_KEY2 KERNEL_SEC_HARDRESET_KEY2_DEFAULT
+#define KERNEL_SEC_HARDRESET_KEY3 KERNEL_SEC_HARDRESET_KEY3_DEFAULT
+#endif // CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+
 /*
  * EV_ABS events which should not be cached are listed here.
  */

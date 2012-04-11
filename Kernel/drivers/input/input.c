@@ -31,10 +31,6 @@
 #include <linux/kernel_sec_common.h>
 #endif
 
-#ifdef CONFIG_MACH_VICTORY
-#define USE_PSEUDO_HARD_RESET
-#endif
-
 MODULE_AUTHOR("Vojtech Pavlik <vojtech@suse.cz>");
 MODULE_DESCRIPTION("Input core");
 MODULE_LICENSE("GPL");
@@ -45,6 +41,20 @@ MODULE_LICENSE("GPL");
 #else
 #define QKEY_U          17
 #endif
+
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+#define KERNEL_SEC_HARDRESET_KEY1 kernel_sec_hardreset_key1
+#define KERNEL_SEC_HARDRESET_KEY2 kernel_sec_hardreset_key2
+#define KERNEL_SEC_HARDRESET_KEY3 kernel_sec_hardreset_key3
+unsigned long kernel_sec_hardreset_key1 = KERNEL_SEC_HARDRESET_KEY1_DEFAULT;
+unsigned long kernel_sec_hardreset_key2 = KERNEL_SEC_HARDRESET_KEY2_DEFAULT;
+unsigned long kernel_sec_hardreset_key3 = KERNEL_SEC_HARDRESET_KEY3_DEFAULT;
+#else
+#define KERNEL_SEC_HARDRESET_KEY1 KERNEL_SEC_HARDRESET_KEY1_DEFAULT
+#define KERNEL_SEC_HARDRESET_KEY2 KERNEL_SEC_HARDRESET_KEY2_DEFAULT
+#define KERNEL_SEC_HARDRESET_KEY3 KERNEL_SEC_HARDRESET_KEY3_DEFAULT
+#endif // CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+
 /*
  * EV_ABS events which should not be cached are listed here.
  */
@@ -77,7 +87,7 @@ static DEFINE_MUTEX(input_mutex);
 
 static struct input_handler *input_table[8];
 
-#ifdef USE_PSEUDO_HARD_RESET
+#ifdef CONFIG_INPUT_USE_PSEUDO_HARD_RESET
 static void input_chk_hardreset(unsigned int code, int value)
 {
 	static int key1=0, key2=0, key3=0;
@@ -103,7 +113,7 @@ static void input_chk_hardreset(unsigned int code, int value)
 			key3 = 0;
 	}
 }
-#endif
+#endif // CONFIG_INPUT_USE_PSEUDO_HARD_RESET
 
 static inline int is_event_supported(unsigned int code,
 				     unsigned long *bm, unsigned int max)
@@ -449,7 +459,7 @@ void input_event(struct input_dev *dev,
 #endif //CONFIG_KEYPAD_S3C
 #endif //CONFIG_KERNEL_DEBUG_SEC
 
-#ifdef USE_PSEUDO_HARD_RESET
+#ifdef CONFIG_INPUT_USE_PSEUDO_HARD_RESET
 	if((dev->name) != 0) {
 		if(strcmp(dev->name,"s3c-keypad")==0 ||
 			strcmp(dev->name,"victory-keypad") == 0)
@@ -458,7 +468,7 @@ void input_event(struct input_dev *dev,
 			input_chk_hardreset(code, value);
 		}
 	}
-#endif
+#endif // CONFIG_INPUT_USE_PSEUDO_HARD_RESET
 
 	#ifdef CONFIG_MACH_ATLAS
 	if(skip_once == 0) {

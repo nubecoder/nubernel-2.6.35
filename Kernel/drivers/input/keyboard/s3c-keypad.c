@@ -80,6 +80,12 @@ static u32 prevmask[KEYPAD_COLUMNS];
 
 static int in_sleep = 0;
 
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+extern unsigned long kernel_sec_hardreset_key1;
+extern unsigned long kernel_sec_hardreset_key2;
+extern unsigned long kernel_sec_hardreset_key3;
+#endif // CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+
 #define COLUMN_DELAY_DEFAULT KEYPAD_DELAY
 #define COLUMN_DELAY_MAX     (1000000/(HZ*KEYPAD_COLUMNS))
 #define TIMER_DELAY_DEFAULT  (3*HZ/100)
@@ -498,6 +504,39 @@ static DEVICE_ATTR(key_pressed, S_IRUGO | S_IWUSR | S_IXOTH, keyshort_test, NULL
 static DEVICE_ATTR(brightness, S_IRUGO | S_IWUSR | S_IXOTH, NULL, key_led_control);
 // nandu froyo merge
 
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+#define HARDRESET_KEY_ATTR(hardreset_key, hardreset_key_min, hardreset_key_max) \
+static ssize_t hardreset_key##_show(struct device *dev, \
+                            struct device_attribute *attr, char *buf) \
+{ \
+	return snprintf(buf, PAGE_SIZE, "%lu\n", hardreset_key); \
+} \
+\
+static ssize_t hardreset_key##_store(struct device *dev, \
+                             struct device_attribute *attr, \
+                             const char *buf, size_t count) \
+{ \
+	unsigned long val; \
+	int res; \
+\
+	if ((res = strict_strtoul(buf, 10, &val)) < 0) \
+		return res; \
+\
+	if (val < hardreset_key_min || val > hardreset_key_max) \
+		return -EINVAL; \
+\
+	hardreset_key = val; \
+\
+	return count; \
+} \
+\
+static DEVICE_ATTR(hardreset_key, S_IRUGO | S_IWUSR, hardreset_key##_show, hardreset_key##_store);
+HARDRESET_KEY_ATTR(kernel_sec_hardreset_key1, KERNEL_SEC_HARDRESET_KEY_MIN, KERNEL_SEC_HARDRESET_KEY_MAX)
+HARDRESET_KEY_ATTR(kernel_sec_hardreset_key2, KERNEL_SEC_HARDRESET_KEY_MIN, KERNEL_SEC_HARDRESET_KEY_MAX)
+HARDRESET_KEY_ATTR(kernel_sec_hardreset_key3, KERNEL_SEC_HARDRESET_KEY_MIN, KERNEL_SEC_HARDRESET_KEY_MAX)
+#undef HARDRESET_KEY_ATTR
+#endif // CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+
 #ifdef CONFIG_KEYPAD_S3C_EXPORT_DELAYS
 #define DELAY_ATTR(delay, delay_max) \
 static ssize_t delay##_show(struct device *dev, \
@@ -714,6 +753,18 @@ static int __init s3c_keypad_probe(struct platform_device *pdev)
         pr_err("Failed to create device file(%s)!\n", dev_attr_brightness.attr.name);
   	}
 
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+	if (device_create_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key1) < 0)
+		pr_err("Unable to create \"%s\".\n", dev_attr_kernel_sec_hardreset_key1.attr.name);
+
+	if (device_create_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key2) < 0)
+		pr_err("Unable to create \"%s\".\n", dev_attr_kernel_sec_hardreset_key2.attr.name);
+
+	if (device_create_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key3) < 0)
+		pr_err("Unable to create \"%s\".\n", dev_attr_kernel_sec_hardreset_key3.attr.name);
+
+#endif // CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+
 #ifdef CONFIG_KEYPAD_S3C_EXPORT_DELAYS
 	if (device_create_file(&pdev->dev, &dev_attr_column_delay) < 0)
 		pr_err("Unable to create \"%s\".\n", dev_attr_column_delay.attr.name);
@@ -762,6 +813,12 @@ static int s3c_keypad_remove(struct platform_device *pdev)
 		clk_put(keypad_clock);
 		keypad_clock = NULL;
 	}
+
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+	device_remove_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key1);
+	device_remove_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key2);
+	device_remove_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key3);
+#endif // CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
 
 #ifdef CONFIG_KEYPAD_S3C_EXPORT_DELAYS
 	device_remove_file(&pdev->dev, &dev_attr_column_delay);

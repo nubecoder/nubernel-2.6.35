@@ -8,6 +8,16 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-11-2012:
+Lowering KERNEL_SEC_HARDRESET_KEY_MAX and removing face keys from keypad_info output (face keys can't trigger the hardreset).
+Added keypad_info script to initramfs_tw.
+Enabling the pseudo hardreset keys sysfs export in defconfigs.
+Enabling pseudo hard reset in defconfigs.
+
+04-10-2012:
+Exporting the pseudo hardreset keys via sysfs.
+Implementing pseudo hard reset as a Kconfig option.
+
 04-08-2012:
 Updating initramfs_tw modules.
 Toolchain related changes.

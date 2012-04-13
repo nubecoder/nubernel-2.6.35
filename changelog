@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-13-2012:
+Reverting "Automated per tty task groups patch" (commitID: a4a969e).
+
 04-12-2012:
 Misc. sched fixes (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/92918f283cbff8f8c9e0f0b74aafbef5b5494563).
 Fix smartassv2 (kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/5f8dcfb91e7d83b17ca771c76ed8a09dfe81b9de).

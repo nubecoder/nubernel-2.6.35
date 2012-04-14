@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-14-2012:
+Add CONFIG_USB_CSW_HACK to defconfigs, but keep disabled for now.
 USB: android gadget: mass_storage: read/write performance enhancement (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/2cb75a41df67b4a0c63c5d5e38fe554051973327).
 Added optimized CRC32 algorithm (via Ezekeel: https://github.com/Ezekeel/GLaDOS-nexus-s/commit/f04fc2475aa96b9133cf8cfd42597cf511bd2c74).
 

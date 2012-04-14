@@ -17,6 +17,8 @@ Enabling pseudo hard reset in defconfigs.
 04-10-2012:
 Exporting the pseudo hardreset keys via sysfs.
 Implementing pseudo hard reset as a Kconfig option.
+Add voodoo color to my defconfigs.
+Add voodoo color (bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/90da0f3af77e648d07719504bf7d3ea86243f856).
 
 04-08-2012:
 Updating initramfs_tw modules.

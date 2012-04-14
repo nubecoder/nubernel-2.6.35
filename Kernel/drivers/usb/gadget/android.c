@@ -567,7 +567,7 @@ void android_enable_function(struct usb_function *f, int enable)
 	CSY_DBG_ESS("++ f->name=%s enable=%d\n", f->name, enable);
 
 	printk(KERN_INFO "(android: %s) f->name=%s enable=%d \n", __func__,f->name, enable);
-#ifdef _SUPPORT_SAMSUNG_AUTOINSTALLER_ 
+#ifdef _SUPPORT_SAMSUNG_AUTOINSTALLER_
 	askon_status = 0;
 #endif
 	if(enable) {
@@ -575,20 +575,20 @@ void android_enable_function(struct usb_function *f, int enable)
 			ret = set_product(dev, USBSTATUS_SAMSUNG_KIES);
 			if (ret != -1)
 				dev->current_usb_mode = USBSTATUS_SAMSUNG_KIES;
-			currentusbstatus =  dev->current_usb_mode; 
+			currentusbstatus =  dev->current_usb_mode;
 		}
 		if (!strcmp(f->name, "adb")) {
 			int mode = dev->rndis_usb_mode ? USBSTATUS_ADB_RNDIS : USBSTATUS_ADB;
 			ret = set_product(dev, mode);
 			if (ret != -1)
 				dev->debugging_usb_mode = 1; /* save debugging status */
-			currentusbstatus =  mode ;//dev->current_usb_mode; 
+			currentusbstatus =  mode ;//dev->current_usb_mode;
 		}
 		if (!strcmp(f->name, "mtp")) {
 			ret = set_product(dev, USBSTATUS_MTPONLY);
 			if (ret != -1)
 				dev->current_usb_mode = USBSTATUS_MTPONLY;
-			currentusbstatus =  dev->current_usb_mode; 
+			currentusbstatus =  dev->current_usb_mode;
 		}
 		if (!strcmp(f->name, "rndis")) {
 			int mode = dev->debugging_usb_mode ? USBSTATUS_ADB_RNDIS : USBSTATUS_VTP;
@@ -601,11 +601,11 @@ void android_enable_function(struct usb_function *f, int enable)
 			ret = set_product(dev, USBSTATUS_UMS);
 			if (ret != -1)
 				dev->current_usb_mode = USBSTATUS_UMS;
-			currentusbstatus =  dev->current_usb_mode; 
+			currentusbstatus =  dev->current_usb_mode;
 		}
 
 	}
-	else { 
+	else {
                   //dev->current_usb_mode = USBSTATUS_UMS;
                 /* for disable : Return old mode. If Non-GED model changes policy, below code has to be modified. */
 		if (!strcmp(f->name, "adb")) {
@@ -622,7 +622,7 @@ void android_enable_function(struct usb_function *f, int enable)
 			currentusbstatus =  mode;
 		} else {
 			ret = set_product(dev, dev->current_usb_mode);
-			currentusbstatus =  dev->current_usb_mode; 
+			currentusbstatus =  dev->current_usb_mode;
 		}
 
 	} /* if(enable) */
@@ -725,7 +725,7 @@ void samsung_enable_function(int mode)
 			CSY_DBG_ESS("mode = USBSTATUS_UMS (0x%x)\n", mode);
 			ret = set_product(dev, USBSTATUS_UMS);
 			break;
-#ifdef _SUPPORT_SAMSUNG_AUTOINSTALLER_ 
+#ifdef _SUPPORT_SAMSUNG_AUTOINSTALLER_
 		case USBSTATUS_SAMSUNG_KIES:
 			CSY_DBG_ESS("mode = USBSTATUS_SAMSUNG_KIES (0x%x)\n", mode);
 			ret = set_product(dev, USBSTATUS_SAMSUNG_KIES);
@@ -1156,7 +1156,7 @@ static int android_probe(struct platform_device *pdev)
 
 /* soonyong.cho : If you use usb switch and enable usb switch before to initilize final function driver,
  *		  it can be called as vbus_session function without to initialize product number
- *		  and present product. 
+ *		  and present product.
  *		  But, Best guide is that usb switch doesn't initialize before usb driver.
  *		  If you want initialize, please implement it.
  */
@@ -1195,6 +1195,7 @@ static void __exit cleanup(void)
 	platform_driver_unregister(&android_platform_driver);
 	mutex_destroy(&_android_dev->enable_mutex);
 	kfree(_android_dev);
+
 	_android_dev = NULL;
 }
 module_exit(cleanup);

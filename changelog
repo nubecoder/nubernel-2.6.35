@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-14-2012:
+Whitespace fix.
 Add adb_rndis USB gadget mode, fix rndis support on Linux USB hosts (mkasick via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/5372af6f0042d0336034340a7d3503e4b427d81d).
 Whitespace fix.
 Add CONFIG_USB_CSW_HACK to defconfigs, but keep disabled for now.

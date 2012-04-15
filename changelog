@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-15-2012:
+Adjustments to defconfigs.
 Remove more unused defconfigs.
 Remove unused cyanogenmod defconfig.
 

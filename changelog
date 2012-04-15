@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-15-2012:
+Remove unused cyanogenmod defconfig.
+
 04-14-2012:
 Whitespace fix.
 Add adb_rndis USB gadget mode, fix rndis support on Linux USB hosts (mkasick via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/5372af6f0042d0336034340a7d3503e4b427d81d).

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-16-2012:
+initramfs_tw: Removed old sd card booting method and excess binaries; Updated su binary and superuser apk; Fixed some permissions and symlinks.
 Move redbend_ua binary to update folder and adjust helper scripts.
 
 04-15-2012:

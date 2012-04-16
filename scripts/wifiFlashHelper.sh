@@ -21,10 +21,10 @@ TMP_PATH="/data/local/tmp"
 ZIMAGE_SRC="$PWD/../Kernel/arch/arm/boot/zImage"
 ZIMAGE_DEST="$TMP_PATH/zImage"
 
-REDBEND_SRC="$PWD/../initramfs_tw/sbin/redbend_ua"
+REDBEND_SRC="$PWD/../update/redbend_ua"
 REDBEND_DEST="$TMP_PATH/redbend_ua"
 
-#BMLWRITE_SRC="$PWD/../initramfs_tw/sbin/bmlwrite"
+#BMLWRITE_SRC="$PWD/../update/bmlwrite"
 #BMLWRITE_DEST="$TMP_PATH/bmlwrite"
 
 KERNELFLASH_SRC="$PWD/kernelFlash"

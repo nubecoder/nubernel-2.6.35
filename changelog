@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-17-2012:
+defconfig: Disable CONFIG_POKE_REC_BOOT_MAGIC in victory_nubernel (TouchWiz).
 initramfs_tw: Remove bash and related files.
 initramfs_tw: Update used modules and remove unneeded modules.
 

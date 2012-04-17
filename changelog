@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-17-2012:
+initramfs_tw: Remove bash and related files.
 initramfs_tw: Update used modules and remove unneeded modules.
 
 04-16-2012:

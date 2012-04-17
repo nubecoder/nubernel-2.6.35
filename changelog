@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-17-2012:
+initramfs_tw: Update used modules and remove unneeded modules.
+
 04-16-2012:
 initramfs_tw: Removed old sd card booting method and excess binaries; Updated su binary and superuser apk; Fixed some permissions and symlinks.
 Move redbend_ua binary to update folder and adjust helper scripts.

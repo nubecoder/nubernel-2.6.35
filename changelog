@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-23-2012:
+scripting: Moving some script related files.
 ncBuildHelper: Always generate new compile.h file (force new timestamp).
 
 04-18-2012:

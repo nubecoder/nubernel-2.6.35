@@ -7,14 +7,11 @@
 # http://www.nubecoder.com/
 #
 
-# define envvars
-TARGET="victory_nubernel"
-KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.2"
-LOCALVERSION=".nubernel_v0.0.2"
-INSTALL_MOD_PATH="../stand-alone\ modules"
-CROSS_COMPILE="/home/nubecoder/android/toolchains/arm-eabi-4.4.3/bin/arm-eabi-"
+# source includes
+source "$PWD/include/includes"
 
 # define defaults
+TARGET="victory_nubernel"
 BUILD_KERNEL=n
 BUILD_MODULES=n
 MODULE_ARGS=
@@ -29,73 +26,94 @@ WIRED_FLASH=n
 USE_KEXEC=n
 USE_MTD=n
 
-# define vars
-MKZIP='7z -mx9 -mmt=1 a "$OUTFILE" .'
-THREADS=$(expr 1 + $(grep processor /proc/cpuinfo | wc -l))
-VERSION=$(date +%m-%d-%Y)
-ERROR_MSG=
-TIME_START=
-TIME_END=
-
 # exports
 export KBUILD_BUILD_VERSION
 
-#source functions
-source $PWD/functions
+# functions
+function SHOW_HELP()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "Usage options for $0:"
+	echo "-b : Build zImage (kernel)."
+	echo "-c : Run 'make clean'."
+	echo "-C : Run 'make distclean'."
+	echo "-d : Use specified config."
+	echo "     For example, use -d myconfig to 'make myconfig_defconfig'."
+	echo "-h : Print this help info."
+	echo "-j : Number of threads (auto detected by default)."
+	echo "     For example, use -j4 to make with 4 threads."
+	echo "-m : Build, copy and / or strip modules."
+	echo "     To copy use 'c', to strip use 's', for both use 'cs'."
+	echo "-t : Produce tar file suitable for flashing with Odin."
+	echo "-u : Wired (USB) Flash, expects a device to be connected."
+	echo "-v : Show verbose output while building zImage (kernel)."
+	echo "-w : Wifi Flash, for use with adb wireless."
+	echo "-z : Produce zip file suitable for flashing via Recovery."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	exit 1
+}
+function SHOW_SETTINGS()
+{
+	TIME_START=$(date +%s)
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "build version  == $KBUILD_BUILD_VERSION"
+	echo "modules path   == $INSTALL_MOD_PATH"
+	echo "cross compile  == $CROSS_COMPILE"
+	echo "outfile path   == $PWD/$TARGET-$VERSION.*"
+	echo "make clean     == $CLEAN"
+	echo "make distclean == $DISTCLEAN"
+	echo "use defconfig  == $DEFCONFIG"
+	echo "build target   == $TARGET"
+	echo "make threads   == $THREADS"
+	echo "verbose output == $VERBOSE"
+	echo "build modules  == $BUILD_MODULES"
+	echo "build kernel   == $BUILD_KERNEL"
+	echo "create tar     == $PRODUCE_TAR"
+	echo "create zip     == $PRODUCE_ZIP"
+	echo "wifi flash     == $WIFI_FLASH"
+	echo "wired flash    == $WIRED_FLASH"
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
 
 # main
 while getopts ":bcCd:hj:km:Mtuvwz" flag
 do
 	case "$flag" in
 	b)
-		BUILD_KERNEL=y
-		;;
+		BUILD_KERNEL=y ;;
 	c)
-		CLEAN=y
-		;;
+		CLEAN=y ;;
 	C)
-		DISTCLEAN=y
-		;;
+		DISTCLEAN=y ;;
 	d)
 		DEFCONFIG=y
-		TARGET="$OPTARG"
-		;;
+		TARGET="$OPTARG" ;;
 	h)
-		SHOW_HELP
-		;;
+		SHOW_HELP ;;
 	j)
-		THREADS=$OPTARG
-		;;
+		THREADS=$OPTARG ;;
 	k)
-		USE_KEXEC=y
-		;;
+		USE_KEXEC=y ;;
 	m)
 		BUILD_MODULES=y
-		MODULE_ARGS="$OPTARG"
-		;;
+		MODULE_ARGS="$OPTARG" ;;
 	M)
-		USE_MTD=y
-		;;
+		USE_MTD=y ;;
 	t)
-		PRODUCE_TAR=y
-		;;
+		PRODUCE_TAR=y ;;
 	u)
-		WIRED_FLASH=y
-		;;
+		WIRED_FLASH=y ;;
 	v)
-		VERBOSE=y
-		;;
+		VERBOSE=y ;;
 	w)
-		WIFI_FLASH=y
-		;;
+		WIFI_FLASH=y ;;
 	z)
-		PRODUCE_ZIP=y
-		;;
+		PRODUCE_ZIP=y ;;
 	*)
 		ERROR_MSG="Error:: problem with option '$OPTARG'"
 		SHOW_ERROR
-		SHOW_HELP
-		;;
+		SHOW_HELP ;;
 	esac
 done
 

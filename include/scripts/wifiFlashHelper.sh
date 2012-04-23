@@ -4,7 +4,7 @@
 # For use with adb wireless.
 #
 #	Usage:
-#		Change the IP variable below to match the IP given in adb wireless.
+#		Change the WIFI_IP variable below to match the WIFI_IP given in adb wireless.
 #		Run the script.
 #
 #
@@ -12,36 +12,13 @@
 # http://www.nubecoder.com/
 #
 
-#define variables
-IP="192.168.1.156"
+# source includes
+#source $PWD"/../includes"
 
-#define paths
-TMP_PATH="/data/local/tmp"
+# defines
+WIFI_IP="192.168.1.156"
 
-ZIMAGE_SRC="$PWD/../Kernel/arch/arm/boot/zImage"
-ZIMAGE_DEST="$TMP_PATH/zImage"
-
-REDBEND_SRC="$PWD/../update/redbend_ua"
-REDBEND_DEST="$TMP_PATH/redbend_ua"
-
-#BMLWRITE_SRC="$PWD/../update/bmlwrite"
-#BMLWRITE_DEST="$TMP_PATH/bmlwrite"
-
-KERNELFLASH_SRC="$PWD/kernelFlash"
-KERNELFLASH_DEST="$TMP_PATH/kernelFlash"
-
-
-#define cmds
-ADB_KILL="adb kill-server"
-ADB_CONNECT="adb connect"
-ADB_DISCONNECT="adb disconnect"
-ADB_SHELL="adb shell"
-ADB_PUSH="adb push"
-ADB_STATE="adb get-state"
-
-ADB_KERNEL_FLASH="su -c '/data/local/tmp/kernelFlash -k'"
-
-#error
+# error
 ERROR="no"
 
 echo
@@ -52,13 +29,12 @@ echo "*"
 #kill adb, start, and connect to wireless
 echo "Killing adb server."
 $ADB_KILL >/dev/null
-echo "Connect to $IP."
-$ADB_CONNECT $IP >/dev/null
+echo "Connect to $WIFI_IP."
+$ADB_CONNECT $WIFI_IP >/dev/null
 
 # check for device (taken from the OneClickRoot: http://forum.xda-developers.com/showthread.php?t=897612)
 CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
-while [ "$CURSTATE" != device ];
-do
+while [ "$CURSTATE" != device ]; do
 	CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
 	echo "Phone is not connected."
 	CURSTATE="device"
@@ -71,7 +47,6 @@ then
 	echo "Removing previous files."
 	$ADB_SHELL "rm " $ZIMAGE_DEST >/dev/null 2>&1
 	$ADB_SHELL "rm " $REDBEND_DEST >/dev/null 2>&1
-#	$ADB_SHELL "rm " $BMLWRITE_DEST >/dev/null 2>&1
 	$ADB_SHELL "rm " $KERNELFLASH_DEST >/dev/null 2>&1
 
 	#push new kernel to phone
@@ -82,12 +57,6 @@ then
 	$ADB_PUSH $REDBEND_SRC $REDBEND_DEST >/dev/null 2>&1
 	echo "Setting permissions on redbend_ua (0755)."
 	$ADB_SHELL "chmod 0755" $REDBEND_DEST
-
-#	#push bmlwrite to phone and set permissions
-#	echo "Pushing bmlwrite, this may take a minute."
-#	$ADB_PUSH $BMLWRITE_SRC $BMLWRITE_DEST >/dev/null 2>&1
-#	echo "Setting permissions on bmlwrite (0755)."
-#	$ADB_SHELL "chmod 0755" $BMLWRITE_DEST
 
 	#push kernelFlash to phone and set permissions
 	echo "Pushing kernelFlash, this may take a minute."
@@ -100,10 +69,10 @@ then
 	$ADB_SHELL $ADB_KERNEL_FLASH
 
 	#cleanup adb wireless by disconnecting
-	echo "Disconnect from $IP."
-	$ADB_DISCONNECT $IP
+	echo "Disconnect from $WIFI_IP."
+	$ADB_DISCONNECT $WIFI_IP
 else
-	echo "Please enable wireless adb and verify the IP matches: $IP."
+	echo "Please enable wireless adb and verify the WIFI_IP matches: $WIFI_IP."
 fi
 
 echo "*"

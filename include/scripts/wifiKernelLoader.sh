@@ -4,7 +4,7 @@
 # For use with adb wireless.
 #
 #	Usage:
-#		Change the IP variable below to match the IP given in adb wireless.
+#		Change the WIFI_IP variable below to match the WIFI_IP given in adb wireless.
 #		Run the script.
 #
 #
@@ -12,26 +12,13 @@
 # http://www.nubecoder.com/
 #
 
-#define variables
-IP="192.168.1.156"
+# source includes
+source "$PWD/../includes"
 
-#define paths
-TMP_PATH="/data/local/tmp"
-ZIMAGE_SRC="$PWD/../Kernel/arch/arm/boot/zImage"
-ZIMAGE_DEST="$TMP_PATH/zImage"
-KERNELLOAD_SRC="$PWD/kernelLoad"
-KERNELLOAD_DEST="$TMP_PATH/kernelLoad"
+# defines
+WIFI_IP="192.168.1.156"
 
-#define cmds
-ADB_KILL="adb kill-server"
-ADB_CONNECT="adb connect"
-ADB_DISCONNECT="adb disconnect"
-ADB_SHELL="adb shell"
-ADB_PUSH="adb push"
-ADB_STATE="adb get-state"
-ADB_KERNEL_LOAD="su -c \"/data/local/tmp/kernelLoad $ZIMAGE_DEST\""
-
-#error
+# error
 ERROR="no"
 
 echo
@@ -42,8 +29,8 @@ echo "*"
 #kill adb, start, and connect to wireless
 echo "Killing adb server."
 $ADB_KILL >/dev/null
-echo "Connect to $IP."
-$ADB_CONNECT $IP >/dev/null
+echo "Connect to $WIFI_IP."
+$ADB_CONNECT $WIFI_IP >/dev/null
 
 # check for device (taken from the OneClickRoot: http://forum.xda-developers.com/showthread.php?t=897612)
 CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
@@ -75,10 +62,10 @@ if [ "$ERROR" != "yes" ]; then
 	$ADB_SHELL $ADB_KERNEL_LOAD
 
 	#cleanup adb wireless by disconnecting
-	echo "Disconnect from $IP."
-	$ADB_DISCONNECT $IP
+	echo "Disconnect from $WIFI_IP."
+	$ADB_DISCONNECT $WIFI_IP
 else
-	echo "Please enable wireless adb and verify the IP matches: $IP."
+	echo "Please enable wireless adb and verify the WIFI_IP matches: $WIFI_IP."
 fi
 
 echo "*"

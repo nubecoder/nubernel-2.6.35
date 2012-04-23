@@ -7,16 +7,10 @@
 # http://www.nubecoder.com/
 #
 
+# source includes
+source "$PWD/../includes"
 
-#define base paths
-INITRAMFS_TW_PATH="initramfs_tw/lib/modules"
-INITRAMFS_CM_PATH="initramfs_cm7/lib/modules"
-STAND_ALONE_PATH="stand-alone modules"
-VERSION_PATH="lib/modules/2.6.35.13+"
-CROSS_COMPILE="/home/nubecoder/android/toolchains/arm-eabi-4.4.3/bin/arm-eabi-"
-CC_STRIP="${CROSS_COMPILE}strip -d --strip-unneeded"
-
-#defines
+# define defaults
 STAND_ALONE="n"
 BUILD_CM="n"
 
@@ -33,10 +27,10 @@ SHOW_HELP()
 COPY_WITH_ECHO()
 {
 	local SRC=$1
-	local MOD_PATH="$STAND_ALONE_PATH/$VERSION_PATH"
+	local MOD_PATH="$INSTALL_MOD_PATH/$VERSION_PATH"
 	if [ "$STAND_ALONE" = "y" ]; then
-		echo "Copying $SRC to $STAND_ALONE_PATH/"
-		cp "$MOD_PATH/$SRC" "$STAND_ALONE_PATH/"
+		echo "Copying $SRC to $INSTALL_MOD_PATH/"
+		cp "$MOD_PATH/$SRC" "$INSTALL_MOD_PATH/"
 	elif [ "$BUILD_CM" = "y" ]; then
 		echo "Copying $SRC to $INITRAMFS_CM_PATH/"
 		cp "$MOD_PATH/$SRC" "$INITRAMFS_CM_PATH/"
@@ -49,8 +43,8 @@ STRIP_WITH_ECHO()
 {
 	local DST=$1
 	if [ "$STAND_ALONE" = "y" ]; then
-		echo "Stripping $STAND_ALONE_PATH/$DST"
-		$CC_STRIP "$STAND_ALONE_PATH/$DST"
+		echo "Stripping $INSTALL_MOD_PATH/$DST"
+		$CC_STRIP "$INSTALL_MOD_PATH/$DST"
 	elif [ "$BUILD_CM" = "y" ]; then
 		echo "Stripping $INITRAMFS_CM_PATH/$DST"
 		$CC_STRIP "$INITRAMFS_CM_PATH/$DST"

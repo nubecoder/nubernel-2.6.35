@@ -9,21 +9,10 @@
 # http://www.nubecoder.com/
 #
 
-#define paths
-TMP_PATH="/data/local/tmp"
-ZIMAGE_SRC="$PWD/../Kernel/arch/arm/boot/zImage"
-ZIMAGE_DEST="$TMP_PATH/zImage"
-KERNELLOAD_SRC="$PWD/kernelLoad"
-KERNELLOAD_DEST="$TMP_PATH/kernelLoad"
+# source includes
+source "$PWD/../includes"
 
-#define cmds
-ADB_KILL="adb kill-server"
-ADB_SHELL="adb shell"
-ADB_PUSH="adb push"
-ADB_STATE="adb get-state"
-ADB_KERNEL_LOAD="su -c \"/data/local/tmp/kernelLoad $ZIMAGE_DEST\""
-
-#error
+# error
 ERROR="no"
 
 echo

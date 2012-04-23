@@ -9,23 +9,10 @@
 # http://www.nubecoder.com/
 #
 
-#define paths
-TMP_PATH="/data/local/tmp"
-ZIMAGE_SRC="$PWD/../Kernel/arch/arm/boot/zImage"
-ZIMAGE_DEST="$TMP_PATH/zImage"
-REDBEND_SRC="$PWD/../update/redbend_ua"
-REDBEND_DEST="$TMP_PATH/redbend_ua"
-KERNELFLASH_SRC="$PWD/kernelFlash"
-KERNELFLASH_DEST="$TMP_PATH/kernelFlash"
+# source includes
+source "$PWD/../includes"
 
-#define cmds
-ADB_KILL="adb kill-server"
-ADB_SHELL="adb shell"
-ADB_PUSH="adb push"
-ADB_STATE="adb get-state"
-ADB_KERNEL_FLASH="su -c '/data/local/tmp/kernelFlash -k'"
-
-#error
+# error
 ERROR="no"
 
 echo
@@ -35,16 +22,14 @@ echo "*"
 
 # check for device (taken from the OneClickRoot: http://forum.xda-developers.com/showthread.php?t=897612)
 CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
-while [ "$CURSTATE" != device ];
-do
+while [ "$CURSTATE" != device ] ; do
 	CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
 	echo "Phone is not connected."
 	CURSTATE="device"
 	ERROR="yes"
 done
 
-if [ "$ERROR" != "yes" ];
-then
+if [ "$ERROR" != "yes" ] ; then
 	#remove previous files
 	echo "Removing previous files."
 	$ADB_SHELL "rm " $ZIMAGE_DEST >/dev/null 2>&1

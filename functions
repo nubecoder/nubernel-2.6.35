@@ -98,6 +98,10 @@ function REMOVE_DOTCONFIG()
 {
 	rm -f Kernel/.config
 }
+function FORCE_NEW_TIMESTAMP()
+{
+	rm -f Kernel/include/generated/compile.h > /dev/null
+}
 function ZIMAGE_UPDATE()
 {
 	rm -f update/zImage

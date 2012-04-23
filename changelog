@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-23-2012:
+ncBuildHelper: Always generate new compile.h file (force new timestamp).
+
 04-18-2012:
 initramfs_tw: Module fixup / cleanup.
 

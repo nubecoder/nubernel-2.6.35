@@ -105,6 +105,9 @@ SHOW_SETTINGS
 # force MAKE_DEFCONFIG below
 REMOVE_DOTCONFIG
 
+# force new timestamp
+FORCE_NEW_TIMESTAMP
+
 if [ "$CLEAN" = "y" ] ; then
 	MAKE_CLEAN
 fi

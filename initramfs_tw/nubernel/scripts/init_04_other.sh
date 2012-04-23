@@ -27,39 +27,39 @@ else
 	SEND_LOG "Installing scripts into /vendor/bin"
 	busybox mv -f /nubernel/bin/* /vendor/bin/
 
-	SEND_LOG "Ensuring bash is installed"
-	if [ ! -f "/system/bin/bash" ]; then
-		SEND_LOG "  Installing Bash to /system/bin/"
-		busybox mv -f /sbin/bash /system/bin/bash
-	fi
-	busybox chmod 0755 /system/bin/bash
-	#busybox rm -f /sbin/bash
-
-	SEND_LOG "Ensuring bash resources are installed"
-	DEST_FILE="/system/etc/bash.bashrc"
-	SOURCE_FILE="/nubernel/files/bash.bashrc"
-	if [ ! -f "$DEST_FILE" ]; then
-		SEND_LOG "Installing $DEST_FILE"
-		busybox mv "$SOURCE_FILE" "$DEST_FILE"
-	fi
-	DEST_FILE="/system/etc/profile"
-	SOURCE_FILE="/nubernel/files/profile"
-	if [ ! -f "$DEST_FILE" ]; then
-		SEND_LOG "Installing $DEST_FILE"
-		busybox mv "$SOURCE_FILE" "$DEST_FILE"
-	fi
-	DEST_FILE="/data/local/.bash_aliases"
-	SOURCE_FILE="/nubernel/files/.bash_aliases"
-	if [ ! -f "$DEST_FILE" ]; then
-		SEND_LOG "Installing $DEST_FILE"
-		busybox mv "$SOURCE_FILE" "$DEST_FILE"
-	fi
-	DEST_FILE="/data/local/.bashrc"
-	SOURCE_FILE="/nubernel/files/.bashrc"
-	if [ ! -f "$DEST_FILE" ]; then
-		SEND_LOG "Installing $DEST_FILE"
-		busybox mv "$SOURCE_FILE" "$DEST_FILE"
-	fi
+#	SEND_LOG "Ensuring bash is installed"
+#	if [ ! -f "/system/bin/bash" ]; then
+#		SEND_LOG "  Installing Bash to /system/bin/"
+#		busybox mv -f /sbin/bash /system/bin/bash
+#	fi
+#	busybox chmod 0755 /system/bin/bash
+#	#busybox rm -f /sbin/bash
+#
+	SEND_LOG "Ensuring shell resources are installed"
+#	DEST_FILE="/system/etc/bash.bashrc"
+#	SOURCE_FILE="/nubernel/files/bash.bashrc"
+#	if [ ! -f "$DEST_FILE" ]; then
+#		SEND_LOG "Installing $DEST_FILE"
+#		busybox mv "$SOURCE_FILE" "$DEST_FILE"
+#	fi
+#	DEST_FILE="/system/etc/profile"
+#	SOURCE_FILE="/nubernel/files/profile"
+#	if [ ! -f "$DEST_FILE" ]; then
+#		SEND_LOG "Installing $DEST_FILE"
+#		busybox mv "$SOURCE_FILE" "$DEST_FILE"
+#	fi
+#	DEST_FILE="/data/local/.bash_aliases"
+#	SOURCE_FILE="/nubernel/files/.bash_aliases"
+#	if [ ! -f "$DEST_FILE" ]; then
+#		SEND_LOG "Installing $DEST_FILE"
+#		busybox mv "$SOURCE_FILE" "$DEST_FILE"
+#	fi
+#	DEST_FILE="/data/local/.bashrc"
+#	SOURCE_FILE="/nubernel/files/.bashrc"
+#	if [ ! -f "$DEST_FILE" ]; then
+#		SEND_LOG "Installing $DEST_FILE"
+#		busybox mv "$SOURCE_FILE" "$DEST_FILE"
+#	fi
 	DEST_FILE="/data/local/.inputrc"
 	SOURCE_FILE="/nubernel/files/.inputrc"
 	if [ ! -f "$DEST_FILE" ]; then
@@ -73,15 +73,15 @@ else
 		busybox mv "$SOURCE_FILE" "$DEST_FILE"
 	fi
 
-	SEND_LOG "Checking for bash as default shell"
-	BASH_FOUND=$(busybox ls -l "/system/bin/sh" | busybox grep "/system/bin/bash")
-	if [ ! "$BASH_FOUND" = "" ] && [ -f "/system/bin/bash" ]; then
-		SEND_LOG "  Allowing bash as default shell"
-		busybox rm -f /bin/sh
-		busybox rm -f /sbin/sh
-		busybox ln -s /bin/sh /system/bin/sh
-		busybox ln -s /sbin/sh /system/bin/sh
-	fi
+#	SEND_LOG "Checking for bash as default shell"
+#	BASH_FOUND=$(busybox ls -l "/system/bin/sh" | busybox grep "/system/bin/bash")
+#	if [ ! "$BASH_FOUND" = "" ] && [ -f "/system/bin/bash" ]; then
+#		SEND_LOG "  Allowing bash as default shell"
+#		busybox rm -f /bin/sh
+#		busybox rm -f /sbin/sh
+#		busybox ln -s /bin/sh /system/bin/sh
+#		busybox ln -s /sbin/sh /system/bin/sh
+#	fi
 
 	SEND_LOG "Preventing certain malware apps (DroidDream)"
 	. > /system/bin/profile

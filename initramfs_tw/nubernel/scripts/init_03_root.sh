@@ -7,6 +7,10 @@
 # http://www.nubecoder.com/
 #
 
+#defines
+SU_VERSION="3.0.3.2"
+SU_APK_VERSION="3.0.7"
+
 #functions
 SEND_LOG()
 {
@@ -28,7 +32,7 @@ ENSURE_SU()
 	fi
 	if [ ! -f "$SU_PATH" ]; then
 		SEND_LOG "  Installing su to /system/bin/su"
-		busybox mv -f /nubernel/files/su-3.0 /system/bin/su
+		busybox mv -f "/nubernel/files/su-$SU_VERSION" /system/bin/su
 		busybox chown 0.0 /system/bin/su
 		busybox chmod 6755 /system/bin/su
 		busybox rm -f /system/xbin/su
@@ -60,8 +64,8 @@ ENSURE_SUPERUSER()
 	if [ ! $(busybox find /system/app/ -iname "superuser.apk") ] &&\
 			[ ! $(busybox find /data/app/ -iname "superuser.apk") ] &&\
 			[ ! $(busybox find /data/app/ -iname "com.noshufou.android.su*") ]; then
-		SEND_LOG "  Installing superuser.apk to /data/app/com.noshufou.android.su-1.apk"
-		busybox mv -f /nubernel/files/superuser.apk /data/app/com.noshufou.android.su-1.apk
+		SEND_LOG "  Installing superuser-$SU_APK_VERSION.apk to /data/app/com.noshufou.android.su-1.apk"
+		busybox mv -f "/nubernel/files/superuser-$SU_APK_VERSION.apk" /data/app/com.noshufou.android.su-1.apk
 		busybox chown system.system /data/app/com.noshufou.android.su-1.apk
 		busybox chmod 0644 /data/app/com.noshufou.android.su-1.apk
 		SEND_LOG "Ensuring old Superuser app data is removed"

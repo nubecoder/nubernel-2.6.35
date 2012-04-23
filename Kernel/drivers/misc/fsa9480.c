@@ -227,7 +227,8 @@ static ssize_t print_switch_state(struct switch_dev *sdev, char *buf)
 
           printk("---------->  %s ,USBSTATUS=%d,CURRENTUSBSTATUS=%d\n",__func__,usbstatus,currentusbstatus);
     if(usbstatus){
-        if((currentusbstatus== USBSTATUS_UMS) || (currentusbstatus== USBSTATUS_ADB)) {
+        if((currentusbstatus== USBSTATUS_UMS) || (currentusbstatus== USBSTATUS_ADB) ||
+           (currentusbstatus== USBSTATUS_ADB_RNDIS)) {
           printk(KERN_INFO " ------------> sending notification: ums online\n");
 	#if defined(CONFIG_MACH_VICTORY)
            return sprintf(buf, "%s\n", "1");
@@ -241,7 +242,8 @@ static ssize_t print_switch_state(struct switch_dev *sdev, char *buf)
 	}
     }
     else{
-        if((currentusbstatus== USBSTATUS_UMS) || (currentusbstatus== USBSTATUS_ADB)){
+        if((currentusbstatus== USBSTATUS_UMS) || (currentusbstatus== USBSTATUS_ADB) ||
+           (currentusbstatus== USBSTATUS_ADB_RNDIS)) {
           printk(KERN_INFO " ---------> sending notification: ums offline\n");
 	
 	#if defined(CONFIG_MACH_VICTORY)
@@ -547,7 +549,7 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 				dock_status = 1;
 			
 			ret = i2c_smbus_write_byte_data(client,
-					FSA9480_REG_MANSW1, SW_DHOST);
+					FSA9480_REG_MANSW1, SW_VAUDIO);
 			if (ret < 0)
 				dev_err(&client->dev,
 					"%s: err %d\n", __func__, ret);
@@ -568,6 +570,24 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 			if (pdata->cardock_cb)
 				pdata->cardock_cb(FSA9480_ATTACHED);
 			dock_status = 1;
+
+                        ret = i2c_smbus_write_byte_data(client,
+                                        FSA9480_REG_MANSW1, SW_VAUDIO);
+                        if (ret < 0)
+                                dev_err(&client->dev,
+                                        "%s: err %d\n", __func__, ret);
+
+                        ret = i2c_smbus_read_byte_data(client,
+                                        FSA9480_REG_CTRL);
+                        if (ret < 0)
+                                dev_err(&client->dev,
+                                        "%s: err %d\n", __func__, ret);
+
+                        ret = i2c_smbus_write_byte_data(client,
+                                FSA9480_REG_CTRL, ret & ~CON_MANUAL_SW);
+                        if (ret < 0)
+                                dev_err(&client->dev,
+                                        "%s: err %d\n", __func__, ret);
 		}
 	/* Detached */
 	} else {
@@ -630,6 +650,18 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 			if (pdata->cardock_cb)
 				pdata->cardock_cb(FSA9480_DETACHED);
 			dock_status = 0;
+
+                        ret = i2c_smbus_read_byte_data(client,
+                                        FSA9480_REG_CTRL);
+                        if (ret < 0)
+                                dev_err(&client->dev,
+                                        "%s: err %d\n", __func__, ret);
+
+                        ret = i2c_smbus_write_byte_data(client,
+                                        FSA9480_REG_CTRL, ret | CON_MANUAL_SW);
+                        if (ret < 0)
+                                dev_err(&client->dev,
+                                        "%s: err %d\n", __func__, ret);
 		}
 	}
 

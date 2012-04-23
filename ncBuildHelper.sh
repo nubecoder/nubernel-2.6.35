@@ -111,7 +111,7 @@ fi
 if [ "$DISTCLEAN" = "y" ] ; then
 	MAKE_DISTCLEAN
 fi
-if [ "$DEFCONFIG" = "y" -o ! -f "Kernel/.config" ] ; then
+if [ "$DEFCONFIG" = "y" ] || [ ! -f "Kernel/.config" ] ; then
 	MAKE_DEFCONFIG
 fi
 if [ "$BUILD_MODULES" = "y" ] ; then

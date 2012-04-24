@@ -16,43 +16,16 @@ SEND_LOG()
 #main
 SEND_LOG "Start"
 
-if [ "$1" = "recovery" ]; then
-	SEND_LOG "Remove unneccessary files in /sbin"
-	for FILE in keytimer
-	do
-		SEND_LOG " rm -f /sbin/$FILE"
-		busybox rm -f /sbin/$FILE
-	done
-
-	SEND_LOG "Remove unneccessary files in /"
-	for FILE in fota.rc init.rc lpm.rc recovery.rc ueventd.rc; do
-		SEND_LOG " rm -f /$FILE"
-		busybox rm -f /$FILE
-	done
-
-	SEND_LOG "Remove unneccessary folders in /"
-	for FOLDER in res/sbin res/etc; do
-		SEND_LOG " rm -rf $FOLDER"
-		busybox rm -rf /$FOLDER
-	done
-else
-	SEND_LOG "Remove unneccessary files in /"
-	for FILE in fota.rc init.rc init.smdkc110.rc lpm.rc recovery.rc init ueventd.rc; do
-		SEND_LOG " rm -f /$FILE"
-		busybox rm -f /$FILE
-	done
-
-	SEND_LOG "Remove unneccessary folders in /"
-	for FOLDER in res; do
-		SEND_LOG " rm -rf /$FOLDER"
-		busybox rm -rf /$FOLDER
-	done
-fi
+SEND_LOG "Remove unneccessary files in /"
+for FILE in init.rc lpm.rc ueventd.rc ; do
+	SEND_LOG " rm -f /$FILE"
+	busybox rm -f "/$FILE"
+done
 
 SEND_LOG "Remove unneccessary folders in /nubernel/"
-for FOLDER in bin files; do
+for FOLDER in bin files ; do
 	SEND_LOG " rm -rf /nubernel/$FOLDER"
-	busybox rm -rf /nubernel/$FOLDER
+	busybox rm -rf "/nubernel/$FOLDER"
 done
 
 SEND_LOG "Sync filesystem"

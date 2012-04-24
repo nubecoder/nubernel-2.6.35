@@ -51,7 +51,7 @@ typedef const struct si_pub  si_t;
 #include <dngl_stats.h>
 #include <dhd.h>
 #define WL_ERROR(x) printf x
-#define WL_TRACE(x) printf x
+#define WL_TRACE(x)
 #define WL_ASSOC(x) 
 #define WL_INFORM(x) 
 #define WL_WSEC(x) 
@@ -124,7 +124,7 @@ typedef const struct si_pub  si_t;
 #endif 
 
 #if defined(SOFTAP)
-#define WL_SOFTAP(x) printk x
+#define WL_SOFTAP(x)
 static struct net_device *priv_dev;
 static bool 	ap_cfg_running = FALSE;
 bool 	ap_fw_loaded = FALSE;
@@ -7449,7 +7449,7 @@ int get_parmeter_from_string(
 				
 				memcpy(dst, param_str_begin, parm_str_len);
 				*((char *)dst + parm_str_len) = 0; 
-				WL_ERROR((" written as a string:%s\n", (char *)dst));
+//				WL_ERROR((" written as a string:%s\n", (char *)dst));
 			break;
 
 		}

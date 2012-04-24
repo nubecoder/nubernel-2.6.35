@@ -189,7 +189,10 @@ static int lowmem_shrink(struct shrinker *s, int nr_to_scan, gfp_t gfp_mask)
 			     p->pid, p->comm, oom_adj, tasksize);
 	}
 	if (selected) {
-		lowmem_print(1, "send sigkill to %d (%s), adj %d, size %d\n",
+//		lowmem_print(1, "send sigkill to %d (%s), adj %d, size %d\n",
+//			     selected->pid, selected->comm,
+//			     selected_oom_adj, selected_tasksize);
+		lowmem_print(1, "send sigkill to ",
 			     selected->pid, selected->comm,
 			     selected_oom_adj, selected_tasksize);
 		lowmem_deathpending = selected;

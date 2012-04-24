@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-23-2012:
+initramfs_tw: add voodoo_color_info script to initramfs_tw.
 voodoo color: Set hacky_v1_offset to 2.3.3 defaults (0,0,0); Also includes a small whitespace fix.
 
 04-10-2012:

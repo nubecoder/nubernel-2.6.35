@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-24-2012:
+initramfs_tw: Some minor changes to the init.rc script.
 initramfs_tw: Some changes to init_01_prep (allows for Samsung qmg boot animation support after 1st boot).
 initramfs_tw: More cleanup (removing recovery related items, etc).
 

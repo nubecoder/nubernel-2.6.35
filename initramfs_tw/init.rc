@@ -935,3 +935,5 @@ service init_scripts /system/bin/logwrapper /nubernel/scripts/run_init_scripts.s
 
 on property:sys.boot_completed=1
     stop bootanim
+    stop playsound
+    stop samsungani

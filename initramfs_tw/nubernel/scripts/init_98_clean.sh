@@ -25,7 +25,7 @@ if [ "$1" = "recovery" ]; then
 	done
 
 	SEND_LOG "Remove unneccessary files in /"
-	for FILE in fota.rc init.rc init.rc.sdcard lpm.rc recovery.rc ueventd.rc; do
+	for FILE in fota.rc init.rc lpm.rc recovery.rc ueventd.rc; do
 		SEND_LOG " rm -f /$FILE"
 		busybox rm -f /$FILE
 	done
@@ -36,15 +36,8 @@ if [ "$1" = "recovery" ]; then
 		busybox rm -rf /$FOLDER
 	done
 else
-	SEND_LOG "Remove unneccessary files in /sbin"
-	for FILE in bash
-	do
-		SEND_LOG " rm -f /sbin/$FILE"
-		busybox rm -f /sbin/$FILE
-	done
-
 	SEND_LOG "Remove unneccessary files in /"
-	for FILE in fota.rc init.rc init.rc.sdcard init.smdkc110.rc lpm.rc recovery.rc init init.log init.sh initlog.sh ueventd.rc; do
+	for FILE in fota.rc init.rc init.smdkc110.rc lpm.rc recovery.rc init ueventd.rc; do
 		SEND_LOG " rm -f /$FILE"
 		busybox rm -f /$FILE
 	done

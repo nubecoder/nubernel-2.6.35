@@ -15,11 +15,11 @@ SEND_LOG()
 
 #main
 SEND_LOG "Start"
-if [ "$1" = "recovery" ]; then
+if [ "$1" = "recovery" ] ; then
 	SEND_LOG "Fixing permissions and ownership"
 	SEND_LOG "chmod 0755 /sbin/*"
 	busybox chmod 0755 /sbin/*
-	for FILE in default.prop init init.sh init.smdkc110.rc ; do
+	for FILE in default.prop init init.smdkc110.rc ; do
 		SEND_LOG "  chown 0.2000 /$FILE"
 		busybox chown 0.2000 /$FILE
 	done
@@ -39,7 +39,7 @@ else
 	busybox chmod 0755 /sbin/*
 	SEND_LOG "chmod 0755 /vendor/bin/*"
 	busybox chmod 0755 /vendor/bin/*
-	for FILE in default.prop init init.sh ; do
+	for FILE in default.prop init ; do
 		SEND_LOG "  chown 0.2000 /$FILE"
 		busybox chown 0.2000 /$FILE
 	done

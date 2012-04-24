@@ -22,7 +22,7 @@ else
 	SEND_LOG "Cleaning up other init scripts before Remount ro"
 	# Remount as RO
 	busybox rm -f "nubernel/scripts/init_00_mount_rw.sh"
-	busybox rm -f "nubernel/scripts/init_01_system_apps.sh"
+	busybox rm -f "nubernel/scripts/init_01_prep.sh"
 	busybox rm -f "nubernel/scripts/init_02_busybox.sh"
 	busybox rm -f "nubernel/scripts/init_03_root.sh"
 	busybox rm -f "nubernel/scripts/init_04_other.sh"

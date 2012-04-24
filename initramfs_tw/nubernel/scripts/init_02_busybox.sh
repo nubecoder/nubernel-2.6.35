@@ -24,9 +24,10 @@ if /sbin/busybox test "$1" = "recovery"; then
 	sync
 else
 	SEND_LOG "Setting BB_PATH"
-	BB_PATH=/data/local/tmp
+	BB_PATH=/data/local/tmp/bbox
 
 	SEND_LOG "Installing temporary busybox"
+	mkdir $BB_PATH
 	/sbin/busybox ln -s /sbin/recovery $BB_PATH/busybox
 	$BB_PATH/busybox --install -s $BB_PATH/
 
@@ -51,7 +52,7 @@ else
 	/system/xbin/busybox --install -s /system/xbin/
 
 	SEND_LOG "Removing temporary busybox"
-	/system/xbin/busybox rm -f /data/local/tmp/*
+	/system/xbin/busybox rm -rf $BB_PATH/
 
 	SEND_LOG "Sync filesystem"
 	/system/xbin/busybox sync

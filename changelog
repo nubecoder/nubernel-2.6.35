@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-23-2012:
+initramfs_tw: Cleaning up the nubernel init scripts.
 scripting: Miscelaneous changes to scripts.
 scripting: Moving some script related files.
 ncBuildHelper: Always generate new compile.h file (force new timestamp).

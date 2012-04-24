@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-25-2012:
+mach-s5pv210: fix for audio drop-off during boot audio and who knows what else (via GlitchKernel: https://github.com/GlitchKernel/Glitch/commit/e8338dfd802b831f4bec3f96484e659a1b6a3e0c).
+
 04-24-2012:
 video: s3cfb_nt35580: initialize brightness (via sunfong: https://github.com/Sunfong/sunfong-samsung-3.0/commit/b5c9e41dc5bef0b74fa47ef90e1f9f28a58a84ff).
 video: s3cfb_tl2796: initialize brightness (via sunfong: https://github.com/Sunfong/sunfong-samsung-3.0/commit/e4b57a1770a6ebb6c6a97d281c0ea482259ba699).

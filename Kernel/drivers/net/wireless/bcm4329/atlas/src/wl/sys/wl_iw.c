@@ -124,7 +124,7 @@ typedef const struct si_pub  si_t;
 #endif 
 
 #if defined(SOFTAP)
-#define WL_SOFTAP(x) printk x
+#define WL_SOFTAP(x)
 static struct net_device *priv_dev;
 static bool 	ap_cfg_running = FALSE;
 bool 	ap_fw_loaded = FALSE;

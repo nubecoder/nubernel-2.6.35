@@ -19,7 +19,7 @@ SEND_LOG()
 #main
 SEND_LOG "Start"
 
-for x in /system/etc/init.d/*; do
+for x in /system/etc/init.d/* ; do
 	SEND_LOG "Running: $x"
 	/system/bin/logwrapper "$x"
 done

@@ -8,6 +8,16 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-24-2012:
+initramfs_tw: Some changes to init_01_prep (allows for Samsung qmg boot animation support after 1st boot).
+initramfs_tw: More cleanup (removing recovery related items, etc).
+
+04-23-2012:
+initramfs_tw: Cleaning up the nubernel init scripts.
+scripting: Miscelaneous changes to scripts.
+scripting: Moving some script related files.
+ncBuildHelper: Always generate new compile.h file (force new timestamp).
+
 04-18-2012:
 initramfs_tw: Module fixup / cleanup.
 

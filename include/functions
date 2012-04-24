@@ -1,0 +1,298 @@
+#!/bin/bash
+#
+# functions
+#
+#
+# 2011 nubecoder
+# http://www.nubecoder.com/
+#
+
+# helper functions
+function ECHO_BEGIN()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	local __RESULTVAR=$1
+	local __VALUE=$(date +%s)
+	eval $__RESULTVAR="'$__VALUE'"
+	shift 1
+	echo "Begin $@..."
+	echo ""
+}
+function ECHO_END()
+{
+	echo ""
+	local __T1=$1
+	local __T2=$(date +%s)
+	shift 1
+	echo "$@ took $(($__T2 - $__T1)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
+function NOTIFY_COMPLETED()
+{
+	aplay "$KERNEL_BASE/notify.wav" >/dev/null 2>&1
+}
+function SHOW_COMPLETED()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "Script completed."
+	TIME_END=$(date +%s)
+	echo "" && echo "Total time: $(($TIME_END - $TIME_START)) seconds."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	NOTIFY_COMPLETED
+	exit
+}
+function SHOW_ERROR()
+{
+	if [ -n "$ERROR_MSG" ] ; then
+		echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+		echo "$ERROR_MSG"
+	fi
+}
+function REMOVE_DOTCONFIG()
+{
+	rm -f "$KERNEL_BASE/Kernel/.config"
+}
+function FORCE_NEW_TIMESTAMP()
+{
+	rm -f "$KERNEL_BASE/Kernel/include/generated/compile.h" > /dev/null
+}
+function ZIMAGE_UPDATE()
+{
+	rm -f "$KERNEL_BASE/update/zImage"
+	cp "$KERNEL_BASE/Kernel/arch/arm/boot/zImage" "$KERNEL_BASE/update/zImage"
+}
+
+#functions
+function MAKE_CLEAN()
+{
+	local F1="make clean"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/Kernel" > /dev/null
+		nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" clean 2>&1 >make.clean.out
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function MAKE_DISTCLEAN()
+{
+	local F1="make distclean"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/Kernel" > /dev/null
+		nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" distclean 2>&1 >make.distclean.out
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function MAKE_DEFCONFIG()
+{
+	local F1="make ${TARGET}_defconfig"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/Kernel" > /dev/null
+		nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" ${TARGET}_defconfig 2>&1 >make.defconfig.out
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function BUILD_MODULES()
+{
+	local F1="building modules"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/Kernel" > /dev/null
+		if [ "$VERBOSE" = "y" ] ; then
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" modules 2>&1 | tee make.out
+		else
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" modules 2>&1 | tee make.out
+		fi
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function INSTALL_MODULES()
+{
+	local F1="installing modules"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/Kernel" > /dev/null
+		if [ "$VERBOSE" = "y" ] ; then
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
+		else
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee make.out
+		fi
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function COPY_MODULES()
+{
+	local F1="copying modules"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/include/scripts" > /dev/null
+		if [ "$1" != "" ]; then
+			sh -c "./update_modules.sh copy $1"
+		else
+			sh -c "./update_modules.sh copy"
+		fi
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function STRIP_MODULES()
+{
+	local F1="striping modules"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/include/scripts" > /dev/null
+		if [ "$1" != "" ]; then
+			sh -c "./update_modules.sh strip $1"
+		else
+			sh -c "./update_modules.sh strip"
+		fi
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function BUILD_ZIMAGE()
+{
+	local F1="building zImage"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/Kernel" > /dev/null
+		rm -f usr/initramfs_data.cpio.lzma
+		if [ "$VERBOSE" = "y" ] ; then
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$1" 2>&1 | tee make.out
+		else
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$1" 2>&1 | tee make.out
+		fi
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function GENERATE_WARNINGS_FILE()
+{
+	local F1="generating warnings file"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/Kernel" > /dev/null
+		local MAKE_FILE=make.out
+		local WARN_FILE=warnings.out
+		cp $MAKE_FILE $WARN_FILE
+		local ITEMS="CC LD AS CHK UPD GEN HOSTLD HOSTCC CALL MKELF TIMEC CONMK SHIPPED GZIP AR IKCFG MODPOST KSYM SYMLINK SYSMAP OBJCOPY Building Generating Kernel:"
+		for ITEM in $ITEMS; do
+			sed -ri "s/^\s*$ITEM.*//" $WARN_FILE
+		done
+		local ITEMS="scripts make WARNING:"
+		for ITEM in $ITEMS; do
+			sed -ri "s/^$ITEM.*//" $WARN_FILE
+		done
+		sed -ri "s/^To see full details build your kernel with:.*//" $WARN_FILE
+		sed -ri "s/^'make CONFIG_DEBUG_SECTION_MISMATCH=y'.*//" $WARN_FILE
+		sed -ri "/^\s*$/d" $WARN_FILE
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function PACKAGE_BOOTIMG()
+{
+	if [ "$1" = "" ] || [ "$2" = "" ] ; then
+		ERROR_MSG="Error: PACKAGE_BOOTIMG - Missing args!"
+		return 1
+	fi
+	local KERNEL_INITRD="$1"
+	local RECOVERY_INITRD="$2"
+	local F1="packaging boot.img"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/mtd" > /dev/null
+		if [ ! -f ../Kernel/arch/arm/boot/zImage ] ; then
+			ERROR_MSG="Error: PACKAGE_BOOTIMG - zImage does not exist!"
+			return 2
+		else
+			echo "copy new kernel"
+			cp ../Kernel/arch/arm/boot/zImage zImage
+			echo "create ramdisk.img"
+			mkbootfs $KERNEL_INITRD | minigzip > ramdisk-kernel.img
+			echo "create ramdisk-recovery.img"
+			mkbootfs $RECOVERY_INITRD > ramdisk-recovery.cpio
+			minigzip < ramdisk-recovery.cpio > ramdisk-recovery.img
+			echo "remove old boot.img"
+			rm -f boot.img
+			echo "create boot.img"
+			./mkshbootimg.py boot.img zImage ramdisk-kernel.img ramdisk-recovery.img
+			echo "clean up files:"
+			echo "  rm -f zImage"
+			rm -f zImage
+			echo "  rm -f ramdisk-kernel.img"
+			rm -f ramdisk-kernel.img
+			echo "  rm -f ramdisk-recovery.cpio"
+			rm -f ramdisk-recovery.cpio
+			echo "  rm -f ramdisk-recovery.img"
+			rm -f ramdisk-recovery.img
+		fi
+	popd > /dev/null
+	ECHO_END $T1 $F1
+	return 0
+}
+function CREATE_TAR()
+{
+	local OUTFILE="$KERNEL_BASE/$TARGET-$VERSION"
+	rm -f "$OUTFILE"
+	local F1="$TARGET-$VERSION.tar.md5 creation"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/Kernel" > /dev/null
+		tar -H ustar -c -C arch/arm/boot zImage > "$OUTFILE.tar"
+		md5sum -t "$OUTFILE.tar" >> "$OUTFILE.tar"
+		mv "$OUTFILE.tar" "$OUTFILE.tar.md5"
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function CREATE_ZIP()
+{
+	#local MKZIP='7z -mx9 -mmt=1 a "$OUTFILE" .'
+	local OUTFILE="$KERNEL_BASE/$TARGET-$VERSION.zip"
+	rm -f "$OUTFILE"
+	local F1="$TARGET-$VERSION.zip creation"
+	ECHO_BEGIN T1 $F1
+	rm -f "$KERNEL_BASE/update/zImage"
+	cp "$KERNEL_BASE/Kernel/arch/arm/boot/zImage" "$KERNEL_BASE/update/"
+	pushd "$KERNEL_BASE/update" > /dev/null
+		if [ $TARGET = "cyanogenmod_epic" ]; then
+			# adjust for CM device check
+			local PATTERN="SPH-D700"
+			local REPLACEMENT="epic"
+			sed -i "s/$PATTERN/$REPLACEMENT/g" META-INF/com/google/android/updater-script
+		fi
+		7z -mx9 -mmt=1 a "$OUTFILE" . > /dev/null
+		#eval "$MKZIP" > /dev/null
+		if [ $TARGET = "cyanogenmod_epic" ]; then
+			# revert back from CM device check
+			local PATTERN="epic"
+			local REPLACEMENT="SPH-D700"
+			sed -i "s/$PATTERN/$REPLACEMENT/g" META-INF/com/google/android/updater-script
+		fi
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function WIFI_FLASH_SCRIPT()
+{
+	local F1="wifi kernel flash helper script"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/include/scripts" > /dev/null
+		sh -c "./wifiFlashHelper.sh"
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function WIRED_FLASH_SCRIPT()
+{
+	local F1="wired kernel flash helper script"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/include/scripts" > /dev/null
+		sh -c "./wiredFlashHelper.sh"
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function WIFI_KERNEL_LOAD_SCRIPT()
+{
+	local F1="wifi kernel load helper script"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/include/scripts" > /dev/null
+		sh -c "./wifiKernelLoader.sh"
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+function WIRED_KERNEL_LOAD_SCRIPT()
+{
+	local F1="wired kernel load helper script"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/include/scripts" > /dev/null
+		sh -c "./wiredKernelLoader.sh"
+	popd > /dev/null
+	ECHO_END $T1 $F1
+}
+

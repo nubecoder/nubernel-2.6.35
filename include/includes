@@ -1,0 +1,53 @@
+#!/bin/bash
+#
+# includes
+#
+#
+# 2012 nubecoder
+# http://www.nubecoder.com/
+#
+
+# defines
+################################################################
+VERSION=$(date +%m-%d-%Y)
+KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.2"
+LOCALVERSION=".nubernel_v0.0.2"
+VERSION_PATH="lib/modules/2.6.35.13+"
+
+KERNEL_BASE="/home/nubecoder/android/projects/SPH-D700/kernel/2.6.35"
+CROSS_COMPILE="/home/nubecoder/android/toolchains/arm-eabi-4.4.3/bin/arm-eabi-"
+CC_STRIP="${CROSS_COMPILE}strip -d --strip-unneeded"
+
+INSTALL_MOD_PATH="$KERNEL_BASE/stand-alone\ modules"
+INITRAMFS_TW_PATH="$KERNEL_BASE/initramfs_tw/lib/modules"
+INITRAMFS_CM_PATH="$KERNEL_BASE/initramfs_cm7/lib/modules"
+
+DEVICE_TMP_PATH="/data/local/tmp"
+ZIMAGE_SRC="$KERNEL_BASE/Kernel/arch/arm/boot/zImage"
+ZIMAGE_DEST="$DEVICE_TMP_PATH/zImage"
+REDBEND_SRC="$KERNEL_BASE/update/redbend_ua"
+REDBEND_DEST="$DEVICE_TMP_PATH/redbend_ua"
+KERNELFLASH_SRC="$KERNEL_BASE/include/scripts/kernelFlash"
+KERNELFLASH_DEST="$DEVICE_TMP_PATH/kernelFlash"
+KERNELLOAD_SRC="$KERNEL_BASE/include/scripts/kernelLoad"
+KERNELLOAD_DEST="$DEVICE_TMP_PATH/kernelLoad"
+
+ADB_KILL="adb kill-server"
+ADB_CONNECT="adb connect"
+ADB_DISCONNECT="adb disconnect"
+ADB_SHELL="adb shell"
+ADB_PUSH="adb push"
+ADB_STATE="adb get-state"
+ADB_KERNEL_FLASH="su -c \"$KERNELFLASH_DEST -k\""
+ADB_KERNEL_LOAD="su -c \"$KERNELLOAD_DEST $ZIMAGE_DEST\""
+
+THREADS=$(expr 1 + $(grep processor /proc/cpuinfo | wc -l))
+VERSION=$(date +%m-%d-%Y)
+ERROR_MSG=
+TIME_START=
+TIME_END=
+################################################################
+
+# source functions
+source "$KERNEL_BASE/include/functions"
+

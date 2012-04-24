@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-24-2012:
+lowmemkiller: Reverting the idiotic change Samsung added in the FC09 source.
 Patching sources up to FC09.
 initramfs_tw: Some changes to init_01_prep (allows for Samsung qmg boot animation support after 1st boot).
 initramfs_tw: More cleanup (removing recovery related items, etc).

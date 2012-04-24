@@ -79,7 +79,7 @@ struct s5p_lcd *lcd_;
 u32 original_color_adj_mults[3];
 unsigned int panel_config_sequence = 0;
 
-int hacky_v1_offset[3] = {-27, -34, -40};
+int hacky_v1_offset[3] = {0, 0, 0};
 
 static const u16 s6e63m0_SEQ_ETC_SETTING_SAMSUNG[] = {
 	/* ETC Condition Set Command */
@@ -176,7 +176,7 @@ static const u16 s6e63m0_SEQ_ETC_SETTING_SAMSUNG[] = {
 static u32 gamma_lookup(struct s5p_lcd *lcd, u8 brightness, u32 val, int c)
 {
 	// c color (red, green, blue)
-		// val brightness value (BV_0, BV_1, BV_19, BV_43, BV_87, BV_171, BV_255)
+	// val brightness value (BV_0, BV_1, BV_19, BV_43, BV_87, BV_171, BV_255)
 	// b brightness value divided by brightness level
 
 	// bl brightness range - low

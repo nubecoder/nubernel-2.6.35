@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-25-2012:
+defconfig: Enabling CC_OPTIMIZE_FOR_SIZE in victory_nubernel.
 defconfig: Removing duplicate voodoo color entries in defconfigs.
 
 04-24-2012:

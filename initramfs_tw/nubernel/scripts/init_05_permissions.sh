@@ -1,10 +1,7 @@
 #!/system/bin/sh
 #
 # init_05_permissions
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 #functions

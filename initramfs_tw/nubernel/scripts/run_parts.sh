@@ -1,12 +1,10 @@
 #!/system/bin/sh
 #
 # run_parts.sh
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
+#exports
 export PATH=/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/data/local/tmp
 export LD_LIBRARY_PATH=/vendor/lib:/system/lib:/system/lib/egl
 

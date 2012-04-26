@@ -1,10 +1,7 @@
 #!/system/bin/sh
 #
-# init_04_other
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# init_04_other.sh
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 #defines

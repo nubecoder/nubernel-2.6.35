@@ -1,10 +1,7 @@
 #!/system/bin/sh
 #
 # init_01_prep.sh
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 #defines

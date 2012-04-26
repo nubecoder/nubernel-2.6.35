@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-26-2012:
+initramfs_tw: bash resources: Syncing PATH exports with init.rc.
 initramfs_tw: Changes to init scripts, adding bash and resources, implementing .first_boot more generally, etc.
 
 04-25-2012:

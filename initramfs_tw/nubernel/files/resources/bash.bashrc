@@ -1,7 +1,7 @@
 # /etc/bash.bashrc: executed by bash(1) for non-login shells.
 #
 export HOME="/data/local"
-export PATH="/sbin:/bin:/system/bin:/system/xbin:/data/local/tmp"
+export PATH="/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/data/local/tmp"
 
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return

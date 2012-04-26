@@ -23,10 +23,10 @@ ENSURE_SU()
 	SEND_LOG "  Checking su version"
 		SU_VER=$(su -v)
 		if [ "$SU_VER" != "" ] ; then
-			SEND_LOG "  su version: $SU_VER"
+			SEND_LOG "    su version: $SU_VER"
 			return 0;
 		else
-			SEND_LOG "  su version is null, rm -f $SU_PATH"
+			SEND_LOG "    su version is null, rm -f $SU_PATH"
 			busybox rm -f "$SU_PATH"
 		fi
 	fi
@@ -45,8 +45,8 @@ ENSURE_USERFILES()
 {
 	if [ ! -f "/system/etc/passwd" ] ; then
 		SEND_LOG "  Setting up /etc/passwd"
-		echo "root::0:0:root:/:/sbin/sh" >/system/etc/passwd
-		echo "shell::2000:2000:shell:/data/local:/sbin/sh" >>/system/etc/passwd
+		echo "root::0:0:root:/:/system/bin/sh" >/system/etc/passwd
+		echo "shell::2000:2000:shell:/data/local:/system/bin/sh" >>/system/etc/passwd
 	fi
 	busybox chown 0.0 /system/etc/passwd
 	busybox chmod 0644 /system/etc/passwd

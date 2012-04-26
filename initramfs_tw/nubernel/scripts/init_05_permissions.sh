@@ -17,9 +17,9 @@ SEND_LOG()
 SEND_LOG "Start"
 
 SEND_LOG "Fixing permissions and ownership"
-SEND_LOG "chmod 0755 /sbin/*"
+SEND_LOG "  chmod 0755 /sbin/*"
 busybox chmod 0755 /sbin/*
-SEND_LOG "chmod 0755 /vendor/bin/*"
+SEND_LOG "  chmod 0755 /vendor/bin/*"
 busybox chmod 0755 /vendor/bin/*
 for FILE in default.prop init ; do
 	SEND_LOG "  chown 0.2000 /$FILE"
@@ -31,9 +31,9 @@ for FOLDER in lib lib/modules sbin ; do
 	SEND_LOG "  chown 0.2000 /$FOLDER/*"
 	busybox chown 0.2000 "/$FOLDER/*"
 done
-SEND_LOG "chown 0.0 /sbin/kexec"
+SEND_LOG "  chown 0.0 /sbin/kexec"
 busybox chown 0.0 /sbin/kexec
-SEND_LOG "chmod 6755 /sbin/kexec"
+SEND_LOG "  chmod 6755 /sbin/kexec"
 busybox chmod 6755 /sbin/kexec
 
 SEND_LOG "Sync filesystem"

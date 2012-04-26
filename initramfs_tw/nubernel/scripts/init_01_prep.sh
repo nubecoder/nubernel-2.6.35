@@ -29,7 +29,7 @@ REMOVE_FILE()
 #main
 SEND_LOG "Start"
 
-SEND_LOG "Looking for $FIRST_BOOT_FILE"
+SEND_LOG "Checking for $FIRST_BOOT_FILE"
 if /sbin/busybox test -f "$FIRST_BOOT_FILE" ; then
 	SEND_LOG "  Found: $FIRST_BOOT_FILE"
 	SEND_LOG "    Skipping removal of files listed in: $RM_LIST_FILE"
@@ -49,8 +49,6 @@ else
 	while read LINE ; do
 		REMOVE_FILE "$LINE"
 	done <"$RM_LIST_FILE"
-	echo "booted already" >"$FIRST_BOOT_FILE"
-	SEND_LOG "  Created: $FIRST_BOOT_FILE"
 fi
 
 SEND_LOG "Sync filesystem"

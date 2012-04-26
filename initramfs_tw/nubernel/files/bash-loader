@@ -1,8 +1,12 @@
-#!/system/bin/bash
+#!/system/bin/sh.bak
 #
 # bash-loader
 # nubecoder 2012 - http://www.nubecoder.com/
 #
 
-exec '/system/bin/bash'
+if [ "$1" != "-" ] ; then
+	exec '/system/bin/sh.bak' "$@"
+else
+	exec '/system/bin/bash'
+fi
 

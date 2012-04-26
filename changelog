@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-26-2012:
+initramfs_tw: bash: Changes to bash-loader to fix scripting functions.
 update-zip: Changes to updater-script.
 initramfs_tw: init scripts: Cleaning up script headers.
 initramfs_tw: bash resources: Syncing PATH exports with init.rc.

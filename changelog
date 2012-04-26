@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-26-2012:
+update-zip: Changes to updater-script.
 initramfs_tw: init scripts: Cleaning up script headers.
 initramfs_tw: bash resources: Syncing PATH exports with init.rc.
 initramfs_tw: Changes to init scripts, adding bash and resources, implementing .first_boot more generally, etc.

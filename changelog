@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-27-2012:
+initramfs_tw: bash: Update bash with newer (slightly more CM like) version.
+
 04-26-2012:
 initramfs_tw: bash: Changes to bash-loader to fix scripting functions.
 update-zip: Changes to updater-script.

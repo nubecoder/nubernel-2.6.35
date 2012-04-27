@@ -4,27 +4,30 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# Enable color
-CLICOLOR=1
+if [[ $- != *i* ]] ; then
+	# Shell is non-interactive.  Be done now!
+	return
+fi
+
+# Bash won't get SIGWINCH if another process is in the foreground.
+# Enable checkwinsize so that bash will check the terminal size when
+# it regains control.
+# http://cnswww.cns.cwru.edu/~chet/bash/FAQ (E11)
+shopt -s checkwinsize
 
 # set history file path to sdcard
 HISTFILE="/mnt/sdcard/.bash_history"
+
+# Enable history appending instead of overwriting.
+shopt -s histappend
 
 # don't put duplicate lines in the history. See bash(1) for more options
 # ... or force ignoredups and ignorespace
 HISTCONTROL=ignoredups:ignorespace
 
-# append to the history file, don't overwrite it
-shopt -s histappend
-
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=131072
 HISTFILESIZE=1048576
-
-# check the window size after each command and, if necessary,
-# update the values of LINES and COLUMNS.
-# NOTE:: !! not sure this works on android
-shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
 # NOTE:: !! not sure this works on android.
@@ -33,7 +36,7 @@ shopt -s checkwinsize
 # Command prompt
 PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/~}\007"'
 # Red prompt when in a root shell
-if [ ${EUID} -eq 0 ]; then
+if [[ ${EUID} == 0 ]]; then
 	PS1="\[$txtred\][\h\[\e[m\] \[$txtblu\]\w\[\e[m\]\[$txtred\]]# \[\e[m\]"
 	#PS1="\[$txtred\][\t\[\e[m\] \[$txtblu\]\w\[\e[m\]\[$txtred\]]# \[\e[m\]"
 else

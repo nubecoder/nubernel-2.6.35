@@ -13,8 +13,8 @@ fi
 if [ "$PS1" ]; then
 	if [ "$BASH" ]; then
 		PS1='\h:\w\$ '
-		if [ -f /etc/bash.bashrc ]; then
-			. /etc/bash.bashrc
+		if [ -f /etc/bash/bashrc ]; then
+			. /etc/bash/bashrc
 		fi
 	else
 		if [ "`id -u`" -eq 0 ]; then

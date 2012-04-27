@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-27-2012:
+initramfs_tw: bash resources: Update resources for newer bash.
 initramfs_tw: bash: Update bash with newer (slightly more CM like) version.
 
 04-26-2012:

@@ -53,8 +53,14 @@ ENSURE_RESOURCES_INSTALL()
 	local DEST_FILE="/data/local/.profile"
 	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
 	# /system/etc/
-	local SOURCE_FILE="/nubernel/files/resources/bash.bashrc"
-	local DEST_FILE="/system/etc/bash.bashrc"
+	if [ ! -d "/system/etc/bash" ] ; then
+		busybox mkdir -p "/system/etc/bash"
+	fi
+	local SOURCE_FILE="/nubernel/files/resources/bash_logout"
+	local DEST_FILE="/system/etc/bash/bash_logout"
+	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
+	local SOURCE_FILE="/nubernel/files/resources/bashrc"
+	local DEST_FILE="/system/etc/bash/bashrc"
 	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
 	local SOURCE_FILE="/nubernel/files/resources/profile"
 	local DEST_FILE="/system/etc/profile"

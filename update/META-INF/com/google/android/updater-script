@@ -40,12 +40,22 @@ ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
 ui_print("");sleep(2);
 show_progress(1.335, 0);
 
-ui_print("Copying needed files...");
+ui_print("Preparing for kernel flash...");
+assert(
+	run_program("/sbin/busybox", "mount", "/data"),
+	delete("/data/local/.first_boot"),
+	delete("/data/local/.rm_file_list"),
+	delete("/data/local/.mv_sys_apps"),
+	delete("/data/local/.rm_sys_apps"),
+	run_program("/sbin/busybox", "umount", "/data")
+	);
+set_progress(0.2);
+
 assert(
 	package_extract_file("bmlwrite", "/tmp/bmlwrite"),
 	package_extract_file("zImage", "/tmp/zImage")
 	);
-set_progress(0.3);
+set_progress(0.4);
 
 ui_print("Flashing kernel image...");
 set_perm(0, 0, 0755, "/tmp/bmlwrite");

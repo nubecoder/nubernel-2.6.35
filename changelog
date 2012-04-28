@@ -8,7 +8,25 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-28-2012:
+scripting: Move notify.wav into include folder and adjust function.
+
+04-27-2012:
+initramfs_tw: init scripts: Fixing some small bugs in the init scripts.
+initramfs_tw: init scripts: Update init_04_other for new bash resources.
+initramfs_tw: bash resources: Update resources for newer bash.
+initramfs_tw: bash: Update bash with newer (slightly more CM like) version.
+
+04-26-2012:
+initramfs_tw: bash: Changes to bash-loader to fix scripting functions.
+update-zip: Changes to updater-script.
+initramfs_tw: init scripts: Cleaning up script headers.
+initramfs_tw: bash resources: Syncing PATH exports with init.rc.
+initramfs_tw: Changes to init scripts, adding bash and resources, implementing .first_boot more generally, etc.
+
 04-25-2012:
+defconfig: Enabling CC_OPTIMIZE_FOR_SIZE in victory_nubernel.
+defconfig: Removing duplicate voodoo color entries in defconfigs.
 mach-s5pv210: fix for audio drop-off during boot audio and who knows what else (via GlitchKernel: https://github.com/GlitchKernel/Glitch/commit/e8338dfd802b831f4bec3f96484e659a1b6a3e0c).
 
 04-24-2012:
@@ -19,6 +37,7 @@ Add ext4/jbd2 patches from crespo GB kernel (via mkasick: https://github.com/Cya
 Epicmtd: add missing encyrpting support to kernel for device encyrption (noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/4c814f7fbe96ade607d9621d55a2693ea60f127e).
 lowmemkiller: Reverting the idiotic change Samsung added in the FC09 source.
 Patching sources up to FC09.
+initramfs_tw: Some minor changes to the init.rc script.
 initramfs_tw: Some changes to init_01_prep (allows for Samsung qmg boot animation support after 1st boot).
 initramfs_tw: More cleanup (removing recovery related items, etc).
 

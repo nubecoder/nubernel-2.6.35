@@ -1,10 +1,7 @@
 #!/system/bin/sh
 #
 # run_init_scripts.sh
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 #functions

@@ -30,7 +30,7 @@ function ECHO_END()
 }
 function NOTIFY_COMPLETED()
 {
-	aplay "$KERNEL_BASE/notify.wav" >/dev/null 2>&1
+	aplay "$KERNEL_BASE/include/notify.wav" >/dev/null 2>&1
 }
 function SHOW_COMPLETED()
 {

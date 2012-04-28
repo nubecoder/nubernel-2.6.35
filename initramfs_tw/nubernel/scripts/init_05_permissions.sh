@@ -20,13 +20,13 @@ SEND_LOG "  chmod 0755 /vendor/bin/*"
 busybox chmod 0755 /vendor/bin/*
 for FILE in default.prop init ; do
 	SEND_LOG "  chown 0.2000 /$FILE"
-	busybox chown 0.2000 "/$FILE"
+	busybox chown 0.2000 /$FILE
 done
 for FOLDER in lib lib/modules sbin ; do
 	SEND_LOG "  chown 0.2000 /$FOLDER"
-	busybox chown 0.2000 "/$FOLDER"
+	busybox chown 0.2000 /$FOLDER
 	SEND_LOG "  chown 0.2000 /$FOLDER/*"
-	busybox chown 0.2000 "/$FOLDER/*"
+	busybox chown 0.2000 /$FOLDER/*
 done
 SEND_LOG "  chown 0.0 /sbin/kexec"
 busybox chown 0.0 /sbin/kexec

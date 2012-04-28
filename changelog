@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 04-27-2012:
+initramfs_tw: init scripts: Fixing some small bugs in the init scripts.
 initramfs_tw: init scripts: Update init_04_other for new bash resources.
 initramfs_tw: bash resources: Update resources for newer bash.
 initramfs_tw: bash: Update bash with newer (slightly more CM like) version.

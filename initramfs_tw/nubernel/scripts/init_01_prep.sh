@@ -49,7 +49,7 @@ else
 fi
 
 SEND_LOG "Sync filesystem"
-/system/xbin/busybox sync
+/sbin/busybox sync
 
 SEND_LOG "End"
 

@@ -17,7 +17,7 @@ FORCE_MOVE_FILE()
 {
 	local SOURCE_FILE="$1"
 	local DEST_FILE="$2"
-	SEND_LOG "  Moving $SOURCE_FILE to $DEST_FILE"
+	SEND_LOG "    Moving $SOURCE_FILE to $DEST_FILE"
 	busybox mv -f "$SOURCE_FILE" "$DEST_FILE"
 }
 INSTALL_RESOURCE_FILE()
@@ -35,7 +35,9 @@ ENSURE_BASH_INSTALL()
 		SEND_LOG "  Installing Bash to /system/bin/"
 		FORCE_MOVE_FILE "/nubernel/files/bash-$BASH_VER" "/system/bin/bash"
 	fi
+	SEND_LOG "  Ensuring permissions for /system/bin/bash"
 	busybox chmod 0755 /system/bin/bash
+	busybox chown 0.2000 /system/bin/bash
 }
 ENSURE_RESOURCES_INSTALL()
 {
@@ -66,7 +68,7 @@ ENSURE_RESOURCES_INSTALL()
 	local DEST_FILE="/system/etc/profile"
 	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
 }
-ENSURE_BASH_DEFAULT_SHELL()
+ENSURE_BASH_DEFAULT_ADB_SHELL()
 {
 	if [ -x "/system/bin/bash" ]; then
 		if [ ! -f "/system/bin/sh.bak" ]; then
@@ -92,8 +94,12 @@ ENSURE_BASH_DEFAULT_SHELL()
 			SEND_LOG "    Could not find /system/bin/sh.bak, nothing to do..."
 		fi
 	fi
+	SEND_LOG "  Ensuring permissions for /system/bin/sh.bak"
+	busybox chmod 0755 /system/bin/sh.bak
+	busybox chown 0.2000 /system/bin/sh.bak
 	SEND_LOG "  Ensuring permissions for /system/bin/sh"
 	busybox chmod 0755 /system/bin/sh
+	busybox chown 0.2000 /system/bin/sh
 }
 
 
@@ -114,8 +120,8 @@ else
 	SEND_LOG "Ensuring bash resources are installed"
 	ENSURE_RESOURCES_INSTALL
 
-	SEND_LOG "Ensuring bash as default shell"
-	ENSURE_BASH_DEFAULT_SHELL
+	SEND_LOG "Ensuring bash as default adb shell"
+	ENSURE_BASH_DEFAULT_ADB_SHELL
 fi
 
 SEND_LOG "Preventing certain malware apps (DroidDream)"

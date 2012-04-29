@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+04-29-2012:
+initramfs_tw: Enabling ro.secure in default.prop.
+
 04-28-2012:
 scripting: Move notify.wav into include folder and adjust function.
 

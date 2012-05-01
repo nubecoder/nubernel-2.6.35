@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-01-2012:
+bcm4329: Fix the change Samsung made in one of their updates which causes -Werror to break the compile.
 scripting: build script: Changes for epicmtd defconfig.
 initramfs_stage1: Syncing stage1 initramfs with CM7's Kernel/usr/epicmtd_initramfs/ (this will be removed later).
 defconfig: CM7: Syncing up with CM7 defconfig.

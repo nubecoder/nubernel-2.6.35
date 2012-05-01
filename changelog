@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-01-2012:
+initramfs: CM7: Add stage1 initramfs to Kernel/usr/epicmtd_initramfs/ (syncing with CM7).
 initramfs_cm7: Whitespace.
 initramfs_cm7: Syncing up with current CM7 initramfs.
 

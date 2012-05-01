@@ -73,7 +73,7 @@ elif ! busybox test -e /system/build.prop ; then
 
 	if busybox test -e $UPDATE ; then
 		busybox echo "install_zip(\"`echo $UPDATE`\");" > /cache/recovery/extendedcommand
-  	fi
+	fi
 
 	load_offset=$recovery_offset
 	load_len=$recovery_len

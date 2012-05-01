@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-01-2012:
+initramfs_tw: bash: More changes to bash-loader (more restrictive bash loading, fixes broken 3G data).
+
 04-29-2012:
 initramfs_tw: Enabling ro.secure in default.prop.
 

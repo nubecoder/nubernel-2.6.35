@@ -59,10 +59,10 @@ if busybox test `busybox devmem "$REC_BOOT_ADDR" 32` = "$REC_BOOT_MAGIC" || busy
 	busybox echo 0 > /sys/class/power_supply/battery/charging_mode_booting
 elif ! busybox test -e /system/build.prop ; then
 	# emergency boot
-        erase_image cache
+	erase_image cache
 	busybox mkdir -p /cache
-        busybox mount -t yaffs2 /dev/block/mtdblock4 /cache
-        busybox mkdir /cache/recovery
+	busybox mount -t yaffs2 /dev/block/mtdblock4 /cache
+	busybox mkdir /cache/recovery
 
 	busybox mkdir -p /sdcard
 	busybox mount -t vfat /dev/block/mmcblk0p1 /sdcard

@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-01-2012:
+initramfs_cm7: Syncing up with current CM7 initramfs.
+
 04-28-2012:
 scripting: Move notify.wav into include folder and adjust function.
 

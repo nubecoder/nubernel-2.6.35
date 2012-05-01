@@ -1,0 +1,32 @@
+/dev/dpram0               0660   radio      radio
+/dev/dpram1               0660   radio      radio
+/dev/dpramerr             0660   radio      radio
+/dev/ttyCDMA0             0660   radio      radio
+/dev/tspdrv               0660   shell      shell 
+/dev/ttyTRFB0             0660   system     system
+/dev/multipdp             0660   radio      radio
+/dev/ttyCSD0              0660   radio      radio
+/dev/video0              0666   system     system
+/dev/video1              0666   system     system
+/dev/video2              0666   system     system
+/dev/uwibro               0660   system     system
+/dev/swmxctl              0660   system     system
+
+#for storage
+/dev/storage              0650   radio      radio
+
+/dev/accelerometer        0660   system     system
+# TV Out
+/dev/video14              0660   system     graphics
+/dev/video21              0660   system     graphics
+/dev/video22              0660   system     graphics
+
+
+#LSI
+/dev/pvrsrvkm             0666   system     system
+/dev/video0               0660   system     camera
+/dev/video1               0660   system     camera
+/dev/video2               0660   system     camera
+/dev/s3c-jpg              0660   system     camera
+/dev/s3c-mem              0660   system     system
+/dev/s3c-mfc              0660   system     graphics

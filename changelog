@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-01-2012:
+initramfs_stage1: Syncing stage1 initramfs with CM7's Kernel/usr/epicmtd_initramfs/ (this will be removed later).
 defconfig: CM7: Syncing up with CM7 defconfig.
 wm8994: voodoo: Compile fixes (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/7579c18ed1364d024df429971a5271489fef3eee).
 wm8994: Whitespace.

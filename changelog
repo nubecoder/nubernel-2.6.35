@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-01-2012:
+defconfig: CM7: Syncing up with CM7 defconfig.
 wm8994: voodoo: Compile fixes (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/7579c18ed1364d024df429971a5271489fef3eee).
 wm8994: Whitespace.
 wm8994: voodoo: Fix compile of voodoo sound (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/265325bba6eb5ba78b2e92de0314cf471d488dde).

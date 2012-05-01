@@ -6,7 +6,7 @@
 
 if [ "$1" = "-" ] && [ "$@" = "-" ] ; then
 #	/system/bin/log -p i -t sh:bash-loader "bash: $@"
-	exec '/system/bin/bash'
+	exec '/system/bin/bash' "$@"
 else
 #	/system/bin/log -p i -t sh:bash-loader "sh.bak: $@"
 	exec '/system/bin/sh.bak' "$@"

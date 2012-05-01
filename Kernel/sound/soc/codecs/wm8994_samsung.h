@@ -146,7 +146,7 @@ struct wm8994_priv {
 	enum mic_path rec_path;
 	enum power_state power_state;
 	enum input_source_state input_source;
-    enum output_source_state output_source;
+	enum output_source_state output_source;
 	enum ringtone_state ringtone_active;
 	select_route *universal_playback_path;
 	select_route *universal_voicecall_path;

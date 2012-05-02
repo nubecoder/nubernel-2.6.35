@@ -144,7 +144,7 @@ if [ "$BUILD_MODULES" = "y" ] ; then
 			COPY_ARG="nubernel"
 		elif [ $TARGET = "victory_modules" ]; then
 			COPY_ARG="stand-alone"
-		elif [ $TARGET = "cyanogenmod_epic" ]; then
+		elif [ $TARGET = "cyanogenmod_epicmtd" ]; then
 			COPY_ARG="cyanogenmod"
 		fi
 		COPY_MODULES $COPY_ARG
@@ -155,7 +155,7 @@ if [ "$BUILD_MODULES" = "y" ] ; then
 			STRIP_ARG="nubernel"
 		elif [ $TARGET = "victory_modules" ]; then
 			STRIP_ARG="stand-alone"
-		elif [ $TARGET = "cyanogenmod_epic" ]; then
+		elif [ $TARGET = "cyanogenmod_epicmtd" ]; then
 			STRIP_ARG="cyanogenmod"
 		fi
 		STRIP_MODULES $STRIP_ARG
@@ -163,7 +163,7 @@ if [ "$BUILD_MODULES" = "y" ] ; then
 fi
 if [ "$BUILD_KERNEL" = "y" ] ; then
 	ZIMAGE_ARG="$LOCALVERSION"
-	if [ $TARGET = "cyanogenmod_epic" ]; then
+	if [ $TARGET = "cyanogenmod_epicmtd" ]; then
 		ZIMAGE_ARG="$LOCALVERSION.cm7"
 	else
 		ZIMAGE_ARG="$LOCALVERSION"
@@ -181,7 +181,7 @@ if [ "$USE_MTD" = y ] ; then
 	RECOVERY_INITRD="$PWD/initramfs_cwm"
 	if [ $TARGET = "victory_nubernel" ]; then
 		KERNEL_INITRD="$PWD/initramfs_tw"
-	elif [ $TARGET = "cyanogenmod_epic" ]; then
+	elif [ $TARGET = "cyanogenmod_epicmtd" ]; then
 		KERNEL_INITRD="$PWD/initramfs_cm7"
 	fi
 	PACKAGE_BOOTIMG "$KERNEL_INITRD" "$RECOVERY_INITRD"

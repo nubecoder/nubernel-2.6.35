@@ -21,10 +21,6 @@ on init
 
     mkdir /mnt 0775 root root
 
-on early-fs
-
-    insmod /lib/modules/param.ko
-
 on fs
     mount tmpfs tmpfs /tmp
     mount yaffs2 mtd@system /system

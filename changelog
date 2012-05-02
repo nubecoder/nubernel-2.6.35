@@ -8,6 +8,28 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-02-2012:
+bcm4329: Re-merge wifi driver from aries (w/o removing tw support).
+Reverting "bcm4329: Merge wifi driver from aries" (commitID: f998a60).
+
+05-01-2012:
+bcm4329: Fix the change Samsung made in one of their updates which causes -Werror to break the compile.
+scripting: build script: Changes for epicmtd defconfig.
+initramfs_stage1: Syncing stage1 initramfs with CM7's Kernel/usr/epicmtd_initramfs/ (this will be removed later).
+defconfig: CM7: Syncing up with CM7 defconfig.
+wm8994: voodoo: Compile fixes (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/7579c18ed1364d024df429971a5271489fef3eee).
+wm8994: Whitespace.
+wm8994: voodoo: Fix compile of voodoo sound (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/265325bba6eb5ba78b2e92de0314cf471d488dde).
+wm8994: Port crespo's GB wm8994 driver (via mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/42bdadfed5105753440b5d3d2ab10ec9c2f4d2d0).
+initramfs: CM7: stage1: Whitespace.
+initramfs: CM7: stage1: Clean up first stage init (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/01ea906d5dd18b44cfe5e1f59d874470ae2bcc42).
+bcm4329: Merge wifi driver from aries (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/5f87cbd547d4187cba7ae6d0039f0d8a7f76fddd).
+bcm4329: Fix for compiling along with rest of platform (via UberPinguin: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/c84ca67726b20b191d5c75da60acc6d14fa48aee).
+initramfs: CM7: stage1: Whitespace.
+initramfs: CM7: Add stage1 initramfs to Kernel/usr/epicmtd_initramfs/ (syncing with CM7).
+initramfs_cm7: Whitespace.
+initramfs_cm7: Syncing up with current CM7 initramfs.
+
 04-28-2012:
 scripting: Move notify.wav into include folder and adjust function.
 

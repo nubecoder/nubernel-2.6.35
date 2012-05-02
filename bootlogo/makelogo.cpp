@@ -1,5 +1,5 @@
 #include <iostream>
-#include </home/nubecoder/android/kernel_dev/nubernel-kernel/bootlogo/boot_logo_gimp.h>
+#include </home/nubecoder/android/projects/SPH-D700/kernel/2.6.35/bootlogo/boot_logo_gimp.h>
 
 using namespace std;
 

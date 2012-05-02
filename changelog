@@ -13,6 +13,10 @@ bcm4329: Re-merge wifi driver from aries (w/o removing tw support).
 Reverting "bcm4329: Merge wifi driver from aries" (commitID: f998a60).
 
 05-01-2012:
+bootlogo: Added new boot logo.
+bootlogo: Fix include path in makelogo.cpp.
+initramfs_tw: bash: Changes to bash-loader (pass any args to bash when using bash, just in case & why not).
+initramfs_tw: bash: More changes to bash-loader (more restrictive bash loading, fixes broken 3G data).
 bcm4329: Fix the change Samsung made in one of their updates which causes -Werror to break the compile.
 scripting: build script: Changes for epicmtd defconfig.
 initramfs_stage1: Syncing stage1 initramfs with CM7's Kernel/usr/epicmtd_initramfs/ (this will be removed later).
@@ -29,6 +33,9 @@ initramfs: CM7: stage1: Whitespace.
 initramfs: CM7: Add stage1 initramfs to Kernel/usr/epicmtd_initramfs/ (syncing with CM7).
 initramfs_cm7: Whitespace.
 initramfs_cm7: Syncing up with current CM7 initramfs.
+
+04-29-2012:
+initramfs_tw: Enabling ro.secure in default.prop.
 
 04-28-2012:
 scripting: Move notify.wav into include folder and adjust function.

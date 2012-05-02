@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-01-2012:
+bootlogo: Added new boot logo.
 bootlogo: Fix include path in makelogo.cpp.
 initramfs_tw: bash: Changes to bash-loader (pass any args to bash when using bash, just in case & why not).
 initramfs_tw: bash: More changes to bash-loader (more restrictive bash loading, fixes broken 3G data).

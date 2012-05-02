@@ -18,7 +18,7 @@ KERNEL_BASE="/home/nubecoder/android/projects/SPH-D700/kernel/2.6.35"
 CROSS_COMPILE="/home/nubecoder/android/toolchains/arm-eabi-4.4.3/bin/arm-eabi-"
 CC_STRIP="${CROSS_COMPILE}strip -d --strip-unneeded"
 
-INSTALL_MOD_PATH="$KERNEL_BASE/stand-alone\ modules"
+INSTALL_MOD_PATH="$KERNEL_BASE/resources/modules"
 INITRAMFS_TW_PATH="$KERNEL_BASE/initramfs_tw/lib/modules"
 INITRAMFS_CM_PATH="$KERNEL_BASE/initramfs_cm7/lib/modules"
 

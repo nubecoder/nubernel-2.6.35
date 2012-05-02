@@ -211,12 +211,6 @@ if [ "$WIRED_FLASH" = y ] ; then
 	fi
 fi
 
-# fix for module changing every build.
-if [ "$DEFCONFIG" != "victory_modules" ] && [ "$BUILD_MODULES" = "y" ]; then
-	git co -- initramfs_tw/lib/modules/dhd.ko
-	git co -- initramfs_cm7/lib/modules/dhd.ko
-fi
-
 # show completed message
 SHOW_COMPLETED
 

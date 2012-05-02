@@ -4,6 +4,6 @@ bootlogo/makelogo
 *.md5
 update/zImage
 source/*
-stand-alone modules/*
+resources/modules/*
 firmware.info
 

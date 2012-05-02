@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-02-2012:
+Reverting "bcm4329: Merge wifi driver from aries" (commitID: f998a60).
+
 05-01-2012:
 bcm4329: Fix the change Samsung made in one of their updates which causes -Werror to break the compile.
 scripting: build script: Changes for epicmtd defconfig.

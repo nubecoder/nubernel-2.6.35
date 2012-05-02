@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-02-2012:
+bcm4329: Re-merge wifi driver from aries (w/o removing tw support).
 Reverting "bcm4329: Merge wifi driver from aries" (commitID: f998a60).
 
 05-01-2012:

@@ -173,8 +173,8 @@ if [ "$BUILD_KERNEL" = "y" ] ; then
 	ZIMAGE_UPDATE
 fi
 if [ "$USE_MTD" = y ] ; then
-	# CyanogenMod,   Touchwiz,     Recovery
-	# initramfs/cm7, initramfs/tw, initramfs/cwm
+	# CyanogenMod,   Touchwiz,     Recovery,      TWRP
+	# initramfs/cm7, initramfs/tw, initramfs/cwm, initramfs/twrp
 	#
 	# default to initramfs/tw
 	KERNEL_INITRD="$PWD/initramfs/tw"

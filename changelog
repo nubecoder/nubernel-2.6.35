@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-02-2012:
+initramfs: twrp: Add TWRP 2.1 (Team Win Recovery Project 2.1) initramfs.
 initramfs: stage1: Remove stage1 folder since it's already included in /usr/epicmtd_initramfs.
 initramfs: Move initramfs folders into a new structure.
 initramfs_tw: modules: Update modules.

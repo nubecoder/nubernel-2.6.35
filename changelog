@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-02-2012:
+initramfs: Move initramfs folders into a new structure.
 initramfs_tw: modules: Update modules.
 defconfig: Some defconfig cleanup.
 scripting: General module cleanup, etc.

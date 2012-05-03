@@ -174,15 +174,15 @@ if [ "$BUILD_KERNEL" = "y" ] ; then
 fi
 if [ "$USE_MTD" = y ] ; then
 	# CyanogenMod,   Touchwiz,     Recovery
-	# initramfs_cm7, initramfs_tw, initramfs_cwm
+	# initramfs/cm7, initramfs/tw, initramfs/cwm
 	#
-	# default to initramfs_tw
-	KERNEL_INITRD="$PWD/initramfs_tw"
-	RECOVERY_INITRD="$PWD/initramfs_cwm"
+	# default to initramfs/tw
+	KERNEL_INITRD="$PWD/initramfs/tw"
+	RECOVERY_INITRD="$PWD/initramfs/cwm"
 	if [ $TARGET = "victory_nubernel" ]; then
-		KERNEL_INITRD="$PWD/initramfs_tw"
+		KERNEL_INITRD="$PWD/initramfs/tw"
 	elif [ $TARGET = "cyanogenmod_epicmtd" ]; then
-		KERNEL_INITRD="$PWD/initramfs_cm7"
+		KERNEL_INITRD="$PWD/initramfs/cm7"
 	fi
 	PACKAGE_BOOTIMG "$KERNEL_INITRD" "$RECOVERY_INITRD"
 	if [ $? != 0 ] ; then

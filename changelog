@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-03-2012:
+initramfs: mtd: Add mtd initramfs (for TW MTD).
+
 05-02-2012:
 initramfs: twrp: Add TWRP 2.1 (Team Win Recovery Project 2.1) initramfs.
 initramfs: stage1: Remove stage1 folder since it's already included in /usr/epicmtd_initramfs.

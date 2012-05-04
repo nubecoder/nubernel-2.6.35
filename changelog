@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-04-2012:
+update-zip: Install 2.6.35.13 modules for CM7.
 update-zip: New folder structure, add mtd and cm7, etc.
 
 05-03-2012:

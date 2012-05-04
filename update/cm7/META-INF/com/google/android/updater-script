@@ -63,7 +63,8 @@ assert(
 	package_extract_file("erase_image", "/tmp/erase_image"),
 	package_extract_file("bml_over_mtd", "/tmp/bml_over_mtd"),
 	package_extract_file("bml_over_mtd.sh", "/tmp/bml_over_mtd.sh"),
-  package_extract_file("boot.img", "/tmp/boot.img")
+  package_extract_file("boot.img", "/tmp/boot.img"),
+  package_extract_file("install_modules.sh", "/tmp/install_modules.sh")
 	);
 ui_print("*");
 set_progress(0.3);
@@ -74,6 +75,7 @@ set_perm(0, 0, 0777, "/tmp/flash_image");
 set_perm(0, 0, 0777, "/tmp/erase_image");
 set_perm(0, 0, 0777, "/tmp/bml_over_mtd");
 set_perm(0, 0, 0777, "/tmp/bml_over_mtd.sh");
+set_perm(0, 0, 0777, "/tmp/install_modules.sh");
 ui_print("*");
 set_progress(0.4);
 
@@ -85,6 +87,18 @@ assert(
   );
 ui_print("*");
 set_progress(0.6);
+
+ui_print("Installing modules.");
+assert(
+	run_program("/sbin/busybox", "mount", "/system"),
+	package_extract_file("lib/modules/bcm4329.ko", "/tmp/bcm4329.ko"),
+	package_extract_file("lib/modules/cmc7xx_sdio.ko", "/tmp/cmc7xx_sdio.ko"),
+	package_extract_file("lib/modules/vibrator.ko", "/tmp/vibrator.ko"),
+	run_program("/tmp/install_modules.sh"),
+	run_program("/sbin/busybox", "umount", "/system")
+  );
+ui_print("*");
+set_progress(0.7);
 
 ui_print("Clearing cache.");
 assert(

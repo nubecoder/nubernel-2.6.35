@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-04-2012:
+update-zip: New folder structure, add mtd and cm7, etc.
+
 05-03-2012:
 initramfs: cwm: Update cwm initramfs (syncing with CM7).
 initramfs: mtd: Add mtd initramfs (for TW MTD).

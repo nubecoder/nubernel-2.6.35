@@ -10,6 +10,7 @@ Changelog:
 
 05-05-2012:
 build fix: Fix message about Extraneous text after else directive in atlas bcm4329 Makefile.
+Compress kernel with xz (via wtogami: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/2e1435ef143cd0cf686f713ef45e91f8511c2b40).
 defconfig: Use Simple IO scheduler as default.
 scripting: Script cleanup, folder structure adjustments, etc.
 

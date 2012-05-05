@@ -1,0 +1,103 @@
+assert(getprop("ro.product.device") == "SPH-D700" ||
+	getprop("ro.build.product") == "SPH-D700" ||
+	getprop("ro.product.device") == "epicmtd" ||
+	getprop("ro.build.product") == "epicmtd" ||
+	getprop("ro.product.device") == "epic" ||
+	getprop("ro.build.product") == "epic");
+
+ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
+ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
+ui_print("                               =]=]=]");
+ui_print("                               =]=]=]");
+ui_print("                                 =]=]");
+ui_print("                                 =]=]");
+ui_print("                                 =]=]");
+ui_print("                                 =]=]");
+ui_print("                                 =]=]");
+ui_print("           =]=]=]=]=]=]=]        =]=]");
+ui_print("           =]=]=]=]=]=]=]        =]=]");
+ui_print("                                 =]=]");
+ui_print("                                 =]=]");
+ui_print("           =]=]=]=]=]=]=]        =]=]");
+ui_print("           =]=]=]=]=]=]=]        =]=]");
+ui_print("                                 =]=]");
+ui_print("                                 =]=]");
+ui_print("                                 =]=]");
+ui_print("                               =]=]=]");
+ui_print("                               =]=]=]");
+ui_print("");ui_print("");ui_print("");
+ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
+ui_print("=]         Brought to you by nubecoder        =]");
+ui_print("=]             www.nubecoder.com              =]");
+ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
+ui_print("");ui_print("");ui_print("");ui_print("");sleep(4);
+ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
+ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
+ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
+ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
+ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
+ui_print("");ui_print("");sleep(1);
+
+ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
+ui_print("=]           nubernel-2.6.35_v0.0.2           =]");
+ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
+ui_print("*");sleep(2);
+show_progress(1.335, 0);
+
+ui_print("Preparing for kernel flash...");
+assert(
+	run_program("/sbin/busybox", "mount", "/data"),
+	delete("/data/local/.first_boot"),
+	delete("/data/local/.rm_file_list"),
+	delete("/data/local/.mv_sys_apps"),
+	delete("/data/local/.rm_sys_apps"),
+	run_program("/sbin/busybox", "umount", "/data")
+	);
+ui_print("*");
+set_progress(0.1);
+
+ui_print("Extracting files.");
+assert(
+	package_extract_file("bmlwrite", "/tmp/bmlwrite"),
+	package_extract_file("zImage", "/tmp/zImage")
+	);
+ui_print("*");
+set_progress(0.3);
+
+ui_print("Setting permissions.");
+set_perm(0, 0, 0755, "/tmp/bmlwrite");
+ui_print("*");
+set_progress(0.4);
+
+ui_print("Installing kernel image.");
+assert(
+	run_program("/tmp/bmlwrite", "/tmp/zImage", "/dev/block/bml7"),
+	delete("/tmp/zImage")
+	);
+ui_print("*");
+set_progress(0.6);
+
+ui_print("Clearing cache.");
+assert(
+	run_program("/sbin/busybox", "mount", "/cache"),
+	delete_recursive("/cache"),
+	run_program("/sbin/busybox", "umount", "/cache")
+	);
+ui_print("*");
+set_progress(0.8);
+
+ui_print("Clearing dalvik-cache.");
+assert(
+	run_program("/sbin/busybox", "mount", "/data"),
+	delete_recursive("/data/dalvik-cache"),
+	run_program("/sbin/busybox", "umount", "/data")
+	);
+ui_print("*");
+set_progress(0.9);
+
+ui_print("Finished.");
+ui_print("*");
+ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
+set_progress(1.0);
+sleep(2);
+

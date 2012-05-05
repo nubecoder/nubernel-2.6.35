@@ -8,7 +8,27 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-05-2012:
+build fix: Fix message about Extraneous text after else directive in atlas bcm4329 Makefile.
+defconfig: Use Simple IO scheduler as default.
+scripting: Script cleanup, folder structure adjustments, etc.
+
+05-04-2012:
+initramfs: Some init.rc cleanup.
+update-zip: Install 2.6.35.13 modules for CM7.
+update-zip: New folder structure, add mtd and cm7, etc.
+
+05-03-2012:
+initramfs: cwm: Update cwm initramfs (syncing with CM7).
+initramfs: mtd: Add mtd initramfs (for TW MTD).
+
 05-02-2012:
+initramfs: twrp: Add TWRP 2.1 (Team Win Recovery Project 2.1) initramfs.
+initramfs: stage1: Remove stage1 folder since it's already included in /usr/epicmtd_initramfs.
+initramfs: Move initramfs folders into a new structure.
+initramfs_tw: modules: Update modules.
+defconfig: Some defconfig cleanup.
+scripting: General module cleanup, etc.
 bcm4329: Re-merge wifi driver from aries (w/o removing tw support).
 Reverting "bcm4329: Merge wifi driver from aries" (commitID: f998a60).
 

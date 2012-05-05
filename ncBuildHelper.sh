@@ -1,54 +1,47 @@
 #!/bin/bash
 #
 # ncBuildHelper.sh
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
-# source includes
+#source includes
 source "$PWD/include/includes"
 
-# define defaults
+#defaults
+BUILD_TYPE="tw"
+RECOVERY_TYPE="cwm"
 TARGET="victory_nubernel"
-BUILD_KERNEL=n
-BUILD_MODULES=n
-MODULE_ARGS=
 CLEAN=n
-DEFCONFIG=n
 DISTCLEAN=n
-PRODUCE_TAR=n
-PRODUCE_ZIP=n
-VERBOSE=n
+BUILD_MODULES=n
+BUILD_KERNEL=n
+CREATE_PACKAGES=n
 WIFI_FLASH=n
 WIRED_FLASH=n
 USE_KEXEC=n
-USE_MTD=n
+VERBOSE=n
 
-# exports
+#exports
 export KBUILD_BUILD_VERSION
 
-# functions
+#functions
 function SHOW_HELP()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "Usage options for $0:"
-	echo "-b : Build zImage (kernel)."
+	echo "-b : Build zImage."
 	echo "-c : Run 'make clean'."
-	echo "-C : Run 'make distclean'."
-	echo "-d : Use specified config."
-	echo "     For example, use -d myconfig to 'make myconfig_defconfig'."
+	echo "-d : Run 'make distclean'."
 	echo "-h : Print this help info."
-	echo "-j : Number of threads (auto detected by default)."
-	echo "     For example, use -j4 to make with 4 threads."
-	echo "-m : Build, copy and / or strip modules."
-	echo "     To copy use 'c', to strip use 's', for both use 'cs'."
-	echo "-t : Produce tar file suitable for flashing with Odin."
+	echo "-m : Build and install modules."
+	echo "-p : Create install packages."
+	echo "-r : Define the recovery type."
+	echo "     Recovery types are: <cwm|twrp>. (Defaults to cwm.)"
+	echo "-t : Define the build type."
+	echo "     Build types are: <tw|mtd|cm7|mod|bml8>. (Defaults to tw.)"
 	echo "-u : Wired (USB) Flash, expects a device to be connected."
-	echo "-v : Show verbose output while building zImage (kernel)."
+	echo "-v : Verbose script output."
 	echo "-w : Wifi Flash, for use with adb wireless."
-	echo "-z : Produce zip file suitable for flashing via Recovery."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	exit 1
 }
@@ -56,75 +49,92 @@ function SHOW_SETTINGS()
 {
 	TIME_START=$(date +%s)
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "build version  == $KBUILD_BUILD_VERSION"
-	echo "modules path   == $INSTALL_MOD_PATH"
-	echo "cross compile  == $CROSS_COMPILE"
-	echo "outfile path   == $PWD/$TARGET-$VERSION.*"
-	echo "make clean     == $CLEAN"
-	echo "make distclean == $DISTCLEAN"
-	echo "use defconfig  == $DEFCONFIG"
-	echo "build target   == $TARGET"
-	echo "make threads   == $THREADS"
-	echo "verbose output == $VERBOSE"
-	echo "build modules  == $BUILD_MODULES"
-	echo "build kernel   == $BUILD_KERNEL"
-	echo "create tar     == $PRODUCE_TAR"
-	echo "create zip     == $PRODUCE_ZIP"
-	echo "wifi flash     == $WIFI_FLASH"
-	echo "wired flash    == $WIRED_FLASH"
+	echo "build type      == $BUILD_TYPE"
+	echo "recovery type   == $RECOVERY_TYPE"
+	echo "build version   == $KBUILD_BUILD_VERSION"
+	echo "build target    == $TARGET"
+	echo "cross compile   == $CROSS_COMPILE"
+	echo "modules path    == $INSTALL_MOD_PATH"
+	echo "outfile path    == $PWD/$TARGET-$VERSION.*"
+	echo "make threads    == $THREADS"
+	echo "make clean      == $CLEAN"
+	echo "make distclean  == $DISTCLEAN"
+	echo "build modules   == $BUILD_MODULES"
+	echo "build kernel    == $BUILD_KERNEL"
+	echo "create packages == $CREATE_PACKAGES"
+	echo "wifi flash      == $WIFI_FLASH"
+	echo "wired flash     == $WIRED_FLASH"
+	echo "verbose output  == $VERBOSE"
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "*"
 }
 
-# main
-while getopts ":bcCd:hj:km:Mtuvwz" flag
+#main
+while getopts ":bcdhkmpr:t:uvw" flag
 do
 	case "$flag" in
-	b)
-		BUILD_KERNEL=y ;;
-	c)
-		CLEAN=y ;;
-	C)
-		DISTCLEAN=y ;;
-	d)
-		DEFCONFIG=y
-		TARGET="$OPTARG" ;;
-	h)
-		SHOW_HELP ;;
-	j)
-		THREADS=$OPTARG ;;
-	k)
-		USE_KEXEC=y ;;
-	m)
-		BUILD_MODULES=y
-		MODULE_ARGS="$OPTARG" ;;
-	M)
-		USE_MTD=y ;;
-	t)
-		PRODUCE_TAR=y ;;
-	u)
-		WIRED_FLASH=y ;;
-	v)
-		VERBOSE=y ;;
-	w)
-		WIFI_FLASH=y ;;
-	z)
-		PRODUCE_ZIP=y ;;
-	*)
-		ERROR_MSG="Error:: problem with option '$OPTARG'"
-		SHOW_ERROR
-		SHOW_HELP ;;
-	esac
+		b)
+			BUILD_KERNEL=y ;;
+		c)
+			CLEAN=y ;;
+		d)
+			DISTCLEAN=y ;;
+		h)
+			SHOW_HELP ;;
+		k)
+			USE_KEXEC=y ;;
+		m)
+			BUILD_MODULES=y ;;
+		p)
+			CREATE_PACKAGES=y ;;
+		r)
+			case "$OPTARG" in
+				cwm)
+					RECOVERY_TYPE="$OPTARG" ;;
+				twrp)
+					RECOVERY_TYPE="$OPTARG" ;;
+				*)
+					ERROR_MSG="Error:: problem with option '$OPTARG'"
+					SHOW_ERROR
+					SHOW_HELP ;;
+			esac ;;
+		t)
+			case "$OPTARG" in
+				tw)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_TW ;;
+				mtd)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_MTD ;;
+				cm7)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_CM7 ;;
+				mod)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_MOD
+					BUILD_MODULES=y ;;
+				bml8)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_BML8 ;;
+				*)
+					ERROR_MSG="Error:: problem with option '$OPTARG'"
+					SHOW_ERROR
+					SHOW_HELP ;;
+			esac ;;
+		u)
+			WIRED_FLASH=y ;;
+		v)
+			VERBOSE=y ;;
+		w)
+			WIFI_FLASH=y ;;
+		*)
+			ERROR_MSG="Error:: problem with option '$OPTARG'"
+			SHOW_ERROR
+			SHOW_HELP ;;
+		esac
 done
 
-# show current settings
 SHOW_SETTINGS
-
-# force MAKE_DEFCONFIG below
-REMOVE_DOTCONFIG
-
-# force new timestamp
-FORCE_NEW_TIMESTAMP
 
 if [ "$CLEAN" = "y" ] ; then
 	MAKE_CLEAN
@@ -132,91 +142,49 @@ fi
 if [ "$DISTCLEAN" = "y" ] ; then
 	MAKE_DISTCLEAN
 fi
-if [ "$DEFCONFIG" = "y" ] || [ ! -f "Kernel/.config" ] ; then
-	MAKE_DEFCONFIG
-fi
+
+MAKE_DEFCONFIG
+
 if [ "$BUILD_MODULES" = "y" ] ; then
 	BUILD_MODULES
-	if [ "$MODULE_ARGS" != "${MODULE_ARGS/c/}" ] ; then
-		INSTALL_MODULES
-		COPY_ARG="nubernel"
-		if [ $TARGET = "victory_nubernel" ]; then
-			COPY_ARG="nubernel"
-		elif [ $TARGET = "victory_modules" ]; then
-			COPY_ARG="stand-alone"
-		elif [ $TARGET = "cyanogenmod_epicmtd" ]; then
-			COPY_ARG="cyanogenmod"
-		fi
-		COPY_MODULES $COPY_ARG
-	fi
-	if [ "$MODULE_ARGS" != "${MODULE_ARGS/s/}" ] ; then
-		STRIP_ARG="nubernel"
-		if [ $TARGET = "victory_nubernel" ]; then
-			STRIP_ARG="nubernel"
-		elif [ $TARGET = "victory_modules" ]; then
-			STRIP_ARG="stand-alone"
-		elif [ $TARGET = "cyanogenmod_epicmtd" ]; then
-			STRIP_ARG="cyanogenmod"
-		fi
-		STRIP_MODULES $STRIP_ARG
-	fi
+	INSTALL_MODULES
 fi
 if [ "$BUILD_KERNEL" = "y" ] ; then
-	ZIMAGE_ARG="$LOCALVERSION"
-	if [ $TARGET = "cyanogenmod_epicmtd" ]; then
-		ZIMAGE_ARG="$LOCALVERSION.cm7"
-	else
-		ZIMAGE_ARG="$LOCALVERSION"
-	fi
-	BUILD_ZIMAGE $ZIMAGE_ARG
+	BUILD_ZIMAGE
 	GENERATE_WARNINGS_FILE
-	ZIMAGE_UPDATE
 fi
-if [ "$USE_MTD" = y ] ; then
-	# CyanogenMod,   Touchwiz,     Recovery
-	# initramfs_cm7, initramfs_tw, initramfs_cwm
-	#
-	# default to initramfs_tw
-	KERNEL_INITRD="$PWD/initramfs_tw"
-	RECOVERY_INITRD="$PWD/initramfs_cwm"
-	if [ $TARGET = "victory_nubernel" ]; then
-		KERNEL_INITRD="$PWD/initramfs_tw"
-	elif [ $TARGET = "cyanogenmod_epicmtd" ]; then
-		KERNEL_INITRD="$PWD/initramfs_cm7"
-	fi
-	PACKAGE_BOOTIMG "$KERNEL_INITRD" "$RECOVERY_INITRD"
-	if [ $? != 0 ] ; then
-		SHOW_ERROR
-		SHOW_COMPLETED
+if [ "$CREATE_PACKAGES" = y ] ; then
+	if [ "$BUILD_TYPE" != "mod" ] || [ "$BUILD_TYPE" != "bml8" ] ; then
+		CREATE_INSTALL_PACKAGE
 	fi
 fi
-if [ "$PRODUCE_TAR" = y ] ; then
-	CREATE_TAR
-fi
-if [ "$PRODUCE_ZIP" = y ] ; then
-	CREATE_ZIP
-fi
+
 if [ "$WIFI_FLASH" = y ] ; then
-	if [ "$USE_KEXEC" = y ] ; then
-		WIFI_KERNEL_LOAD_SCRIPT
+	if [ "$BUILD_TYPE" != "tw" ] ; then
+		ERROR_MSG="Error:: Wifi flash is currently unsupported for: $BUILD_TYPE"
+		SHOW_ERROR
+		SHOW_HELP
 	else
-		WIFI_FLASH_SCRIPT
+		if [ "$USE_KEXEC" = y ] ; then
+			WIFI_KERNEL_LOAD_SCRIPT
+		else
+			WIFI_FLASH_SCRIPT
+		fi
 	fi
 fi
 if [ "$WIRED_FLASH" = y ] ; then
-	if [ "$USE_KEXEC" = y ] ; then
-		WIRED_KERNEL_LOAD_SCRIPT
+	if [ "$BUILD_TYPE" != "tw" ] ; then
+		ERROR_MSG="Error:: Wired flash is currently unsupported for: $BUILD_TYPE"
+		SHOW_ERROR
+		SHOW_HELP
 	else
-		WIRED_FLASH_SCRIPT
+		if [ "$USE_KEXEC" = y ] ; then
+			WIRED_KERNEL_LOAD_SCRIPT
+		else
+			WIRED_FLASH_SCRIPT
+		fi
 	fi
 fi
 
-# fix for module changing every build.
-if [ "$DEFCONFIG" != "victory_modules" ] && [ "$BUILD_MODULES" = "y" ]; then
-	git co -- initramfs_tw/lib/modules/dhd.ko
-	git co -- initramfs_cm7/lib/modules/dhd.ko
-fi
-
-# show completed message
 SHOW_COMPLETED
 

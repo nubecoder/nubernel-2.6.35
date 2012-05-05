@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-05-2012:
+build fix: Fix message about Extraneous text after else directive in atlas bcm4329 Makefile.
 defconfig: Use Simple IO scheduler as default.
 scripting: Script cleanup, folder structure adjustments, etc.
 

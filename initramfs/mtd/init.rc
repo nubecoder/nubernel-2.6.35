@@ -21,6 +21,7 @@ loglevel 3
 
     export ASEC_MOUNTPOINT /mnt/asec
     export LOOP_MOUNTPOINT /mnt/obb
+    export SD_EXT_DIRECTORY /sd-ext
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/core-junit.jar
 
 # Backward compatibility
@@ -47,9 +48,8 @@ loglevel 3
     symlink /mnt/sdcard /sdcard
 
     mkdir /system
-    # mkdir /dbdata 0771 system system
     mkdir /data 0771 system system
-    mkdir /cache 0770 system cache
+    mkdir /cache 0771 system cache
     mkdir /config 0500 root root
 
     mkdir /efs 0771 system system
@@ -73,6 +73,8 @@ loglevel 3
     # Filesystem image public mount points.
     mkdir /mnt/obb 0700 root system
     mount tmpfs tmpfs /mnt/obb mode=0755,gid=1000
+
+    mkdir /sd-ext 0771 system system
 
     write /proc/sys/kernel/panic_on_oops 1
     write /proc/sys/kernel/hung_task_timeout_secs 0
@@ -145,7 +147,6 @@ on fs
     #chown system system /data
     #chmod 0771 /data
 
-    #mkdir /dbdata
   #SEC_DMCRYPT crypt flag added
 # /data
     mount yaffs2 mtd@userdata /data nosuid nodev
@@ -153,7 +154,6 @@ on fs
     #mount rfs /dev/block/stl10 /data rw noatime nodiratime nosuid nodev crypt check=no
     #mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt check=none errors=continue data=ordered nobh nobarrier noauto_da_alloc discard
     #mount ext4 /dev/block/stl10 /data rw noatime nodiratime nodelalloc nosuid nodev crypt data=ordered nobarrier noauto_da_alloc
-    #symlink /data /dbdata
     #mount rfs /dev/block/stl10 /data nosuid nodev check=no
     chown system system /data
     chmod 0771 /data
@@ -172,10 +172,6 @@ on fs
     #mount rfs /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=no
     #mount ext4 /dev/block/stl11 /cache rw noatime nodiratime nosuid nodev check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
 
-# /sd-ext
-    mount ext2 /dev/block/mmcblk0p2 /mnt/sd-ext rw noatime nodiratime nodev nosuid check=none errors=continue nobh nouser_xattr
-
-
     # SEC_DMCRYPT efs or cache or lfs partition required
     exec apply_sec_devenc_init
 
@@ -189,8 +185,6 @@ on post-fs
     # We chown/chmod /data again so because mount is run as root + defaults
     chown system system /data
     chmod 0771 /data
-    #chown system system /dbdata
-    #chmod 0777 /dbdata
 
     # Create dump dir and collect dumps.
     # Do this before we mount cache so eventually we can use cache for
@@ -213,12 +207,12 @@ on post-fs
 
     # Same reason as /data above
     chown system cache /cache
-    chmod 0770 /cache
+    chmod 0771 /cache
 
     # cache folder for bigger file than /cache
     mkdir /data/cache
     chown system cache /data/cache
-    chmod 0770 /data/cache
+    chmod 0771 /data/cache
 
     # This may have been created by the recovery system with odd permissions
     chown system cache /cache/recovery
@@ -245,7 +239,6 @@ on post-fs
     mkdir /data/misc/radio 0771 radio radio
     # give system access to wpa_supplicant.conf for backup and restore
     mkdir /data/wifi 0771 wifi wifi
-    #mkdir /data/misc/wifi 0771 wifi system
     mkdir /data/misc/wifi 0771 wifi wifi
     mkdir /data/misc/dhcp 0775 dhcp dhcp
     mkdir /data/misc/wifi/sockets 0775 wifi wifi
@@ -626,6 +619,9 @@ on boot
 
 # Include extra init file
     import /system/etc/init.local.rc
+
+# Run sysinit
+    exec /system/bin/sysinit
 
     class_start default
 

@@ -5,6 +5,6 @@ bootlogo/makelogo
 */*/zImage
 */*/boot.img
 source/*
-resources/modules/*
+res/modules/*
 firmware.info
 

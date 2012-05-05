@@ -1,18 +1,14 @@
 #!/bin/bash
 #
 # wiredFlashHelper.sh
-#
-# This script expects a connected device.
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+#  -This script expects a connected device.
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
-# source includes
-source "$PWD/../includes"
+#source includes
+source "$PWD/../../include/includes"
 
-# error
+#error
 ERROR="no"
 
 echo
@@ -30,27 +26,27 @@ while [ "$CURSTATE" != device ] ; do
 done
 
 if [ "$ERROR" != "yes" ] ; then
-	#remove previous files
+	# remove previous files
 	echo "Removing previous files."
-	$ADB_SHELL "rm " $ZIMAGE_DEST >/dev/null 2>&1
-	$ADB_SHELL "rm " $REDBEND_DEST >/dev/null 2>&1
-	$ADB_SHELL "rm " $KERNELFLASH_DEST >/dev/null 2>&1
+	$ADB_SHELL "rm $DEVICE_TMP_PATH/zImage" >/dev/null 2>&1
+	$ADB_SHELL "rm $DEVICE_TMP_PATH/redbend_ua" >/dev/null 2>&1
+	$ADB_SHELL "rm $DEVICE_TMP_PATH/kernelFlash" >/dev/null 2>&1
 
-	#push new kernel to phone
+	# push new kernel to phone
 	echo "Pushing zImage, this may take a minute."
-	$ADB_PUSH $ZIMAGE_SRC $ZIMAGE_DEST >/dev/null 2>&1
-	#push redbend_ua to phone and set permissions
+	$ADB_PUSH $ZIMAGE_SRC "$DEVICE_TMP_PATH/zImage" >/dev/null 2>&1
+	# push redbend_ua to phone and set permissions
 	echo "Pushing redbend_ua, this may take a minute."
-	$ADB_PUSH $REDBEND_SRC $REDBEND_DEST >/dev/null 2>&1
+	$ADB_PUSH $REDBEND_SRC "$DEVICE_TMP_PATH/redbend_ua" >/dev/null 2>&1
 	echo "Setting permissions on redbend_ua (0755)."
-	$ADB_SHELL "chmod 0755" $REDBEND_DEST
+	$ADB_SHELL "chmod 0755 $DEVICE_TMP_PATH/redbend_ua"
 
-	#push kernelFlash to phone and set permissions
+	# push kernelFlash to phone and set permissions
 	echo "Pushing kernelFlash, this may take a minute."
-	$ADB_PUSH $KERNELFLASH_SRC $KERNELFLASH_DEST >/dev/null 2>&1
+	$ADB_PUSH $KERNELFLASH_SRC "$DEVICE_TMP_PATH/kernelFlash" >/dev/null 2>&1
 	echo "Setting permissions on kernelFlash (0755)."
-	$ADB_SHELL "chmod 0755" $KERNELFLASH_DEST
-	#flash kernel with kernelFlash script
+	$ADB_SHELL "chmod 0755 $DEVICE_TMP_PATH/kernelFlash"
+	# flash kernel with kernelFlash script
 	echo "Flashing kernel with kernelFlash -k."
 	echo "*"
 	$ADB_SHELL $ADB_KERNEL_FLASH

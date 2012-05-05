@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-05-2012:
+scripting: Script cleanup, folder structure adjustments, etc.
+
 05-04-2012:
 initramfs: Some init.rc cleanup.
 update-zip: Install 2.6.35.13 modules for CM7.

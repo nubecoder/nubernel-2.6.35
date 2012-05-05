@@ -1,19 +1,16 @@
 #!/system/bin/sh
 #
 # kernelFlash
-# For use with wifiFlashHelper.sh
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+#  -For use with my wifiFlashHelper.sh script
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
-#define defaults
+#defaults
 USE_BMLWRITE="n"
 DO_KERNEL="n"
 DO_RECOVERY="n"
 
-#define paths
+#defines
 TMP_PATH="/data/local/tmp"
 BLOCK_PATH="/dev/block"
 
@@ -26,15 +23,14 @@ RECOVERY_PARTITION="$BLOCK_PATH/bml8"
 REDBEND="$TMP_PATH/redbend_ua"
 BMLWRITE="$TMP_PATH/bmlwrite"
 
-
-#define cmds
+#cmds
 REDBEND_DO_KERNEL="$REDBEND restore $ZIMAGE $KERNEL_PARTITION"
 REDBEND_DO_RECOVERY="$REDBEND restore $RECOVERY_ZIMAGE $RECOVERY_PARTITION"
 
 BMLWRITE_DO_KERNEL="$BMLWRITE $ZIMAGE $KERNEL_PARTITION"
 BMLWRITE_DO_RECOVERY="$BMLWRITE $RECOVERY_ZIMAGE $RECOVERY_PARTITION"
 
-# functions
+#functions
 SHOW_HELP()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
@@ -107,31 +103,25 @@ FLASH_TO_BML8()
 	echo "*"
 }
 
-# main
+#main
 while getopts  ":bhkr" flag
 do
 	case "$flag" in
 	b)
-		USE_BMLWRITE="y"
-		;;
+		USE_BMLWRITE="y" ;;
 	h)
-		SHOW_HELP
-		;;
+		SHOW_HELP ;;
 	k)
-		DO_KERNEL="y"
-		;;
+		DO_KERNEL="y" ;;
 	r)
-		DO_RECOVERY="y"
-		;;
+		DO_RECOVERY="y" ;;
 	*)
 		ERROR_MSG="Error:: problem with option '$OPTARG'"
 		SHOW_ERROR
-		SHOW_HELP
-		;;
+		SHOW_HELP ;;
 	esac
 done
 
-# show current settings
 SHOW_SETTINGS
 
 if [ "$DO_KERNEL" = "y" ] ; then

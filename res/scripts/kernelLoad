@@ -1,17 +1,14 @@
 #!/system/bin/sh
 #
 # kernelLoad
-# Derrived from Tortel's "change_kernel.sh" script.
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+#  -Derrived from Tortel's "change_kernel.sh" script.
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 #defines
 ZIMAGE="$1"
 
-# functions
+#functions
 SHOW_HELP()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
@@ -23,18 +20,20 @@ SHOW_HELP()
 KEXEC_BOOT_ZIMAGE()
 {
 	local FILE="$1"
-	chmod 777 "$FILE"
-	mount -ro remount /dev/block/stl6 /mnt/.lfs
-	mount -ro remount /dev/block/stl9 /system
-	mount -ro remount /dev/block/stl10 /data
-	mount -ro remount /dev/block/stl11 /cache
+	busybox chmod 777 "$FILE"
+	busybox mount -ro remount /dev/block/stl6 /mnt/.lfs
+	busybox mount -ro remount /dev/block/stl9 /system
+	busybox mount -ro remount /dev/block/stl10 /data
+	busybox mount -ro remount /dev/block/stl11 /cache
+	# normal boot
 	/sbin/kexec --load-hardboot --mem-min=0x50000000 --append="console=ttySAC2,115200 loglevel=4" "$FILE"
-#	/sbin/kexec --load-hardboot --mem-min=0x50000000 --append=bootmode=2 "$FILE"
+	# recovery boot
+	#/sbin/kexec --load-hardboot --mem-min=0x50000000 --append=bootmode=2 "$FILE"
 	sync
 	/sbin/kexec -e
 }
 
-# main
+#main
 if busybox test -f "$ZIMAGE"; then
 	KEXEC_BOOT_ZIMAGE "$ZIMAGE"
 fi

@@ -1,11 +1,14 @@
 #!/bin/bash
-#define variables
-IP="192.168.1.168"
+#
+# kmsg.sh
+# nubecoder 2012 - http://www.nubecoder.com/
+#
 
-#define paths
+#defines
+IP="192.168.1.168"
 LOG_PATH="kmsg.log"
 
-#define cmds
+#cmds
 ADB_KILL="adb kill-server"
 ADB_CONNECT="adb connect"
 ADB_DISCONNECT="adb disconnect"
@@ -52,6 +55,6 @@ then
 	$ADB_SHELL $ADB_KMSG | tee $LOG_PATH
 else
 	echo "Please connect your phone."
-#	echo "Please enable wireless adb and verify the IP matches: $IP."
+	#echo "Please enable wireless adb and verify the IP matches: $IP."
 fi
 

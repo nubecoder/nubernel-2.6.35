@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-05-2012:
+defconfig: Use Simple IO scheduler as default.
 scripting: Script cleanup, folder structure adjustments, etc.
 
 05-04-2012:

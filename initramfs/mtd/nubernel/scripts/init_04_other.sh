@@ -42,29 +42,29 @@ ENSURE_BASH_INSTALL()
 ENSURE_RESOURCES_INSTALL()
 {
 	# /data/local/
-	local SOURCE_FILE="/nubernel/files/resources/.bash_aliases"
+	local SOURCE_FILE="/nubernel/files/res/dotbash_aliases"
 	local DEST_FILE="/data/local/.bash_aliases"
 	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
-	local SOURCE_FILE="/nubernel/files/resources/.bashrc"
+	local SOURCE_FILE="/nubernel/files/res/dotbashrc"
 	local DEST_FILE="/data/local/.bashrc"
 	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
-	local SOURCE_FILE="/nubernel/files/resources/.inputrc"
+	local SOURCE_FILE="/nubernel/files/res/dotinputrc"
 	local DEST_FILE="/data/local/.inputrc"
 	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
-	local SOURCE_FILE="/nubernel/files/resources/.profile"
+	local SOURCE_FILE="/nubernel/files/res/dotprofile"
 	local DEST_FILE="/data/local/.profile"
 	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
 	# /system/etc/
 	if [ ! -d "/system/etc/bash" ] ; then
 		busybox mkdir -p "/system/etc/bash"
 	fi
-	local SOURCE_FILE="/nubernel/files/resources/bash_logout"
+	local SOURCE_FILE="/nubernel/files/res/bash_logout"
 	local DEST_FILE="/system/etc/bash/bash_logout"
 	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
-	local SOURCE_FILE="/nubernel/files/resources/bashrc"
+	local SOURCE_FILE="/nubernel/files/res/bashrc"
 	local DEST_FILE="/system/etc/bash/bashrc"
 	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
-	local SOURCE_FILE="/nubernel/files/resources/profile"
+	local SOURCE_FILE="/nubernel/files/res/profile"
 	local DEST_FILE="/system/etc/profile"
 	INSTALL_RESOURCE_FILE "$SOURCE_FILE" "$DEST_FILE"
 }

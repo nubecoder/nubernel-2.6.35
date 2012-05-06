@@ -1,5 +1,8 @@
 on post-fs
 
+# load android logger
+insmod /system/lib/modules/logger.ko
+
 #load vibrator modules
 insmod /system/lib/modules/vibrator.ko
 

@@ -156,6 +156,7 @@ function COPY_MODULES()
 				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
 				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
 				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/bcm4329.ko"
+				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
 				;;
 			mod)
 				local MODULES_DEST="$INSTALL_MOD_PATH"
@@ -202,6 +203,7 @@ function STRIP_MODULES()
 				local PARTS="vibrator.ko"
 				local PARTS="$PARTS cmc7xx_sdio.ko"
 				local PARTS="$PARTS bcm4329.ko"
+				local PARTS="$PARTS logger.ko"
 				;;
 			mod)
 				local MODULES_DEST="$INSTALL_MOD_PATH"

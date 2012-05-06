@@ -6,7 +6,7 @@
 
 SRC_PATH="/tmp"
 DST_PATH="/system/lib/modules"
-MODULES_LIST="bcm4329.ko cmc7xx_sdio.ko vibrator.ko"
+MODULES_LIST="bcm4329.ko cmc7xx_sdio.ko logger.ko vibrator.ko"
 
 # remove old log
 rm -rf /sdcard/install_modules.log

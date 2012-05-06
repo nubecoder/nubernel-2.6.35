@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-06-2012:
+update-zip: CM7: Include android logger module for CM7.
 initramfs: Misc cleanup.
 initramfs: MTD: Ensure permissions of init scripts.
 initramfs: TW: Ensure permissions of init scripts.

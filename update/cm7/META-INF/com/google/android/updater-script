@@ -93,6 +93,7 @@ assert(
 	run_program("/sbin/busybox", "mount", "/system"),
 	package_extract_file("lib/modules/bcm4329.ko", "/tmp/bcm4329.ko"),
 	package_extract_file("lib/modules/cmc7xx_sdio.ko", "/tmp/cmc7xx_sdio.ko"),
+	package_extract_file("lib/modules/logger.ko", "/tmp/logger.ko"),
 	package_extract_file("lib/modules/vibrator.ko", "/tmp/vibrator.ko"),
 	run_program("/tmp/install_modules.sh"),
 	run_program("/sbin/busybox", "umount", "/system")

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-06-2012:
+initramfs: TW: Ensure permissions of init scripts.
 initramfs: Work around mkbootfs ignoring dotfiles.
 
 05-05-2012:

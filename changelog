@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-06-2012:
+initramfs: Misc cleanup.
 initramfs: MTD: Ensure permissions of init scripts.
 initramfs: TW: Ensure permissions of init scripts.
 initramfs: Work around mkbootfs ignoring dotfiles.

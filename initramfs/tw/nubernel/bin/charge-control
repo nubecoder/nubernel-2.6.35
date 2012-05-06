@@ -103,7 +103,7 @@ if [ -z $1 ]; then
 	SHOW_HELP
 else
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	while [ "$1" ] ; do 
+	while [ "$1" ] ; do
 		HANDLE_ARGUMENT "$1" "$2"
 		RET="$?"
 		if [ $RET = 2 ] ; then

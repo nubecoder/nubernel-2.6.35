@@ -178,6 +178,10 @@ on fs
 #  Wimax modules
     insmod /lib/modules/cmc7xx_sdio.ko
 
+# Init script permissions
+    chown root system /nubernel/scripts/run_init_scripts.sh
+    chmod 0755 /nubernel/scripts/run_init_scripts.sh
+
 on post-fs
     # once everything is setup, no need to modify /
     mount rootfs rootfs / ro remount

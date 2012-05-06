@@ -13,6 +13,22 @@ SEND_LOG()
 #main
 SEND_LOG "Start"
 
+SEND_LOG "Remount as RW"
+/sbin/busybox mount -o remount,rw /
+/sbin/busybox mount -o remount,rw /system
+
+for x in /nubernel/scripts/init* ; do
+	SEND_LOG "Setting permissions: $x"
+	chown root system "$x"
+	chmod 0755 "$x"
+done
+
+temp=/nubernel/scripts/run_parts.sh
+SEND_LOG "Setting permissions: $temp"
+chown root system "$temp"
+chmod 0755 "$temp"
+unset temp
+
 for x in /nubernel/scripts/init* ; do
 	SEND_LOG "Running: $x"
 	/system/bin/logwrapper "$x"

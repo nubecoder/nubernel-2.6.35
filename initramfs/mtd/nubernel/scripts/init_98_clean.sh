@@ -19,11 +19,11 @@ for FILE in init.rc lpm.rc ueventd.rc ; do
 	busybox rm -f "/$FILE"
 done
 
-SEND_LOG "Remove unneccessary folders in /nubernel/"
-for FOLDER in bin files ; do
-	SEND_LOG " rm -rf /nubernel/$FOLDER"
-	busybox rm -rf "/nubernel/$FOLDER"
-done
+SEND_LOG "Moving mount_ro.sh to /data/local/tmp/"
+	if [ ! -d "/data/local/tmp" ] ; then
+		busybox mkdir -p "/data/local/tmp"
+	fi
+busybox mv -f "/nubernel/scripts/mount_ro.sh" "/data/local/tmp/"
 
 SEND_LOG "Sync filesystem"
 busybox sync

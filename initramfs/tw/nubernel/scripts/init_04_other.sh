@@ -106,8 +106,14 @@ ENSURE_BASH_DEFAULT_ADB_SHELL()
 #main
 SEND_LOG "Start"
 
-SEND_LOG "Installing scripts into /vendor/bin"
-busybox mv -f /nubernel/bin/* /vendor/bin/
+SEND_LOG "Moving custom scripts to /data/local/bin/"
+if [ ! -d "/data/local/bin" ] ; then
+	busybox mkdir -p "/data/local/bin"
+fi
+for FILE in /nubernel/bin/* ; do
+	SEND_LOG "  Moving $FILE to /data/local/bin/"
+	busybox mv -f "$FILE" "/data/local/bin/"
+done
 
 SEND_LOG "Checking for $FIRST_BOOT_FILE"
 if [ -f "$FIRST_BOOT_FILE" ] ; then

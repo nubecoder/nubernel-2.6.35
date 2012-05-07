@@ -2,7 +2,7 @@ on early-init
     start ueventd
 
 on init
-    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/data/local/tmp
+    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
     export LD_LIBRARY_PATH /vendor/lib:/system/lib
     export ANDROID_ROOT /system
     export ANDROID_DATA /data
@@ -21,8 +21,6 @@ on init
 
     mkdir /mnt 0775 root root
 
-    #mount /tmp /tmp tmpfs   
-
 on early-fs
 
     # rfs drivers
@@ -40,6 +38,7 @@ on early-fs
 on fs
     mount tmpfs tmpfs /tmp
 # /system
+    #mount yaffs2 mtd@system /system
     mount rfs /dev/block/stl9 /system rw check=no
     #mount rfs /dev/block/stl9 /system rw noatime nodiratime check=no
     mount ext4 /dev/block/stl9 /system rw noatime nodiratime nodelalloc check=none errors=continue data=writeback nobh nobarrier noauto_da_alloc discard
@@ -66,6 +65,10 @@ service ueventd /sbin/ueventd
 service console /system/bin/sh
     console
 
+# adbd is controlled by the persist.service.adb.enable system property
+service adbd /sbin/adbd
+    disabled
+
 service playlpm /system/bin/playlpm
     user root
     oneshot
@@ -80,6 +83,6 @@ service lpmkey /system/bin/charging_mode
 on property:persist.service.adb.enable=1
     start adbd
 
-#on property:persist.service.adb.enable=0
-#    stop adbd
+on property:persist.service.adb.enable=0
+    stop adbd
 

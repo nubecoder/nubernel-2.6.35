@@ -16,7 +16,7 @@ fi
 
 # set some environment variables
 export HOME="/data/local"
-export PATH="/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/data/local/tmp"
+export PATH="/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/data/local/bin"
 #HOME=/sdcard
 TERM=linux
 

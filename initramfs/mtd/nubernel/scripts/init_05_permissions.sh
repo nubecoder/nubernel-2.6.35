@@ -16,8 +16,8 @@ SEND_LOG "Start"
 SEND_LOG "Fixing permissions and ownership"
 SEND_LOG "  chmod 0755 /sbin/*"
 busybox chmod 0755 /sbin/*
-SEND_LOG "  chmod 0755 /vendor/bin/*"
-busybox chmod 0755 /vendor/bin/*
+SEND_LOG "  chmod 0755 /data/local/bin/*"
+busybox chmod 0755 /data/local/bin/*
 for FILE in default.prop init ; do
 	SEND_LOG "  chown 0.2000 /$FILE"
 	busybox chown 0.2000 /$FILE

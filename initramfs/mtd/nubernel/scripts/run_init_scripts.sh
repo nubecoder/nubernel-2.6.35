@@ -22,19 +22,25 @@ for x in /nubernel/scripts/init* ; do
 	chown root system "$x"
 	chmod 0755 "$x"
 done
+for x in /nubernel/scripts/init* ; do
+	SEND_LOG "Running: $x"
+	/system/bin/logwrapper "$x"
+done
 
 temp=/nubernel/scripts/run_parts.sh
 SEND_LOG "Setting permissions: $temp"
 chown root system "$temp"
 chmod 0755 "$temp"
-unset temp
+SEND_LOG "Running: $temp"
+/system/bin/logwrapper "$temp"
 
-for x in /nubernel/scripts/init* ; do
-	SEND_LOG "Running: $x"
-	/system/bin/logwrapper "$x"
-done
-SEND_LOG "Running: /nubernel/scripts/run_parts.sh"
-/system/bin/logwrapper /nubernel/scripts/run_parts.sh
+temp=/data/local/tmp/mount_ro.sh
+SEND_LOG "Setting permissions: $temp"
+chown root system "$temp"
+chmod 0755 "$temp"
+SEND_LOG "Invoking: $temp"
+nohup /system/bin/logwrapper "$temp" &
+unset temp
 
 SEND_LOG "End"
 

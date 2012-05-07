@@ -11,7 +11,7 @@
 /dev/dpram1               0660   radio      radio
 /dev/dpramerr             0660   radio      radio
 /dev/ttyCDMA0             0660   radio      radio
-/dev/tspdrv               0660   shell      shell 
+/dev/tspdrv               0660   shell      shell
 /dev/multipdp             0660   radio      radio
 /dev/ttyCSD0              0660   radio      radio
 /dev/video0              0666   system     system
@@ -102,5 +102,3 @@
 /dev/s3c-jpg              0660   system     camera
 /dev/s3c-mem              0660   system     system
 /dev/s3c-mfc              0660   system     graphics
-#SecFeature.SprintHotspot
-/dev/hotspot_event_monitoring                 0770   root       system

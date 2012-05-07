@@ -1,10 +1,7 @@
 #!/system/bin/sh
 #
-# charge_control
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# charge-control
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 #defines

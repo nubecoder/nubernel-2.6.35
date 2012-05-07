@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-07-2012:
+initramfs: A bunch more initramfs cleanup.
+
 05-06-2012:
 initramfs: CM7: Load android logger module.
 update-zip: CM7: Include android logger module for CM7.

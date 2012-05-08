@@ -6,5 +6,4 @@ bootlogo/makelogo
 */*/boot.img
 source/*
 res/modules/*
-firmware.info
 

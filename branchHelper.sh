@@ -91,9 +91,9 @@ BRANCH_RELEASE()
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/tw/META-INF/com/android/metadata
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/google/android/updater-script
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/android/metadata
-		sed -i "s/$PATTERN/$REPLACEMENT/g" firmware.info
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README
 		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes
+		sed -i "s/$PATTERN/$REPLACEMENT/g" res/heimdall/firmware.xml
 		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist
 	else
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog >/dev/null 2>&1
@@ -103,9 +103,9 @@ BRANCH_RELEASE()
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/tw/META-INF/com/android/metadata >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/google/android/updater-script >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/android/metadata >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" firmware.info >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" res/heimdall/firmware.xml >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist >/dev/null 2>&1
 	fi
 
@@ -134,9 +134,9 @@ BRANCH_RELEASE()
 		git add update/tw/META-INF/com/android/metadata
 		git add update/mtd/META-INF/com/google/android/updater-script
 		git add update/mtd/META-INF/com/android/metadata
-		git add firmware.info
 		git add README
 		git add include/includes
+		git add res/heimdall/firmware.xml
 		git add featurelist
 		git add $0
 	else
@@ -147,9 +147,9 @@ BRANCH_RELEASE()
 		git add update/tw/META-INF/com/android/metadata >/dev/null 2>&1
 		git add update/mtd/META-INF/com/google/android/updater-script >/dev/null 2>&1
 		git add update/mtd/META-INF/com/android/metadata >/dev/null 2>&1
-		git add firmware.info >/dev/null 2>&1
 		git add README >/dev/null 2>&1
 		git add include/includes >/dev/null 2>&1
+		git add res/heimdall/firmware.xml >/dev/null 2>&1
 		git add featurelist >/dev/null 2>&1
 		git add $0 >/dev/null 2>&1
 	fi

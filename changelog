@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-08-2012:
+bcm4329: victory / atlas: More hotspot_event_monitoring removal.
 update-zip: updater-script: Some changes to product assert in updater-script (all roms should be using SPH-D700, if not they need to fix it).
 scripting: Some scripting changes (add buildAll script, add heimdall resources, create heimdall package with build script, etc).
 

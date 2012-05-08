@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-02-2012:
+s3c-keypad: On slide open, set keyboard backlight to configured state, not always on (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/e58150f788625c012019392a9bb028440d09e521).
 cpufreq: s5pv210: Call cpufreq_update_policy on DVFS events and force SLEEP_FREQ on suspend (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/a08ec940e5bebb86acec43b7bd73c2182bdd7c62).
 Oops, this should not have been left here.
 

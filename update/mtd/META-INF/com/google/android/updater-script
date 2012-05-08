@@ -1,11 +1,6 @@
 assert(getprop("ro.product.device") == "SPH-D700" ||
-	getprop("ro.build.product") == "SPH-D700" ||
-	getprop("ro.product.device") == "epicmtd" ||
-	getprop("ro.build.product") == "epicmtd" ||
-	getprop("ro.product.device") == "epic" ||
-	getprop("ro.build.product") == "epic");
+	getprop("ro.build.product") == "SPH-D700");
 
-# 28 chars across(?)
 ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
 ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
 ui_print("                               =]=]=]");

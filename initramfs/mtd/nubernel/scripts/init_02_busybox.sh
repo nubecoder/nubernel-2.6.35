@@ -17,23 +17,26 @@ SEND_LOG "Setting BB_PATH"
 BB_PATH="/data/local/tmp/bbox"
 
 SEND_LOG "Installing temporary busybox"
-mkdir "$BB_PATH"
+/sbin/busybox mkdir -p "$BB_PATH"
 /sbin/busybox ln -s /sbin/recovery "$BB_PATH/busybox"
 $BB_PATH/busybox --install -s "$BB_PATH/"
 
 SEND_LOG "Ensuring busybox is properly installed"
 if $BB_PATH/test ! -f "/system/xbin/busybox" ; then
-	SEND_LOG "  Creating /system/xbin/busybox symlink"
-	$BB_PATH/ln -s /sbin/recovery /system/xbin/busybox
+	SEND_LOG "  Installing /system/xbin/busybox"
+	$BB_PATH/cp -f /sbin/recovery /system/xbin/busybox
 else
 	BB_LINK_FOUND=$($BB_PATH/ls -l "/system/xbin/busybox" | $BB_PATH/grep "/sbin/busybox")
 	if $BB_PATH/test ! "$BB_LINK_FOUND" = "" ; then
 		SEND_LOG "  Removing /system/xbin/busybox symlink"
 		$BB_PATH/rm -f /system/xbin/busybox
-		SEND_LOG "  Creating /system/xbin/busybox symlink"
-		$BB_PATH/ln -s /sbin/recovery /system/xbin/busybox
+		SEND_LOG "  Installing /system/xbin/busybox"
+		$BB_PATH/cp -f /sbin/recovery /system/xbin/busybox
 	fi
 fi
+
+SEND_LOG "Ensuring proper permissions for busybox"
+$BB_PATH/chmod 0755 /system/xbin/busybox
 
 SEND_LOG "Removing /sbin/busybox"
 $BB_PATH/rm -f /sbin/busybox
@@ -45,7 +48,7 @@ SEND_LOG "Removing temporary busybox"
 /system/xbin/busybox rm -rf "$BB_PATH/"
 
 SEND_LOG "Sync filesystem"
-/system/xbin/busybox sync
+busybox sync
 
 SEND_LOG "Ensuring busybox DNS is set up properly"
 if [ ! -f "/system/etc/resolv.conf" ] ; then

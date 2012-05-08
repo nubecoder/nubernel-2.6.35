@@ -21,9 +21,6 @@ NEW_VERSION=
 FEATURE_NAME=
 ERROR_MSG=
 
-#temp
-AOSP="n"
-
 # functions
 SHOW_HELP()
 {
@@ -87,30 +84,39 @@ BRANCH_RELEASE()
 	local PATTERN="${VERSION_STRING}$CURRENT_VERSION"
 	local REPLACEMENT="${VERSION_STRING}$NEW_VERSION"
 	if [ "$VERBOSE" = "y" ]; then
-		#sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/google/android/updater-script
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/android/metadata
-		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh
-		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/cm7/META-INF/com/google/android/updater-script
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/cm7/META-INF/com/android/metadata
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/tw/META-INF/com/google/android/updater-script
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/tw/META-INF/com/android/metadata
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/google/android/updater-script
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/android/metadata
+		sed -i "s/$PATTERN/$REPLACEMENT/g" firmware.info
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README
+		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes
+		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist
 	else
-		#sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/android/metadata >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/cm7/META-INF/com/google/android/updater-script >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/cm7/META-INF/com/android/metadata >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/tw/META-INF/com/google/android/updater-script >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/tw/META-INF/com/android/metadata >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/google/android/updater-script >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/android/metadata >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" firmware.info >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist >/dev/null 2>&1
 	fi
 
-	local PATTERN="nubernel_v$CURRENT_VERSION"
-	local REPLACEMENT="nubernel_v$NEW_VERSION"
+	local PATTERN="LOCALVERSION=\".nubernel_v${CURRENT_VERSION}\""
+	local REPLACEMENT="LOCALVERSION=\".nubernel_v${NEW_VERSION}\""
 	if [ "$VERBOSE" = "y" ]; then
-		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh
+		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes
 	else
-		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes >/dev/null 2>&1
 	fi
+
 	local PATTERN="CURRENT_VERSION=\"$CURRENT_VERSION\""
 	local REPLACEMENT="CURRENT_VERSION=\"$NEW_VERSION\""
 	if [ "$VERBOSE" = "y" ]; then
@@ -121,26 +127,30 @@ BRANCH_RELEASE()
 	# git add changes
 	if [ "$VERBOSE" = "y" ]
 	then
-		#git add build_kernel.sh
-		git add update/META-INF/com/google/android/updater-script
-		git add update/META-INF/com/android/metadata
-		git add ncBuildHelper.sh
-		git add featurelist
 		git add changelog
+		git add update/cm7/META-INF/com/google/android/updater-script
+		git add update/cm7/META-INF/com/android/metadata
+		git add update/tw/META-INF/com/google/android/updater-script
+		git add update/tw/META-INF/com/android/metadata
+		git add update/mtd/META-INF/com/google/android/updater-script
+		git add update/mtd/META-INF/com/android/metadata
+		git add firmware.info
 		git add README
-		git add scripts/update_modules.sh
-		git add Kernel/arch/arm/config/victory_nubernel_defconfig
+		git add include/includes
+		git add featurelist
 		git add $0
 	else
-		#git add build_kernel.sh >/dev/null 2>&1
-		git add update/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		git add update/META-INF/com/android/metadata >/dev/null 2>&1
-		git add ncBuildHelper.sh >/dev/null 2>&1
-		git add featurelist >/dev/null 2>&1
 		git add changelog >/dev/null 2>&1
+		git add update/cm7/META-INF/com/google/android/updater-script >/dev/null 2>&1
+		git add update/cm7/META-INF/com/android/metadata >/dev/null 2>&1
+		git add update/tw/META-INF/com/google/android/updater-script >/dev/null 2>&1
+		git add update/tw/META-INF/com/android/metadata >/dev/null 2>&1
+		git add update/mtd/META-INF/com/google/android/updater-script >/dev/null 2>&1
+		git add update/mtd/META-INF/com/android/metadata >/dev/null 2>&1
+		git add firmware.info >/dev/null 2>&1
 		git add README >/dev/null 2>&1
-		git add scripts/update_modules.sh >/dev/null 2>&1
-		git add Kernel/arch/arm/config/victory_nubernel_defconfig >/dev/null 2>&1
+		git add include/includes >/dev/null 2>&1
+		git add featurelist >/dev/null 2>&1
 		git add $0 >/dev/null 2>&1
 	fi
 	# show some info

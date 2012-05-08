@@ -1,10 +1,7 @@
 #!/system/bin/sh
 #
-# cpufreq_info
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# cpufreq-info
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 #defind variables

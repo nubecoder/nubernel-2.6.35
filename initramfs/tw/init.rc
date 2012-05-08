@@ -8,7 +8,7 @@ sysclktz 0
 loglevel 3
 
 # setup the global environment
-    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/data/local/tmp
+    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/data/local/bin
     export LD_LIBRARY_PATH /vendor/lib:/system/lib
     export ANDROID_BOOTLOGO 1
     export ANDROID_ROOT /system
@@ -139,17 +139,12 @@ on fs
     copy /tmp/libstdc++.so /system/lib/libstdc++.so
 
     #mount yaffs2 mtd@system /system ro remount
-    #mount rfs /dev/block/stl9 /system ro remount
+    mount rfs /dev/block/stl9 /system ro remount
 
 # SEC_DMCRYPT for MC_CRYPT_ROOT before apply_disk_policy or apply_sec_devenc_init
     chown radio system /efs
     chmod 0771 /efs
     mount rfs /dev/block/stl3 /efs nosuid nodev check=no
-
-# use movinand second partition as /data. d.moskvitin
-    #temp
-    chown root root /sbin/fat.format
-    chmod 750 /sbin/fat.format
 
     exec apply_disk_policy
 
@@ -200,6 +195,10 @@ on fs
 
 #  Wimax modules
     insmod /lib/modules/cmc7xx_sdio.ko
+
+# Init script permissions
+    chown root system /nubernel/scripts/run_init_scripts.sh
+    chmod 0755 /nubernel/scripts/run_init_scripts.sh
 
 on post-fs
     # once everything is setup, no need to modify /

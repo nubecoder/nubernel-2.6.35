@@ -1,10 +1,7 @@
 #!/system/bin/sh
 #
 # auto-remount
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 ROOTFS_RW=$(busybox mount | busybox grep "rootfs" | busybox grep "rw" -o)

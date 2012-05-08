@@ -1,22 +1,21 @@
 #!/system/bin/sh
 #
-# bb_install
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# bb-install
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 # functions
-CREATE_BUSYBOX_SYMLINK()
+COPY_BUSYBOX()
 {
-	echo "Creating /sbin/busybox symlink"
-	toolbox ln -s /sbin/recovery /sbin/busybox
+	echo "Copying busybox to /system/xbin/busybox"
+	toolbox cat /sbin/recovery >/system/xbin/busybox
+	echo "Ensuring proper permissions for busybox"
+	toolbox chmod 0755 /system/xbin/busybox
 }
 INSTALL_BUSYBOX()
 {
 	echo "Installing busybox to /system/xbin/"
-	/sbin/busybox --install -s /system/xbin/
+	/system/xbin/busybox --install -s /system/xbin/
 }
 
 # main
@@ -25,7 +24,7 @@ toolbox mount -o remount,rw / /
 echo "Remounting system as rw"
 toolbox mount -o remount,rw /system /system
 
-CREATE_BUSYBOX_SYMLINK
+COPY_BUSYBOX
 INSTALL_BUSYBOX
 
 echo "Remounting rootfs as ro"

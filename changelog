@@ -8,6 +8,21 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-08-2012:
+update-zip: updater-script: Some changes to product assert in updater-script (all roms should be using SPH-D700, if not they need to fix it).
+scripting: Some scripting changes (add buildAll script, add heimdall resources, create heimdall package with build script, etc).
+
+05-07-2012:
+initramfs: A bunch more initramfs cleanup.
+
+05-06-2012:
+initramfs: CM7: Load android logger module.
+update-zip: CM7: Include android logger module for CM7.
+initramfs: Misc cleanup.
+initramfs: MTD: Ensure permissions of init scripts.
+initramfs: TW: Ensure permissions of init scripts.
+initramfs: Work around mkbootfs ignoring dotfiles.
+
 05-05-2012:
 build fix: Fix message about Extraneous text after else directive in atlas bcm4329 Makefile.
 Compress kernel with xz (via wtogami: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/2e1435ef143cd0cf686f713ef45e91f8511c2b40).

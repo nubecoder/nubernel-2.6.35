@@ -1,9 +1,5 @@
 assert(getprop("ro.product.device") == "SPH-D700" ||
-	getprop("ro.build.product") == "SPH-D700" ||
-	getprop("ro.product.device") == "epicmtd" ||
-	getprop("ro.build.product") == "epicmtd" ||
-	getprop("ro.product.device") == "epic" ||
-	getprop("ro.build.product") == "epic");
+	getprop("ro.build.product") == "SPH-D700");
 
 ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
 ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
@@ -93,6 +89,7 @@ assert(
 	run_program("/sbin/busybox", "mount", "/system"),
 	package_extract_file("lib/modules/bcm4329.ko", "/tmp/bcm4329.ko"),
 	package_extract_file("lib/modules/cmc7xx_sdio.ko", "/tmp/cmc7xx_sdio.ko"),
+	package_extract_file("lib/modules/logger.ko", "/tmp/logger.ko"),
 	package_extract_file("lib/modules/vibrator.ko", "/tmp/vibrator.ko"),
 	run_program("/tmp/install_modules.sh"),
 	run_program("/sbin/busybox", "umount", "/system")

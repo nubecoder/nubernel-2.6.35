@@ -2,9 +2,10 @@
 # ADDITIONAL_DEFAULT_PROPERTIES
 #
 ro.product.model=SPH-D700
+ro.product.brand=samsung
 ro.product.name=SPH-D700
 ro.product.device=SPH-D700
-ro.product.board=SPH-D700
+ro.product.board=s5pc110
 ro.product.manufacturer=Samsung
 ro.board.platform=s5pc110
 ro.build.product=SPH-D700

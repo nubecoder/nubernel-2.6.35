@@ -156,6 +156,7 @@ function COPY_MODULES()
 				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
 				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
 				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/bcm4329.ko"
+				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
 				;;
 			mod)
 				local MODULES_DEST="$INSTALL_MOD_PATH"
@@ -202,6 +203,7 @@ function STRIP_MODULES()
 				local PARTS="vibrator.ko"
 				local PARTS="$PARTS cmc7xx_sdio.ko"
 				local PARTS="$PARTS bcm4329.ko"
+				local PARTS="$PARTS logger.ko"
 				;;
 			mod)
 				local MODULES_DEST="$INSTALL_MOD_PATH"
@@ -228,7 +230,7 @@ function BUILD_ZIMAGE()
 	ECHO_BEGIN T1 $F1
 	pushd "$KERNEL_BASE/Kernel" >/dev/null
 		# ensure freshly packaged initramfs
-		rm -f "usr/initramfs_data.cpio.*"
+		rm -f "usr/initramfs_data.cpio*"
 		# force new timestamp
 		rm -f "include/generated/compile.h"
 		if [ "$VERBOSE" = "n" ] ; then
@@ -263,13 +265,26 @@ function GENERATE_WARNINGS_FILE()
 }
 function PACKAGE_TAR()
 {
-	local OUTFILE="$KERNEL_BASE/$TARGET-$VERSION.$BUILD_TYPE.tar.md5"
+	local OUTFILE="$KERNEL_BASE/$VERSION.$BUILD_TYPE.tar.md5"
 	rm -f "$OUTFILE"
-	local F1="$TARGET-$VERSION.$BUILD_TYPE.tar.md5 creation"
+	local F1="$VERSION.$BUILD_TYPE.tar.md5 creation"
 	ECHO_BEGIN T1 $F1
-	pushd "$KERNEL_BASE/Kernel" >/dev/null
-		tar -H ustar -c -C arch/arm/boot zImage > "$OUTFILE"
+	pushd "$KERNEL_BASE/Kernel/arch/arm/boot" >/dev/null
+		tar -H ustar -cf "$OUTFILE" zImage
 		md5sum -t "$OUTFILE" >> "$OUTFILE"
+	popd >/dev/null
+	ECHO_END $T1 $F1
+}
+function PACKAGE_HEIMDALL()
+{
+	local OUTFILE="$KERNEL_BASE/$VERSION.$BUILD_TYPE.tar.gz"
+	rm -f "$OUTFILE"
+	local F1="$VERSION.$BUILD_TYPE.tar.gz creation"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/res/heimdall" >/dev/null
+		cp "$BUILT_ZIMAGE" zImage
+		tar -H ustar -czf "$OUTFILE" *
+		rm -f zImage
 	popd >/dev/null
 	ECHO_END $T1 $F1
 }
@@ -313,9 +328,9 @@ function UPDATE_UPDATER()
 }
 function PACKAGE_ZIP()
 {
-	local OUTFILE="$KERNEL_BASE/$TARGET-$VERSION.$BUILD_TYPE.zip"
+	local OUTFILE="$KERNEL_BASE/$VERSION.$BUILD_TYPE.zip"
 	rm -f "$OUTFILE"
-	local F1="$TARGET-$VERSION.$BUILD_TYPE.zip creation"
+	local F1="$VERSION.$BUILD_TYPE.zip creation"
 	ECHO_BEGIN T1 $F1
 	UPDATE_UPDATER
 	case "$BUILD_TYPE" in
@@ -324,7 +339,7 @@ function PACKAGE_ZIP()
 			cp "$BUILT_ZIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
 		mtd|cm7)
 			rm -f "$KERNEL_BASE/update/$BUILD_TYPE/boot.img"
-			cp "$BUILT_BOOTIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
+			mv -f "$BUILT_BOOTIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
 	esac
 	pushd "$KERNEL_BASE/update/$BUILD_TYPE" >/dev/null
 		zip -r "$OUTFILE" * >/dev/null
@@ -335,7 +350,8 @@ function CREATE_INSTALL_PACKAGE()
 {
 	case "$BUILD_TYPE" in
 		tw)
-			PACKAGE_TAR ;;
+			PACKAGE_TAR
+			PACKAGE_HEIMDALL ;;
 		mtd|cm7)
 			PACKAGE_BOOTIMG
 			if [ $? != 0 ] ; then

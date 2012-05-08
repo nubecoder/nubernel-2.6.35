@@ -9,7 +9,7 @@
 #umask 022
 
 export HOME="/data/local"
-PATH="/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/data/local/tmp"
+PATH="/sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin"
 
 # if running bash
 if [ -n "$BASH_VERSION" ]; then

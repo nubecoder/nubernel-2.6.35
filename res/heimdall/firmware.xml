@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<firmware version="1">
+	<name>nubernel-2.6.35_v0.0.2.tw</name>
+	<version>2.6.35.13</version>
+	<platform>
+		<name>GINGERBREAD</name>
+		<version>2.3.6</version>
+	</platform>
+	<developers>
+		<name>nubecoder</name>
+	</developers>
+	<url>http://www.nubecoder.com/</url>
+	<donateurl>https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=7712494</donateurl>
+	<devices>
+		<device>
+			<manufacturer>Samsung</manufacturer>
+			<product>SPH-D700</product>
+			<name>Epic 4G</name>
+		</device>
+	</devices>
+	<pit>SPH-D700.pit</pit>
+	<repartition>0</repartition>
+	<noreboot>0</noreboot>
+	<files>
+		<file>
+			<id>6</id>
+			<filename>zImage</filename>
+		</file>
+	</files>
+</firmware>

@@ -1,10 +1,7 @@
 #!/system/bin/sh
 #
-# bb_remove
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# bb-remove
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 # functions

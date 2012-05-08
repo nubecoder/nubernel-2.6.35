@@ -48,7 +48,7 @@ ADB_PUSH="adb push"
 ADB_STATE="adb get-state"
 
 THREADS=$(expr 1 + $(grep processor /proc/cpuinfo | wc -l))
-VERSION=$(date +%m-%d-%Y)
+VERSION=${KBUILD_BUILD_VERSION}_$(date +%m-%d-%Y)
 ERROR_MSG=
 TIME_START=
 TIME_END=

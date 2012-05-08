@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-08-2012:
+bcm4329: victory / atlas: More hotspot_event_monitoring removal.
+
 05-05-2012:
 build fix: Fix message about Extraneous text after else directive in atlas bcm4329 Makefile.
 Compress kernel with xz (via wtogami: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/2e1435ef143cd0cf686f713ef45e91f8511c2b40).

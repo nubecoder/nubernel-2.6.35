@@ -159,9 +159,6 @@ extern uint dhd_pkt_filter_enable;
 extern uint dhd_master_mode;
 extern void dhd_pktfilter_offload_enable(dhd_pub_t * dhd, char *arg, int enable, int master_mode);
 uint wl_msg_level = WL_ERROR_VAL;
-#ifdef FEATURE_HOTSPOT_EVENT
-extern int hotspot_event_detect_complete(char *msg);
-#endif
 #define MAX_WLIW_IOCTL_LEN 1024
 
 
@@ -1660,13 +1657,6 @@ wl_iw_send_priv_event(
 	union iwreq_data wrqu;
 	char extra[IW_CUSTOM_MAX + 1];
 	int cmd;
-
-#ifdef FEATURE_HOTSPOT_EVENT
-        if(ap_cfg_running) {
-          hotspot_event_detect_complete(flag);
-          return 0;
-     }
-#endif
 
 	cmd = IWEVCUSTOM;
 	memset(&wrqu, 0, sizeof(wrqu));

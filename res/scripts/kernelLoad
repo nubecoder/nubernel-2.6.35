@@ -26,7 +26,7 @@ KEXEC_BOOT_ZIMAGE()
 	busybox mount -ro remount /dev/block/stl10 /data
 	busybox mount -ro remount /dev/block/stl11 /cache
 	# normal boot
-	/sbin/kexec --load-hardboot --mem-min=0x50000000 --append="console=ttySAC2,115200 loglevel=4" "$FILE"
+	/sbin/kexec --load-hardboot --mem-min=0x50000000 --append="console=ttySAC2,115200 loglevel=4 no_console_suspend=1" "$FILE"
 	# recovery boot
 	#/sbin/kexec --load-hardboot --mem-min=0x50000000 --append=bootmode=2 "$FILE"
 	sync

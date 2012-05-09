@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-09-2012:
+scripting: More cleanup, load kernel via kexec for testing, etc.
 mach-s5pv210: Overclock: Fixing an overclocking related debugging typo.
 scripting: kernelLoad: Enable no_console_suspend for suspend/resume debugging in kexec args.
 initramfs: CM7: Enable UART debugging in init.rc.

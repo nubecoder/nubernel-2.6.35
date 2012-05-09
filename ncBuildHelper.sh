@@ -16,9 +16,8 @@ DISTCLEAN=n
 BUILD_MODULES=n
 BUILD_KERNEL=n
 CREATE_PACKAGES=n
-WIFI_FLASH=n
-WIRED_FLASH=n
-USE_KEXEC=n
+KEXEC_ZIMAGE=n
+WIFI_KEXEC=n
 VERBOSE=n
 
 #exports
@@ -33,15 +32,15 @@ function SHOW_HELP()
 	echo "-c : Run 'make clean'."
 	echo "-d : Run 'make distclean'."
 	echo "-h : Print this help info."
+	echo "-k : Kexec the current zImage."
+	echo "     Options are: <u|usb|wifi|w> (defaults to usb)."
 	echo "-m : Build and install modules."
 	echo "-p : Create install packages."
 	echo "-r : Define the recovery type."
-	echo "     Recovery types are: <cwm|twrp>. (Defaults to cwm.)"
+	echo "     Recovery types are: <cwm|twrp> (defaults to cwm)."
 	echo "-t : Define the build type."
-	echo "     Build types are: <tw|mtd|cm7|mod|bml8>. (Defaults to tw.)"
-	echo "-u : Wired (USB) Flash, expects a device to be connected."
+	echo "     Build types are: <tw|mtd|cm7|mod|bml8> (defaults to tw)."
 	echo "-v : Verbose script output."
-	echo "-w : Wifi Flash, for use with adb wireless."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	exit 1
 }
@@ -62,15 +61,15 @@ function SHOW_SETTINGS()
 	echo "build modules   == $BUILD_MODULES"
 	echo "build kernel    == $BUILD_KERNEL"
 	echo "create packages == $CREATE_PACKAGES"
-	echo "wifi flash      == $WIFI_FLASH"
-	echo "wired flash     == $WIRED_FLASH"
+	echo "kexec zimage    == $KEXEC_ZIMAGE"
+	echo "wifi kexec      == $WIFI_KEXEC"
 	echo "verbose output  == $VERBOSE"
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	echo "*"
 }
 
 #main
-while getopts ":bcdhkmpr:t:uvw" flag
+while getopts ":bcdhk:mpr:t:v" flag
 do
 	case "$flag" in
 		b)
@@ -82,7 +81,17 @@ do
 		h)
 			SHOW_HELP ;;
 		k)
-			USE_KEXEC=y ;;
+			KEXEC_ZIMAGE=y
+			case "$OPTARG" in
+				u|usb)
+					WIFI_KEXEC=n ;;
+				w|wifi)
+					WIFI_KEXEC=y ;;
+				*)
+					ERROR_MSG="Error:: problem with option '$OPTARG'"
+					SHOW_ERROR
+					SHOW_HELP ;;
+			esac ;;
 		m)
 			BUILD_MODULES=y ;;
 		p)
@@ -121,12 +130,8 @@ do
 					SHOW_ERROR
 					SHOW_HELP ;;
 			esac ;;
-		u)
-			WIRED_FLASH=y ;;
 		v)
 			VERBOSE=y ;;
-		w)
-			WIFI_FLASH=y ;;
 		*)
 			ERROR_MSG="Error:: problem with option '$OPTARG'"
 			SHOW_ERROR
@@ -153,36 +158,17 @@ if [ "$BUILD_KERNEL" = "y" ] ; then
 	BUILD_ZIMAGE
 	GENERATE_WARNINGS_FILE
 fi
-if [ "$CREATE_PACKAGES" = y ] ; then
+if [ "$CREATE_PACKAGES" = "y" ] ; then
 	if [ "$BUILD_TYPE" != "mod" ] || [ "$BUILD_TYPE" != "bml8" ] ; then
 		CREATE_INSTALL_PACKAGE
 	fi
 fi
 
-if [ "$WIFI_FLASH" = y ] ; then
-	if [ "$BUILD_TYPE" != "tw" ] ; then
-		ERROR_MSG="Error:: Wifi flash is currently unsupported for: $BUILD_TYPE"
-		SHOW_ERROR
-		SHOW_HELP
+if [ "$KEXEC_ZIMAGE" = "y" ] ; then
+	if [ "$WIFI_KEXEC" = "y" ] ; then
+		WIFI_KERNEL_LOAD_SCRIPT
 	else
-		if [ "$USE_KEXEC" = y ] ; then
-			WIFI_KERNEL_LOAD_SCRIPT
-		else
-			WIFI_FLASH_SCRIPT
-		fi
-	fi
-fi
-if [ "$WIRED_FLASH" = y ] ; then
-	if [ "$BUILD_TYPE" != "tw" ] ; then
-		ERROR_MSG="Error:: Wired flash is currently unsupported for: $BUILD_TYPE"
-		SHOW_ERROR
-		SHOW_HELP
-	else
-		if [ "$USE_KEXEC" = y ] ; then
-			WIRED_KERNEL_LOAD_SCRIPT
-		else
-			WIRED_FLASH_SCRIPT
-		fi
+		WIRED_KERNEL_LOAD_SCRIPT
 	fi
 fi
 

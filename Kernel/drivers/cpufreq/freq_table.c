@@ -119,8 +119,8 @@ int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
 					target_freq, relation, policy->cpu);
 
 #ifdef CONFIG_DEBUG_NUBERNEL
-	printk("FREQ: request for target %u MHz (relation: %u) for cpu %u\n",
-					(target_freq/1000), relation, policy->cpu);
+	printk("FREQ: request for target %u MHz (relation: %u) for cpu %u (cur: %uMHz) \n",
+					(target_freq/1000), relation, policy->cpu, (policy->cur/1000));
 #endif
 
 	switch (relation) {
@@ -138,13 +138,8 @@ int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
 	for (i = 0; (table[i].frequency != CPUFREQ_TABLE_END); i++) {
 		unsigned int freq = table[i].frequency;
 
-		if(enabled_freqs[i] == 0) {
-#ifdef CONFIG_DEBUG_NUBERNEL
-	printk("FREQ: skip disabled: %uMHz (target: %uMHz) \n",
-					(freq/1000), (target_freq/1000));
-#endif
+		if(enabled_freqs[i] == 0)
 			continue;
-		}
 		if (freq == CPUFREQ_ENTRY_INVALID)
 			continue;
 		if ((freq < policy->min) || (freq > policy->max))
@@ -189,8 +184,8 @@ int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
 		table[*index].index);
 
 #ifdef CONFIG_DEBUG_NUBERNEL
-	printk("FREQ: target is %u (%u MHz, %u)\n", *index, (table[*index].frequency/1000),
-		table[*index].index);
+	printk("FREQ: target is %u (%u MHz, %u) (cur: %dMHz) \n", *index, (table[*index].frequency/1000),
+		table[*index].index, (policy->cur/1000));
 #endif
 
 	return 0;

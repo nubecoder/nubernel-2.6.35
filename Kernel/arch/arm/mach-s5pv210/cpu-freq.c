@@ -563,7 +563,8 @@ static int s5pv210_cpufreq_target(struct cpufreq_policy *policy,
 			"cpufreq: Entering for %dkHz\n", target_freq);
 
 #ifdef CONFIG_DEBUG_NUBERNEL
-	printk("FREQ: cpufreq: Entering for target: %dMHz\n", (target_freq/1000));
+	printk("FREQ: cpufreq: Entering for target: %dMHz (cur: %uMHz) \n",
+					(target_freq/1000), (policy->cur/1000));
 #endif
 
 	if ((relation & ENABLE_FURTHER_CPUFREQ) &&
@@ -574,6 +575,9 @@ static int s5pv210_cpufreq_target(struct cpufreq_policy *policy,
 		pr_err("%s:%d denied marking \"FURTHER_CPUFREQ\""
 				" as both marked.\n",
 				__FILE__, __LINE__);
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk("FREQ: denied marking \"FURTHER_CPUFREQ\" as both marked. \n");
+#endif
 	}
 	if (relation & ENABLE_FURTHER_CPUFREQ)
 		no_cpufreq_access = 0;
@@ -581,6 +585,10 @@ static int s5pv210_cpufreq_target(struct cpufreq_policy *policy,
 #ifdef CONFIG_PM_VERBOSE
 		pr_err("%s:%d denied access to %s as it is disabled"
 			       " temporarily\n", __FILE__, __LINE__, __func__);
+#endif
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk("FREQ: denied access to %s as it is disabled temporarily (cur: %uMHz) \n",
+					__func__, (policy->cur/1000));
 #endif
 		ret = -EINVAL;
 		goto out;
@@ -593,7 +601,12 @@ static int s5pv210_cpufreq_target(struct cpufreq_policy *policy,
 
 	if (cpufreq_frequency_table_target(policy, freq_table,
 				target_freq, relation, &index)) {
+
 		ret = -EINVAL;
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk("FREQ: cpufreq_frequency_table_target (ret: %d) \n",
+					ret);
+#endif
 		goto out;
 	}
 
@@ -611,7 +624,7 @@ static int s5pv210_cpufreq_target(struct cpufreq_policy *policy,
 	arm_clk = freq_table[index].frequency;
 
 #ifdef CONFIG_DEBUG_NUBERNEL
-	printk("FREQ: found index: %d, freq: %dMHz (target: %uMHz) \n",
+	printk("FREQ: found index: %d, freq: %ldMHz (target: %uMHz) \n",
 					index, (arm_clk/1000), (target_freq/1000));
 #endif
 
@@ -630,9 +643,8 @@ static int s5pv210_cpufreq_target(struct cpufreq_policy *policy,
 	int_volt = dvs_conf[index].int_volt;
 
 #ifdef CONFIG_DEBUG_NUBERNEL
-	printk("FREQ: setting vdd %umV for speed %uMHz \n", (arm_volt/1000), (freq_table[index].frequency/1000));
-	printk("FREQ: freq_uv_table[%u][2]: %u,  arm_volt: %u \n",
-					index, freq_uv_table[index][2], arm_volt);
+	printk("FREQ: setting vdd %umV for speed %uMHz \n",
+					(arm_volt/1000), (freq_table[index].frequency/1000));
 #endif
 
 	/* New clock information update */
@@ -824,15 +836,17 @@ static int s5pv210_cpufreq_target(struct cpufreq_policy *policy,
 
 #ifdef CONFIG_DEBUG_NUBERNEL
 	printk("FREQ: cpufreq: Performance changed[L%d] \n", index);
-	printk("FREQ: setting vdd %umV for speed %uMHz \n", (previous_arm_volt/1000), (freq_table[index].frequency/1000));
-	printk("FREQ: freq_uv_table[%u][2]: %u,  previous_arm_volt: %u \n",
-					index, freq_uv_table[index][2], previous_arm_volt);
+	printk("FREQ: setting vdd %lumV for speed %uMHz \n",
+					(previous_arm_volt/1000), (freq_table[index].frequency/1000));
 #endif
-
 
 	if (first_run)
 		first_run = false;
 out:
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk("FREQ: out: %s (cur: %uMHz) \n",
+					__func__, (policy->cur/1000));
+#endif
 	mutex_unlock(&set_freq_lock);
 	return ret;
 }
@@ -841,6 +855,9 @@ out:
 static int s5pv210_cpufreq_suspend(struct cpufreq_policy *policy,
 		pm_message_t pmsg)
 {
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk("FREQ: entered: %s \n", __func__);
+#endif
 	return 0;
 }
 
@@ -851,6 +868,9 @@ static int s5pv210_cpufreq_resume(struct cpufreq_policy *policy)
 	int level = CPUFREQ_TABLE_END;
 	int i = 0;
 
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk("FREQ: entered: %s \n", __func__);
+#endif
 	/* Clock information update with wakeup value */
 	rate = clk_get_rate(mpu_clk);
 
@@ -875,9 +895,8 @@ static int s5pv210_cpufreq_resume(struct cpufreq_policy *policy)
 	freq_uv_table[level][2] = (int)(previous_arm_volt/1000);
 
 #ifdef CONFIG_DEBUG_NUBERNEL
-	printk("FREQ: resuming with vdd %umV for speed %uMHz \n", (previous_arm_volt/1000), (freq_table[level].frequency/1000));
-	printk("FREQ: freq_uv_table[%u][2]: %u,  previous_arm_volt: %u \n",
-					level, freq_uv_table[level][2], previous_arm_volt);
+	printk("FREQ: resuming with vdd %lumV for speed %uMHz \n",
+					(previous_arm_volt/1000), (freq_table[level].frequency/1000));
 #endif
 
 	return ret;
@@ -950,9 +969,8 @@ static int __init s5pv210_cpufreq_driver_init(struct cpufreq_policy *policy)
 	freq_uv_table[level][2] = (int)(previous_arm_volt/1000);
 
 #ifdef CONFIG_DEBUG_NUBERNEL
-	printk("FREQ: initialising with vdd %umV for speed %uMHz \n", (previous_arm_volt/1000), (freq_table[level].frequency/1000));
-	printk("FREQ: freq_uv_table[%u][2]: %u,  previous_arm_volt: %u \n",
-					level, freq_uv_table[level][2], previous_arm_volt);
+	printk("FREQ: initialising with vdd %lumV for speed %uMHz \n",
+					(previous_arm_volt/1000), (freq_table[level].frequency/1000));
 #endif
 
 #ifdef CONFIG_DVFS_LIMIT
@@ -970,10 +988,15 @@ static int __init s5pv210_cpufreq_driver_init(struct cpufreq_policy *policy)
 static int s5pv210_cpufreq_notifier_event(struct notifier_block *this,
 		unsigned long event, void *ptr)
 {
+//cpufreq_verify_within_limits(policy, policy->cpuinfo.min_freq, policy->cpuinfo.max_freq);
 	static int max, min;
 	int ret;
 
 	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
+
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk("FREQ: entered %s \n", __func__);
+#endif
 
 	switch (event) {
 	case PM_SUSPEND_PREPARE:
@@ -982,15 +1005,27 @@ static int s5pv210_cpufreq_notifier_event(struct notifier_block *this,
 		policy->max = policy->min = SLEEP_FREQ;
 		ret = cpufreq_driver_target(policy, SLEEP_FREQ,
 				DISABLE_FURTHER_CPUFREQ);
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk("FREQ: SUSPEND_PREPARE: min: %uMHz, max: %uMHz, sleep: %uMHz \n",
+						(policy->min/1000), (policy->max/1000), (SLEEP_FREQ/1000));
+#endif
 		if (ret < 0)
 			return NOTIFY_BAD;
 		return NOTIFY_OK;
 	case PM_POST_RESTORE:
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk("FREQ: POST_RESTORE: min: %uMHz, max: %uMHz, sleep: %uMHz \n",
+						(policy->min/1000), (policy->max/1000), (SLEEP_FREQ/1000));
+#endif
 	case PM_POST_SUSPEND:
 		cpufreq_driver_target(policy, SLEEP_FREQ,
 				ENABLE_FURTHER_CPUFREQ);
 		policy->max = max;
 		policy->min = min;
+#ifdef CONFIG_DEBUG_NUBERNEL
+	printk("FREQ: POST_SUSPEND: min: %uMHz, max: %uMHz, sleep: %uMHz \n",
+						(policy->min/1000), (policy->max/1000), (SLEEP_FREQ/1000));
+#endif
 		return NOTIFY_OK;
 	}
 	return NOTIFY_DONE;

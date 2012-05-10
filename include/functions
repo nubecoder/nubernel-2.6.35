@@ -60,7 +60,7 @@ function MAKE_CLEAN()
 	ECHO_BEGIN T1 $F1
 	pushd "$KERNEL_BASE/Kernel" >/dev/null
 		if [ "$VERBOSE" = "n" ] ; then
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" clean >"$KERNEL_BASE/out/clean.log" 2>&1
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" clean >"$KERNEL_BASE/out/clean.log" 2>&1
 		else
 			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" clean 2>&1 | tee "$KERNEL_BASE/out/clean.log"
 		fi
@@ -73,7 +73,7 @@ function MAKE_DISTCLEAN()
 	ECHO_BEGIN T1 $F1
 	pushd "$KERNEL_BASE/Kernel" >/dev/null
 		if [ "$VERBOSE" = "n" ] ; then
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" distclean >"$KERNEL_BASE/out/distclean.log" 2>&1
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" distclean >"$KERNEL_BASE/out/distclean.log" 2>&1
 		else
 			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" distclean 2>&1 | tee "$KERNEL_BASE/out/distclean.log"
 		fi
@@ -87,7 +87,7 @@ function MAKE_DEFCONFIG()
 	pushd "$KERNEL_BASE/Kernel" >/dev/null
 		rm -f ".config"
 		if [ "$VERBOSE" = "n" ] ; then
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" ${TARGET}_defconfig >"$KERNEL_BASE/out/defconfig.log" 2>&1
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" ${TARGET}_defconfig >"$KERNEL_BASE/out/defconfig.log" 2>&1
 		else
 			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" ${TARGET}_defconfig 2>&1 | tee "$KERNEL_BASE/out/defconfig.log"
 		fi
@@ -248,7 +248,7 @@ function GENERATE_WARNINGS_FILE()
 	local ZIMAGE_LOG="$KERNEL_BASE/out/zImage.log"
 	local WARN_LOG="$KERNEL_BASE/out/warnings.log"
 	cp $ZIMAGE_LOG $WARN_LOG
-	local ITEMS="CC LD AS CHK UPD GEN HOSTLD HOSTCC CALL MKELF TIMEC CONMK SHIPPED GZIP AR IKCFG MODPOST KSYM SYMLINK SYSMAP OBJCOPY Building Generating Kernel:"
+	local ITEMS="AR AS Building CALL CC CHK CONMK GEN Generating GZIP HOSTCC HOSTLD IKCFG Kernel: KSYM LD MKELF MODPOST OBJCOPY SHIPPED SYMLINK SYSMAP TIMEC UPD XZKERN"
 	for ITEM in $ITEMS ; do
 		sed -ri "s/^\s*$ITEM.*//" $WARN_LOG
 	done

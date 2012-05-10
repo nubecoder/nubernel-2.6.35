@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-10-2012:
+scripting: functions: Some logging adjustments.
 cpufreq: DEBUG_NUBERNEL: Some debugging adjustments, attempt to debug cm7 suspend issues.
 
 05-09-2012:

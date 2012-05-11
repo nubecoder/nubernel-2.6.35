@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-18-2012:
+cypress-touchkey: Omnibus fixes (maksick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/fae4f0fd4afa478143e567fb4cd7a9b5432ea605).
+
 05-17-2012:
 yas529: Fix deadlock when disabling immediately after enabling (pawtip: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/ad550ea281e38fd27660f5fcd4861fa49f39de7f).
 wm8994: Adjust headset-mic voicecall-gain levels to match EL30 (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/f7d905d5abd40c803e2f5b1f12719f6340a0b4a5).

@@ -118,7 +118,7 @@ int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
 	dprintk("request for target %u kHz (relation: %u) for cpu %u\n",
 					target_freq, relation, policy->cpu);
 
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_FREQ
 	printk("FREQ: request for target %u MHz (relation: %u) for cpu %u (cur: %uMHz) \n",
 					(target_freq/1000), relation, policy->cpu, (policy->cur/1000));
 #endif
@@ -183,7 +183,7 @@ int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
 	dprintk("target is %u (%u kHz, %u)\n", *index, table[*index].frequency,
 		table[*index].index);
 
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_FREQ
 	printk("FREQ: target is %u (%u MHz, %u) (cur: %dMHz) \n", *index, (table[*index].frequency/1000),
 		table[*index].index, (policy->cur/1000));
 #endif

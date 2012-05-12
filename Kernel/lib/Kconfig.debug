@@ -143,11 +143,7 @@ config DEBUG_KERNEL
 	  Say Y here if you are developing drivers or trying to debug and
 	  identify kernel problems.
 
-config DEBUG_NUBERNEL
-	bool "Custom debugging used in the Nubernel kernel"
-	depends on DEBUG_KERNEL
-	help
-	 This enables the custom debugging used in the Nubernel kernel.
+source kernel/Kconfig.nubernel.debug
 
 config DEBUG_SHIRQ
 	bool "Debug shared IRQ handlers"

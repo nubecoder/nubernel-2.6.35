@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-12-2012:
+debugging: nubernel: Changes and additions to my custom debugging (be more specific, managable, etc).
 Kconfig: cyanogenmod: Fixing a bug with my CONFIG_CYANOGENMOD Kconfig option.
 scripting: build script: Add partial support for installing newly created package via cwm.
 

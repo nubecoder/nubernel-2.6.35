@@ -24,7 +24,7 @@ config CONSTRUCTORS
 menu "General setup"
 
 config CYANOGENMOD
-	bool
+	bool "Enable build for CM"
 	default n
 	help
 	  Enable this when building CyanogenMod (needed to enable some CM

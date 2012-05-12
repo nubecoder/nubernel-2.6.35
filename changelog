@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-12-2012:
+initramfs: mtd: Minor changes to init.rc (Tweak background writeout).
 scripting: build script: Force install via cwm for now (will simply error out if no device is attached).
 debugging: defconfigs: Add new debugging entries to defconfigs.
 debugging: nubernel: Changes and additions to my custom debugging (be more specific, managable, etc).

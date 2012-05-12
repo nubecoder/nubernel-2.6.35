@@ -234,9 +234,9 @@ function BUILD_ZIMAGE()
 		# force new timestamp
 		rm -f "include/generated/compile.h"
 		if [ "$VERBOSE" = "n" ] ; then
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION.$BUILD_TYPE" >"$KERNEL_BASE/out/zImage.log" 2>&1
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION.$BUILD_TYPE" zImage >"$KERNEL_BASE/out/zImage.log" 2>&1
 		else
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION.$BUILD_TYPE" 2>&1 | tee "$KERNEL_BASE/out/zImage.log"
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION.$BUILD_TYPE" zImage 2>&1 | tee "$KERNEL_BASE/out/zImage.log"
 		fi
 	popd >/dev/null
 	ECHO_END $T1 $F1

@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-12-2012:
+scripting: build script: Add partial support for installing newly created package via cwm.
+
 05-10-2012:
 scripting: functions: Some logging adjustments.
 cpufreq: DEBUG_NUBERNEL: Some debugging adjustments, attempt to debug cm7 suspend issues.

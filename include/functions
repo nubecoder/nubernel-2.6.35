@@ -359,6 +359,21 @@ function CREATE_INSTALL_PACKAGE()
 	esac
 	PACKAGE_ZIP
 }
+function INSTALL_CWM_PACKAGE()
+{
+	local F1="installing update-zip via cwm"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/res" >/dev/null
+		echo "install_zip(\"/sdcard/$VERSION.$BUILD_TYPE.zip\");" >extendedcommand
+		adb push "../$VERSION.$BUILD_TYPE.zip" /sdcard/ >/dev/null
+		adb push extendedcommand /sdcard/
+		#adb shell "mv /sdcard/extendedcommand /cache/recovery/extendedcommand"
+		adb shell "su -c \"mv /sdcard/extendedcommand /cache/recovery/extendedcommand\""
+		adb reboot recovery
+		rm -f extendedcommand
+	popd >/dev/null
+	ECHO_END $T1 $F1
+}
 function WIFI_KERNEL_LOAD_SCRIPT()
 {
 	local F1="wifi kernel load helper script"

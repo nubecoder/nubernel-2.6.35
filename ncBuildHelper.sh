@@ -18,6 +18,7 @@ BUILD_KERNEL=n
 CREATE_PACKAGES=n
 KEXEC_ZIMAGE=n
 WIFI_KEXEC=n
+INSTALL_VIA_CWM=n
 VERBOSE=n
 
 #exports
@@ -170,6 +171,10 @@ if [ "$KEXEC_ZIMAGE" = "y" ] ; then
 	else
 		WIRED_KERNEL_LOAD_SCRIPT
 	fi
+fi
+
+if [ "$INSTALL_VIA_CWM" = "y" ] ; then
+	INSTALL_CWM_PACKAGE
 fi
 
 SHOW_COMPLETED

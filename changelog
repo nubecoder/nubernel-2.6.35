@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-13-2012:
+mainline: updates: Revert kernel updates done via netarchy (in prep for applying patches I made from the mainline).
+
 05-08-2012:
 scripting: Some fixes to the branch script, etc.
 bcm4329: victory / atlas: More hotspot_event_monitoring removal.
@@ -291,12 +294,6 @@ Added kernel loading (kexec) support to the build script.
 Added kernel load helper scripts (kexec functionality).
 
 12-09-2011:
-Update to 2.6.35.13 (via netarchy: https://github.com/netarchy/nexus-s/commit/ffc637c319ee4e01d83c429b3ec0f4aaffdb077c).
-Update to 2.6.35.12 (via netarchy: https://github.com/netarchy/nexus-s/commit/ef9d1f0439cc71b9a4a2a4d25f8fde435beccd32).
-Update to 2.6.35.11 (via netarchy: https://github.com/netarchy/nexus-s/commit/f36b0241a48892a407ce8887fb471124538a63dd).
-Update to 2.6.35.10 (via netarchy: https://github.com/netarchy/nexus-s/commit/b12f4999ddae82ec9a9e95c854386c0f665f2b94).
-Update to 2.6.35.9 (via netarchy: https://github.com/netarchy/nexus-s/commit/07131732340cdb42a52f25238603fba79940768f).
-Update to 2.6.35.8 (via netarchy: https://github.com/netarchy/nexus-s/commit/0c4f455bda1583e34b2041aa1ae79f705dc5c265).
 Updated dpram module (ttyCIQ removal) in initramfs_tw.
 
 12-08-2011:

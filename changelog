@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-29-2012:
+voodoo-color: Add VOODOO_MDNIE options in Kconfig. Also add more tweaks, etc to s3cfb_mdnie_value.h.
+
 04-23-2012:
 initramfs_tw: add voodoo_color_info script to initramfs_tw.
 voodoo color: Set hacky_v1_offset to 2.3.3 defaults (0,0,0); Also includes a small whitespace fix.

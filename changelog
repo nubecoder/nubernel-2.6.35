@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-13-2012:
+scripting: Add patchPatcher.sh script. Also a header fix for branchHelper.sh.
 defconfigs: Don't build nfc driver (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/9c209af5d28348209c89ffb0b39f211f2f39fc15).
 defconfigs: Some updates / adjustments to my defconfigs.
 gitignore: Ignore .patch files.

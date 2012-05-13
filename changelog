@@ -9,6 +9,9 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-13-2012:
+initramfs: TW: Update modified proprietary modules for TW BML (hacked for 2.6.35.14 vermagic).
+scripting: modules: Update VERSION_PATH define for 2.6.35.14.
+mainline: updates: Applied patches up to 2.6.35.14.
 mainline: updates: Revert kernel updates done via netarchy (in prep for applying patches I made from the mainline).
 
 05-08-2012:

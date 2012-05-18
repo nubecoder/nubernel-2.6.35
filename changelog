@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-18-2012:
+defconfig: debugging: Make victory_bootdebug_defconfig dump kernel boot to screen (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/43c5609f8f25ea7138a834290b9726396faa8052).
 defconfig: Add victory_bootdebug_defconfig (duplicate of victory_nubernel_defconfig).
 
 05-13-2012:

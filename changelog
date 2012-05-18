@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-18-2012:
+defconfig: Add victory_bootdebug_defconfig (duplicate of victory_nubernel_defconfig).
+
 05-13-2012:
 cleanup: Not sure how this got added, but it shouldn't be here.
 scripting: Add patchPatcher.sh script. Also a header fix for branchHelper.sh.

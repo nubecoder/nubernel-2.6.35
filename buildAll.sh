@@ -15,7 +15,7 @@ if [ "$1" = "twrp" ] ; then
 	./ncBuildHelper.sh -cbmpt cm7 -r twrp
 fi
 
-echo "Finished building all packagable types."
+echo "Finished building all packagable types. ($(date +%r))"
 END_TIME=$(date +%s)
 echo "buildAll took $(($END_TIME - $START_TIME)) seconds."
 

@@ -25,7 +25,7 @@ function ECHO_END()
 	if [ "$VERBOSE" = "y" ] ; then
 		echo "*"
 	fi
-	echo "* $@ took $(($__T2 - $__T1)) seconds."
+	echo "* $@ took $(($__T2 - $__T1)) seconds. ($(date +%r))"
 	if [ "$VERBOSE" = "y" ] ; then
 		echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	fi

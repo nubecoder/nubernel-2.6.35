@@ -1,0 +1,48 @@
+menuconfig DEBUG_NUBERNEL
+	bool "Custom debugging used in the Nubernel kernel"
+	depends on DEBUG_KERNEL
+	default n
+	help
+	 This enables the custom debugging used in the Nubernel kernel.
+
+config DEBUG_NUBERNEL_CHRG
+	bool "Custom debugging used in the Nubernel kernel"
+	depends on DEBUG_NUBERNEL
+	default n
+	help
+	 This enables the custom battery charging debugging used in the
+	 Nubernel kernel.
+
+config DEBUG_NUBERNEL_FREQ
+	bool "Custom debugging used in the Nubernel kernel"
+	depends on DEBUG_NUBERNEL
+	default n
+	help
+	 This enables the custom cpufreq debugging used in the Nubernel
+	 kernel.
+
+config DEBUG_NUBERNEL_GOV
+	bool "Custom debugging used in the Nubernel kernel"
+	depends on DEBUG_NUBERNEL
+	default n
+	help
+	 This enables the custom cpu governor debugging used in the
+	 Nubernel kernel.
+
+config DEBUG_NUBERNEL_PM
+	bool "Custom debugging used in the Nubernel kernel"
+	depends on DEBUG_NUBERNEL
+	default n
+	help
+	 This enables the custom power management debugging used in the
+	 Nubernel kernel.
+
+config DEBUG_NUBERNEL_SUSPEND_CONSOLE
+	bool "Custom debugging used in the Nubernel kernel"
+	depends on DEBUG_NUBERNEL
+	default n
+	help
+	 This disables the calls to suspend_console and resume_console
+	 in the "suspend_devices_and_enter" function of kernel/power/suspend.c.
+	 This seems to be the best way to get suspend/resume debugging info.
+

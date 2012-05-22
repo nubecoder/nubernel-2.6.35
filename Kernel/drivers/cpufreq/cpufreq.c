@@ -1396,7 +1396,7 @@ static unsigned int __cpufreq_get(unsigned int cpu)
 
 	ret_freq = cpufreq_driver->get(cpu);
 
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_FREQ
 	printk("FREQ: %s: ret_freq: %uMHz, policy->cur: %uMHz \n", __func__, (ret_freq/1000), (policy->cur/1000));
 #endif
 

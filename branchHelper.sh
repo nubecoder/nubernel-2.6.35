@@ -1,10 +1,7 @@
 #!/bin/bash
 #
 # branchHelper.sh
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 #define version string

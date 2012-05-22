@@ -6,4 +6,5 @@ bootlogo/makelogo
 */*/boot.img
 source/*
 res/modules/*
+*.patch
 

@@ -5,37 +5,35 @@
 # nubecoder 2012 - http://www.nubecoder.com/
 #
 
-#defines
-ZIMAGE="$1"
-
 #functions
 SHOW_HELP()
 {
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
-	echo "Usage: $0 <zImage>"
+	echo "Usage: $0 <kexec path> <zImage path>"
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	exit 1
 }
 
 KEXEC_BOOT_ZIMAGE()
 {
-	local FILE="$1"
-	busybox chmod 777 "$FILE"
+	local KEXEC_FILE="$1"
+	local ZIMAGE_FILE="$2"
+	busybox chmod 777 "$ZIMAGE_FILE"
 	busybox mount -ro remount /dev/block/stl6 /mnt/.lfs
 	busybox mount -ro remount /dev/block/stl9 /system
 	busybox mount -ro remount /dev/block/stl10 /data
 	busybox mount -ro remount /dev/block/stl11 /cache
 	# normal boot
-	/sbin/kexec --load-hardboot --mem-min=0x50000000 --append="console=ttySAC2,115200 loglevel=4" "$FILE"
+	$KEXEC_FILE --load-hardboot --mem-min=0x50000000 --append="console=ttySAC2,115200 loglevel=4 no_console_suspend=1" "$ZIMAGE_FILE"
 	# recovery boot
 	#/sbin/kexec --load-hardboot --mem-min=0x50000000 --append=bootmode=2 "$FILE"
 	sync
-	/sbin/kexec -e
+	$KEXEC_FILE -e
 }
 
 #main
-if busybox test -f "$ZIMAGE"; then
-	KEXEC_BOOT_ZIMAGE "$ZIMAGE"
+if busybox test -x "$1" && busybox test -f "$2" ; then
+	KEXEC_BOOT_ZIMAGE "$1" "$2"
 fi
 
 SHOW_HELP

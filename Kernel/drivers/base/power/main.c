@@ -398,6 +398,11 @@ static void pm_dev_dbg(struct device *dev, pm_message_t state, char *info)
 	dev_dbg(dev, "%s%s%s\n", info, pm_verb(state.event),
 		((state.event & PM_EVENT_SLEEP) && device_may_wakeup(dev)) ?
 		", may wakeup" : "");
+#ifdef CONFIG_DEBUG_NUBERNEL_PM
+	printk("PM: DBG: Device: %s - %s%s%s \n", dev_name(dev), info, pm_verb(state.event),
+		((state.event & PM_EVENT_SLEEP) && device_may_wakeup(dev)) ?
+		", may wakeup" : "");
+#endif
 }
 
 static void pm_dev_err(struct device *dev, pm_message_t state, char *info,
@@ -405,6 +410,10 @@ static void pm_dev_err(struct device *dev, pm_message_t state, char *info,
 {
 	printk(KERN_ERR "PM: Device %s failed to %s%s: error %d\n",
 		kobject_name(&dev->kobj), pm_verb(state.event), info, error);
+#ifdef CONFIG_DEBUG_NUBERNEL_PM
+	printk("PM: ERR: Device %s failed to %s%s: error %d \n",
+		kobject_name(&dev->kobj), pm_verb(state.event), info, error);
+#endif
 }
 
 static void dpm_show_time(ktime_t starttime, pm_message_t state, char *info)

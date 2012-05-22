@@ -199,37 +199,37 @@ static void max17040_get_soc(struct i2c_client *client)
 	**Adj_soc = (SOC%-EMPTY)/(FULL-EMPTY)*100
 	*/
 
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
 	printk(KERN_INFO "CHRG:FG: %s: [ Fuelgauge calculation begin ] \n", __func__);
 #endif
 	pure_soc = msb * 100 + ((lsb * 100) / 256);
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
 	printk(KERN_INFO "CHRG:FG: pure_soc [%d] { msb [%u] * 100 + ((lsb [%u] * 100) / 256) } \n",
 			pure_soc, msb, lsb);
 #endif
 
 	if (pure_soc >= 0) {
 		adj_soc = ((pure_soc * 10000) - 140) / (BATTERY_FG_ADJUSTMENT - 140);
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
 		printk(KERN_INFO "CHRG:FG: adj_soc [%d] { ((pure_soc [%d] * 10000) - 140) /  (%lu - 140) } \n",
 				adj_soc, pure_soc, BATTERY_FG_ADJUSTMENT);
 #endif
 	}
 	else {
 		adj_soc = 0;
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
 		printk(KERN_INFO "CHRG:FG: adj_soc [%d] { adj_soc = 0 } \n", adj_soc);
 #endif
 	}
 
 	soc = adj_soc / 100;
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
 	printk(KERN_INFO "CHRG:FG: soc [%d] { adj_soc [%d] / 100 } \n", soc, adj_soc);
 #endif
 
 	if (adj_soc % 100 >= 50) {
 		soc += 1;
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
 		printk(KERN_INFO "CHRG:FG: soc [%d] { adj_soc [%d] % 100 >= 50 } \n", soc, adj_soc);
 #endif
 	}
@@ -255,10 +255,10 @@ static void max17040_get_soc(struct i2c_client *client)
 #endif
 
 	chip->soc = min(soc, 100);
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
 	printk(KERN_INFO "CHRG:FG: chip->soc: %d { min(%d, 100) } \n", chip->soc, soc);
 #endif
-#ifdef CONFIG_DEBUG_NUBERNEL
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
 	printk(KERN_INFO "CHRG:FG: %s: [ Fuelgauge calculation end ] \n", __func__);
 #endif
 }

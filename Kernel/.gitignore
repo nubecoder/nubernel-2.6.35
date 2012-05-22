@@ -85,6 +85,7 @@ GTAGS
 /arch/arm/boot/compressed/vmlinux.lds
 /arch/arm/boot/zImage
 /arch/arm/kernel/vmlinux.lds
+/arch/arm/boot/compressed/ashldi3.S
 /arch/arm/boot/compressed/lib1funcs.S
 /arch/arm/boot/compressed/piggy.gzip
 /arch/arm/boot/compressed/piggy.xzkern

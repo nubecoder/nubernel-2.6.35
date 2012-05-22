@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-22-2012:
+gitignore: Add arch/arm/boot/compressed/ashldi3.S to Kernel/.gitignore.
 scripting: build script: Fix support for installing package via recovery.
 defconfigs: Changes to my defconfigs (for recent patches, etc).
 

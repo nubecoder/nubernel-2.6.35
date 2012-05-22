@@ -359,7 +359,7 @@ function CREATE_INSTALL_PACKAGE()
 	esac
 	PACKAGE_ZIP
 }
-function INSTALL_CWM_PACKAGE()
+function INSTALL_ZIP_PACKAGE()
 {
 	local F1="installing update-zip via cwm"
 	ECHO_BEGIN T1 $F1

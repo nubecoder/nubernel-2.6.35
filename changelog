@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-22-2012:
+scripting: build script: Fix support for installing package via recovery.
 defconfigs: Changes to my defconfigs (for recent patches, etc).
 
 05-18-2012:

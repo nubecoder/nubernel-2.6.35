@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-22-2012:
+update-zip: CM7: Adjustments to install_modules.sh (skip backup if *.bak file already exixts).
 scripting: build script: Add timestamp to output.
 gitignore: Add arch/arm/boot/compressed/ashldi3.S to Kernel/.gitignore.
 scripting: build script: Fix support for installing package via recovery.

@@ -24,25 +24,24 @@ EOF
 for MODULE in $MODULES_LIST ; do
 	if busybox test -f "$SRC_PATH/$MODULE" ; then
 		if busybox test -f "$DST_PATH/$MODULE" ; then
-			echo "$MODULE found, making backup."
-			busybox mv "$DST_PATH/$MODULE" "$DST_PATH/$MODULE.bak"
-			echo "Installing :$MODULE."
-			busybox mv "$SRC_PATH/$MODULE" "$DST_PATH/$MODULE"
-			busybox chown 0.2000 "$DST_PATH/$MODULE"
-			busybox chmod 755 "$DST_PATH/$MODULE"
-			echo "Success:: $MODULE."
+			if busybox test ! -f "$DST_PATH/$MODULE.bak" ; then
+				echo "$MODULE found, making backup."
+				busybox mv "$DST_PATH/$MODULE" "$DST_PATH/$MODULE.bak"
+			else
+				echo "$MODULE.bak found, skipping backup."
+			fi
 		else
 			# no backup can be made, just install
 			echo "$MODULE not found, cannot backup."
 			busybox mkdir -p "$DST_PATH"
-			echo "Installing :$MODULE."
-			busybox mv "$SRC_PATH/$MODULE" "$DST_PATH/$MODULE"
-			busybox chown 0.2000 "$DST_PATH/$MODULE"
-			busybox chmod 755 "$DST_PATH/$MODULE"
-			echo "Success:: $MODULE."
 		fi
+		echo "Installing :$MODULE."
+		busybox mv "$SRC_PATH/$MODULE" "$DST_PATH/$MODULE"
+		busybox chown 0.2000 "$DST_PATH/$MODULE"
+		busybox chmod 755 "$DST_PATH/$MODULE"
+		echo "Success:: $MODULE."
 	else
-		echo "Error:: /tmp/$MODULE not found!"
+		echo "Error:: $SRC_PATH/$MODULE not found!"
 	fi
 done
 

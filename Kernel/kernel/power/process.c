@@ -39,7 +39,7 @@ static int try_to_freeze_tasks(bool sig_only)
 	struct timeval start, end;
 	u64 elapsed_csecs64;
 	unsigned int elapsed_csecs;
-	unsigned int wakeup = 0;
+	bool wakeup = false;
 
 	do_gettimeofday(&start);
 
@@ -59,6 +59,12 @@ static int try_to_freeze_tasks(bool sig_only)
 			 * perturb a task in TASK_STOPPED or TASK_TRACED.
 			 * It is "frozen enough".  If the task does wake
 			 * up, it will immediately call try_to_freeze.
+			 *
+			 * Because freeze_task() goes through p's
+			 * scheduler lock after setting TIF_FREEZE, it's
+			 * guaranteed that either we see TASK_RUNNING or
+			 * try_to_stop() after schedule() in ptrace/signal
+			 * stop sees TIF_FREEZE.
 			 */
 			if (!task_is_stopped_or_traced(p) &&
 			    !freezer_should_skip(p))
@@ -66,11 +72,17 @@ static int try_to_freeze_tasks(bool sig_only)
 		} while_each_thread(g, p);
 		read_unlock(&tasklist_lock);
 		if (todo && has_wake_lock(WAKE_LOCK_SUSPEND)) {
-			wakeup = 1;
+			wakeup = true;
 			break;
 		}
+
 		if (!todo || time_after(jiffies, end_time))
 			break;
+
+		if (pm_wakeup_pending()) {
+			wakeup = true;
+			break;
+		}
 
 		/*
 		 * We need to retry, but first give the freezing tasks some
@@ -90,21 +102,18 @@ static int try_to_freeze_tasks(bool sig_only)
 		 * and caller must call thaw_processes() if something fails),
 		 * but it cleans up leftover PF_FREEZE requests.
 		 */
-		if(wakeup) {
-			printk("\n");
-			printk(KERN_ERR "Freezing of %s aborted\n",
-					sig_only ? "user space " : "tasks ");
-		}
-		else {
-			printk("\n");
-			printk(KERN_ERR "Freezing of tasks failed after %d.%02d seconds "
-					"(%d tasks refusing to freeze):\n",
-					elapsed_csecs / 100, elapsed_csecs % 100, todo);
-		}
+		printk("\n");
+		printk(KERN_ERR "Freezing of %s %s after %d.%02d seconds "
+				"(%d tasks refusing to freeze):\n",
+				(wakeup && sig_only) ? "user space" : "tasks",
+				wakeup ? "aborted" : "failed",
+				elapsed_csecs / 100, elapsed_csecs % 100,
+				todo);
+
 		read_lock(&tasklist_lock);
 		do_each_thread(g, p) {
 			task_lock(p);
-			if (freezing(p) && !freezer_should_skip(p) &&
+			if (!wakeup && freezing(p) && !freezer_should_skip(p) &&
 				elapsed_csecs > 100)
 				sched_show_task(p);
 			cancel_freezing(p);

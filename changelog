@@ -12,6 +12,42 @@ Changelog:
 defconfig: debugging: Make victory_bootdebug_defconfig dump kernel boot to screen (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/43c5609f8f25ea7138a834290b9726396faa8052).
 defconfig: Add victory_bootdebug_defconfig (duplicate of victory_nubernel_defconfig).
 
+05-16-2012:
+PM: Use dev_name() in core device suspend and resume routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=5c1a07ab3e78ef68fc9ccf419c969e8ed88d7cb6).
+PM: Permit registration of parentless devices during system suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=b64959e6158d6dcb640fc22d7f43b94ad1c91135).
+PM: Replace the device power.status field with a bit field (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=b8c76f6aed0ab7df73a6410f3f82de2c831bb144).
+PM: Remove redundant checks from core device resume routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=5b219a51fdceaf76e0e18da57c7efb9e5586e567).
+PM: Use a different list of devices for each stage of device suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=8a43a9ab7b329aa8590f8a064df9bf8c80987507).
+PM: Avoid compiler warning in pm_noirq_op() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=2cbb3ce1ad19e66858a4284dd6c4bb958162c483).
+PM: Use pm_wakeup_pending() in __device_suspend() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=d83f905e126f8cbc5e4addc5d1a64aea785b732e).
+PM / Wakeup: Replace pm_check_wakeup_events() with pm_wakeup_pending() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=a2867e08c8e3bdbc00caf56bc3bdde19ccc058e3).
+Freezer: Fix a race during freezing of TASK_STOPPED tasks (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=8cfe400ca54fd1ed96f962bea5f7e20b09b6d69f).
+PM: Allow wakeup events to abort freezing of tasks (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=dbeeec5fe868f2e2e92fe94daa2c5a047240fdc4).
+PM: Prevent dpm_prepare() from returning errors unnecessarily (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=1e75227ef0571031cd18536ab768ee35667ec5b9).
+PM: Allow devices to be removed during late suspend and early resume (via mianline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=d08a5ace18dce9b18d8eb56bb6c0feef082b1b33).
+PM: Fix potential issue with failing asynchronous suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=098dff738abbeaea15fc95c4f4fdaee1e9bbea75).
+PM / Wakeup: Introduce wakeup source objects and event statistics (v3) (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=074037ec79bea73edf1b1ec72fef1010e83e3cc5).
+PM: Do not use dynamically allocated objects in pm_wakeup_event() (via mianline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=4eb241e5691363c391aac8a5051d0d013188ec84).
+PM: Fix signed/unsigned warning in dpm_show_time() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=0702d9ee0f1dcb6258789032f03b3208bfafaffc).
+PM: Make it possible to avoid races between wakeup and system sleep (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=c125e96f044427f38d106fab7bc5e4a5e6a18262).
+
+05-15-2012:
+Makefile: fix up some cflags (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/1a0c161466de4860af58f11e0b9c1d830c5d5865) (rebased into below commit).
+ARM: switch to 'hardfloat' optimization flags (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/6d113f32bde45bc9d7557c0cc73249ac31b7c36e).
+Add some optimization flags in arch/arm/Makefile (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/463f8e9a74d7f7145229ac0ba6d28f570f77a9f0).
+ARM: vfp: set mfpu=neon (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/d5a7f38a8f4d0d8148536ab79d7c43bed604e550).
+sched: Improve latencies under load by decreasing minimum scheduling granularity (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=0bf377bbb0bea6130f35613491887cc622e42a8b).
+Optimized ARM RWSEM algorithm (via codeaurora: https://www.codeaurora.org/gitweb/quic/le/?p=kernel/msm.git;a=commit;h=917c8db2c20f54a904451b5b38933d57d3d1cc2e).
+arm: Allow CPU-supported unaligned accesses (via codeaurora: https://www.codeaurora.org/gitweb/quic/le/?p=kernel/msm.git;a=commit;h=d5c13d6cba4554cff2d0f6357984eaf068fa3061).
+ARM: 6900/1: Suspend: Fix build error on ARCH_S5PC100 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=5f23188e036aabfe9245f9e61adbb4ea27ed8f35).
+mfd: Fix resource reclaim for max8998 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=7484552eb24e3c62ef55a4ff0133d8450adea206).
+mfd: MAX8998/LP3974 hibernation support (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=cdd137c9c86c201ddb7f42ec978d2da45e7b7a17).
+mfd: Enable MAX8998 interrupts support (patch was already applied, but not being used) (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=2c7e6f5797140b33ec2b967ff28941e1c7eff4b2).
+ARM: Only allow PM_SLEEP with CPUs which support suspend (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=6a7861825f79f09213ef81b3c468f6f2e86f408e).
+ARM: Suspend: Fix dependency of ARCH_SUSPEND_POSSIBLE (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=3e1d9874b44212628b65ec4455d32cb4880b553f).
+ARM: S5P: Fix end address in memory resource information for UART devices (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=6236b97b9fa032057a9908ad16ff02c95feb3ad8).
+ARM: S5PV210: Place the common SPARSEMEM at ARCH_S5PV210 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=eecb6a8420fde47ebc37d03f72ef6dcb8e93c0ef).
+
 05-13-2012:
 cleanup: Not sure how this got added, but it shouldn't be here.
 scripting: Add patchPatcher.sh script. Also a header fix for branchHelper.sh.

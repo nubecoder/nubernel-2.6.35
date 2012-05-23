@@ -135,7 +135,6 @@ function INSTALL_MODULES()
 function COPY_MODULES()
 {
 	pushd $KERNEL_BASE >/dev/null
-		local PARTS=""
 		case "$BUILD_TYPE" in
 			tw)
 				local MODULES_DEST="$INITRAMFS_TW_PATH/lib/modules"
@@ -182,7 +181,6 @@ function COPY_MODULES()
 function STRIP_MODULES()
 {
 	pushd $KERNEL_BASE >/dev/null
-		local PARTS=""
 		case "$BUILD_TYPE" in
 			tw)
 				local MODULES_DEST="$INITRAMFS_TW_PATH/lib/modules"

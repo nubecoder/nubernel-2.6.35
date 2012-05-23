@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-23-2012:
+defconfig: debugging: Fix and tweak victory_bootdebug_defconfig (currently for tw builds, will add mtd later).
+
 05-22-2012:
 update-zip: CM7: Adjustments to install_modules.sh (skip backup if *.bak file already exixts).
 scripting: build script: Add timestamp to output.

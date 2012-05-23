@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-23-2012:
+scripting: menuconfig: Add menuConfig.sh script for easy "make menuconfig" access.
 scripting: Minor changes to functions file.
 scripting: build script: Add "debug" build type (will fix for mtd varient later).
 gitignore: Some adjustments to Kernel/.gitignore (also added new "logo" related entries).

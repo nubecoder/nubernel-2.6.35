@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-23-2012:
+gitignore: Some adjustments to Kernel/.gitignore (also added new "logo" related entries).
 defconfig: More miscellaneous changes to my defconfigs (disable CONFIG_EXT2_FS, etc).
 defconfig: debugging: Fix and tweak victory_bootdebug_defconfig (currently for tw builds, will add mtd later).
 

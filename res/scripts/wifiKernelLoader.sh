@@ -10,6 +10,7 @@ source "$PWD/../../include/includes"
 
 #defines
 WIFI_IP="192.168.1.168"
+KEXEC_MODE="$3"
 
 #error
 ERROR="no"
@@ -60,7 +61,8 @@ if [ "$ERROR" != "yes" ] ; then
 	# load kernel with kernelLoad script
 	echo "Loading kernel with kernelLoad."
 	echo "*"
-	$ADB_SHELL $ADB_KERNEL_LOAD
+	#$ADB_SHELL $ADB_KERNEL_LOAD
+	$ADB_SHELL "su -c \"$KERNELLOAD_DEST $KEXEC_DEST $ZIMAGE_DEST $KEXEC_MODE\""
 
 	# cleanup adb wireless by disconnecting
 	echo "Disconnect from $WIFI_IP."

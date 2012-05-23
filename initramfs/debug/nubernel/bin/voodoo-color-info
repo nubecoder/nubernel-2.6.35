@@ -1,0 +1,44 @@
+#!/system/bin/sh
+#
+# voodoo-color-info
+# nubecoder 2012 - http://www.nubecoder.com/
+#
+
+#defines
+VOODOO_COLOR_SYSFS_PATH="/sys/devices/virtual/misc/voodoo_color"
+
+#functions
+DISPLAY_VOODOO_COLOR_ENTRIES()
+{
+	local FILE_LIST="version"
+	local FILE_LIST="$FILE_LIST dev"
+	local FILE_LIST="$FILE_LIST panel_config_sequence"
+	local FILE_LIST="$FILE_LIST red_multiplier_original"
+	local FILE_LIST="$FILE_LIST green_multiplier_original"
+	local FILE_LIST="$FILE_LIST blue_multiplier_original"
+	local FILE_LIST="$FILE_LIST red_multiplier"
+	local FILE_LIST="$FILE_LIST green_multiplier"
+	local FILE_LIST="$FILE_LIST blue_multiplier"
+	local FILE_LIST="$FILE_LIST red_v1_offset"
+	local FILE_LIST="$FILE_LIST green_v1_offset"
+	local FILE_LIST="$FILE_LIST blue_v1_offset"
+	echo "VOODOO COLOR:"
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	for FILE in $FILE_LIST ; do
+		echo "	$FILE: $(cat $VOODOO_COLOR_SYSFS_PATH/$FILE)"
+	done
+	echo ""
+	local FILE="uevent"
+	echo "	$FILE:"
+	echo "$(cat $VOODOO_COLOR_SYSFS_PATH/$FILE)"
+	echo ""
+	local FILE="gamma_table"
+	echo "	$FILE:"
+	echo "$(cat $VOODOO_COLOR_SYSFS_PATH/$FILE)"
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	return 0
+}
+
+#main
+DISPLAY_VOODOO_COLOR_ENTRIES
+

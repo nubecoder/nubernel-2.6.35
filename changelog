@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-23-2012:
+defconfig: More miscellaneous changes to my defconfigs (disable CONFIG_EXT2_FS, etc).
 defconfig: debugging: Fix and tweak victory_bootdebug_defconfig (currently for tw builds, will add mtd later).
 
 05-22-2012:

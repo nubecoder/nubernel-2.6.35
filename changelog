@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-23-2012:
+debugging: nubernel: Adjust the descriptions and help info of my Kconfig debuging entries.
 debugging: nubernel: Change "DEBUG_NUBERNEL_SUSPEND_CONSOLE" to "DEBUG_NUBERNEL_NO_CONSOLE_SUSPEND".
 initramfs: CM7: Some minor changes to some .rc files.
 scripting: Rename buildAll.sh to buildPackages.sh.

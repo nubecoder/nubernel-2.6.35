@@ -1,44 +1,45 @@
 menuconfig DEBUG_NUBERNEL
-	bool "Custom debugging used in the Nubernel kernel"
+	bool "Custom debugging in the Nubernel kernel"
 	depends on DEBUG_KERNEL
 	default n
 	help
-	 This enables the custom debugging used in the Nubernel kernel.
-
-config DEBUG_NUBERNEL_CHRG
-	bool "Custom debugging used in the Nubernel kernel"
-	depends on DEBUG_NUBERNEL
-	default n
-	help
-	 This enables the custom battery charging debugging used in the
-	 Nubernel kernel.
-
-config DEBUG_NUBERNEL_FREQ
-	bool "Custom debugging used in the Nubernel kernel"
-	depends on DEBUG_NUBERNEL
-	default n
-	help
-	 This enables the custom cpufreq debugging used in the Nubernel
+	 This enables the custom debugging available in the Nubernel
 	 kernel.
 
-config DEBUG_NUBERNEL_GOV
-	bool "Custom debugging used in the Nubernel kernel"
+config DEBUG_NUBERNEL_CHRG
+	bool "Battery charging debugging"
 	depends on DEBUG_NUBERNEL
 	default n
 	help
-	 This enables the custom cpu governor debugging used in the
+	 This enables the custom battery charging debugging available
+	 in the Nubernel kernel.
+
+config DEBUG_NUBERNEL_FREQ
+	bool "CPUfreq debugging"
+	depends on DEBUG_NUBERNEL
+	default n
+	help
+	 This enables the custom cpufreq debugging available in the
 	 Nubernel kernel.
+
+config DEBUG_NUBERNEL_GOV
+	bool "Governor debugging"
+	depends on DEBUG_NUBERNEL
+	default n
+	help
+	 This enables the custom cpu governor debugging available in
+	 the Nubernel kernel.
 
 config DEBUG_NUBERNEL_PM
-	bool "Custom debugging used in the Nubernel kernel"
+	bool "Power management debugging"
 	depends on DEBUG_NUBERNEL
 	default n
 	help
-	 This enables the custom power management debugging used in the
-	 Nubernel kernel.
+	 This enables the custom power management debugging available in
+	 the Nubernel kernel.
 
 config DEBUG_NUBERNEL_NO_CONSOLE_SUSPEND
-	bool "Custom debugging used in the Nubernel kernel"
+	bool "No console suspend"
 	depends on DEBUG_NUBERNEL
 	default n
 	help

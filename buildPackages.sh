@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# buildAll.sh
+# buildPackages.sh
 # nubecoder 2012 - http://www.nubecoder.com/
 #
 

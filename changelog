@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-23-2012:
+initramfs: CM7: Some minor changes to some .rc files.
 scripting: Rename buildAll.sh to buildPackages.sh.
 scripting: Changes to buildAll.sh to enable passing args.
 update-zip: CM7: Add zip package to restore module backups for cm7.

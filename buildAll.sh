@@ -4,18 +4,18 @@
 # nubecoder 2012 - http://www.nubecoder.com/
 #
 
-#TODO: Add args support to pass args along to build script.
+#defines
+ARGS="$@"
 START_TIME=$(date +%s)
-echo "Begin building all packagable types."
-./ncBuildHelper.sh -cbmpt tw
-./ncBuildHelper.sh -cbmpt mtd
-./ncBuildHelper.sh -cbmpt cm7
-if [ "$1" = "twrp" ] ; then
-	./ncBuildHelper.sh -cbmpt mtd -r twrp
-	./ncBuildHelper.sh -cbmpt cm7 -r twrp
-fi
 
+#main
+echo "Begin building all packagable types."
+./ncBuildHelper.sh $ARGS "-mbpt" "tw"
+./ncBuildHelper.sh $ARGS "-mbpt" "mtd"
+./ncBuildHelper.sh $ARGS "-mbpt" "cm7"
+./ncBuildHelper.sh $ARGS "-mbpt" "debug"
 echo "Finished building all packagable types. ($(date +%r))"
+
 END_TIME=$(date +%s)
 echo "buildAll took $(($END_TIME - $START_TIME)) seconds."
 

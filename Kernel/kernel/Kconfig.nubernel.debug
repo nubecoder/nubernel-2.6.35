@@ -37,7 +37,7 @@ config DEBUG_NUBERNEL_PM
 	 This enables the custom power management debugging used in the
 	 Nubernel kernel.
 
-config DEBUG_NUBERNEL_SUSPEND_CONSOLE
+config DEBUG_NUBERNEL_NO_CONSOLE_SUSPEND
 	bool "Custom debugging used in the Nubernel kernel"
 	depends on DEBUG_NUBERNEL
 	default n

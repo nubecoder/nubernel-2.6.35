@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-26-2012:
+scripting: Use "adb root" in stead of "adb shell 'su -c'".
+
 05-23-2012:
 debugging: nubernel: Adjust the descriptions and help info of my Kconfig debuging entries.
 debugging: nubernel: Change "DEBUG_NUBERNEL_SUSPEND_CONSOLE" to "DEBUG_NUBERNEL_NO_CONSOLE_SUSPEND".

@@ -373,9 +373,8 @@ function INSTALL_ZIP_PACKAGE()
 	pushd "$KERNEL_BASE/res" >/dev/null
 		echo "install_zip(\"/sdcard/$VERSION.$BUILD_TYPE.zip\");" >extendedcommand
 		adb push "../$VERSION.$BUILD_TYPE.zip" /sdcard/ >/dev/null
-		adb push extendedcommand /sdcard/
-		#adb shell "mv /sdcard/extendedcommand /cache/recovery/extendedcommand"
-		adb shell "su -c \"mv /sdcard/extendedcommand /cache/recovery/extendedcommand\""
+		adb root
+		adb push extendedcommand /cache/recovery/extendedcommand
 		adb reboot recovery
 		rm -f extendedcommand
 	popd >/dev/null

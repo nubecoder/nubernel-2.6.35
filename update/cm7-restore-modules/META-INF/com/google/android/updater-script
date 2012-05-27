@@ -27,17 +27,11 @@ ui_print("=]         Brought to you by nubecoder        =]");
 ui_print("=]             www.nubecoder.com              =]");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
 ui_print("");ui_print("");ui_print("");ui_print("");sleep(4);
-ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
-ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
-ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
-ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
-ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
-ui_print("");ui_print("");sleep(1);
 
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
 ui_print("=]           nubernel-2.6.35_v0.0.2           =]");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
-ui_print("*");sleep(2);
+ui_print("*");sleep(1);
 show_progress(1.335, 0);
 
 ui_print("Extracting files.");

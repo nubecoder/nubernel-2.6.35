@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-27-2012:
+update-zip: Some adjustments to my updater-script(s).
+
 05-26-2012:
 scripting: More scripting changes (mostly related to adb root).
 scripting: Use "adb root" in stead of "adb shell 'su -c'".

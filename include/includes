@@ -45,9 +45,13 @@ KEXEC_DEST="$DEVICE_TMP_PATH/kexec"
 ADB_KILL="adb kill-server"
 ADB_CONNECT="adb connect"
 ADB_DISCONNECT="adb disconnect"
+ADB_ROOT="adb root"
 ADB_SHELL="adb shell"
 ADB_PUSH="adb push"
 ADB_STATE="adb get-state"
+ADB_SERIAL="adb get-serialno"
+ADB_WHOAMI="$ADB_SHELL busybox whoami"
+ADB_OUT_CLEAN="tr -d '\r\n[:blank:]'"
 
 THREADS=$(expr 1 + $(grep processor /proc/cpuinfo | wc -l))
 VERSION=${KBUILD_BUILD_VERSION}_$(date +%m-%d-%Y)

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-26-2012:
+scripting: More scripting changes (mostly related to adb root).
 scripting: Use "adb root" in stead of "adb shell 'su -c'".
 
 05-23-2012:

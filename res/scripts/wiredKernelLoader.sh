@@ -20,9 +20,9 @@ echo "Begin."
 echo "*"
 
 # check for device (taken from the OneClickRoot: http://forum.xda-developers.com/showthread.php?t=897612)
-CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
+CURSTATE=$($ADB_STATE | $ADB_OUT_CLEAN)
 while [ "$CURSTATE" != device ] ; do
-	CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
+	CURSTATE=$($ADB_STATE | $ADB_OUT_CLEAN)
 	echo "Phone is not connected."
 	CURSTATE="device"
 	ERROR="yes"

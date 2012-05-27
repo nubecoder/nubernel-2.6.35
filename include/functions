@@ -372,9 +372,26 @@ function INSTALL_ZIP_PACKAGE()
 	ECHO_BEGIN T1 $F1
 	pushd "$KERNEL_BASE/res" >/dev/null
 		echo "install_zip(\"/sdcard/$VERSION.$BUILD_TYPE.zip\");" >extendedcommand
-		adb push "../$VERSION.$BUILD_TYPE.zip" /sdcard/ >/dev/null
-		adb root
-		adb push extendedcommand /cache/recovery/extendedcommand
+		$ADB_KILL >/dev/null 2>&1
+		$ADB_ROOT >/dev/null 2>&1
+		local COUNT=0
+		local RESULT=$($ADB_WHOAMI 2>&1 | $ADB_OUT_CLEAN)
+		while [ "$RESULT" != "root" ] && [ "$COUNT" -lt "5" ] ; do
+			sleep 1
+			local COUNT=$(($COUNT + 1))
+			echo "adb: waiting for device..."
+			$ADB_ROOT >/dev/null 2>&1
+			local RESULT=$($ADB_WHOAMI 2>&1 | $ADB_OUT_CLEAN)
+		done
+		if [ "$COUNT" -eq "5" ] ; then
+			ERROR_MSG="Error: INSTALL_ZIP_PACKAGE - problem with adb root!"
+			SHOW_ERROR
+			SHOW_COMPLETED
+		fi
+		$ADB_PUSH "../$VERSION.$BUILD_TYPE.zip" /sdcard/ >/dev/null
+		$ADB_SHELL "busybox mount -o remount,rw /cache"
+		$ADB_SHELL "busybox mkdir -p /cache/recovery/"
+		$ADB_PUSH "extendedcommand" "/cache/recovery/extendedcommand"
 		adb reboot recovery
 		rm -f extendedcommand
 	popd >/dev/null

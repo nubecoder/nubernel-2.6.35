@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-27-2012:
+initramfs: MTD: Add freshly built modules.
 update-zip: Some adjustments to my updater-script(s).
 
 05-26-2012:

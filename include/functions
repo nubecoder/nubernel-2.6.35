@@ -139,6 +139,10 @@ function INSTALL_MODULES()
 		echo "*"
 	fi
 	STRIP_MODULES
+	if [ "$VERBOSE" = "y" ] ; then
+		echo "*"
+		SHOW_MODULES_INFO
+	fi
 	ECHO_END $T1 $F1
 }
 function COPY_MODULES()
@@ -197,6 +201,14 @@ function STRIP_MODULES()
 				local PARTS="$PARTS cmc7xx_sdio.ko"
 				local PARTS="$PARTS dhd.ko"
 				local PARTS="$PARTS logger.ko"
+				# Samsung proprietary
+				local PARTS="$PARTS fsr.ko"
+				local PARTS="$PARTS fsr_stl.ko"
+				local PARTS="$PARTS j4fs.ko"
+				local PARTS="$PARTS param.ko"
+				local PARTS="$PARTS rfs_fat.ko"
+				local PARTS="$PARTS rfs_glue.ko"
+				local PARTS="$PARTS storage.ko"
 				;;
 			mtd)
 				local MODULES_DEST="$INITRAMFS_MTD_PATH/lib/modules"
@@ -228,6 +240,61 @@ function STRIP_MODULES()
 				fi
 				$CC_STRIP "$MODULES_DEST/$PART"
 			done
+		fi
+	popd >/dev/null
+}
+function SHOW_MODULES_INFO()
+{
+	pushd $KERNEL_BASE >/dev/null
+		case "$BUILD_TYPE" in
+			tw)
+				local MODULES_DEST="$INITRAMFS_TW_PATH/lib/modules"
+				local PARTS="vibrator.ko"
+				local PARTS="$PARTS cmc7xx_sdio.ko"
+				local PARTS="$PARTS dhd.ko"
+				local PARTS="$PARTS logger.ko"
+				# Samsung proprietary
+				local PARTS="$PARTS fsr.ko"
+				local PARTS="$PARTS fsr_stl.ko"
+				local PARTS="$PARTS j4fs.ko"
+				local PARTS="$PARTS param.ko"
+				local PARTS="$PARTS rfs_fat.ko"
+				local PARTS="$PARTS rfs_glue.ko"
+				local PARTS="$PARTS storage.ko"
+				;;
+			mtd)
+				local MODULES_DEST="$INITRAMFS_MTD_PATH/lib/modules"
+				local PARTS="vibrator.ko"
+				local PARTS="$PARTS cmc7xx_sdio.ko"
+				local PARTS="$PARTS dhd.ko"
+				local PARTS="$PARTS logger.ko"
+				;;
+			cm7)
+				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules"
+				local PARTS="vibrator.ko"
+				local PARTS="$PARTS cmc7xx_sdio.ko"
+				local PARTS="$PARTS bcm4329.ko"
+				local PARTS="$PARTS logger.ko"
+				;;
+			mod)
+				local MODULES_DEST="$INSTALL_MOD_PATH"
+				local PARTS="tun.ko"
+				local PARTS="$PARTS cifs.ko"
+				local PARTS="$PARTS fuse.ko"
+				local PARTS="$PARTS slow-work.ko"
+				local PARTS="$PARTS xt_TCPMSS.ko"
+				local PARTS="$PARTS xt_tcpmss.ko" ;;
+		esac
+		if [ "$PARTS" != "" ] && [ "$MODULES_DEST" != "" ] ; then
+			for PART in $PARTS ; do
+				echo "  filename: $PART"
+				echo "  $(file -b $MODULES_DEST/$PART)"
+				echo "  $(modinfo "$MODULES_DEST/$PART" | grep 'vermagic')"
+			done
+			local VER_INFO=$(grep "EXTRAVERSION =" Kernel/Makefile)
+			echo "  $VER_INFO"
+			local VER_INFO=$(grep "VERSION_PATH" include/includes)
+			echo "  $VER_INFO"
 		fi
 	popd >/dev/null
 }

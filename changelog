@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-30-2012:
+scripting: Add file and module info to verbose output.
 initramfs: DEBUG: Re-add hacked modules for 2.6.35.14 (more uniform hacking, remove the byte from the "depends" area for all modules).
 initramfs: DEBUG: Add freshly built modules.
 

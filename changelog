@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-29-2012:
+initramfs: TW: Re-add hacked modules for 2.6.35.14 (more uniform hacking, remove the byte from the "depends" area for all modules).
 initramfs: TW: Add freshly built modules.
 Reverting "mm: prevent concurrent unmap_mapping_range() on the same inode" (commitID: 3a98075).
 Reverting "PM / Wakeup: Introduce wakeup source objects and event statistics (v3)" (commitID: 599c650).

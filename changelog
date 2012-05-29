@@ -8,6 +8,10 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-29-2012:
+Reverting "mm: prevent concurrent unmap_mapping_range() on the same inode" (commitID: 3a98075).
+Reverting "PM / Wakeup: Introduce wakeup source objects and event statistics (v3)" (commitID: 599c650).
+
 05-27-2012:
 initramfs: CM7: Add freshly built modules.
 initramfs: MTD: Add freshly built modules.

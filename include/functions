@@ -484,7 +484,9 @@ function INSTALL_ZIP_PACKAGE()
 		while [ "$RESULT" != "root" ] && [ "$COUNT" -lt "5" ] ; do
 			sleep 1
 			local COUNT=$(($COUNT + 1))
-			echo "adb: waiting for device..."
+			if [ "$VERBOSE" = "y" ] ; then
+				echo "adb: waiting for device..."
+			fi
 			$ADB_ROOT >/dev/null 2>&1
 			local RESULT=$($ADB_WHOAMI 2>&1 | $ADB_OUT_CLEAN)
 		done
@@ -493,10 +495,18 @@ function INSTALL_ZIP_PACKAGE()
 			SHOW_ERROR
 			SHOW_COMPLETED
 		fi
-		$ADB_PUSH "../$VERSION.$BUILD_TYPE.zip" /sdcard/ >/dev/null
+		if [ "$VERBOSE" = "y" ] ; then
+			$ADB_PUSH "../$VERSION.$BUILD_TYPE.zip" /sdcard/
+		else
+			$ADB_PUSH "../$VERSION.$BUILD_TYPE.zip" /sdcard/ >/dev/null 2>&1
+		fi
 		$ADB_SHELL "busybox mount -o remount,rw /cache"
 		$ADB_SHELL "busybox mkdir -p /cache/recovery/"
-		$ADB_PUSH "extendedcommand" "/cache/recovery/extendedcommand"
+		if [ "$VERBOSE" = "y" ] ; then
+			$ADB_PUSH "extendedcommand" "/cache/recovery/extendedcommand"
+		else
+			$ADB_PUSH "extendedcommand" "/cache/recovery/extendedcommand" >/dev/null 2>&1
+		fi
 		adb reboot recovery
 		rm -f extendedcommand
 	popd >/dev/null

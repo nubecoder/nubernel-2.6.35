@@ -179,6 +179,13 @@ function COPY_MODULES()
 				local PARTS="$PARTS kernel/net/netfilter/xt_TCPMSS.ko"
 				local PARTS="$PARTS kernel/net/netfilter/xt_tcpmss.ko"
 				;;
+			debug)
+				local MODULES_DEST="$INITRAMFS_DEBUG_PATH/lib/modules"
+				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
+				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
+				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
+				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
+				;;
 		esac
 		if [ "$PARTS" != "" ] && [ "$MODULES_DEST" != "" ] ; then
 			local MOD_PATH="$INSTALL_MOD_PATH/$VERSION_PATH"
@@ -231,7 +238,23 @@ function STRIP_MODULES()
 				local PARTS="$PARTS fuse.ko"
 				local PARTS="$PARTS slow-work.ko"
 				local PARTS="$PARTS xt_TCPMSS.ko"
-				local PARTS="$PARTS xt_tcpmss.ko" ;;
+				local PARTS="$PARTS xt_tcpmss.ko"
+				;;
+			debug)
+				local MODULES_DEST="$INITRAMFS_DEBUG_PATH/lib/modules"
+				local PARTS="vibrator.ko"
+				local PARTS="$PARTS cmc7xx_sdio.ko"
+				local PARTS="$PARTS dhd.ko"
+				local PARTS="$PARTS logger.ko"
+				# Samsung proprietary
+				local PARTS="$PARTS fsr.ko"
+				local PARTS="$PARTS fsr_stl.ko"
+				local PARTS="$PARTS j4fs.ko"
+				local PARTS="$PARTS param.ko"
+				local PARTS="$PARTS rfs_fat.ko"
+				local PARTS="$PARTS rfs_glue.ko"
+				local PARTS="$PARTS storage.ko"
+				;;
 		esac
 		if [ "$PARTS" != "" ] && [ "$MODULES_DEST" != "" ] ; then
 			for PART in $PARTS ; do
@@ -284,6 +307,21 @@ function SHOW_MODULES_INFO()
 				local PARTS="$PARTS slow-work.ko"
 				local PARTS="$PARTS xt_TCPMSS.ko"
 				local PARTS="$PARTS xt_tcpmss.ko" ;;
+			debug)
+				local MODULES_DEST="$INITRAMFS_DEBUG_PATH/lib/modules"
+				local PARTS="vibrator.ko"
+				local PARTS="$PARTS cmc7xx_sdio.ko"
+				local PARTS="$PARTS dhd.ko"
+				local PARTS="$PARTS logger.ko"
+				# Samsung proprietary
+				local PARTS="$PARTS fsr.ko"
+				local PARTS="$PARTS fsr_stl.ko"
+				local PARTS="$PARTS j4fs.ko"
+				local PARTS="$PARTS param.ko"
+				local PARTS="$PARTS rfs_fat.ko"
+				local PARTS="$PARTS rfs_glue.ko"
+				local PARTS="$PARTS storage.ko"
+				;;
 		esac
 		if [ "$PARTS" != "" ] && [ "$MODULES_DEST" != "" ] ; then
 			for PART in $PARTS ; do
@@ -390,7 +428,7 @@ function PACKAGE_BOOTIMG()
 function UPDATE_UPDATER()
 {
 	if [ -f "$KERNEL_BASE/update/updater" ] ; then
-		TYPES="tw mtd cm7"
+		TYPES="tw mtd cm7 debug"
 		for TYPE in $TYPES ; do
 			cp -f "$KERNEL_BASE/update/updater" "$KERNEL_BASE/update/$TYPE/META-INF/com/google/android/update-binary"
 			$CC_STRIP "$KERNEL_BASE/update/$TYPE/META-INF/com/google/android/update-binary" >/dev/null 2>&1
@@ -406,7 +444,7 @@ function PACKAGE_ZIP()
 	ECHO_BEGIN T1 $F1
 	UPDATE_UPDATER
 	case "$BUILD_TYPE" in
-		tw)
+		tw|debug)
 			rm -f "$KERNEL_BASE/update/$BUILD_TYPE/zImage"
 			cp "$BUILT_ZIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
 		mtd|cm7)
@@ -421,10 +459,10 @@ function PACKAGE_ZIP()
 function CREATE_INSTALL_PACKAGE()
 {
 	case "$BUILD_TYPE" in
-		tw)
+		tw|debug)
 			PACKAGE_TAR
 			PACKAGE_HEIMDALL ;;
-		mtd|cm7|debug)
+		mtd|cm7)
 			PACKAGE_BOOTIMG
 			if [ $? != 0 ] ; then
 				SHOW_ERROR

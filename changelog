@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-30-2012:
+initramfs: DEBUG: Add freshly built modules.
+
 05-29-2012:
 initramfs: TW: Re-add hacked modules for 2.6.35.14 (more uniform hacking, remove the byte from the "depends" area for all modules).
 initramfs: TW: Add freshly built modules.

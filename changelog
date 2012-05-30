@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-30-2012:
+defconfig: Set CONFIG_BROADCOM_WIFI to 'm' (it is forced to be a module by the Makefile, and brakes if you change it).
 scripting: Fix up some build type "debug" related scripting.
 scripting: Add file and module info to verbose output.
 initramfs: DEBUG: Re-add hacked modules for 2.6.35.14 (more uniform hacking, remove the byte from the "depends" area for all modules).

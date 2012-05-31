@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-31-2012:
+scripting: Some scripting cleanup, etc.
 defconfig: Duplicate "cyanogenmod_epicmtd_defconfig" into "victory_nubernel-cm7_defconfig".
 scripting: Some logging changes and a fix for when the INSTALL_ZIP_PACKAGE function has an error.
 scripting: build types: Change "mtd" to "tw-mtd".

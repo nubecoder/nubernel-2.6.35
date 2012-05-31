@@ -132,7 +132,6 @@ do
 				mod)
 					BUILD_TYPE="$OPTARG"
 					TARGET=$TARGET_MOD ;;
-#					BUILD_MODULES=y ;;
 				bml8)
 					BUILD_TYPE="$OPTARG"
 					TARGET=$TARGET_BML8 ;;

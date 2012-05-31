@@ -150,49 +150,39 @@ function COPY_MODULES()
 	pushd $KERNEL_BASE >/dev/null
 		case "$BUILD_TYPE" in
 			tw-bml)
-				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules"
-				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
-				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
-				;;
+				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules" ;;
 			tw-mtd)
-				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules"
-				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
-				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
-				;;
+				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules" ;;
 			cm7)
-				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules"
-				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/bcm4329.ko"
-				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
-				;;
+				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules" ;;
 			mod)
-				local MODULES_DEST="$INSTALL_MOD_PATH"
-				local PARTS="kernel/drivers/net/tun.ko"
+				local MODULES_DEST="$INSTALL_MOD_PATH" ;;
+			dbg-bml)
+				local MODULES_DEST="$INITRAMFS_DBG_BML_PATH/lib/modules" ;;
+			dbg-mtd)
+				local MODULES_DEST="$INITRAMFS_DBG_MTD_PATH/lib/modules" ;;
+		esac
+		# common modules
+		local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
+		local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
+		local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
+		case "$BUILD_TYPE" in
+			tw-bml|tw-mtd|dbg-bml|dbg-mtd)
+				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko" ;;
+			cm7)
+				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/bcm4329.ko" ;;
+			mod)
+				local PARTS="$PARTS kernel/drivers/net/tun.ko"
+				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/bcm4329.ko"
+				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
 				local PARTS="$PARTS kernel/fs/cifs/cifs.ko"
 				local PARTS="$PARTS kernel/fs/fuse/fuse.ko"
 				local PARTS="$PARTS kernel/kernel/slow-work.ko"
 				local PARTS="$PARTS kernel/net/netfilter/xt_TCPMSS.ko"
 				local PARTS="$PARTS kernel/net/netfilter/xt_tcpmss.ko"
 				;;
-			dbg-bml)
-				local MODULES_DEST="$INITRAMFS_DBG_BML_PATH/lib/modules"
-				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
-				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
-				;;
-			dbg-mtd)
-				local MODULES_DEST="$INITRAMFS_DBG_MTD_PATH/lib/modules"
-				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
-				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
-				;;
+			bml8)
+				local PARTS="" ;;
 		esac
 		if [ "$PARTS" != "" ] && [ "$MODULES_DEST" != "" ] ; then
 			local MOD_PATH="$INSTALL_MOD_PATH/$VERSION_PATH"
@@ -210,11 +200,25 @@ function STRIP_MODULES()
 	pushd $KERNEL_BASE >/dev/null
 		case "$BUILD_TYPE" in
 			tw-bml)
-				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
+				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules" ;;
+			tw-mtd)
+				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules" ;;
+			cm7)
+				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules" ;;
+			mod)
+				local MODULES_DEST="$INSTALL_MOD_PATH" ;;
+			dbg-bml)
+				local MODULES_DEST="$INITRAMFS_DBG_BML_PATH/lib/modules" ;;
+			dbg-mtd)
+				local MODULES_DEST="$INITRAMFS_DBG_MTD_PATH/lib/modules" ;;
+		esac
+		# common modules
+		local PARTS="vibrator.ko"
+		local PARTS="$PARTS cmc7xx_sdio.ko"
+		local PARTS="$PARTS logger.ko"
+		case "$BUILD_TYPE" in
+			tw-bml|dbg-bml)
 				local PARTS="$PARTS dhd.ko"
-				local PARTS="$PARTS logger.ko"
 				# Samsung proprietary
 				local PARTS="$PARTS fsr.ko"
 				local PARTS="$PARTS fsr_stl.ko"
@@ -224,51 +228,22 @@ function STRIP_MODULES()
 				local PARTS="$PARTS rfs_glue.ko"
 				local PARTS="$PARTS storage.ko"
 				;;
-			tw-mtd)
-				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS dhd.ko"
-				local PARTS="$PARTS logger.ko"
-				;;
+			tw-mtd|dbg-mtd)
+				local PARTS="$PARTS dhd.ko" ;;
 			cm7)
-				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS bcm4329.ko"
-				local PARTS="$PARTS logger.ko"
-				;;
+				local PARTS="$PARTS bcm4329.ko" ;;
 			mod)
-				local MODULES_DEST="$INSTALL_MOD_PATH"
-				local PARTS="tun.ko"
+				local PARTS="$PARTS tun.ko"
+				local PARTS="$PARTS bcm4329.ko"
+				local PARTS="$PARTS dhd.ko"
 				local PARTS="$PARTS cifs.ko"
 				local PARTS="$PARTS fuse.ko"
 				local PARTS="$PARTS slow-work.ko"
 				local PARTS="$PARTS xt_TCPMSS.ko"
 				local PARTS="$PARTS xt_tcpmss.ko"
 				;;
-			dbg-bml)
-				local MODULES_DEST="$INITRAMFS_DBG_BML_PATH/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS dhd.ko"
-				local PARTS="$PARTS logger.ko"
-				# Samsung proprietary
-				local PARTS="$PARTS fsr.ko"
-				local PARTS="$PARTS fsr_stl.ko"
-				local PARTS="$PARTS j4fs.ko"
-				local PARTS="$PARTS param.ko"
-				local PARTS="$PARTS rfs_fat.ko"
-				local PARTS="$PARTS rfs_glue.ko"
-				local PARTS="$PARTS storage.ko"
-				;;
-			dbg-mtd)
-				local MODULES_DEST="$INITRAMFS_DBG_MTD_PATH/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS dhd.ko"
-				local PARTS="$PARTS logger.ko"
-				;;
+			bml8)
+				local PARTS="" ;;
 		esac
 		if [ "$PARTS" != "" ] && [ "$MODULES_DEST" != "" ] ; then
 			for PART in $PARTS ; do
@@ -285,11 +260,25 @@ function SHOW_MODULES_INFO()
 	pushd $KERNEL_BASE >/dev/null
 		case "$BUILD_TYPE" in
 			tw-bml)
-				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
+				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules" ;;
+			tw-mtd)
+				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules" ;;
+			cm7)
+				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules" ;;
+			mod)
+				local MODULES_DEST="$INSTALL_MOD_PATH" ;;
+			dbg-bml)
+				local MODULES_DEST="$INITRAMFS_DBG_BML_PATH/lib/modules" ;;
+			dbg-mtd)
+				local MODULES_DEST="$INITRAMFS_DBG_MTD_PATH/lib/modules" ;;
+		esac
+		# common modules
+		local PARTS="vibrator.ko"
+		local PARTS="$PARTS cmc7xx_sdio.ko"
+		local PARTS="$PARTS logger.ko"
+		case "$BUILD_TYPE" in
+			tw-bml|dbg-bml)
 				local PARTS="$PARTS dhd.ko"
-				local PARTS="$PARTS logger.ko"
 				# Samsung proprietary
 				local PARTS="$PARTS fsr.ko"
 				local PARTS="$PARTS fsr_stl.ko"
@@ -299,51 +288,22 @@ function SHOW_MODULES_INFO()
 				local PARTS="$PARTS rfs_glue.ko"
 				local PARTS="$PARTS storage.ko"
 				;;
-			tw-mtd)
-				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS dhd.ko"
-				local PARTS="$PARTS logger.ko"
-				;;
+			tw-mtd|dbg-mtd)
+				local PARTS="$PARTS dhd.ko" ;;
 			cm7)
-				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS bcm4329.ko"
-				local PARTS="$PARTS logger.ko"
-				;;
+				local PARTS="$PARTS bcm4329.ko" ;;
 			mod)
-				local MODULES_DEST="$INSTALL_MOD_PATH"
-				local PARTS="tun.ko"
+				local PARTS="$PARTS tun.ko"
+				local PARTS="$PARTS bcm4329.ko"
+				local PARTS="$PARTS dhd.ko"
 				local PARTS="$PARTS cifs.ko"
 				local PARTS="$PARTS fuse.ko"
 				local PARTS="$PARTS slow-work.ko"
 				local PARTS="$PARTS xt_TCPMSS.ko"
-				local PARTS="$PARTS xt_tcpmss.ko" ;;
-			dbg-bml)
-				local MODULES_DEST="$INITRAMFS_DBG_BML_PATH/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS dhd.ko"
-				local PARTS="$PARTS logger.ko"
-				# Samsung proprietary
-				local PARTS="$PARTS fsr.ko"
-				local PARTS="$PARTS fsr_stl.ko"
-				local PARTS="$PARTS j4fs.ko"
-				local PARTS="$PARTS param.ko"
-				local PARTS="$PARTS rfs_fat.ko"
-				local PARTS="$PARTS rfs_glue.ko"
-				local PARTS="$PARTS storage.ko"
-				;;
-			dbg-mtd)
-				local MODULES_DEST="$INITRAMFS_DBG_MTD_PATH/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS dhd.ko"
-				local PARTS="$PARTS logger.ko"
+				local PARTS="$PARTS xt_tcpmss.ko"
 				;;
 		esac
+
 		if [ "$PARTS" != "" ] && [ "$MODULES_DEST" != "" ] ; then
 			for PART in $PARTS ; do
 				echo "  filename: $PART"
@@ -471,10 +431,12 @@ function PACKAGE_ZIP()
 	case "$BUILD_TYPE" in
 		tw-bml|dbg-bml)
 			rm -f "$KERNEL_BASE/update/$BUILD_TYPE/zImage"
-			cp "$BUILT_ZIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
+			cp "$BUILT_ZIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/"
+			;;
 		tw-mtd|dbg-mtd|cm7)
 			rm -f "$KERNEL_BASE/update/$BUILD_TYPE/boot.img"
-			mv -f "$BUILT_BOOTIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
+			mv -f "$BUILT_BOOTIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/"
+			;;
 	esac
 	pushd "$KERNEL_BASE/update/$BUILD_TYPE" >/dev/null
 		zip -r "$OUTFILE" * >/dev/null
@@ -486,13 +448,15 @@ function CREATE_INSTALL_PACKAGE()
 	case "$BUILD_TYPE" in
 		tw-bml|dbg-bml)
 			PACKAGE_TAR
-			PACKAGE_HEIMDALL ;;
+			PACKAGE_HEIMDALL
+			;;
 		tw-mtd|dbg-mtd|cm7)
 			PACKAGE_BOOTIMG
 			if [ $? != 0 ] ; then
 				SHOW_ERROR
 				SHOW_COMPLETED
-			fi ;;
+			fi
+			;;
 	esac
 	PACKAGE_ZIP
 }

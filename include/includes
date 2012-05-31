@@ -15,7 +15,7 @@ CC_STRIP="${CROSS_COMPILE}strip -d --strip-unneeded"
 
 TARGET_TW_BML="victory_nubernel-bml"
 TARGET_TW_MTD="victory_nubernel-mtd"
-TARGET_CM7="cyanogenmod_epicmtd"
+TARGET_CM7="victory_nubernel-cm7"
 TARGET_MOD="victory_modules"
 TARGET_DBG_BML="victory_dbg-bml"
 TARGET_DBG_MTD="victory_dbg-mtd"

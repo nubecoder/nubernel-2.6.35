@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-31-2012:
+scripting: Some logging changes and a fix for when the INSTALL_ZIP_PACKAGE function has an error.
 scripting: build types: Change "mtd" to "tw-mtd".
 scripting: build types: Change "tw" to "tw-bml".
 scripting: build types: Change "debug" to "dbg-bml" and add "dbg-mtd".

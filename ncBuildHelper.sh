@@ -8,7 +8,7 @@
 source "$PWD/include/includes"
 
 #defaults
-BUILD_TYPE="tw"
+BUILD_TYPE="tw-bml"
 RECOVERY_TYPE="cwm"
 TARGET="victory_nubernel"
 CLEAN=n
@@ -41,7 +41,7 @@ function SHOW_HELP()
 	echo "-r : Define the recovery type."
 	echo "     Recovery types are: <cwm|twrp> (defaults to cwm)."
 	echo "-t : Define the build type."
-	echo "     Build types are: <tw|mtd|cm7|dbg-bml|dbg-mtd|mod|bml8> (defaults to tw)."
+	echo "     Build types are: <tw-bml|mtd|cm7|dbg-bml|dbg-mtd|mod|bml8> (defaults to tw-bml)."
 	echo "-v : Verbose script output."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	exit 1
@@ -114,9 +114,9 @@ do
 			esac ;;
 		t)
 			case "$OPTARG" in
-				tw)
+				tw-bml)
 					BUILD_TYPE="$OPTARG"
-					TARGET=$TARGET_TW ;;
+					TARGET=$TARGET_TW_BML ;;
 				mtd)
 					BUILD_TYPE="$OPTARG"
 					TARGET=$TARGET_MTD ;;

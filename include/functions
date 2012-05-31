@@ -149,8 +149,8 @@ function COPY_MODULES()
 {
 	pushd $KERNEL_BASE >/dev/null
 		case "$BUILD_TYPE" in
-			tw)
-				local MODULES_DEST="$INITRAMFS_TW_PATH/lib/modules"
+			tw-bml)
+				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules"
 				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
 				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
 				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
@@ -209,8 +209,8 @@ function STRIP_MODULES()
 {
 	pushd $KERNEL_BASE >/dev/null
 		case "$BUILD_TYPE" in
-			tw)
-				local MODULES_DEST="$INITRAMFS_TW_PATH/lib/modules"
+			tw-bml)
+				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules"
 				local PARTS="vibrator.ko"
 				local PARTS="$PARTS cmc7xx_sdio.ko"
 				local PARTS="$PARTS dhd.ko"
@@ -284,8 +284,8 @@ function SHOW_MODULES_INFO()
 {
 	pushd $KERNEL_BASE >/dev/null
 		case "$BUILD_TYPE" in
-			tw)
-				local MODULES_DEST="$INITRAMFS_TW_PATH/lib/modules"
+			tw-bml)
+				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules"
 				local PARTS="vibrator.ko"
 				local PARTS="$PARTS cmc7xx_sdio.ko"
 				local PARTS="$PARTS dhd.ko"
@@ -449,7 +449,7 @@ function PACKAGE_BOOTIMG()
 function UPDATE_UPDATER()
 {
 	if [ -f "$KERNEL_BASE/update/updater" ] ; then
-		TYPES="tw mtd cm7 dbg-bml dbg-mtd"
+		TYPES="tw-bml mtd cm7 dbg-bml dbg-mtd"
 		for TYPE in $TYPES ; do
 			cp -f "$KERNEL_BASE/update/updater" "$KERNEL_BASE/update/$TYPE/META-INF/com/google/android/update-binary"
 			$CC_STRIP "$KERNEL_BASE/update/$TYPE/META-INF/com/google/android/update-binary" >/dev/null 2>&1
@@ -465,7 +465,7 @@ function PACKAGE_ZIP()
 	ECHO_BEGIN T1 $F1
 	UPDATE_UPDATER
 	case "$BUILD_TYPE" in
-		tw|dbg-bml)
+		tw-bml|dbg-bml)
 			rm -f "$KERNEL_BASE/update/$BUILD_TYPE/zImage"
 			cp "$BUILT_ZIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
 		mtd|cm7|dbg-mtd)
@@ -480,7 +480,7 @@ function PACKAGE_ZIP()
 function CREATE_INSTALL_PACKAGE()
 {
 	case "$BUILD_TYPE" in
-		tw|dbg-bml)
+		tw-bml|dbg-bml)
 			PACKAGE_TAR
 			PACKAGE_HEIMDALL ;;
 		mtd|cm7|dbg-mtd)

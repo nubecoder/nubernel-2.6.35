@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 05-31-2012:
+scripting: build types: Change "tw" to "tw-bml".
 scripting: build types: Change "debug" to "dbg-bml" and add "dbg-mtd".
 
 05-30-2012:

@@ -25,7 +25,7 @@ KEXEC_BOOT_ZIMAGE()
 	busybox mount -ro remount /dev/block/stl10 /data
 	busybox mount -ro remount /dev/block/stl11 /cache
 	case "$KEXEC_MODE" in
-		d|debug)
+		d|dbg|debug)
 			# debug boot
 			BOOT_PARAMETERS="console=tty0,115200 fbcon=rotate:1 fbcon=font:VGA7x14 lpj=387072 boot_delay=5 loglevel=4" ;;
 		r|recovery)

@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+05-31-2012:
+scripting: build types: Change "debug" to "dbg-bml" and add "dbg-mtd".
+
 05-30-2012:
 scripting: Quiet the INSTALL_ZIP_PACKAGE function unless output is verbose.
 defconfig: Set CONFIG_BROADCOM_WIFI to 'm' (it is forced to be a module by the Makefile, and brakes if you change it).

@@ -13,7 +13,8 @@ echo "Begin building all packagable types."
 ./ncBuildHelper.sh $ARGS "-mbpt" "tw"
 ./ncBuildHelper.sh $ARGS "-mbpt" "mtd"
 ./ncBuildHelper.sh $ARGS "-mbpt" "cm7"
-./ncBuildHelper.sh $ARGS "-mbpt" "debug"
+./ncBuildHelper.sh $ARGS "-mbpt" "dbg-bml"
+./ncBuildHelper.sh $ARGS "-mbpt" "dbg-mtd"
 echo "Finished building all packagable types. ($(date +%r))"
 
 END_TIME=$(date +%s)

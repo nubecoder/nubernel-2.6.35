@@ -41,7 +41,7 @@ function SHOW_HELP()
 	echo "-r : Define the recovery type."
 	echo "     Recovery types are: <cwm|twrp> (defaults to cwm)."
 	echo "-t : Define the build type."
-	echo "     Build types are: <tw-bml|mtd|cm7|dbg-bml|dbg-mtd|mod|bml8> (defaults to tw-bml)."
+	echo "     Build types are: <tw-bml|tw-mtd|cm7|dbg-bml|dbg-mtd|mod|bml8> (defaults to tw-bml)."
 	echo "-v : Verbose script output."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	exit 1
@@ -117,9 +117,9 @@ do
 				tw-bml)
 					BUILD_TYPE="$OPTARG"
 					TARGET=$TARGET_TW_BML ;;
-				mtd)
+				tw-mtd)
 					BUILD_TYPE="$OPTARG"
-					TARGET=$TARGET_MTD ;;
+					TARGET=$TARGET_TW_MTD ;;
 				cm7)
 					BUILD_TYPE="$OPTARG"
 					TARGET=$TARGET_CM7 ;;

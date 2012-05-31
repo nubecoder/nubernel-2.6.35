@@ -11,7 +11,7 @@ START_TIME=$(date +%s)
 #main
 echo "Begin building all packagable types."
 ./ncBuildHelper.sh $ARGS "-mbpt" "tw-bml"
-./ncBuildHelper.sh $ARGS "-mbpt" "mtd"
+./ncBuildHelper.sh $ARGS "-mbpt" "tw-mtd"
 ./ncBuildHelper.sh $ARGS "-mbpt" "cm7"
 ./ncBuildHelper.sh $ARGS "-mbpt" "dbg-bml"
 ./ncBuildHelper.sh $ARGS "-mbpt" "dbg-mtd"

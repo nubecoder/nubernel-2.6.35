@@ -156,8 +156,8 @@ function COPY_MODULES()
 				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
 				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
 				;;
-			mtd)
-				local MODULES_DEST="$INITRAMFS_MTD_PATH/lib/modules"
+			tw-mtd)
+				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules"
 				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
 				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
 				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
@@ -224,8 +224,8 @@ function STRIP_MODULES()
 				local PARTS="$PARTS rfs_glue.ko"
 				local PARTS="$PARTS storage.ko"
 				;;
-			mtd)
-				local MODULES_DEST="$INITRAMFS_MTD_PATH/lib/modules"
+			tw-mtd)
+				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules"
 				local PARTS="vibrator.ko"
 				local PARTS="$PARTS cmc7xx_sdio.ko"
 				local PARTS="$PARTS dhd.ko"
@@ -299,8 +299,8 @@ function SHOW_MODULES_INFO()
 				local PARTS="$PARTS rfs_glue.ko"
 				local PARTS="$PARTS storage.ko"
 				;;
-			mtd)
-				local MODULES_DEST="$INITRAMFS_MTD_PATH/lib/modules"
+			tw-mtd)
+				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules"
 				local PARTS="vibrator.ko"
 				local PARTS="$PARTS cmc7xx_sdio.ko"
 				local PARTS="$PARTS dhd.ko"
@@ -449,7 +449,7 @@ function PACKAGE_BOOTIMG()
 function UPDATE_UPDATER()
 {
 	if [ -f "$KERNEL_BASE/update/updater" ] ; then
-		TYPES="tw-bml mtd cm7 dbg-bml dbg-mtd"
+		TYPES="tw-bml tw-mtd cm7 dbg-bml dbg-mtd"
 		for TYPE in $TYPES ; do
 			cp -f "$KERNEL_BASE/update/updater" "$KERNEL_BASE/update/$TYPE/META-INF/com/google/android/update-binary"
 			$CC_STRIP "$KERNEL_BASE/update/$TYPE/META-INF/com/google/android/update-binary" >/dev/null 2>&1
@@ -468,7 +468,7 @@ function PACKAGE_ZIP()
 		tw-bml|dbg-bml)
 			rm -f "$KERNEL_BASE/update/$BUILD_TYPE/zImage"
 			cp "$BUILT_ZIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
-		mtd|cm7|dbg-mtd)
+		tw-mtd|dbg-mtd|cm7)
 			rm -f "$KERNEL_BASE/update/$BUILD_TYPE/boot.img"
 			mv -f "$BUILT_BOOTIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
 	esac
@@ -483,7 +483,7 @@ function CREATE_INSTALL_PACKAGE()
 		tw-bml|dbg-bml)
 			PACKAGE_TAR
 			PACKAGE_HEIMDALL ;;
-		mtd|cm7|dbg-mtd)
+		tw-mtd|dbg-mtd|cm7)
 			PACKAGE_BOOTIMG
 			if [ $? != 0 ] ; then
 				SHOW_ERROR

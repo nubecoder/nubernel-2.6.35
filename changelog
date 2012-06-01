@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-01-2012:
+initramfs: twrp: Whitespace fixes.
 update-zip: All: Syncing device asserts with cm7.
 
 05-31-2012:

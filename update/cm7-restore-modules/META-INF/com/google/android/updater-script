@@ -1,5 +1,6 @@
-assert(getprop("ro.product.device") == "SPH-D700" ||
-	getprop("ro.build.product") == "SPH-D700");
+assert(getprop("ro.product.device") == "epic" || getprop("ro.build.product") == "epic" || getprop("ro.product.board") == "epic" ||
+       getprop("ro.product.device") == "epicmtd" || getprop("ro.build.product") == "epicmtd" || getprop("ro.product.board") == "epicmtd" ||
+       getprop("ro.product.device") == "SPH-D700" || getprop("ro.build.product") == "SPH-D700" || getprop("ro.product.board") == "SPH-D700");
 
 ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
 ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");

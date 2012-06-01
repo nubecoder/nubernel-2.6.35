@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-01-2012:
+update-zip: All: Syncing device asserts with cm7.
+
 05-31-2012:
 initramfs: all: Add fresh built modules (again).
 scripting: Some scripting cleanup, etc.

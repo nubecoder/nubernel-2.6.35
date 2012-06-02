@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-02-2012:
+defconfig: all: Reduce kernel log buffer to 16 (64KB).
 sched: Fix strncmp operation (via mainline: http://git.kernel.org/?p=linux/kernel/git/paulg/linux-stable.git;a=commit;h=524429c31b486c05449666b94613f59f729c0a84).
 arm: remove "optimized" SHA1 routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commit;h=4d4487140d34c1b9b321889d2d209321b0da6643).
 lib/sha1: use the git implementation of SHA-1 (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=1eb19a12bd2214cdcad5273d472b062a4ba97fa1).

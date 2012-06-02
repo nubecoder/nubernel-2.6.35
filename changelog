@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-02-2012:
+defconfig: non-debug builds: Add "quiet" to boot args.
 defconfig: non-debug builds: Don't calibrate loops per jiffy during boot (set in boot args).
 defconfig: all: Reduce kernel log buffer to 16 (64KB).
 sched: Fix strncmp operation (via mainline: http://git.kernel.org/?p=linux/kernel/git/paulg/linux-stable.git;a=commit;h=524429c31b486c05449666b94613f59f729c0a84).

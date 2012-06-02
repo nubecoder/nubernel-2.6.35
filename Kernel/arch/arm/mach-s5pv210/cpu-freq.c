@@ -988,7 +988,6 @@ static int __init s5pv210_cpufreq_driver_init(struct cpufreq_policy *policy)
 static int s5pv210_cpufreq_notifier_event(struct notifier_block *this,
 		unsigned long event, void *ptr)
 {
-//cpufreq_verify_within_limits(policy, policy->cpuinfo.min_freq, policy->cpuinfo.max_freq);
 	static int max, min;
 	int ret;
 

@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-02-2012:
+Oops, this should not have been left here.
+
 06-01-2012:
 initramfs: twrp: Whitespace fixes.
 update-zip: All: Syncing device asserts with cm7.

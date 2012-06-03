@@ -82,28 +82,24 @@ BRANCH_RELEASE()
 	local REPLACEMENT="${VERSION_STRING}$NEW_VERSION"
 	if [ "$VERBOSE" = "y" ]; then
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/cm7/META-INF/com/google/android/updater-script
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/cm7/META-INF/com/android/metadata
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/tw/META-INF/com/google/android/updater-script
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/tw/META-INF/com/android/metadata
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/google/android/updater-script
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/android/metadata
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README
 		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes
 		sed -i "s/$PATTERN/$REPLACEMENT/g" res/heimdall/firmware.xml
 		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist
+		for FOLDER in "cm7 cm7-restore-modules dbg-bml dbg-mtd tw-bml tw-mtd" ; do
+			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/google/android/updater-script
+			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/android/metadata
+		done
 	else
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/cm7/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/cm7/META-INF/com/android/metadata >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/tw/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/tw/META-INF/com/android/metadata >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/mtd/META-INF/com/android/metadata >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" res/heimdall/firmware.xml >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist >/dev/null 2>&1
+		for FOLDER in "cm7 cm7-restore-modules dbg-bml dbg-mtd tw-bml tw-mtd" ; do
+			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/google/android/updater-script >/dev/null 2>&1
+			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/android/metadata >/dev/null 2>&1
+		done
 	fi
 
 	local PATTERN="LOCALVERSION=\".nubernel_v${CURRENT_VERSION}\""
@@ -125,29 +121,25 @@ BRANCH_RELEASE()
 	if [ "$VERBOSE" = "y" ]
 	then
 		git add changelog
-		git add update/cm7/META-INF/com/google/android/updater-script
-		git add update/cm7/META-INF/com/android/metadata
-		git add update/tw/META-INF/com/google/android/updater-script
-		git add update/tw/META-INF/com/android/metadata
-		git add update/mtd/META-INF/com/google/android/updater-script
-		git add update/mtd/META-INF/com/android/metadata
 		git add README
 		git add include/includes
 		git add res/heimdall/firmware.xml
 		git add featurelist
+		for FOLDER in "cm7 cm7-restore-modules dbg-bml dbg-mtd tw-bml tw-mtd" ; do
+			git add update/$FOLDER/META-INF/com/google/android/updater-script
+			git add update/$FOLDER/META-INF/com/android/metadata
+		done
 		git add $0
 	else
 		git add changelog >/dev/null 2>&1
-		git add update/cm7/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		git add update/cm7/META-INF/com/android/metadata >/dev/null 2>&1
-		git add update/tw/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		git add update/tw/META-INF/com/android/metadata >/dev/null 2>&1
-		git add update/mtd/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		git add update/mtd/META-INF/com/android/metadata >/dev/null 2>&1
 		git add README >/dev/null 2>&1
 		git add include/includes >/dev/null 2>&1
 		git add res/heimdall/firmware.xml >/dev/null 2>&1
 		git add featurelist >/dev/null 2>&1
+		for FOLDER in "cm7 cm7-restore-modules dbg-bml dbg-mtd tw-bml tw-mtd" ; do
+			git add update/$FOLDER/META-INF/com/google/android/updater-script >/dev/null 2>&1
+			git add update/$FOLDER/META-INF/com/android/metadata >/dev/null 2>&1
+		done
 		git add $0 >/dev/null 2>&1
 	fi
 	# show some info

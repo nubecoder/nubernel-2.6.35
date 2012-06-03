@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-03-2012:
+scripting: Fixing up the branchHelper script for new builds.
 scripting: Remove duplicate "debug" initramfs folders.
 
 06-02-2012:

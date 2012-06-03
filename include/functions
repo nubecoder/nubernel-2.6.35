@@ -149,18 +149,14 @@ function COPY_MODULES()
 {
 	pushd $KERNEL_BASE >/dev/null
 		case "$BUILD_TYPE" in
-			tw-bml)
+			tw-bml|dbg-bml)
 				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules" ;;
-			tw-mtd)
+			tw-mtd|dbg-mtd)
 				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules" ;;
 			cm7)
 				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules" ;;
 			mod)
 				local MODULES_DEST="$INSTALL_MOD_PATH" ;;
-			dbg-bml)
-				local MODULES_DEST="$INITRAMFS_DBG_BML_PATH/lib/modules" ;;
-			dbg-mtd)
-				local MODULES_DEST="$INITRAMFS_DBG_MTD_PATH/lib/modules" ;;
 		esac
 		# common modules
 		local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
@@ -199,18 +195,14 @@ function STRIP_MODULES()
 {
 	pushd $KERNEL_BASE >/dev/null
 		case "$BUILD_TYPE" in
-			tw-bml)
+			tw-bml|dbg-bml)
 				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules" ;;
-			tw-mtd)
+			tw-mtd|dbg-mtd)
 				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules" ;;
 			cm7)
 				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules" ;;
 			mod)
 				local MODULES_DEST="$INSTALL_MOD_PATH" ;;
-			dbg-bml)
-				local MODULES_DEST="$INITRAMFS_DBG_BML_PATH/lib/modules" ;;
-			dbg-mtd)
-				local MODULES_DEST="$INITRAMFS_DBG_MTD_PATH/lib/modules" ;;
 		esac
 		# common modules
 		local PARTS="vibrator.ko"
@@ -259,18 +251,14 @@ function SHOW_MODULES_INFO()
 {
 	pushd $KERNEL_BASE >/dev/null
 		case "$BUILD_TYPE" in
-			tw-bml)
+			tw-bml|dbg-bml)
 				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules" ;;
-			tw-mtd)
+			tw-mtd|dbg-mtd)
 				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules" ;;
 			cm7)
 				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules" ;;
 			mod)
 				local MODULES_DEST="$INSTALL_MOD_PATH" ;;
-			dbg-bml)
-				local MODULES_DEST="$INITRAMFS_DBG_BML_PATH/lib/modules" ;;
-			dbg-mtd)
-				local MODULES_DEST="$INITRAMFS_DBG_MTD_PATH/lib/modules" ;;
 		esac
 		# common modules
 		local PARTS="vibrator.ko"
@@ -395,7 +383,14 @@ function PACKAGE_BOOTIMG()
 		else
 			rm -f "boot.img"
 			cp "$BUILT_ZIMAGE" "zImage"
-			local KERNEL_INITRD="$KERNEL_BASE/initramfs/$BUILD_TYPE"
+			case "$BUILD_TYPE" in
+				tw-bml|dbg-bml)
+					local KERNEL_INITRD="$INITRAMFS_TW_BML_PATH" ;;
+				tw-mtd|dbg-mtd)
+					local KERNEL_INITRD="$INITRAMFS_TW_MTD_PATH" ;;
+				cm7)
+					local KERNEL_INITRD="$INITRAMFS_CM7_PATH" ;;
+			esac
 			local RECOVERY_INITRD="$KERNEL_BASE/initramfs/$RECOVERY_TYPE"
 			./mkbootfs $KERNEL_INITRD | minigzip > ramdisk-kernel.img
 			./mkbootfs $RECOVERY_INITRD > ramdisk-recovery.cpio

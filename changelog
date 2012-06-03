@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-03-2012:
+scripting: Remove duplicate "debug" initramfs folders.
+
 06-02-2012:
 defconfig: non-debug builds: Add "quiet" to boot args.
 defconfig: non-debug builds: Don't calibrate loops per jiffy during boot (set in boot args).

@@ -9,6 +9,12 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-03-2012:
+update-zip: cm7: Don't backup or restore logger.ko (also fix up some logging).
+defconfig: non-debug builds: Enable CMDLINE_FORCE.
+update-zip: all: Changes to output of updater-scripts.
+update-zip: all: Adding build type info to version output of updater-scripts.
+packages: heimdall: Fixing up the firmware.xml file.
+scripting: Fixing a bug in the branchHelper script.
 scripting: Fixing up the branchHelper script for new builds.
 scripting: Remove duplicate "debug" initramfs folders.
 

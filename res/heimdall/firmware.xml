@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <firmware version="1">
-	<name>nubernel-2.6.35_v0.0.2.tw</name>
-	<version>2.6.35.13</version>
+	<name>nubernel-2.6.35_v0.0.2</name>
+	<version>2.6.35.14</version>
 	<platform>
 		<name>GINGERBREAD</name>
 		<version>2.3.6</version>

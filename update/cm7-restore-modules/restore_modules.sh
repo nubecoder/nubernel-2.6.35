@@ -5,7 +5,7 @@
 #
 
 DST_PATH="/system/lib/modules"
-MODULES_LIST="bcm4329.ko cmc7xx_sdio.ko logger.ko vibrator.ko"
+MODULES_LIST="bcm4329.ko cmc7xx_sdio.ko vibrator.ko"
 
 # remove old log
 rm -rf /sdcard/restore_modules.log
@@ -15,7 +15,7 @@ set -x
 busybox cat <<EOF
 ########################################################################################
 #
-# Installing 2.6.35.13 modules
+# Restoring backed up modules
 #
 ########################################################################################
 EOF

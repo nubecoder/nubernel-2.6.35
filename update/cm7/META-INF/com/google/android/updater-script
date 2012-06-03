@@ -22,17 +22,19 @@ ui_print("                                 =]=]");
 ui_print("                                 =]=]");
 ui_print("                               =]=]=]");
 ui_print("                               =]=]=]");
-ui_print("");ui_print("");ui_print("");
+ui_print("");ui_print("");ui_print("");ui_print("");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
 ui_print("=]         Brought to you by nubecoder        =]");
 ui_print("=]             www.nubecoder.com              =]");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
-ui_print("");ui_print("");ui_print("");ui_print("");sleep(4);
+ui_print("");sleep(4);
 
+ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
+ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
-ui_print("=]           nubernel-2.6.35_v0.0.2           =]");
+ui_print("=]         nubernel-2.6.35_v0.0.2.cm7         =]");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
-ui_print("*");sleep(1);
+sleep(1);
 show_progress(1.335, 0);
 
 ui_print("Preparing for kernel install.");
@@ -44,7 +46,6 @@ assert(
 	delete("/data/local/.rm_sys_apps"),
 	run_program("/sbin/busybox", "umount", "/data")
 	);
-ui_print("*");
 set_progress(0.1);
 
 ui_print("Extracting files.");
@@ -57,7 +58,6 @@ assert(
   package_extract_file("boot.img", "/tmp/boot.img"),
   package_extract_file("install_modules.sh", "/tmp/install_modules.sh")
 	);
-ui_print("*");
 set_progress(0.3);
 
 ui_print("Setting permissions.");
@@ -67,7 +67,6 @@ set_perm(0, 0, 0777, "/tmp/erase_image");
 set_perm(0, 0, 0777, "/tmp/bml_over_mtd");
 set_perm(0, 0, 0777, "/tmp/bml_over_mtd.sh");
 set_perm(0, 0, 0777, "/tmp/install_modules.sh");
-ui_print("*");
 set_progress(0.4);
 
 ui_print("Installing kernel image.");
@@ -76,7 +75,6 @@ assert(
   run_program("/tmp/bml_over_mtd.sh", "boot", "72", "reservoir", "4012", "/tmp/boot.img"),
   delete("/tmp/boot.img")
   );
-ui_print("*");
 set_progress(0.6);
 
 ui_print("Installing modules.");
@@ -89,7 +87,6 @@ assert(
 	run_program("/tmp/install_modules.sh"),
 	run_program("/sbin/busybox", "umount", "/system")
   );
-ui_print("*");
 set_progress(0.7);
 
 ui_print("Clearing cache.");
@@ -98,7 +95,6 @@ assert(
 	delete_recursive("/cache"),
 	run_program("/sbin/busybox", "umount", "/cache")
 	);
-ui_print("*");
 set_progress(0.8);
 
 ui_print("Clearing dalvik-cache.");
@@ -107,12 +103,9 @@ assert(
 	delete_recursive("/data/dalvik-cache"),
 	run_program("/sbin/busybox", "umount", "/data")
 	);
-ui_print("*");
 set_progress(0.9);
 
 ui_print("Finished.");
-ui_print("*");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
 set_progress(1.0);
-sleep(2);
 

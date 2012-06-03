@@ -16,7 +16,7 @@ set -x
 busybox cat <<EOF
 ########################################################################################
 #
-# Installing 2.6.35.13 modules
+# Installing 2.6.35.14 modules
 #
 ########################################################################################
 EOF
@@ -24,16 +24,20 @@ EOF
 for MODULE in $MODULES_LIST ; do
 	if busybox test -f "$SRC_PATH/$MODULE" ; then
 		if busybox test -f "$DST_PATH/$MODULE" ; then
-			if busybox test ! -f "$DST_PATH/$MODULE.bak" ; then
-				echo "$MODULE found, making backup."
-				busybox mv "$DST_PATH/$MODULE" "$DST_PATH/$MODULE.bak"
-			else
-				echo "$MODULE.bak found, skipping backup."
+			if busybox test "$MODULE" != "logger.ko" ; then
+				if busybox test ! -f "$DST_PATH/$MODULE.bak" ; then
+					echo "$MODULE found, making backup."
+					busybox mv "$DST_PATH/$MODULE" "$DST_PATH/$MODULE.bak"
+				else
+					echo "$MODULE.bak found, skipping backup."
+				fi
 			fi
 		else
-			# no backup can be made, just install
-			echo "$MODULE not found, cannot backup."
-			busybox mkdir -p "$DST_PATH"
+			if busybox test "$MODULE" != "logger.ko" ; then
+				# no backup can be made, just install
+				echo "$MODULE not found, cannot backup."
+				busybox mkdir -p "$DST_PATH"
+			fi
 		fi
 		echo "Installing :$MODULE."
 		busybox mv "$SRC_PATH/$MODULE" "$DST_PATH/$MODULE"

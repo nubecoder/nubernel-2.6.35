@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-03-2012:
+update-zip: cm7: Don't backup or restore logger.ko (also fix up some logging).
 defconfig: non-debug builds: Enable CMDLINE_FORCE.
 update-zip: all: Changes to output of updater-scripts.
 update-zip: all: Adding build type info to version output of updater-scripts.

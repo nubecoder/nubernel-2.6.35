@@ -1,5 +1,4 @@
 on post-fs
-
 # load android logger
 insmod /system/lib/modules/logger.ko
 
@@ -71,10 +70,13 @@ chown system input /sys/class/input/input9/delay
 chown system input /sys/class/input/input9/wake
 chown system input /dev/i2c-1
 on boot
-    # Tweak background writeout
-    write /proc/sys/vm/dirty_writeback_centisecs 2000
-    write /proc/sys/vm/dirty_expire_centisecs 1000
-    write /proc/sys/vm/dirty_ratio 90
+# UART debugging
+write /sys/class/sec/switch/uart_sel PDA
+write /sys/class/sec/switch/usb_sel PDA
+# Tweak background writeout
+write /proc/sys/vm/dirty_writeback_centisecs 2000
+write /proc/sys/vm/dirty_expire_centisecs 1000
+write /proc/sys/vm/dirty_ratio 90
 # fake some battery state
 setprop status.battery.state Slow
 setprop status.battery.level 5
@@ -209,7 +211,7 @@ chmod 0770 /sys/class/rfkill/rfkill3/state
 chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
 chown bluetooth bluetooth /sys/class/rfkill/rfkill1/state
 chown bluetooth bluetooth /sys/class/rfkill/rfkill2/state
-chown bluetooth bluetooth /sys/class/rfkill/rfkill3/state	
+chown bluetooth bluetooth /sys/class/rfkill/rfkill3/state
 chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
 chown bluetooth bluetooth /sys/class/rfkill/rfkill1/type
 chown bluetooth bluetooth /sys/class/rfkill/rfkill2/type
@@ -230,7 +232,7 @@ chown system system /dev/dun
 # +++++++++++++++++++++++++++++++++++++++++++
 
 # Samsung USB Mode : system properties are linked with sysfs
-# write /sys/class/sec/switch/UsbMenuSel 0
+#write /sys/class/sec/switch/UsbMenuSel 0
 on property:persist.service.usb.setting=0
 write /sys/devices/platform/android_usb/UsbMenuSel 0
 on property:persist.service.usb.setting=1

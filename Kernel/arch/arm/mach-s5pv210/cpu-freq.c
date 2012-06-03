@@ -482,9 +482,6 @@ static void s5pv210_cpufreq_clksrcs_MPLL2APLL(unsigned int index,
 #ifdef CONFIG_DVFS_LIMIT
 void s5pv210_lock_dvfs_high_level(uint nToken, uint perf_level) 
 {
-	uint freq_level;
-	struct cpufreq_policy *policy;
-
 	printk(KERN_DEBUG "%s : lock with token(%d) level(%d) current(%X)\n",
 			__func__, nToken, perf_level, g_dvfs_high_lock_token);
 
@@ -504,13 +501,12 @@ void s5pv210_lock_dvfs_high_level(uint nToken, uint perf_level)
 
 	//mutex_unlock(&dvfs_high_lock);
 
-	policy = cpufreq_cpu_get(0);
-        if (policy == NULL)
-                return;
-
-	freq_level = freq_table[perf_level].frequency;
-
-        cpufreq_driver_target(policy, freq_level, CPUFREQ_RELATION_L);
+	/* Reevaluate cpufreq policy with the effect of calling the governor with a
+	 * CPUFREQ_GOV_LIMITS event, so that the governor sets its preferred
+	 * frequency.  The governor MUST call __cpufreq_driver_target, even if it
+	 * decides not to change frequencies, as the DVFS limit takes effect in
+	 * doing so. */
+	cpufreq_update_policy(0);
 }
 EXPORT_SYMBOL(s5pv210_lock_dvfs_high_level);
 
@@ -535,6 +531,11 @@ void s5pv210_unlock_dvfs_high_level(unsigned int nToken)
                         __func__, nToken, g_dvfs_high_lock_token, g_dvfs_high_lock_limit);
 
 	//mutex_unlock(&dvfs_high_lock);
+
+	/* Reevaluate cpufreq policy with the effect of calling the governor with a
+	 * CPUFREQ_GOV_LIMITS event, so that the governor sets its preferred
+	 * frequency with the new (or no) DVFS limit. */
+	cpufreq_update_policy(0);
 }
 EXPORT_SYMBOL(s5pv210_unlock_dvfs_high_level);
 #endif
@@ -988,11 +989,8 @@ static int __init s5pv210_cpufreq_driver_init(struct cpufreq_policy *policy)
 static int s5pv210_cpufreq_notifier_event(struct notifier_block *this,
 		unsigned long event, void *ptr)
 {
-//cpufreq_verify_within_limits(policy, policy->cpuinfo.min_freq, policy->cpuinfo.max_freq);
-	static int max, min;
-	int ret;
-
-	struct cpufreq_policy *policy = cpufreq_cpu_get(0);
+	struct cpufreq_policy *policy;
+	int ret = -EINVAL;
 
 #ifdef CONFIG_DEBUG_NUBERNEL_PM
 	printk("PM: entered %s \n", __func__);
@@ -1000,15 +998,26 @@ static int s5pv210_cpufreq_notifier_event(struct notifier_block *this,
 
 	switch (event) {
 	case PM_SUSPEND_PREPARE:
-		max = policy->max;
-		min = policy->min;
-		policy->max = policy->min = SLEEP_FREQ;
-		ret = cpufreq_driver_target(policy, SLEEP_FREQ,
+		if ((policy = cpufreq_cpu_get(0)) == NULL)
+			goto suspend_no_policy;
+		if (unlikely(lock_policy_rwsem_write(policy->cpu)))
+			goto suspend_lock_fail;
+
+		/* Ensure suspend policy includes SLEEP_FREQ, othewrise may crash. */
+		policy->min = policy->max = SLEEP_FREQ;
+
+		/* Call "internal" version as policy is already locked. */
+		ret = __cpufreq_driver_target(policy, SLEEP_FREQ,
 				DISABLE_FURTHER_CPUFREQ);
 #ifdef CONFIG_DEBUG_NUBERNEL_PM
 	printk("PM: SUSPEND_PREPARE: min: %uMHz, max: %uMHz, sleep: %uMHz \n",
 						(policy->min/1000), (policy->max/1000), (SLEEP_FREQ/1000));
 #endif
+
+		unlock_policy_rwsem_write(policy->cpu);
+suspend_lock_fail:
+		cpufreq_cpu_put(policy);
+suspend_no_policy:
 		if (ret < 0)
 			return NOTIFY_BAD;
 		return NOTIFY_OK;
@@ -1018,14 +1027,19 @@ static int s5pv210_cpufreq_notifier_event(struct notifier_block *this,
 						(policy->min/1000), (policy->max/1000), (SLEEP_FREQ/1000));
 #endif
 	case PM_POST_SUSPEND:
-		cpufreq_driver_target(policy, SLEEP_FREQ,
-				ENABLE_FURTHER_CPUFREQ);
-		policy->max = max;
-		policy->min = min;
+		if ((policy = cpufreq_cpu_get(0)) == NULL)
+			return NOTIFY_OK;
+		cpufreq_driver_target(policy, SLEEP_FREQ, ENABLE_FURTHER_CPUFREQ);
+		cpufreq_cpu_put(policy);
+
+		/* Reevaluate the user-specified cpufreq policy, which reverts the
+		 * forced SLEEP_FREQ used during suspend. */
+		cpufreq_update_policy(0);
 #ifdef CONFIG_DEBUG_NUBERNEL_PM
 	printk("PM: POST_SUSPEND: min: %uMHz, max: %uMHz, sleep: %uMHz \n",
 						(policy->min/1000), (policy->max/1000), (SLEEP_FREQ/1000));
 #endif
+
 		return NOTIFY_OK;
 	}
 	return NOTIFY_DONE;

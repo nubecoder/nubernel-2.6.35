@@ -13,15 +13,17 @@ KERNEL_BASE="/home/nubecoder/android/projects/SPH-D700/kernel/2.6.35"
 CROSS_COMPILE="/home/nubecoder/android/toolchains/arm-eabi-4.4.3/bin/arm-eabi-"
 CC_STRIP="${CROSS_COMPILE}strip -d --strip-unneeded"
 
-TARGET_TW="victory_nubernel"
-TARGET_MTD="victory_nubernelmtd"
-TARGET_CM7="cyanogenmod_epicmtd"
+TARGET_TW_BML="victory_nubernel-bml"
+TARGET_TW_MTD="victory_nubernel-mtd"
+TARGET_CM7="victory_nubernel-cm7"
 TARGET_MOD="victory_modules"
+TARGET_DBG_BML="victory_dbg-bml"
+TARGET_DBG_MTD="victory_dbg-mtd"
 TARGET_BML8="victory_bml8mtd"
 
 INSTALL_MOD_PATH="$KERNEL_BASE/res/modules"
-INITRAMFS_TW_PATH="$KERNEL_BASE/initramfs/tw"
-INITRAMFS_MTD_PATH="$KERNEL_BASE/initramfs/mtd"
+INITRAMFS_TW_BML_PATH="$KERNEL_BASE/initramfs/tw-bml"
+INITRAMFS_TW_MTD_PATH="$KERNEL_BASE/initramfs/tw-mtd"
 INITRAMFS_CM7_PATH="$KERNEL_BASE/initramfs/cm7"
 MODULES_CM7_PATH="$KERNEL_BASE/update/cm7"
 
@@ -41,14 +43,16 @@ ZIMAGE_DEST="$DEVICE_TMP_PATH/zImage"
 KERNELLOAD_DEST="$DEVICE_TMP_PATH/kernelLoad"
 KEXEC_DEST="$DEVICE_TMP_PATH/kexec"
 
-ADB_KERNEL_LOAD="su -c \"$KERNELLOAD_DEST $KEXEC_DEST $ZIMAGE_DEST\""
-
 ADB_KILL="adb kill-server"
 ADB_CONNECT="adb connect"
 ADB_DISCONNECT="adb disconnect"
+ADB_ROOT="adb root"
 ADB_SHELL="adb shell"
 ADB_PUSH="adb push"
 ADB_STATE="adb get-state"
+ADB_SERIAL="adb get-serialno"
+ADB_WHOAMI="$ADB_SHELL busybox whoami"
+ADB_OUT_CLEAN="tr -d '\r\n[:blank:]'"
 
 THREADS=$(expr 1 + $(grep processor /proc/cpuinfo | wc -l))
 VERSION=${KBUILD_BUILD_VERSION}_$(date +%m-%d-%Y)

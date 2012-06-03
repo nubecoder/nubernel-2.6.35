@@ -25,7 +25,7 @@ function ECHO_END()
 	if [ "$VERBOSE" = "y" ] ; then
 		echo "*"
 	fi
-	echo "* $@ took $(($__T2 - $__T1)) seconds."
+	echo "* $@ took $(($__T2 - $__T1)) seconds. ($(date +%r))"
 	if [ "$VERBOSE" = "y" ] ; then
 		echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	fi
@@ -60,9 +60,9 @@ function MAKE_CLEAN()
 	ECHO_BEGIN T1 $F1
 	pushd "$KERNEL_BASE/Kernel" >/dev/null
 		if [ "$VERBOSE" = "n" ] ; then
-			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" clean >"$KERNEL_BASE/out/clean.log" 2>&1
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" clean >"$KERNEL_BASE/out/${BUILD_TYPE}.clean.log" 2>&1
 		else
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" clean 2>&1 | tee "$KERNEL_BASE/out/clean.log"
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" clean 2>&1 | tee "$KERNEL_BASE/out/${BUILD_TYPE}.clean.log"
 		fi
 	popd >/dev/null
 	ECHO_END $T1 $F1
@@ -73,10 +73,19 @@ function MAKE_DISTCLEAN()
 	ECHO_BEGIN T1 $F1
 	pushd "$KERNEL_BASE/Kernel" >/dev/null
 		if [ "$VERBOSE" = "n" ] ; then
-			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" distclean >"$KERNEL_BASE/out/distclean.log" 2>&1
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" distclean >"$KERNEL_BASE/out/${BUILD_TYPE}.distclean.log" 2>&1
 		else
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" distclean 2>&1 | tee "$KERNEL_BASE/out/distclean.log"
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" distclean 2>&1 | tee "$KERNEL_BASE/out/${BUILD_TYPE}.distclean.log"
 		fi
+	popd >/dev/null
+	ECHO_END $T1 $F1
+}
+function MAKE_MENUCONFIG()
+{
+	local F1="make menuconfig"
+	ECHO_BEGIN T1 $F1
+	pushd "$KERNEL_BASE/Kernel" >/dev/null
+		nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" menuconfig
 	popd >/dev/null
 	ECHO_END $T1 $F1
 }
@@ -87,9 +96,9 @@ function MAKE_DEFCONFIG()
 	pushd "$KERNEL_BASE/Kernel" >/dev/null
 		rm -f ".config"
 		if [ "$VERBOSE" = "n" ] ; then
-			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" ${TARGET}_defconfig >"$KERNEL_BASE/out/defconfig.log" 2>&1
+			nice make V=1 -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" ${TARGET}_defconfig >"$KERNEL_BASE/out/${BUILD_TYPE}.defconfig.log" 2>&1
 		else
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" ${TARGET}_defconfig 2>&1 | tee "$KERNEL_BASE/out/defconfig.log"
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" ${TARGET}_defconfig 2>&1 | tee "$KERNEL_BASE/out/${BUILD_TYPE}.defconfig.log"
 		fi
 	popd >/dev/null
 	ECHO_END $T1 $F1
@@ -102,9 +111,9 @@ function BUILD_MODULES()
 		# force new timestamp
 		rm -f "include/generated/compile.h" >/dev/null
 		if [ "$VERBOSE" = "n" ] ; then
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" modules >"$KERNEL_BASE/out/modules.log" 2>&1
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" modules >"$KERNEL_BASE/out/${BUILD_TYPE}.modules.log" 2>&1
 		else
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" modules 2>&1 | tee "$KERNEL_BASE/out/modules.log"
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" modules 2>&1 | tee "$KERNEL_BASE/out/${BUILD_TYPE}.modules.log"
 		fi
 	popd >/dev/null
 	ECHO_END $T1 $F1
@@ -117,9 +126,9 @@ function INSTALL_MODULES()
 		# force new timestamp
 		rm -f "include/generated/compile.h" >/dev/null
 		if [ "$VERBOSE" = "n" ] ; then
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install >"$KERNEL_BASE/out/modules_install.log" 2>&1
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install >"$KERNEL_BASE/out/${BUILD_TYPE}.modules_install.log" 2>&1
 		else
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee "$KERNEL_BASE/out/modules_install.log"
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" INSTALL_MOD_PATH="$INSTALL_MOD_PATH" INSTALL_MOD_STRIP=1 modules_install 2>&1 | tee "$KERNEL_BASE/out/${BUILD_TYPE}.modules_install.log"
 		fi
 	popd >/dev/null
 	if [ "$VERBOSE" = "y" ] ; then
@@ -130,43 +139,46 @@ function INSTALL_MODULES()
 		echo "*"
 	fi
 	STRIP_MODULES
+	if [ "$VERBOSE" = "y" ] ; then
+		echo "*"
+		SHOW_MODULES_INFO
+	fi
 	ECHO_END $T1 $F1
 }
 function COPY_MODULES()
 {
 	pushd $KERNEL_BASE >/dev/null
-		local PARTS=""
 		case "$BUILD_TYPE" in
-			tw)
-				local MODULES_DEST="$INITRAMFS_TW_PATH/lib/modules"
-				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
-				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
-				;;
-			mtd)
-				local MODULES_DEST="$INITRAMFS_MTD_PATH/lib/modules"
-				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
-				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
-				;;
+			tw-bml|dbg-bml)
+				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules" ;;
+			tw-mtd|dbg-mtd)
+				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules" ;;
 			cm7)
-				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules"
-				local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
-				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/bcm4329.ko"
-				local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
-				;;
+				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules" ;;
 			mod)
-				local MODULES_DEST="$INSTALL_MOD_PATH"
-				local PARTS="kernel/drivers/net/tun.ko"
+				local MODULES_DEST="$INSTALL_MOD_PATH" ;;
+		esac
+		# common modules
+		local PARTS="kernel/drivers/misc/vibetonz/vibrator.ko"
+		local PARTS="$PARTS kernel/drivers/net/wireless/wimax/cmc7xx_sdio.ko"
+		local PARTS="$PARTS kernel/drivers/staging/android/logger.ko"
+		case "$BUILD_TYPE" in
+			tw-bml|tw-mtd|dbg-bml|dbg-mtd)
+				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko" ;;
+			cm7)
+				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/bcm4329.ko" ;;
+			mod)
+				local PARTS="$PARTS kernel/drivers/net/tun.ko"
+				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/bcm4329.ko"
+				local PARTS="$PARTS kernel/drivers/net/wireless/bcm4329/victory/dhd.ko"
 				local PARTS="$PARTS kernel/fs/cifs/cifs.ko"
 				local PARTS="$PARTS kernel/fs/fuse/fuse.ko"
 				local PARTS="$PARTS kernel/kernel/slow-work.ko"
 				local PARTS="$PARTS kernel/net/netfilter/xt_TCPMSS.ko"
 				local PARTS="$PARTS kernel/net/netfilter/xt_tcpmss.ko"
 				;;
+			bml8)
+				local PARTS="" ;;
 		esac
 		if [ "$PARTS" != "" ] && [ "$MODULES_DEST" != "" ] ; then
 			local MOD_PATH="$INSTALL_MOD_PATH/$VERSION_PATH"
@@ -182,37 +194,48 @@ function COPY_MODULES()
 function STRIP_MODULES()
 {
 	pushd $KERNEL_BASE >/dev/null
-		local PARTS=""
 		case "$BUILD_TYPE" in
-			tw)
-				local MODULES_DEST="$INITRAMFS_TW_PATH/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS dhd.ko"
-				local PARTS="$PARTS logger.ko"
-				;;
-			mtd)
-				local MODULES_DEST="$INITRAMFS_MTD_PATH/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS dhd.ko"
-				local PARTS="$PARTS logger.ko"
-				;;
+			tw-bml|dbg-bml)
+				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules" ;;
+			tw-mtd|dbg-mtd)
+				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules" ;;
 			cm7)
-				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules"
-				local PARTS="vibrator.ko"
-				local PARTS="$PARTS cmc7xx_sdio.ko"
-				local PARTS="$PARTS bcm4329.ko"
-				local PARTS="$PARTS logger.ko"
-				;;
+				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules" ;;
 			mod)
-				local MODULES_DEST="$INSTALL_MOD_PATH"
-				local PARTS="tun.ko"
+				local MODULES_DEST="$INSTALL_MOD_PATH" ;;
+		esac
+		# common modules
+		local PARTS="vibrator.ko"
+		local PARTS="$PARTS cmc7xx_sdio.ko"
+		local PARTS="$PARTS logger.ko"
+		case "$BUILD_TYPE" in
+			tw-bml|dbg-bml)
+				local PARTS="$PARTS dhd.ko"
+				# Samsung proprietary
+				local PARTS="$PARTS fsr.ko"
+				local PARTS="$PARTS fsr_stl.ko"
+				local PARTS="$PARTS j4fs.ko"
+				local PARTS="$PARTS param.ko"
+				local PARTS="$PARTS rfs_fat.ko"
+				local PARTS="$PARTS rfs_glue.ko"
+				local PARTS="$PARTS storage.ko"
+				;;
+			tw-mtd|dbg-mtd)
+				local PARTS="$PARTS dhd.ko" ;;
+			cm7)
+				local PARTS="$PARTS bcm4329.ko" ;;
+			mod)
+				local PARTS="$PARTS tun.ko"
+				local PARTS="$PARTS bcm4329.ko"
+				local PARTS="$PARTS dhd.ko"
 				local PARTS="$PARTS cifs.ko"
 				local PARTS="$PARTS fuse.ko"
 				local PARTS="$PARTS slow-work.ko"
 				local PARTS="$PARTS xt_TCPMSS.ko"
-				local PARTS="$PARTS xt_tcpmss.ko" ;;
+				local PARTS="$PARTS xt_tcpmss.ko"
+				;;
+			bml8)
+				local PARTS="" ;;
 		esac
 		if [ "$PARTS" != "" ] && [ "$MODULES_DEST" != "" ] ; then
 			for PART in $PARTS ; do
@@ -221,6 +244,64 @@ function STRIP_MODULES()
 				fi
 				$CC_STRIP "$MODULES_DEST/$PART"
 			done
+		fi
+	popd >/dev/null
+}
+function SHOW_MODULES_INFO()
+{
+	pushd $KERNEL_BASE >/dev/null
+		case "$BUILD_TYPE" in
+			tw-bml|dbg-bml)
+				local MODULES_DEST="$INITRAMFS_TW_BML_PATH/lib/modules" ;;
+			tw-mtd|dbg-mtd)
+				local MODULES_DEST="$INITRAMFS_TW_MTD_PATH/lib/modules" ;;
+			cm7)
+				local MODULES_DEST="$KERNEL_BASE/update/$BUILD_TYPE/lib/modules" ;;
+			mod)
+				local MODULES_DEST="$INSTALL_MOD_PATH" ;;
+		esac
+		# common modules
+		local PARTS="vibrator.ko"
+		local PARTS="$PARTS cmc7xx_sdio.ko"
+		local PARTS="$PARTS logger.ko"
+		case "$BUILD_TYPE" in
+			tw-bml|dbg-bml)
+				local PARTS="$PARTS dhd.ko"
+				# Samsung proprietary
+				local PARTS="$PARTS fsr.ko"
+				local PARTS="$PARTS fsr_stl.ko"
+				local PARTS="$PARTS j4fs.ko"
+				local PARTS="$PARTS param.ko"
+				local PARTS="$PARTS rfs_fat.ko"
+				local PARTS="$PARTS rfs_glue.ko"
+				local PARTS="$PARTS storage.ko"
+				;;
+			tw-mtd|dbg-mtd)
+				local PARTS="$PARTS dhd.ko" ;;
+			cm7)
+				local PARTS="$PARTS bcm4329.ko" ;;
+			mod)
+				local PARTS="$PARTS tun.ko"
+				local PARTS="$PARTS bcm4329.ko"
+				local PARTS="$PARTS dhd.ko"
+				local PARTS="$PARTS cifs.ko"
+				local PARTS="$PARTS fuse.ko"
+				local PARTS="$PARTS slow-work.ko"
+				local PARTS="$PARTS xt_TCPMSS.ko"
+				local PARTS="$PARTS xt_tcpmss.ko"
+				;;
+		esac
+
+		if [ "$PARTS" != "" ] && [ "$MODULES_DEST" != "" ] ; then
+			for PART in $PARTS ; do
+				echo "  filename: $PART"
+				echo "  $(file -b $MODULES_DEST/$PART)"
+				echo "  $(modinfo "$MODULES_DEST/$PART" | grep 'vermagic')"
+			done
+			local VER_INFO=$(grep "EXTRAVERSION =" Kernel/Makefile)
+			echo "  $VER_INFO"
+			local VER_INFO=$(grep "VERSION_PATH" include/includes)
+			echo "  $VER_INFO"
 		fi
 	popd >/dev/null
 }
@@ -234,9 +315,9 @@ function BUILD_ZIMAGE()
 		# force new timestamp
 		rm -f "include/generated/compile.h"
 		if [ "$VERBOSE" = "n" ] ; then
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION.$BUILD_TYPE" zImage >"$KERNEL_BASE/out/zImage.log" 2>&1
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION.$BUILD_TYPE" zImage >"$KERNEL_BASE/out/${BUILD_TYPE}.zImage.log" 2>&1
 		else
-			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION.$BUILD_TYPE" zImage 2>&1 | tee "$KERNEL_BASE/out/zImage.log"
+			nice make -j"$THREADS" ARCH=arm CROSS_COMPILE="$CROSS_COMPILE" LOCALVERSION="$LOCALVERSION.$BUILD_TYPE" zImage 2>&1 | tee "$KERNEL_BASE/out/${BUILD_TYPE}.zImage.log"
 		fi
 	popd >/dev/null
 	ECHO_END $T1 $F1
@@ -245,9 +326,13 @@ function GENERATE_WARNINGS_FILE()
 {
 	local F1="generating warnings file"
 	ECHO_BEGIN T1 $F1
-	local ZIMAGE_LOG="$KERNEL_BASE/out/zImage.log"
-	local WARN_LOG="$KERNEL_BASE/out/warnings.log"
-	cp $ZIMAGE_LOG $WARN_LOG
+	local MODULES_LOG="$KERNEL_BASE/out/${BUILD_TYPE}.modules.log"
+	local ZIMAGE_LOG="$KERNEL_BASE/out/${BUILD_TYPE}.zImage.log"
+	local WARN_LOG="$KERNEL_BASE/out/${BUILD_TYPE}.warnings.log"
+	echo "=]=]=]=] MODULES WARNINGS =]=]=]=]" >$WARN_LOG
+	cat $MODULES_LOG >>$WARN_LOG
+	echo "=]=]=]=] ZIMAGE WARNINGS =]=]=]=]" >>$WARN_LOG
+	cat $ZIMAGE_LOG >>$WARN_LOG
 	local ITEMS="AR AS Building CALL CC CHK CONMK GEN Generating GZIP HOSTCC HOSTLD IKCFG Kernel: KSYM LD MKELF MODPOST OBJCOPY SHIPPED SYMLINK SYSMAP TIMEC UPD XZKERN"
 	for ITEM in $ITEMS ; do
 		sed -ri "s/^\s*$ITEM.*//" $WARN_LOG
@@ -298,7 +383,14 @@ function PACKAGE_BOOTIMG()
 		else
 			rm -f "boot.img"
 			cp "$BUILT_ZIMAGE" "zImage"
-			local KERNEL_INITRD="$KERNEL_BASE/initramfs/$BUILD_TYPE"
+			case "$BUILD_TYPE" in
+				tw-bml|dbg-bml)
+					local KERNEL_INITRD="$INITRAMFS_TW_BML_PATH" ;;
+				tw-mtd|dbg-mtd)
+					local KERNEL_INITRD="$INITRAMFS_TW_MTD_PATH" ;;
+				cm7)
+					local KERNEL_INITRD="$INITRAMFS_CM7_PATH" ;;
+			esac
 			local RECOVERY_INITRD="$KERNEL_BASE/initramfs/$RECOVERY_TYPE"
 			./mkbootfs $KERNEL_INITRD | minigzip > ramdisk-kernel.img
 			./mkbootfs $RECOVERY_INITRD > ramdisk-recovery.cpio
@@ -316,7 +408,7 @@ function PACKAGE_BOOTIMG()
 function UPDATE_UPDATER()
 {
 	if [ -f "$KERNEL_BASE/update/updater" ] ; then
-		TYPES="tw mtd cm7"
+		TYPES="tw-bml tw-mtd cm7 dbg-bml dbg-mtd"
 		for TYPE in $TYPES ; do
 			cp -f "$KERNEL_BASE/update/updater" "$KERNEL_BASE/update/$TYPE/META-INF/com/google/android/update-binary"
 			$CC_STRIP "$KERNEL_BASE/update/$TYPE/META-INF/com/google/android/update-binary" >/dev/null 2>&1
@@ -332,12 +424,14 @@ function PACKAGE_ZIP()
 	ECHO_BEGIN T1 $F1
 	UPDATE_UPDATER
 	case "$BUILD_TYPE" in
-		tw)
+		tw-bml|dbg-bml)
 			rm -f "$KERNEL_BASE/update/$BUILD_TYPE/zImage"
-			cp "$BUILT_ZIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
-		mtd|cm7)
+			cp "$BUILT_ZIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/"
+			;;
+		tw-mtd|dbg-mtd|cm7)
 			rm -f "$KERNEL_BASE/update/$BUILD_TYPE/boot.img"
-			mv -f "$BUILT_BOOTIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/" ;;
+			mv -f "$BUILT_BOOTIMAGE" "$KERNEL_BASE/update/$BUILD_TYPE/"
+			;;
 	esac
 	pushd "$KERNEL_BASE/update/$BUILD_TYPE" >/dev/null
 		zip -r "$OUTFILE" * >/dev/null
@@ -347,28 +441,57 @@ function PACKAGE_ZIP()
 function CREATE_INSTALL_PACKAGE()
 {
 	case "$BUILD_TYPE" in
-		tw)
+		tw-bml|dbg-bml)
 			PACKAGE_TAR
-			PACKAGE_HEIMDALL ;;
-		mtd|cm7)
+			PACKAGE_HEIMDALL
+			;;
+		tw-mtd|dbg-mtd|cm7)
 			PACKAGE_BOOTIMG
 			if [ $? != 0 ] ; then
 				SHOW_ERROR
 				SHOW_COMPLETED
-			fi ;;
+			fi
+			;;
 	esac
 	PACKAGE_ZIP
 }
-function INSTALL_CWM_PACKAGE()
+function INSTALL_ZIP_PACKAGE()
 {
 	local F1="installing update-zip via cwm"
 	ECHO_BEGIN T1 $F1
 	pushd "$KERNEL_BASE/res" >/dev/null
 		echo "install_zip(\"/sdcard/$VERSION.$BUILD_TYPE.zip\");" >extendedcommand
-		adb push "../$VERSION.$BUILD_TYPE.zip" /sdcard/ >/dev/null
-		adb push extendedcommand /sdcard/
-		#adb shell "mv /sdcard/extendedcommand /cache/recovery/extendedcommand"
-		adb shell "su -c \"mv /sdcard/extendedcommand /cache/recovery/extendedcommand\""
+		$ADB_KILL >/dev/null 2>&1
+		$ADB_ROOT >/dev/null 2>&1
+		local COUNT=0
+		local RESULT=$($ADB_WHOAMI 2>&1 | $ADB_OUT_CLEAN)
+		while [ "$RESULT" != "root" ] && [ "$COUNT" -lt "5" ] ; do
+			sleep 1
+			local COUNT=$(($COUNT + 1))
+			if [ "$VERBOSE" = "y" ] ; then
+				echo "adb: waiting for device..."
+			fi
+			$ADB_ROOT >/dev/null 2>&1
+			local RESULT=$($ADB_WHOAMI 2>&1 | $ADB_OUT_CLEAN)
+		done
+		if [ "$COUNT" -eq "5" ] ; then
+			ERROR_MSG="Error: INSTALL_ZIP_PACKAGE - problem with adb root!"
+			rm -f extendedcommand
+			SHOW_ERROR
+			SHOW_COMPLETED
+		fi
+		if [ "$VERBOSE" = "y" ] ; then
+			$ADB_PUSH "../$VERSION.$BUILD_TYPE.zip" /sdcard/
+		else
+			$ADB_PUSH "../$VERSION.$BUILD_TYPE.zip" /sdcard/ >/dev/null 2>&1
+		fi
+		$ADB_SHELL "busybox mount -o remount,rw /cache"
+		$ADB_SHELL "busybox mkdir -p /cache/recovery/"
+		if [ "$VERBOSE" = "y" ] ; then
+			$ADB_PUSH "extendedcommand" "/cache/recovery/extendedcommand"
+		else
+			$ADB_PUSH "extendedcommand" "/cache/recovery/extendedcommand" >/dev/null 2>&1
+		fi
 		adb reboot recovery
 		rm -f extendedcommand
 	popd >/dev/null
@@ -378,11 +501,14 @@ function WIFI_KERNEL_LOAD_SCRIPT()
 {
 	local F1="wifi kernel load helper script"
 	ECHO_BEGIN T1 $F1
+	if [ "$BUILD_TYPE" = "dbg-bml" ] || [ "$BUILD_TYPE" = "dbg-mtd" ] ; then
+		local KEXEC_MODE="dbg"
+	fi
 	pushd "$RES_SCRIPTS_PATH" >/dev/null
 		if [ "$VERBOSE" = "n" ] ; then
-			sh -c "./wifiKernelLoader.sh" >"$KERNEL_BASE/out/wifiKernelLoader.log" 2>&1
+			sh -c "./wifiKernelLoader.sh $KEXEC_MODE" >"$KERNEL_BASE/out/${BUILD_TYPE}.wifiKernelLoader.log" 2>&1
 		else
-			sh -c "./wifiKernelLoader.sh" 2>&1 | tee "$KERNEL_BASE/out/wifiKernelLoader.log"
+			sh -c "./wifiKernelLoader.sh $KEXEC_MODE" 2>&1 | tee "$KERNEL_BASE/out/${BUILD_TYPE}.wifiKernelLoader.log"
 		fi
 	popd >/dev/null
 	ECHO_END $T1 $F1
@@ -391,11 +517,14 @@ function WIRED_KERNEL_LOAD_SCRIPT()
 {
 	local F1="wired kernel load helper script"
 	ECHO_BEGIN T1 $F1
+	if [ "$BUILD_TYPE" = "dbg-bml" ] || [ "$BUILD_TYPE" = "dbg-mtd" ] ; then
+		local KEXEC_MODE="dbg"
+	fi
 	pushd "$RES_SCRIPTS_PATH" >/dev/null
 		if [ "$VERBOSE" = "n" ] ; then
-			sh -c "./wiredKernelLoader.sh" >"$KERNEL_BASE/out/wiredKernelLoader.log" 2>&1
+			sh -c "./wiredKernelLoader.sh $KEXEC_MODE" >"$KERNEL_BASE/out/${BUILD_TYPE}.wiredKernelLoader.log" 2>&1
 		else
-			sh -c "./wiredKernelLoader.sh" 2>&1 | tee "$KERNEL_BASE/out/wiredKernelLoader.log"
+			sh -c "./wiredKernelLoader.sh $KEXEC_MODE" 2>&1 | tee "$KERNEL_BASE/out/${BUILD_TYPE}.wiredKernelLoader.log"
 		fi
 	popd >/dev/null
 	ECHO_END $T1 $F1

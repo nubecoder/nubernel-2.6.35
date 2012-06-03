@@ -10,6 +10,7 @@ source "$PWD/../../include/includes"
 
 #defines
 WIFI_IP="192.168.1.168"
+KEXEC_MODE="$3"
 
 #error
 ERROR="no"
@@ -26,9 +27,9 @@ echo "Connect to $WIFI_IP."
 $ADB_CONNECT $WIFI_IP >/dev/null
 
 # check for device (taken from the OneClickRoot: http://forum.xda-developers.com/showthread.php?t=897612)
-CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
+CURSTATE=$($ADB_STATE | $ADB_OUT_CLEAN)
 while [ "$CURSTATE" != device ] ; do
-	CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
+	CURSTATE=$($ADB_STATE | $ADB_OUT_CLEAN)
 	echo "Phone is not connected."
 	CURSTATE="device"
 	ERROR="yes"
@@ -60,7 +61,8 @@ if [ "$ERROR" != "yes" ] ; then
 	# load kernel with kernelLoad script
 	echo "Loading kernel with kernelLoad."
 	echo "*"
-	$ADB_SHELL $ADB_KERNEL_LOAD
+	#$ADB_SHELL $ADB_KERNEL_LOAD
+	$ADB_SHELL "su -c \"$KERNELLOAD_DEST $KEXEC_DEST $ZIMAGE_DEST $KEXEC_MODE\""
 
 	# cleanup adb wireless by disconnecting
 	echo "Disconnect from $WIFI_IP."

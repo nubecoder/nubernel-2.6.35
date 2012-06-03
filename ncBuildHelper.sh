@@ -8,17 +8,17 @@
 source "$PWD/include/includes"
 
 #defaults
-BUILD_TYPE="tw"
+BUILD_TYPE="tw-bml"
 RECOVERY_TYPE="cwm"
 TARGET="victory_nubernel"
 CLEAN=n
 DISTCLEAN=n
 BUILD_MODULES=n
 BUILD_KERNEL=n
-CREATE_PACKAGES=n
+CREATE_PACKAGE=n
 KEXEC_ZIMAGE=n
 WIFI_KEXEC=n
-INSTALL_VIA_CWM=y
+INSTALL_PACKAGE=n
 VERBOSE=n
 
 #exports
@@ -33,6 +33,7 @@ function SHOW_HELP()
 	echo "-c : Run 'make clean'."
 	echo "-d : Run 'make distclean'."
 	echo "-h : Print this help info."
+	echo "-i : Install zip via recovery."
 	echo "-k : Kexec the current zImage."
 	echo "     Options are: <u|usb|wifi|w> (defaults to usb)."
 	echo "-m : Build and install modules."
@@ -40,7 +41,7 @@ function SHOW_HELP()
 	echo "-r : Define the recovery type."
 	echo "     Recovery types are: <cwm|twrp> (defaults to cwm)."
 	echo "-t : Define the build type."
-	echo "     Build types are: <tw|mtd|cm7|mod|bml8> (defaults to tw)."
+	echo "     Build types are: <tw-bml|tw-mtd|cm7|dbg-bml|dbg-mtd|mod|bml8> (defaults to tw-bml)."
 	echo "-v : Verbose script output."
 	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
 	exit 1
@@ -61,7 +62,8 @@ function SHOW_SETTINGS()
 	echo "make distclean  == $DISTCLEAN"
 	echo "build modules   == $BUILD_MODULES"
 	echo "build kernel    == $BUILD_KERNEL"
-	echo "create packages == $CREATE_PACKAGES"
+	echo "create package  == $CREATE_PACKAGE"
+	echo "install package == $INSTALL_PACKAGE"
 	echo "kexec zimage    == $KEXEC_ZIMAGE"
 	echo "wifi kexec      == $WIFI_KEXEC"
 	echo "verbose output  == $VERBOSE"
@@ -70,7 +72,7 @@ function SHOW_SETTINGS()
 }
 
 #main
-while getopts ":bcdhk:mpr:t:v" flag
+while getopts ":bcdhik:mpr:t:v" flag
 do
 	case "$flag" in
 		b)
@@ -81,6 +83,8 @@ do
 			DISTCLEAN=y ;;
 		h)
 			SHOW_HELP ;;
+		i)
+			INSTALL_PACKAGE=y ;;
 		k)
 			KEXEC_ZIMAGE=y
 			case "$OPTARG" in
@@ -96,7 +100,7 @@ do
 		m)
 			BUILD_MODULES=y ;;
 		p)
-			CREATE_PACKAGES=y ;;
+			CREATE_PACKAGE=y ;;
 		r)
 			case "$OPTARG" in
 				cwm)
@@ -110,19 +114,24 @@ do
 			esac ;;
 		t)
 			case "$OPTARG" in
-				tw)
+				tw-bml)
 					BUILD_TYPE="$OPTARG"
-					TARGET=$TARGET_TW ;;
-				mtd)
+					TARGET=$TARGET_TW_BML ;;
+				tw-mtd)
 					BUILD_TYPE="$OPTARG"
-					TARGET=$TARGET_MTD ;;
+					TARGET=$TARGET_TW_MTD ;;
 				cm7)
 					BUILD_TYPE="$OPTARG"
 					TARGET=$TARGET_CM7 ;;
+				dbg-bml)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_DBG_BML ;;
+				dbg-mtd)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_DBG_MTD ;;
 				mod)
 					BUILD_TYPE="$OPTARG"
-					TARGET=$TARGET_MOD
-					BUILD_MODULES=y ;;
+					TARGET=$TARGET_MOD ;;
 				bml8)
 					BUILD_TYPE="$OPTARG"
 					TARGET=$TARGET_BML8 ;;
@@ -159,7 +168,7 @@ if [ "$BUILD_KERNEL" = "y" ] ; then
 	BUILD_ZIMAGE
 	GENERATE_WARNINGS_FILE
 fi
-if [ "$CREATE_PACKAGES" = "y" ] ; then
+if [ "$CREATE_PACKAGE" = "y" ] ; then
 	if [ "$BUILD_TYPE" != "mod" ] || [ "$BUILD_TYPE" != "bml8" ] ; then
 		CREATE_INSTALL_PACKAGE
 	fi
@@ -173,8 +182,8 @@ if [ "$KEXEC_ZIMAGE" = "y" ] ; then
 	fi
 fi
 
-if [ "$INSTALL_VIA_CWM" = "y" ] ; then
-	INSTALL_CWM_PACKAGE
+if [ "$INSTALL_PACKAGE" = "y" ] ; then
+	INSTALL_ZIP_PACKAGE
 fi
 
 SHOW_COMPLETED

@@ -210,7 +210,7 @@ int suspend_devices_and_enter(suspend_state_t state)
 		if (error)
 			goto Close;
 	}
-#ifndef CONFIG_DEBUG_NUBERNEL_SUSPEND_CONSOLE
+#ifndef CONFIG_DEBUG_NUBERNEL_NO_CONSOLE_SUSPEND
 	suspend_console();
 #endif
 	pm_restrict_gfp_mask();
@@ -231,7 +231,7 @@ int suspend_devices_and_enter(suspend_state_t state)
 	dpm_resume_end(PMSG_RESUME);
 	suspend_test_finish("resume devices");
 	pm_restore_gfp_mask();
-#ifndef CONFIG_DEBUG_NUBERNEL_SUSPEND_CONSOLE
+#ifndef CONFIG_DEBUG_NUBERNEL_NO_CONSOLE_SUSPEND
 	resume_console();
 #endif
  Close:

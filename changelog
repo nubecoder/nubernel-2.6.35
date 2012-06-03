@@ -8,8 +8,78 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-03-2012:
+scripting: Fixing up the branchHelper script for new builds.
+scripting: Remove duplicate "debug" initramfs folders.
+
+06-02-2012:
+defconfig: non-debug builds: Add "quiet" to boot args.
+defconfig: non-debug builds: Don't calibrate loops per jiffy during boot (set in boot args).
+defconfig: all: Reduce kernel log buffer to 16 (64KB).
+sched: Fix strncmp operation (via mainline: http://git.kernel.org/?p=linux/kernel/git/paulg/linux-stable.git;a=commit;h=524429c31b486c05449666b94613f59f729c0a84).
+arm: remove "optimized" SHA1 routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commit;h=4d4487140d34c1b9b321889d2d209321b0da6643).
+lib/sha1: use the git implementation of SHA-1 (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=1eb19a12bd2214cdcad5273d472b062a4ba97fa1).
+s3c-keypad: On slide open, set keyboard backlight to configured state, not always on (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/e58150f788625c012019392a9bb028440d09e521).
+cpufreq: s5pv210: Call cpufreq_update_policy on DVFS events and force SLEEP_FREQ on suspend (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/a08ec940e5bebb86acec43b7bd73c2182bdd7c62).
+Oops, this should not have been left here.
+
+06-01-2012:
+initramfs: twrp: Whitespace fixes.
+update-zip: All: Syncing device asserts with cm7.
+
+05-31-2012:
+initramfs: all: Add fresh built modules (again).
+scripting: Some scripting cleanup, etc.
+defconfig: Duplicate "cyanogenmod_epicmtd_defconfig" into "victory_nubernel-cm7_defconfig".
+scripting: Some logging changes and a fix for when the INSTALL_ZIP_PACKAGE function has an error.
+scripting: build types: Change "mtd" to "tw-mtd".
+scripting: build types: Change "tw" to "tw-bml".
+scripting: build types: Change "debug" to "dbg-bml" and add "dbg-mtd".
+
+05-30-2012:
+scripting: Quiet the INSTALL_ZIP_PACKAGE function unless output is verbose.
+defconfig: Set CONFIG_BROADCOM_WIFI to 'm' (it is forced to be a module by the Makefile, and brakes if you change it).
+scripting: Fix up some build type "debug" related scripting.
+scripting: Add file and module info to verbose output.
+initramfs: DEBUG: Re-add hacked modules for 2.6.35.14 (more uniform hacking, remove the byte from the "depends" area for all modules).
+initramfs: DEBUG: Add freshly built modules.
+
 05-29-2012:
+initramfs: TW: Re-add hacked modules for 2.6.35.14 (more uniform hacking, remove the byte from the "depends" area for all modules).
+initramfs: TW: Add freshly built modules.
 voodoo-color: Add VOODOO_MDNIE options in Kconfig. Also add more tweaks, etc to s3cfb_mdnie_value.h.
+Reverting "mm: prevent concurrent unmap_mapping_range() on the same inode" (commitID: 3a98075).
+Reverting "PM / Wakeup: Introduce wakeup source objects and event statistics (v3)" (commitID: 599c650).
+
+05-27-2012:
+initramfs: CM7: Add freshly built modules.
+initramfs: MTD: Add freshly built modules.
+update-zip: Some adjustments to my updater-script(s).
+
+05-26-2012:
+scripting: More scripting changes (mostly related to adb root).
+scripting: Use "adb root" in stead of "adb shell 'su -c'".
+
+05-23-2012:
+debugging: nubernel: Adjust the descriptions and help info of my Kconfig debuging entries.
+debugging: nubernel: Change "DEBUG_NUBERNEL_SUSPEND_CONSOLE" to "DEBUG_NUBERNEL_NO_CONSOLE_SUSPEND".
+initramfs: CM7: Some minor changes to some .rc files.
+scripting: Rename buildAll.sh to buildPackages.sh.
+scripting: Changes to buildAll.sh to enable passing args.
+update-zip: CM7: Add zip package to restore module backups for cm7.
+scripting: menuconfig: Add menuConfig.sh script for easy "make menuconfig" access.
+scripting: Minor changes to functions file.
+scripting: build script: Add "debug" build type (will fix for mtd varient later).
+gitignore: Some adjustments to Kernel/.gitignore (also added new "logo" related entries).
+defconfig: More miscellaneous changes to my defconfigs (disable CONFIG_EXT2_FS, etc).
+defconfig: debugging: Fix and tweak victory_bootdebug_defconfig (currently for tw builds, will add mtd later).
+
+05-22-2012:
+update-zip: CM7: Adjustments to install_modules.sh (skip backup if *.bak file already exixts).
+scripting: build script: Add timestamp to output.
+gitignore: Add arch/arm/boot/compressed/ashldi3.S to Kernel/.gitignore.
+scripting: build script: Fix support for installing package via recovery.
+defconfigs: Changes to my defconfigs (for recent patches, etc).
 
 05-18-2012:
 defconfig: debugging: Make victory_bootdebug_defconfig dump kernel boot to screen (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/43c5609f8f25ea7138a834290b9726396faa8052).

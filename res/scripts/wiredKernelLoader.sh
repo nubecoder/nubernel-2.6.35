@@ -8,6 +8,9 @@
 #source includes
 source "$PWD/../../include/includes"
 
+#defines
+KEXEC_MODE="$3"
+
 #error
 ERROR="no"
 
@@ -17,9 +20,9 @@ echo "Begin."
 echo "*"
 
 # check for device (taken from the OneClickRoot: http://forum.xda-developers.com/showthread.php?t=897612)
-CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
+CURSTATE=$($ADB_STATE | $ADB_OUT_CLEAN)
 while [ "$CURSTATE" != device ] ; do
-	CURSTATE=$($ADB_STATE | tr -d '\r\n[:blank:]')
+	CURSTATE=$($ADB_STATE | $ADB_OUT_CLEAN)
 	echo "Phone is not connected."
 	CURSTATE="device"
 	ERROR="yes"
@@ -51,7 +54,8 @@ if [ "$ERROR" != "yes" ] ; then
 	# load kernel with kernelLoad script
 	echo "Loading kernel with kernelLoad."
 	echo "*"
-	$ADB_SHELL $ADB_KERNEL_LOAD
+	#$ADB_SHELL $ADB_KERNEL_LOAD
+	$ADB_SHELL "su -c \"$KERNELLOAD_DEST $KEXEC_DEST $ZIMAGE_DEST $KEXEC_MODE\""
 else
 	echo "Please connect your phone."
 fi

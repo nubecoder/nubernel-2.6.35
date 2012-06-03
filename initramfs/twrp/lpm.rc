@@ -46,7 +46,7 @@ service playlpm /system/bin/playlpm
     user root
     oneshot
 
-service immvibed /system/bin/immvibed 
+service immvibed /system/bin/immvibed
     oneshot
 
 service lpmkey /system/bin/charging_mode

@@ -80,13 +80,14 @@ BRANCH_RELEASE()
 	# update files
 	local PATTERN="${VERSION_STRING}$CURRENT_VERSION"
 	local REPLACEMENT="${VERSION_STRING}$NEW_VERSION"
+	local UPDATE_FOLDERS="cm7 cm7-restore-modules dbg-bml dbg-mtd tw-bml tw-mtd"
 	if [ "$VERBOSE" = "y" ]; then
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README
 		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes
 		sed -i "s/$PATTERN/$REPLACEMENT/g" res/heimdall/firmware.xml
 		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist
-		for FOLDER in "cm7 cm7-restore-modules dbg-bml dbg-mtd tw-bml tw-mtd" ; do
+		for FOLDER in $UPDATE_FOLDERS ; do
 			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/google/android/updater-script
 			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/android/metadata
 		done
@@ -96,7 +97,7 @@ BRANCH_RELEASE()
 		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" res/heimdall/firmware.xml >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist >/dev/null 2>&1
-		for FOLDER in "cm7 cm7-restore-modules dbg-bml dbg-mtd tw-bml tw-mtd" ; do
+		for FOLDER in $UPDATE_FOLDERS ; do
 			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/google/android/updater-script >/dev/null 2>&1
 			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/android/metadata >/dev/null 2>&1
 		done
@@ -125,7 +126,7 @@ BRANCH_RELEASE()
 		git add include/includes
 		git add res/heimdall/firmware.xml
 		git add featurelist
-		for FOLDER in "cm7 cm7-restore-modules dbg-bml dbg-mtd tw-bml tw-mtd" ; do
+		for FOLDER in $UPDATE_FOLDERS ; do
 			git add update/$FOLDER/META-INF/com/google/android/updater-script
 			git add update/$FOLDER/META-INF/com/android/metadata
 		done
@@ -136,7 +137,7 @@ BRANCH_RELEASE()
 		git add include/includes >/dev/null 2>&1
 		git add res/heimdall/firmware.xml >/dev/null 2>&1
 		git add featurelist >/dev/null 2>&1
-		for FOLDER in "cm7 cm7-restore-modules dbg-bml dbg-mtd tw-bml tw-mtd" ; do
+		for FOLDER in $UPDATE_FOLDERS ; do
 			git add update/$FOLDER/META-INF/com/google/android/updater-script >/dev/null 2>&1
 			git add update/$FOLDER/META-INF/com/android/metadata >/dev/null 2>&1
 		done

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-04-2012:
+leds: ledtrig: Give "other" users write permission.
 update-zip: all: Add some led_fun to the update-zips.
 update-zip: cm7: Fix up script headers.
 

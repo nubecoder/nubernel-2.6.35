@@ -1,7 +1,8 @@
 #!/sbin/busybox sh
 #
 # restore_modules.sh
-# backup originals and install 2.6.35.13 modules
+# restore backed up modules
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 DST_PATH="/system/lib/modules"

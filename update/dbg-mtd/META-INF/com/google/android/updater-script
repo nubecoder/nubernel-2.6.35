@@ -35,9 +35,12 @@ ui_print("");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
 ui_print("=]       nubernel-2.6.35_v0.0.2.dbg-mtd       =]");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
+package_extract_file("led_fun.sh", "/tmp/led_fun.sh");
+set_perm(0, 0, 0777, "/tmp/led_fun.sh");
 sleep(1);
 show_progress(1.335, 0);
 
+run_program("/tmp/led_fun.sh", "start");
 ui_print("Preparing for kernel install.");
 assert(
 	run_program("/sbin/busybox", "mount", "/data"),
@@ -94,5 +97,6 @@ set_progress(0.9);
 
 ui_print("Finished.");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
+run_program("/tmp/led_fun.sh", "stop");
 set_progress(1.0);
 

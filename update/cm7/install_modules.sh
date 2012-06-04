@@ -1,7 +1,8 @@
 #!/sbin/busybox sh
 #
 # install_modules.sh
-# backup originals and install 2.6.35.13 modules
+# backup original and install newer modules
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 SRC_PATH="/tmp"

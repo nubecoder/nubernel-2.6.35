@@ -1,0 +1,14 @@
+#!/system/bin/sh.bak
+#
+# bash-loader
+# nubecoder 2012 - http://www.nubecoder.com/
+#
+
+if [ "$1" = "-" ] && [ "$@" = "-" ] ; then
+#	/system/bin/log -p i -t sh:bash-loader "bash: $@"
+	exec '/system/bin/bash' "$@"
+else
+#	/system/bin/log -p i -t sh:bash-loader "sh.bak: $@"
+	exec '/system/bin/sh.bak' "$@"
+fi
+

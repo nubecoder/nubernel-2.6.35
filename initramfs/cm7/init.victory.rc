@@ -323,3 +323,7 @@ service tvouthack /system/bin/tvouthack
 user system
 group graphics
 disabled
+
+service init_scripts /system/bin/logwrapper /nubernel/scripts/run_init_scripts.sh
+    user root
+    oneshot

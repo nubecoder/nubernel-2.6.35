@@ -131,7 +131,7 @@ SHOW_GOVERNOR_INFO()
 			echo "  sampling_rate_max: $(cat $transitional_sampling_rate_max)"
 			echo "  cpu_transition_states_table:"
 			echo "  $(cat $cpu_transition_states_table)"
-		;;
+			;;
 		conservative)
 			echo "conservative:"
 			echo "  scaling_cur_freq: $(($CUR_FREQ / 1000)) MHz"
@@ -145,17 +145,17 @@ SHOW_GOVERNOR_INFO()
 			echo "  sampling_rate: $(cat $conservative_sampling_rate)"
 			echo "  sampling_rate_min: $(cat $conservative_sampling_rate_min)"
 			echo "  sampling_rate_max: $(cat $conservative_sampling_rate_max)"
-		;;
+			;;
 		interactive)
 			echo "interactive:"
 			echo "  scaling_cur_freq: $(($CUR_FREQ / 1000)) MHz"
 			echo "  min_sample_time: $(cat $interactive_min_sample_time)"
-		;;
+			;;
 		interactiveX)
 			echo "interactiveX:"
 			echo "  scaling_cur_freq: $(($CUR_FREQ / 1000)) MHz"
 			echo "  min_sample_time: $(cat $interactiveX_min_sample_time)"
-		;;
+			;;
 		ondemand)
 			echo "ondemand:"
 			echo "  scaling_cur_freq: $(($CUR_FREQ / 1000)) MHz"
@@ -168,17 +168,17 @@ SHOW_GOVERNOR_INFO()
 # Need to check the source to see if these are used...
 #			echo "  cpu_thres_table:"
 #			echo "  $(cat $cpu_thres_table)"
-		;;
+			;;
 		performance)
 			echo "performance:"
 			echo "  scaling_cur_freq: $(($CUR_FREQ / 1000)) MHz"
 			echo "  scaling_max_freq: $(($SCALING_MAX_FREQ / 1000)) MHz"
-		;;
+			;;
 		powersave)
 			echo "powersave:"
 			echo "  scaling_cur_freq: $(($CUR_FREQ / 1000)) MHz"
 			echo "  scaling_min_freq: $(($SCALING_MIN_FREQ / 1000)) MHz"
-		;;
+			;;
 		smartass)
 			echo "smartass:"
 			echo "  scaling_cur_freq: $(($CUR_FREQ / 1000)) MHz"
@@ -194,13 +194,13 @@ SHOW_GOVERNOR_INFO()
 			echo "  sleep_wakeup_freq: $(cat $smartass_sleep_wakeup_freq)"
 			echo "  up_min_freq: $(cat $smartass_up_min_freq)"
 			echo "  up_rate_us: $(cat $smartass_up_rate_us)"
-		;;
+			;;
 		userspace)
 			USER_FREQ=$(cat $scaling_setspeed)
 			echo "userspace:"
 			echo "  scaling_cur_freq: $(($CUR_FREQ / 1000)) MHz"
 			echo "  scaling_setspeed: $(($USER_FREQ / 1000)) MHz"
-		;;
+			;;
 	esac
 }
 

@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-05-2012:
+initramfs: all: custom scripts: Some minor syntax fixes.
 cpufreq: OC: Disable 1.1GHz step by default.
 initramfs: cm7: Add (tweaked) nubernel init scripts to cm7 (bash as default adb shell, etc).
 arm: remove stale export of 'sha_transform' (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=f23c126bfabef88c201c8cc56bd3ccd9d59c51e0).

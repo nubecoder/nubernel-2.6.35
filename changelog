@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-06-2012:
+compile: warnings: Quiet a ton of compiler warnings.
 scripting: warnings: Add IHEX, MK_FW, and LOGO to ignored (replaced) items list.
 
 06-05-2012:

@@ -206,6 +206,7 @@ static void VibeOSKernelLinuxInitTimer(void)
 
 static void VibeOSKernelLinuxStartTimer(void)
 {
+    int ret = 0;
     int i;
 
     /* Reset watchdog counter */
@@ -213,7 +214,7 @@ static void VibeOSKernelLinuxStartTimer(void)
 
     if (!g_bTimerStarted)
     {
-        if (!VibeSemIsLocked(&g_hMutex)) down_interruptible(&g_hMutex); /* start locked */
+        if (!VibeSemIsLocked(&g_hMutex)) ret = down_interruptible(&g_hMutex); /* start locked */
 
         g_bTimerStarted = true;
 
@@ -235,7 +236,7 @@ static void VibeOSKernelLinuxStartTimer(void)
     ** Use interruptible version of down to be safe 
     ** (try to not being stuck here if the mutex is not freed for any reason)
     */
-    down_interruptible(&g_hMutex);  /* wait for the mutex to be freed by the timer */
+    ret = down_interruptible(&g_hMutex);  /* wait for the mutex to be freed by the timer */
 }
 
 static void VibeOSKernelLinuxStopTimer(void)

@@ -285,6 +285,7 @@ static int fimc_outdev_set_src_buf(struct fimc_control *ctrl,
 	return 0;
 }
 
+#if 0
 static void fimc_outdev_clear_dst_buf(struct fimc_control *ctrl,
 				   struct fimc_ctx *ctx, int index)
 {
@@ -304,6 +305,7 @@ static void fimc_outdev_clear_dst_buf(struct fimc_control *ctrl,
 		fimc_warn("%s: Failed to clear destination buffers\n",
 					__func__);
 }
+#endif
 
 static int fimc_outdev_set_dst_buf(struct fimc_control *ctrl,
 				   struct fimc_ctx *ctx)

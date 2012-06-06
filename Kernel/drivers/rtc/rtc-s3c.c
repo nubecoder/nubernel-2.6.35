@@ -751,10 +751,10 @@ static int __devinit s3c_rtc_probe(struct platform_device *pdev)
 #ifdef CONFIG_PM
 
 /* RTC Power management control */
-static struct timespec s3c_rtc_delta;
+//static struct timespec s3c_rtc_delta;
 static int s3c_rtc_suspend(struct platform_device *pdev, pm_message_t state)
 {
-        struct rtc_time tm;
+	//struct rtc_time tm;
 	struct timespec time;
 
 	time.tv_nsec = 0;

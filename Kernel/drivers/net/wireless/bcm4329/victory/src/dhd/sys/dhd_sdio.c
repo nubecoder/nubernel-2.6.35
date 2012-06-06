@@ -430,7 +430,7 @@ static void dhdsdio_sdtest_set(dhd_bus_t *bus, bool start);
 
 #ifdef DHD_DEBUG
 static int dhdsdio_checkdied(dhd_bus_t *bus, uint8 *data, uint size);
-static int dhdsdio_mem_dump(dhd_bus_t *bus);
+//static int dhdsdio_mem_dump(dhd_bus_t *bus);
 #endif /* DHD_DEBUG  */
 static int dhdsdio_download_state(dhd_bus_t *bus, bool enter);
 
@@ -1885,6 +1885,7 @@ done:
 	return bcmerror;
 }
 
+#if 0
 static int
 dhdsdio_mem_dump(dhd_bus_t *bus)
 {
@@ -1935,6 +1936,7 @@ dhdsdio_mem_dump(dhd_bus_t *bus)
 	/* buf free handled in write_to_file, not here */
 	return 0;
 }
+#endif
 
 #define CONSOLE_LINE_MAX	192
 

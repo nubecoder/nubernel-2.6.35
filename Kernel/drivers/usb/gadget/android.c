@@ -168,7 +168,7 @@ void samsung_enable_function(int mode);
 extern void UsbIndicator(u8 state);
 
 #ifdef _SUPPORT_SAMSUNG_AUTOINSTALLER_
-void askon_gadget_disconnect()
+void askon_gadget_disconnect(void)
 {
         struct android_dev *dev = _android_dev;
         printk("Inside askon_gadget_disconnect ASKON VALUE =%d\n",askon_status);

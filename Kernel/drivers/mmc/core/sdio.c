@@ -193,6 +193,7 @@ static int sdio_disable_cd(struct mmc_card *card)
 	return mmc_io_rw_direct(card, 1, 0, SDIO_CCCR_IF, ctrl, NULL);
 }
 
+#if 0
 /*
  * Devices that remain active during a system suspend are
  * put back into 1-bit mode.
@@ -226,6 +227,7 @@ static int sdio_disable_wide(struct mmc_card *card)
 
 	return 0;
 }
+#endif
 
 /*
  * Test if the card supports high-speed mode and, if so, switch to it.
@@ -493,8 +495,9 @@ static void mmc_sdio_detect(struct mmc_host *host)
  */
 static int mmc_sdio_suspend(struct mmc_host *host)
 {
-	int i, err = 0;
+	int err = 0;
 #ifndef BRCM_PATCH
+	int i = 0;
 	for (i = 0; i < host->card->sdio_funcs; i++) {
 		struct sdio_func *func = host->card->sdio_func[i];
 		if (func && sdio_func_present(func) && func->dev.driver) {
@@ -527,8 +530,9 @@ static int mmc_sdio_suspend(struct mmc_host *host)
 
 static int mmc_sdio_resume(struct mmc_host *host)
 {
-	int i, err = 0;
+	int err = 0;
 #ifndef BRCM_PATCH
+	int i = 0;
 	BUG_ON(!host);
 	BUG_ON(!host->card);
 

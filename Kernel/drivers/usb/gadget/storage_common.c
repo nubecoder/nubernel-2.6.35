@@ -651,7 +651,7 @@ out:
 
 static void fsg_lun_close(struct fsg_lun *curlun)
 {
-	int rc;
+	//int rc;
 
 	/*
            * XXX: San: Ugly hack here added to ensure that

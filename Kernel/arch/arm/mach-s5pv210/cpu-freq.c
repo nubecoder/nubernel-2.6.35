@@ -989,7 +989,7 @@ static int __init s5pv210_cpufreq_driver_init(struct cpufreq_policy *policy)
 static int s5pv210_cpufreq_notifier_event(struct notifier_block *this,
 		unsigned long event, void *ptr)
 {
-	struct cpufreq_policy *policy;
+	struct cpufreq_policy *policy = NULL;
 	int ret = -EINVAL;
 
 #ifdef CONFIG_DEBUG_NUBERNEL_PM

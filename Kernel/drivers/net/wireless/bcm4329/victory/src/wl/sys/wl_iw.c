@@ -7619,6 +7619,7 @@ exit_proc:
 }
 #ifdef SOFTAP
 
+#if 0
 static int iwpriv_wpasupp_loop_tst(struct net_device *dev,
             struct iw_request_info *info,
             union iwreq_data *wrqu,
@@ -7656,6 +7657,7 @@ static int iwpriv_wpasupp_loop_tst(struct net_device *dev,
 
 	return res;
 }
+#endif
 #endif 
 
 
@@ -8339,6 +8341,7 @@ static const iw_handler wl_iw_handler[] =
 };
 
 #ifdef SOFTAP
+#if 0
 //  SecFeature ADD START STEALTH_V by jaekwan.jeon
 static int iwpriv_set_max_stations(struct net_device *dev,
         struct iw_request_info *info,
@@ -8380,7 +8383,7 @@ static int iwpriv_set_max_stations(struct net_device *dev,
                 extra[wrqu->data.length] = 0;
                 WL_SOFTAP((" Got str param in iw_point:\n %s\n", extra));
                 
-                if(max_assoc = bcm_atoi(extra)){ 
+                if((max_assoc = bcm_atoi(extra))){ 
 
 	            if ((res = dev_wlc_intvar_set(dev, "maxassoc", max_assoc))) {
 
@@ -8414,6 +8417,8 @@ failed:
         if(extra != NULL) kfree(extra);
 	return res;
 }
+#endif
+
 //  SecFeature ADD END STEALTH_V by jaekwan.jeon
 static int iwpriv_disassoc_sta(struct net_device *dev,
     struct iw_request_info *info,
@@ -8422,7 +8427,7 @@ static int iwpriv_disassoc_sta(struct net_device *dev,
 {
     scb_val_t scbval;
     char sta_mac[ETHER_ADDR_LEN];
-    int ret = 0;
+    //int ret = 0;
 
     scbval.val = htod32(1);
 

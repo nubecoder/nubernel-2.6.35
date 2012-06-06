@@ -253,6 +253,7 @@ static int s3cfb_map_video_memory(struct fb_info *fb)
 	return 0;
 }
 
+#if 0
 static int s3cfb_map_default_video_memory(struct fb_info *fb)
 {
 #if defined(CONFIG_FB_S3C_VIRTUAL)
@@ -281,6 +282,7 @@ static int s3cfb_map_default_video_memory(struct fb_info *fb)
 #endif
 	return 0;
 }
+#endif
 
 static int s3cfb_unmap_video_memory(struct fb_info *fb)
 {
@@ -978,7 +980,7 @@ static DEVICE_ATTR(win_power, S_IRUGO | S_IWUSR,
 
 static int s3cfb_sysfs_show_lcd_power(struct device *dev, struct device_attribute *attr, char *buf)
 {
-        return ;
+        return 0;
 }
 
 static int s3cfb_sysfs_store_lcd_power(struct device *dev, struct device_attribute *attr, const char *buf, size_t len)
@@ -1129,7 +1131,7 @@ static int __devinit s3cfb_probe(struct platform_device *pdev)
 #endif 
 
 	if (pdata->default_win != BOOT_FB_WINDOW)	{
-		dev_warn(fbdev->dev, "closing bootloader FIMD window 0\n", BOOT_FB_WINDOW);
+		dev_warn(fbdev->dev, "closing bootloader FIMD window 0\n");//, BOOT_FB_WINDOW);
 		s3cfb_set_window(fbdev, BOOT_FB_WINDOW, 0);		
 	}
 

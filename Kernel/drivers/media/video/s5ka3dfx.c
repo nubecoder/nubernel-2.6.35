@@ -285,13 +285,13 @@ static int s5ka3dfx_write_regs(struct v4l2_subdev *sd,
 }
 
 static int s5ka3dfx_write_regset_table(struct v4l2_subdev *sd,
-				struct s5ka3dfx_regset_table *regset_table)
+				const struct s5ka3dfx_regset_table *table)
 {
 	int err;
 
-	if (regset_table->regset)
-		err = s5ka3dfx_write_regs(sd, regset_table->regset,
-						regset_table->array_size);
+	if (table->regset)
+		err = s5ka3dfx_write_regs(sd, table->regset,
+						table->array_size);
 	else
 		err = -EINVAL;
 

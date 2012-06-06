@@ -477,7 +477,7 @@ static int gp2a_setup_irq(struct gp2a_data *gp2a)
 	goto done;
 
 err_request_irq:
-err_gpio_direction_input:
+//err_gpio_direction_input:
 	gpio_free(pdata->p_out);
 done:
 	return rc;

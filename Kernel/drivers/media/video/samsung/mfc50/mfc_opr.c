@@ -698,7 +698,7 @@ static void mfc_set_encode_init_param(struct mfc_inst_ctx *mfc_ctx, union mfc_ar
 		WRITEL(1, MFC_EDFU_SF_EPB_ON_CTRL); /* Auto EPB insertion on, only for h264 */
 
 		/* if in_RC_mb_enable is '1' */
-#if ENABLE_ENC_MB
+#if 0// ENABLE_ENC_MB
 		if (enc_init_h264_arg->in_RC_frm_enable != 1)
 			enc_init_h264_arg->in_RC_frm_enable = 1;
 		if (enc_init_h264_arg->in_RC_mb_enable != 1)

@@ -15,10 +15,10 @@
  ******************************************************************************/
 struct file * 	klib_fopen (const char *filename, int flags, int mode);
 static void 	klib_fclose (struct file *filp);
-static int 		klib_fseek (struct file *filp, int offset, int whence);
-static int 		klib_fread (char *buf, int len, struct file *filp);
-static int 		klib_fgetc (struct file *filp);
-static int 		klib_flength (struct file *filp);
+//static int 		klib_fseek (struct file *filp, int offset, int whence);
+//static int 		klib_fread (char *buf, int len, struct file *filp);
+//static int 		klib_fgetc (struct file *filp);
+//static int 		klib_flength (struct file *filp);
 static int 		klib_flen_fcopy (char *buf, int len, struct file *filp);
 //static char * klib_fgets(char *str, int size, struct file *filp);
 //static int 	klib_fwrite(char *buf, int len, struct file *filp);
@@ -71,6 +71,7 @@ klib_fclose(
 }
 
 
+#if 0
 /*!
  *************************************************************************
  * \brief	move file pointer to the request.
@@ -105,9 +106,10 @@ klib_fseek(
 	else
 		return -ENOENT;
 }
+#endif
 
 
-
+#if 0
 /*!
  *************************************************************************
  * \brief	file read function.
@@ -148,6 +150,7 @@ klib_fread(
 
 	return readlen;
 }
+#endif
 
 
 static int
@@ -164,6 +167,7 @@ klib_flen_fcopy (char *buf, int len, struct file *filp)
 	return readlen;
 }
 
+#if 0
 /*!
  *************************************************************************
  * \brief	.
@@ -189,8 +193,10 @@ klib_fgetc(
 	else
 		return len;
 }
+#endif
 
 
+#if 0
 /*!
  *************************************************************************
  * \brief	to get the length of file.
@@ -218,6 +224,7 @@ klib_flength(
 
 	return total_len;
 }
+#endif
 
 #endif	// _WBRB_FIRMWARE_H
 

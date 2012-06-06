@@ -279,6 +279,7 @@ void s3c_pm_do_restore_core(struct sleep_save *ptr, int count)
 		__raw_writel(ptr->val, ptr->reg);
 }
 
+#if 0
 /* s3c2410_pm_show_resume_irqs
  *
  * print any IRQs asserted at resume time (ie, we woke from)
@@ -296,6 +297,7 @@ static void s3c_pm_show_resume_irqs(int start, unsigned long which,
 		}
 	}
 }
+#endif
 
 
 void (*pm_cpu_prep)(void);
@@ -312,7 +314,7 @@ void (*pm_cpu_restore)(void);
 static int s3c_pm_enter(suspend_state_t state)
 {
 	static unsigned long regs_save[16];
-	unsigned int gpio;
+	//unsigned int gpio;
 	/* ensure the debug is initialised (if enabled) */
 
 	s3c_pm_debug_init();

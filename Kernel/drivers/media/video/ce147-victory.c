@@ -2774,12 +2774,12 @@ static int ce147_set_preflash(struct v4l2_subdev *sd, int flash_mode) //SecFeatu
 
         unsigned char ce147_buf_set_preflash[2] = { 0x01, 0x00 };
         unsigned int ce147_len_set_preflash = 2;
-        unsigned char ce147_buf_set_preflash_manual[2] = { 0x00, 0x00 };
-        unsigned int ce147_len_set_preflash_manual = 2;
+        //unsigned char ce147_buf_set_preflash_manual[2] = { 0x00, 0x00 };
+        //unsigned int ce147_len_set_preflash_manual = 2;
         unsigned char ce147_buf_set_flash[2] = { 0x03, 0x00 };
         unsigned int ce147_len_set_flash = 2;
-        unsigned char ce147_buf_set_flash_manual[2] = { 0x00, 0x00 };
-        unsigned int ce147_len_set_flash_manual = 2;
+        //unsigned char ce147_buf_set_flash_manual[2] = { 0x00, 0x00 };
+        //unsigned int ce147_len_set_flash_manual = 2;
         unsigned char ce147_buf_set_flash_off[2] = { 0x03, 0x00 };
         unsigned int ce147_len_set_flash_off = 2;
         unsigned char ce147_buf_set_preflash_off[2] = { 0x01, 0x00 };
@@ -5411,8 +5411,8 @@ static int ce147_s_ext_ctrl(struct v4l2_subdev *sd,
 #ifdef FACTORY_CHECK
 ssize_t camtype_show(struct device *dev, struct device_attribute *attr, char *buf)
 {
-	printk("%s \n", __func__);
 	char * sensorname = "NG";
+	printk("%s \n", __func__);
 	sensorname = "SONY_IMX072ES_CE147";
 	return sprintf(buf,"%s\n", sensorname);
 }

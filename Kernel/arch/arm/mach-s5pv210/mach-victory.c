@@ -255,6 +255,7 @@ static void gps_gpio_init(void)
 	return;
 }
 
+#if 0
 static void uart_switch_init(void)
 {
 	int ret;
@@ -279,6 +280,7 @@ static void uart_switch_init(void)
 
 	gpio_export_link(uartswitch_dev, "UART_SEL", GPIO_UART_SEL);
 }
+#endif
 
 static void victory_switch_init(void)
 {
@@ -341,6 +343,7 @@ static struct s3c2410_uartcfg victory_uartcfgs[] __initdata = {
 	},
 };
 
+#if 0
 static struct s3cfb_lcd nt35580 = {
 	.width = 480,
 	.height = 800,
@@ -365,6 +368,7 @@ static struct s3cfb_lcd nt35580 = {
 		.inv_vden = 1,
 	},
 };
+#endif
 
 #define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_FIMC0 (12288 * SZ_1K)
 #define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_FIMC1 (9900 * SZ_1K)
@@ -1867,7 +1871,7 @@ static int ce147_power_off(void)
 
 static int ce147_power_en(int onoff)
 {
-	int bd_level;
+	//int bd_level;
 	int err = 0;
 #if 0
 	if(onoff){
@@ -1899,6 +1903,7 @@ static int ce147_power_en(int onoff)
 	return 0;
 	}
 
+#if 0
 static int smdkc110_cam1_power(int onoff)
 {
 	int err;
@@ -1910,7 +1915,7 @@ static int smdkc110_cam1_power(int onoff)
 	if (err) {
 		printk(KERN_ERR "failed to request GPB for camera control\n");
 	return err;
-}
+	}
 
 	gpio_direction_output(S5PV210_GPB(0), 0);
 
@@ -1934,7 +1939,7 @@ static int smdkc110_cam1_power(int onoff)
 	if (err) {
 		printk(KERN_ERR "failed to request GPB for camera control\n");
 		return err;
-}
+	}
 
 	gpio_direction_output(S5PV210_GPB(2), 0);
 
@@ -1952,6 +1957,7 @@ static int smdkc110_cam1_power(int onoff)
 
 	return 0;
 }
+#endif
 
 /*
  * Guide for Camera Configuration for Jupiter board
@@ -2008,7 +2014,7 @@ static struct s3c_platform_camera ce147 = {
 #ifdef CONFIG_VIDEO_S5KA3DFX
 /* External camera module setting */
 static DEFINE_MUTEX(s5ka3dfx_lock);
-static struct regulator *s5ka3dfx_vga_avdd;
+//static struct regulator *s5ka3dfx_vga_avdd;
 static struct regulator *s5ka3dfx_vga_vddio;
 static struct regulator *s5ka3dfx_cam_isp_host;
 static struct regulator *s5ka3dfx_vga_dvdd;
@@ -2458,8 +2464,10 @@ static struct i2c_board_info i2c_devs2[] __initdata = {
 };
 
 
+#if 0
 static struct i2c_board_info i2c_devs8[] __initdata = {
 };
+#endif
 static struct i2c_board_info i2c_devs6[] __initdata = {
 #ifdef CONFIG_REGULATOR_MAX8998
 	{
@@ -2825,7 +2833,7 @@ static void victory_power_off(void)
 {
 	int err, i;
 	int mode = REBOOT_MODE_NONE;
-	char reset_mode = 'r';
+	//char reset_mode = 'r';
 	int phone_wait_cnt = 0;
 
 	/* Change this API call just before power-off to take the dump. */
@@ -3415,7 +3423,7 @@ static void __init sound_init(void)
 	gpio_request(GPIO_MICBIAS_EN, "micbias_enable");
 }
 
-static void __init onenand_init()
+static void __init onenand_init(void)
 {
 	struct clk *clk = clk_get(NULL, "onenand");
 	BUG_ON(!clk);
@@ -3443,10 +3451,12 @@ static void __init qt_touch_init(void)
 
 }
 
+#if 0
 static void k3g_irq_init(void)
 {
         i2c_devs0[0].irq = (system_rev >= 0x0A) ? IRQ_EINT(29) : -1;
 }
+#endif
 
 
 static void __init victory_machine_init(void)

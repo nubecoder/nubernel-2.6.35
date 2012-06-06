@@ -88,7 +88,7 @@ static struct struct_marks_ver_mark marks_ver_mark = {
 	.second_start_addr = 0x40000000
 };
 
-static char klog_buf[256];
+//static char klog_buf[256];
 
 /*
  * struct logger_log - represents a specific log, such as 'main' or 'radio'

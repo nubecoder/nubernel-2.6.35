@@ -405,7 +405,7 @@ static inline void fimc_irq_cap(struct fimc_control *ctrl)
 {
 	struct fimc_capinfo *cap = ctrl->cap;
 	int pp;
-	u32 cfg;
+	//u32 cfg;
 
 	fimc_hwset_clear_irq(ctrl);
 	if (fimc_hwget_overflow_state(ctrl)) {

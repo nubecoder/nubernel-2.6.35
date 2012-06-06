@@ -1322,8 +1322,8 @@ static void s3c_bat_work(struct work_struct *work)
 {
 	struct chg_data *chg = container_of(work, struct chg_data, bat_work);
 	int ret;
-	static int cnt = 0;
-	u32 con = 0;
+	//static int cnt = 0;
+	//u32 con = 0;
 	
 	mutex_lock(&chg->mutex);
 
@@ -1421,6 +1421,7 @@ int s3c_bat_use_wimax(int onoff)
 	struct chg_data *chg = pchg;
 
 	s3c_bat_use_module(chg, USE_WIMAX, onoff);
+	return 0;
 }
 EXPORT_SYMBOL(s3c_bat_use_wimax);
 #else
@@ -1849,7 +1850,7 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 {
 	int ret;
 	int topoff;
-	u8 data2=0;
+	//u8 data2=0;
 	u8 data[MAX8998_NUM_IRQ_REGS];
 
 	struct chg_data *chg = max8998_chg;

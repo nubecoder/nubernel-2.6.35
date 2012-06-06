@@ -334,6 +334,7 @@ int Adapter_sdio_rx_packet(MINIPORT_ADAPTER *Adapter)
 	int err = 1;
 	unsigned int len=0;
 	unsigned int remained_len=0;
+	u_char cnt=0;
 		
 //	ENTER;
 	if (unlikely(!Adapter))
@@ -367,7 +368,6 @@ int Adapter_sdio_rx_packet(MINIPORT_ADAPTER *Adapter)
 				len = SDIO_BUFFER_SIZE;
 			}
 
-			u_char cnt=0;
 			err = sdio_memcpy_fromio(Adapter->func, Adapter->hw.ReceiveTempBuffer+8, SDIO_DATA_PORT_REG ,len); //sumanth: leave some space to copy the ethernet header
 			if(unlikely(err !=0 || !len) )
 			{
@@ -498,6 +498,7 @@ static int Adapter_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
 	return 0;
 }
 
+#if 0
 static void Adapter_tx_timeout(struct net_device *net)
 {
 	MINIPORT_ADAPTER *Adapter = netdev_priv(net);
@@ -505,6 +506,7 @@ static void Adapter_tx_timeout(struct net_device *net)
 		printk(KERN_WARNING "%s: tx timeout", net->name);
 	Adapter->netstats.tx_errors++;
 }
+#endif
 
 static void  Adapter_reset(MINIPORT_ADAPTER *Adapter)
 {
@@ -515,18 +517,21 @@ static void  Adapter_reset(MINIPORT_ADAPTER *Adapter)
 	return ;
 }
 
+#if 0
 static int Adapter_init(struct net_device *net)
 {
+	int	status = 0;
 	DumpDebug(DRV_ENTRY, "Adapter driver init success!!!!!!!");
 	
 	wake_lock_init(&wimax_wake_lock, WAKE_LOCK_SUSPEND, "wibro_wimax_sdio");
 	wake_lock_init(&wimax_rxtx_lock, WAKE_LOCK_SUSPEND, "wibro_wimax_rxtx");
 	
 	//local_info_t * local = dev->priv;
-	int	status = 0;
 	return status;
 }
+#endif
 
+#if 0
 static void Adapter_uninit(struct net_device *net)
 {
 	DumpDebug(DRV_ENTRY, "Adapter driver uninit success!!!!!!!");
@@ -535,6 +540,7 @@ static void Adapter_uninit(struct net_device *net)
 
 	return;
 }
+#endif
 
 static int Adapter_close(struct net_device *net)
 {

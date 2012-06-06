@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-06-2012:
+scripting: warnings: Add IHEX, MK_FW, and LOGO to ignored (replaced) items list.
+
 06-05-2012:
 video: samsung: s3cfb_mdnie: Quiet warnings, fix formatting, etc.
 initramfs: all: custom scripts: Some minor syntax fixes.

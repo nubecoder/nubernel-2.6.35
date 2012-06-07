@@ -5,8 +5,8 @@
 #
 
 #defines
-KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.2"
-LOCALVERSION=".nubernel_v0.0.2"
+KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.1"
+LOCALVERSION=".nubernel_v0.1"
 VERSION_PATH="lib/modules/2.6.35.14+"
 
 KERNEL_BASE="/home/nubecoder/android/projects/SPH-D700/kernel/2.6.35"

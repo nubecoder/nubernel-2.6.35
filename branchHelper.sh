@@ -6,7 +6,7 @@
 
 #define version string
 VERSION_STRING="nubernel-2.6.35_v"
-CURRENT_VERSION="0.0.2"
+CURRENT_VERSION="0.1"
 
 # defaults
 RELEASE="n"

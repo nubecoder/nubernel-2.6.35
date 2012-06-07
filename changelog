@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-06-2012:
+update-zip: all: Fix updater-script version info output (the change to two digit versioning caused this).
 media: video: samsung: mfc50: Fixing my patch of in_frame_map for cm7 support (fixes commitID: e63cd2d).
 defconfig: dbg-bml: Fix iniramfs path.
 compile: warnings: Quiet a ton of compiler warnings.

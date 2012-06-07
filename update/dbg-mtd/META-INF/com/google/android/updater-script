@@ -33,7 +33,7 @@ ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
 ui_print("");ui_print("");ui_print("");ui_print("");ui_print("");
 ui_print("");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
-ui_print("=]       nubernel-2.6.35_v0.1.dbg-mtd       =]");
+ui_print("=]        nubernel-2.6.35_v0.1.dbg-mtd        =]");
 ui_print("=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]");
 package_extract_file("led_fun.sh", "/tmp/led_fun.sh");
 set_perm(0, 0, 0777, "/tmp/led_fun.sh");

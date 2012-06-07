@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-06-2012:
+media: video: samsung: mfc50: Fixing my patch of in_frame_map for cm7 support (fixes commitID: e63cd2d).
 defconfig: dbg-bml: Fix iniramfs path.
 compile: warnings: Quiet a ton of compiler warnings.
 scripting: warnings: Add IHEX, MK_FW, and LOGO to ignored (replaced) items list.

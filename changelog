@@ -8,6 +8,19 @@ nubernel-2.6.35_v0.0.2
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-06-2012:
+media: video: samsung: mfc50: Fixing my patch of in_frame_map for cm7 support (fixes commitID: e63cd2d).
+defconfig: dbg-bml: Fix iniramfs path.
+compile: warnings: Quiet a ton of compiler warnings.
+scripting: warnings: Add IHEX, MK_FW, and LOGO to ignored (replaced) items list.
+
+06-05-2012:
+video: samsung: s3cfb_mdnie: Quiet warnings, fix formatting, etc.
+initramfs: all: custom scripts: Some minor syntax fixes.
+cpufreq: OC: Disable 1.1GHz step by default.
+initramfs: cm7: Add (tweaked) nubernel init scripts to cm7 (bash as default adb shell, etc).
+arm: remove stale export of 'sha_transform' (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=f23c126bfabef88c201c8cc56bd3ccd9d59c51e0).
+
 06-04-2012:
 leds: ledtrig: Give "other" users write permission.
 update-zip: all: Add some led_fun to the update-zips.

@@ -213,7 +213,7 @@ static const struct rfkill_ops bt_rfkill_ops = {
 
 static int bluetooth_set_sleep(void *data, enum rfkill_user_states state)
 {	
-	unsigned int ret =0;
+	//unsigned int ret =0;
 	switch (state) {
 
 		case RFKILL_USER_STATE_UNBLOCKED:

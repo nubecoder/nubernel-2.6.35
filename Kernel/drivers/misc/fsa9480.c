@@ -150,14 +150,15 @@ extern int askon_status;
 /*********for WIMAX USB MODEM***********/
 int fsa9480_set_ctl_register(void)
 {
-     int ret=0;
-     struct i2c_client *client = local_usbsw->client;
-     if (adc_fsa == WIMAX_CABLE_50K)
-	     fsa9480_manual_switching(SWITCH_PORT_USB);
-     else 
-	     ret = i2c_smbus_write_byte_data(client, FSA9480_REG_CTRL,0x1E);
-     if (ret < 0)
-	     dev_err(&client->dev, "%s: err %d\n", __func__, ret);
+	int ret=0;
+	struct i2c_client *client = local_usbsw->client;
+	if (adc_fsa == WIMAX_CABLE_50K)
+		fsa9480_manual_switching(SWITCH_PORT_USB);
+	else 
+		ret = i2c_smbus_write_byte_data(client, FSA9480_REG_CTRL,0x1E);
+	if (ret < 0)
+		dev_err(&client->dev, "%s: err %d\n", __func__, ret);
+	return 0;
 }
 EXPORT_SYMBOL(fsa9480_set_ctl_register);
 /***************************/
@@ -196,9 +197,8 @@ EXPORT_SYMBOL(fsa9480_get_dock_status);
 void FSA9480_Enable_SPK(u8 enable)
 {
 	static struct regulator *esafeout2_regulator;
-	struct i2c_client *client = local_usbsw->client;
-
-	u8 data = 0;
+	//struct i2c_client *client = local_usbsw->client;
+	//u8 data = 0;
 	
 	if (!enable) {
 		printk("%s: Speaker Disabled\n", __func__);

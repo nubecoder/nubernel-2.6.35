@@ -650,9 +650,11 @@ PRIVATE INT32   _GetUniqueID      (UINT32       nDev,
 PRIVATE VOID    _CopyToAnotherDataRAM   (UINT32       nDev,
                                          LLDCpBkArg  *pstCpArg);
 
+#if 0
 PRIVATE VOID    _CalcTransferTime (UINT32       nDev, 
                                    UINT32      *pnWordRdCycle, 
                                    UINT32      *pnWordWrCycle);
+#endif
 
 PRIVATE BOOL32  _SearchUnlockedPbn(UINT32    nDev,
                                    UINT32    nDie,

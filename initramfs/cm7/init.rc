@@ -8,7 +8,7 @@ sysclktz 0
 loglevel 3
 
 # setup the global environment
-    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
+    export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin:/data/local/bin
     export LD_LIBRARY_PATH /vendor/lib:/system/lib
     export ANDROID_BOOTLOGO 1
     export ANDROID_CACHE /cache
@@ -101,6 +101,10 @@ on fs
     mount yaffs2 mtd@system /system ro remount
     mount yaffs2 mtd@userdata /data nosuid nodev
     mount yaffs2 mtd@cache /cache nosuid nodev
+
+# Init script permissions
+    chown root system /nubernel/scripts/run_init_scripts.sh
+    chmod 0755 /nubernel/scripts/run_init_scripts.sh
 
 on post-fs
     # once everything is setup, no need to modify /

@@ -665,13 +665,14 @@ static void mfc_set_encode_init_param(struct mfc_inst_ctx *mfc_ctx, union mfc_ar
 
 	/* Set circular intra refresh MB count */
 	WRITEL(enc_init_mpeg4_arg->in_mb_refresh, MFC_ENC_CIR_CTRL);
-
 #ifndef CONFIG_CYANOGENMOD
 	if(enc_init_mpeg4_arg->in_frame_map == 1)
-	        WRITEL(MEM_STRUCT_TILE_ENC, MFC_ENC_MAP_FOR_CUR);
+		WRITEL(MEM_STRUCT_TILE_ENC, MFC_ENC_MAP_FOR_CUR);
 	else
-#endif /* CONFIG_CYANOGENMOD */
 		WRITEL(MEM_STRUCT_LINEAR, MFC_ENC_MAP_FOR_CUR);
+#else
+	WRITEL(MEM_STRUCT_TILE_ENC, MFC_ENC_MAP_FOR_CUR);
+#endif /* CONFIG_CYANOGENMOD */
 
 	/* Set padding control */
 	WRITEL((enc_init_mpeg4_arg->in_pad_ctrl_on << 31) |
@@ -698,7 +699,7 @@ static void mfc_set_encode_init_param(struct mfc_inst_ctx *mfc_ctx, union mfc_ar
 		WRITEL(1, MFC_EDFU_SF_EPB_ON_CTRL); /* Auto EPB insertion on, only for h264 */
 
 		/* if in_RC_mb_enable is '1' */
-#if ENABLE_ENC_MB
+#if 0// ENABLE_ENC_MB
 		if (enc_init_h264_arg->in_RC_frm_enable != 1)
 			enc_init_h264_arg->in_RC_frm_enable = 1;
 		if (enc_init_h264_arg->in_RC_mb_enable != 1)

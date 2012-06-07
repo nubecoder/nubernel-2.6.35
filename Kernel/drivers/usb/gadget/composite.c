@@ -1434,11 +1434,11 @@ composite_switch_work(struct work_struct *data)
 		container_of(data, struct usb_composite_dev, switch_work);
 	struct usb_configuration *config = cdev->config;
 
-	printk("[composite_switch_work]config=0x%p\n",(void*)config);
-
 	int connected;
 	unsigned long flags;
 	
+	printk("[composite_switch_work]config=0x%p\n",(void*)config);
+
 	spin_lock_irqsave(&cdev->lock, flags);
 	if(cdev->connected != cdev->sw_connected.state) {
 		connected = cdev->connected;

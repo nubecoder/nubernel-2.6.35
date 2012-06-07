@@ -98,6 +98,7 @@ static int fimc_check_pos(struct fimc_control *ctrl,
 	return 0;
 }
 
+#if 0
 static int fimc_change_fifo_position(struct fimc_control *ctrl,
 				     struct fimc_ctx *ctx) {
 	struct v4l2_rect fimd_rect;
@@ -129,6 +130,7 @@ static int fimc_change_fifo_position(struct fimc_control *ctrl,
 
 	return 0;
 }
+#endif
 
 int fimc_s_fmt_vid_overlay(struct file *filp, void *fh, struct v4l2_format *f)
 {

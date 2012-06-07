@@ -73,10 +73,12 @@ static char *usb_functions_ums_adb[] = {
 #ifdef CONFIG_USB_ANDROID_SAMSUNG_COMPOSITE
 /* soonyong.cho : Variables for samsung composite such as kies, mtp, ums, etc... */
 /* kies mode */
+#if 0
 static char *usb_functions_acm_mtp[] = {
         "acm",
         "mtp",
 };
+#endif
 /* debug mode */
 static char *usb_functions_acm_ums_adb[] = {
         "acm",

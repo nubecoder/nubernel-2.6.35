@@ -153,6 +153,7 @@ static int i2c_touchkey_write(struct cypress_touchkey_devdata *devdata,
 	return err;
 }
 
+#if 0
 static int i2c_touchkey_write_byte(struct cypress_touchkey_devdata *devdata,
 					u8 val)
 {
@@ -172,6 +173,7 @@ static int i2c_touchkey_write_byte(struct cypress_touchkey_devdata *devdata,
 
 	return ret;
 }
+#endif
 
 static ssize_t touch_led_control(struct device *dev,
 				 struct device_attribute *attr, const char *buf,
@@ -330,7 +332,7 @@ static void key_off_func(struct work_struct *work)
 
 static irqreturn_t touchkey_interrupt_thread(int irq, void *touchkey_devdata)
 {
-	u8 data;
+	u8 data = 0;
 	int i;
 	int ret;
 	int scancode;
@@ -759,7 +761,7 @@ static int cypress_touchkey_probe(struct i2c_client *client,
 	return 0;
 
 err_req_irq:
-err_backlight_on:
+//err_backlight_on:
 err_read:
 	
 	if(devdata->pdata->touchkey_onoff)

@@ -223,7 +223,7 @@ static void sec_switch_init_work(struct work_struct *work)
 	struct sec_switch_struct *secsw = wq->sdata;
 	int usb_sel = 0;
 	int uart_sel = 0;
-	int samsung_kies_sel,ums_sel,mtp_sel,vtp_sel,askon_sel;
+	//int samsung_kies_sel,ums_sel,mtp_sel,vtp_sel,askon_sel;
 
 	if (sec_get_param_value &&
 	    secsw->pdata &&

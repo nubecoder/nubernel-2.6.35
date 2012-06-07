@@ -69,7 +69,7 @@ static const u16 s6e63m0_SEQ_DISPLAY_SETTING[] = {
 	0x110,	/* HBP */
 	0x110,	/* HFP */
 	0x0F7,	/* Command */
-#if defined(CONFIG_MACH_ATLAS) || (CONFIG_MACH_FORTE)
+#if defined(CONFIG_MACH_ATLAS) || defined(CONFIG_MACH_FORTE)
 	0x103,	/* GTCON */
 #elif 	defined(CONFIG_MACH_VICTORY)
 	0x100,

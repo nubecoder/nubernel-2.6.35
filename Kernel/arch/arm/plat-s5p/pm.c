@@ -19,6 +19,7 @@
 
 #define PFX "s5p pm: "
 
+#if 0
 /* s3c_pm_check_resume_pin
  *
  * check to see if the pin is configured correctly for sleep mode, and
@@ -29,6 +30,7 @@ static void s3c_pm_check_resume_pin(unsigned int pin, unsigned int irqoffs)
 {
 	/* nothing here yet */
 }
+#endif
 
 /* s3c_pm_configure_extint
  *

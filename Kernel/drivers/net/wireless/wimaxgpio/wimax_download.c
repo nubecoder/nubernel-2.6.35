@@ -130,7 +130,7 @@ static int Wimax730_probe(struct i2c_adapter *adap, int addr, int kind)
 
 	Wimax730_i2c_client = c;
 
-error:
+//error:
 	return ret;
 }
 
@@ -162,7 +162,7 @@ static struct i2c_driver Wimax730_driver = {
 	//.detach_client = Wimax730_detach_client,
 	.probe = Wimax730_probe,
 	.remove = Wimax730_remove,
-	.command = Wimax730_command
+	.command = Wimax730_command,
 };
 
 int Wimax730_init(void)

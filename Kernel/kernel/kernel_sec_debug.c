@@ -220,8 +220,8 @@ EXPORT_SYMBOL(kernel_sec_map_wdog_reg);
 
 void kernel_sec_set_upload_cause(kernel_sec_upload_cause_type uploadType)
 {
-	gkernel_sec_upload_cause=uploadType;
 	unsigned int temp;
+	gkernel_sec_upload_cause=uploadType;
 
 	temp = __raw_readl(S5P_INFORM6);
 	/* KERNEL_SEC_UPLOAD_CAUSE_MASK    0x000000FF */
@@ -664,7 +664,7 @@ static void dump_one_task_info( struct task_struct *tsk, bool isMain )
 	}
 }
 
-static void dump_all_task_info()
+static void dump_all_task_info(void)
 {
 	struct task_struct *frst_tsk;
 	struct task_struct *curr_tsk;
@@ -714,7 +714,7 @@ static void dump_all_task_info()
 #define arch_idle_time(cpu) 0
 #endif
 
-static void dump_cpu_stat()
+static void dump_cpu_stat(void)
 {
 	int i, j;
 	unsigned long jif;
@@ -824,7 +824,7 @@ static void dump_cpu_stat()
 	for (i = 0; i < NR_SOFTIRQS; i++)
 		if(per_softirq_sums[i]) printk(KERN_INFO " softirq-%d : %u", i, per_softirq_sums[i]);
 	printk(KERN_INFO " -----------------------------------------------------------------------------------\n" );
-	return 0;
+	return;
 }
 
 void dump_debug_info_forced_ramd_dump()

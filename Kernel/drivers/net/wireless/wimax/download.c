@@ -27,9 +27,9 @@ int	WimaxMode(void)
 
 int LoadWiMaxImage(void)
 {	
-	DWORD dwImgSize;		
-	unsigned long buforder;
-	struct file *fp;	
+	//DWORD dwImgSize;
+	unsigned long buforder = 0;
+	struct file *fp;
 	int read_size = 0;
 	
 	if ( g_dwLineState == AUTH_MODE)

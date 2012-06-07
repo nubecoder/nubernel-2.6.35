@@ -249,7 +249,7 @@ static ssize_t immTest_show(struct device *dev, struct device_attribute *attr, c
 static ssize_t immTest_store(struct device *dev, struct device_attribute *attr, const char *buf, size_t size)
 {
         char *after;
-        unsigned long arg1=0, arg2=0;
+        //unsigned long arg1=0, arg2=0;
 
         unsigned long value = simple_strtoul(buf, &after, 10);
 //      arg1 = (int) (value / 1000);
@@ -274,13 +274,13 @@ static DEVICE_ATTR(immTest, S_IRUGO | S_IWUSR , immTest_show, immTest_store); //
 static int vibrator_probe(struct platform_device *pdev)
 {
 	struct vibrator_platform_data *pdata = pdev->dev.platform_data; 
-	int i, nRet=0, ret=0;
+	int i, nRet=0;//, ret=0;
 
 	vib_plat_data.timer_id = pdata->timer_id;
 	vib_plat_data.vib_enable_gpio = pdata->vib_enable_gpio;
 
 	if (gpio_is_valid(vib_plat_data.vib_enable_gpio)) {
-		if (nRet = gpio_request(vib_plat_data.vib_enable_gpio, "GPIO_VIBTONE_EN1"))
+		if ((nRet = gpio_request(vib_plat_data.vib_enable_gpio, "GPIO_VIBTONE_EN1")))
 			printk(KERN_ERR "Failed to request GPIO_VIBTONE_EN1! %d \n",nRet);
 	}
 #ifdef CONFIG_MACH_FORTE  
@@ -365,7 +365,7 @@ MODULE_LICENSE("GPL v2");
 
 int init_module(void)
 {
-    int nRet, i;   /* initialized below */
+    int nRet;//, i;   /* initialized below */
 
     DbgOut((KERN_INFO "tspdrv: init_module.\n"));
 
@@ -677,7 +677,9 @@ static int resume(struct platform_device *pdev)
 	return 0;   /* can resume */
 }
 
-static void platform_release(struct device *dev) 
+#if 0
+static void platform_release(struct device *dev)
 {	
     DbgOut((KERN_INFO "tspdrv: platform_release.\n"));
 }
+#endif

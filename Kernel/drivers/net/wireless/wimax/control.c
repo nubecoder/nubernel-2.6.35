@@ -276,7 +276,7 @@ unsigned int hwSendControl(MINIPORT_ADAPTER *Adapter, void *Buffer, u_long Lengt
 	    UINT i;
 		u_long Length = dsc->data.Length; 
 	    PUCHAR  b = (PUCHAR)dsc->Buffer;
-		DumpDebug(TX_CONTROL, "Send packet control [%d] = ",Length);
+		DumpDebug(TX_CONTROL, "Send packet control [%lu] = ",Length);
 
 		printk("<1>\x1b[1;33m[WiMAX]");
 	    for (i = 0; i < Length; i++) {
@@ -301,7 +301,7 @@ unsigned int hwSendControl(MINIPORT_ADAPTER *Adapter, void *Buffer, u_long Lengt
 PCONTROL_PROCESS_DESCRIPTOR controlFindProcessById(PMINIPORT_ADAPTER Adapter, UINT Id)
 {
 	PCONTROL_PROCESS_DESCRIPTOR process;
-	PCONTROL_PROCESS_DESCRIPTOR next_process;	//cky test
+	//PCONTROL_PROCESS_DESCRIPTOR next_process;	//cky test
 
 	ENTER;
 	if(QueueEmpty(Adapter->ctl.Apps.ProcessList)) {	

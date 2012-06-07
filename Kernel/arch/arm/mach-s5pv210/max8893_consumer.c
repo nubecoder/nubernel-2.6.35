@@ -67,7 +67,7 @@ static int max8893_consumer_remove(struct platform_device *pdev)
 
 static int max8893_consumer_suspend(struct platform_device *dev, pm_message_t state)
 {
-	int i, pmic_controling_list;
+	//int i, pmic_controling_list;
 
 	DBG("func =%s \n",__func__);	
 
@@ -89,7 +89,7 @@ static int max8893_consumer_suspend(struct platform_device *dev, pm_message_t st
 
 static int max8893_consumer_resume(struct platform_device *dev)
 {
-	int i, saved_control;
+	//int i, saved_control;
 
 	DBG("func =%s \n",__func__);	
 

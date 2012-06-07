@@ -40,7 +40,7 @@
 #define fimc_dbg fimc_err
 #endif
 
-static int vtmode = 0;
+//static int vtmode = 0;
 static int device_id = 0;
 
 static const struct v4l2_fmtdesc capture_fmts[] = {
@@ -202,7 +202,7 @@ void s3c_csis_start(int lanes, int settle, int align, int width, int height,
 
 static int fimc_camera_init(struct fimc_control *ctrl)
 {
-	struct fimc_global *fimc = get_fimc_dev();
+	//struct fimc_global *fimc = get_fimc_dev();
 	int ret;
 
 	fimc_dbg("%s\n", __func__);
@@ -1546,8 +1546,8 @@ int fimc_streamon_capture(void *fh)
 	int rot;
 	int ret;
 
-	fimc_dbg("%s\n", __func__);
 	char *ce147 = "CE147 0-003c";
+	fimc_dbg("%s\n", __func__);
 	device_id = strcmp(ctrl->cam->sd->name, ce147);
 	fimc_dbg("%s, name(%s), device_id(%d), vtmode(%d)\n", __func__, ctrl->cam->sd->name , fimc->active_camera, ctrl->vt_mode);
 

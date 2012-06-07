@@ -26,7 +26,7 @@
 #include <linux/hrtimer.h>
 #include <linux/hrtimer.h>
 
-static struct wake_lock ledtrig_rtc_timer_wakelock;
+//static struct wake_lock ledtrig_rtc_timer_wakelock;
 
 struct notification_trig_data {
 	int brightness_on;		/* LED brightness during "on" period.

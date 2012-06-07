@@ -422,8 +422,8 @@
 #define GPIO_TOUCH_EN			S5PV210_GPJ1(3)
 #define	GPIO_TOUCH_EN_AF		1
 
-#define _3_GPIO_TOUCH_EN		S5PV210_GPJ1(3)
-#define _3_GPIO_TOUCH_EN_AF		1
+//#define _3_GPIO_TOUCH_EN		S5PV210_GPJ1(3)
+//#define _3_GPIO_TOUCH_EN_AF		1
 #define _3_GPIO_TOUCH_ST_AF		1
 
 #define GPIO_WLAN_WAKE 		        S5PV210_GPJ1(4)

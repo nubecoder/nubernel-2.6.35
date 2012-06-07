@@ -57,23 +57,17 @@ HANDLE_ARGUMENT()
 	local FILE=""
 	case "$1" in
 		fg)
-			local FILE="$FG_SYSFS_PATH/battery_fg_adjustment"
-		;;
+			local FILE="$FG_SYSFS_PATH/battery_fg_adjustment" ;;
 		ac)
-			local FILE="$BATT_SYSFS_PATH/charge_rate_ac"
-		;;
+			local FILE="$BATT_SYSFS_PATH/charge_rate_ac" ;;
 		usb)
-			local FILE="$BATT_SYSFS_PATH/charge_rate_usb"
-		;;
+			local FILE="$BATT_SYSFS_PATH/charge_rate_usb" ;;
 		current)
-			local FILE="$BATT_SYSFS_PATH/charge_full_current"
-		;;
+			local FILE="$BATT_SYSFS_PATH/charge_full_current" ;;
 		voltage)
-			local FILE="$BATT_SYSFS_PATH/charge_full_voltage"
-		;;
+			local FILE="$BATT_SYSFS_PATH/charge_full_voltage" ;;
 		recharge)
-			local FILE="$BATT_SYSFS_PATH/charge_recharge_voltage"
-		;;
+			local FILE="$BATT_SYSFS_PATH/charge_recharge_voltage" ;;
 		show)
 			DISPLAY_FUEL_GAUGE_ENTRIES
 			DISPLAY_BATTERY_ENTRIES

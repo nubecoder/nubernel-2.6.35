@@ -2610,11 +2610,12 @@ void TSP_forced_release_forOKkey(void)
 
 EXPORT_SYMBOL(TSP_forced_release_forOKkey);
 
-static void _input_report_finger_info(struct i2c_ts_driver * pTsDriver, report_finger_info_t * pFingerInfo, finger_status_t * pFingerStatus , int track_id)
+//static void _input_report_finger_info(struct i2c_ts_driver * pTsDriver, report_finger_info_t * pFingerInfo, finger_status_t * pFingerStatus , int track_id)
+static void _input_report_finger_info(struct qt602240_data *pTsDriver, report_finger_info_t *pFingerInfo, finger_status_t *pFingerStatus , int track_id)
 {
     unsigned long x, y;
-    int action, area;
-    unsigned int scanCode;
+    int action = 0, area = 0;
+    unsigned int scanCode = 0;
     int16_t status;
     if( pTsDriver == NULL || pFingerInfo == NULL || pFingerStatus == NULL)
         return;
@@ -2653,7 +2654,7 @@ static void _input_report_finger_info(struct i2c_ts_driver * pTsDriver, report_f
 		// ignore touch events above the printed area
 		if( (y > MAIN_SCREEN_HEIGHT) && (y < MAIN_SCREEN_HEIGHT + 20))
 		{
-			pr_err("[TSP] ignoring (%d,%d)\n", x,y);
+			pr_err("[TSP] ignoring (%lu,%lu)\n", x,y);
 			area=4;			
 		}
 
@@ -3278,8 +3279,8 @@ irqreturn_t qt602240_irq_handler(int irq, void *dev_id)
 int qt602240_probe(struct i2c_client *client,
                const struct i2c_device_id *id)
 {
-	int ret, err = 0;    
-	int key;
+	int ret;//, err = 0;
+	//int key;
 
 	qt602240->client = client;
 	qt602240->pdata  = client->dev.platform_data;

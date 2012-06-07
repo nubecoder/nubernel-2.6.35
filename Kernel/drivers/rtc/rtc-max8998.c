@@ -72,8 +72,8 @@ static struct i2c_driver max8998_rtc_i2c_driver;
 static struct i2c_client *max8998_rtc_i2c_client = NULL;
 
 unsigned short max8998_rtc_ignore[] = {I2C_CLIENT_END };
-static unsigned short max8998_rtc_normal_i2c[] = { I2C_CLIENT_END };
-static unsigned short max8998_rtc_probe[] = {6, MAX8998_RTC_SLAVE_ADDR >> 1, I2C_CLIENT_END };
+//static unsigned short max8998_rtc_normal_i2c[] = { I2C_CLIENT_END };
+//static unsigned short max8998_rtc_probe[] = {6, MAX8998_RTC_SLAVE_ADDR >> 1, I2C_CLIENT_END };
 /*
 static struct i2c_client_address_data max8998_rtc_addr_data = {
 	.normal_i2c	= max8998_rtc_normal_i2c,

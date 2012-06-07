@@ -35,7 +35,7 @@
 #endif
 
 #if defined(CONFIG_RTC_LEDTRIG_TIMER)
-static struct wake_lock ledtrig_rtc_timer_wakelock;
+//static struct wake_lock ledtrig_rtc_timer_wakelock;
 #endif
 
 

@@ -2063,7 +2063,7 @@ void wm8994_set_playback_speaker_headset(struct snd_soc_codec *codec)
 
 void wm8994_set_playback_bluetooth(struct snd_soc_codec *codec)
 {
-	struct wm8994_priv *wm8994 = codec->drvdata;
+	//struct wm8994_priv *wm8994 = codec->drvdata;
 
 	u16 val;
 
@@ -2227,7 +2227,7 @@ void wm8994_set_voicecall_common_setting(struct snd_soc_codec *codec)
 void wm8994_set_voicecall_receiver(struct snd_soc_codec *codec)
 {
 	struct wm8994_priv *wm8994 = codec->drvdata;
-	int val;
+	//int val;
 
 	wm8994_write(codec, 0x0039, 0x0068);	// Anti Pop2
 	wm8994_write(codec, 0x0001, 0x0003);	// Power Management 1
@@ -2350,9 +2350,9 @@ void wm8994_set_voicecall_receiver(struct snd_soc_codec *codec)
 void wm8994_set_voicecall_headset(struct snd_soc_codec *codec)
 {
 	struct wm8994_priv *wm8994 = codec->drvdata;
-	int upper_value = 0;
-	int lower_value = 0;
-	int value = 0;
+	//int upper_value = 0;
+	//int lower_value = 0;
+	//int value = 0;
 
 	wm8994_write(codec, 0x0039, 0x006C);	// Anti Pop 2
 	wm8994_write(codec, 0x0001, 0x0003);	// Power Management 1
@@ -2569,9 +2569,9 @@ void wm8994_set_voicecall_headset(struct snd_soc_codec *codec)
 void wm8994_set_voicecall_headphone(struct snd_soc_codec *codec)
 {
 	struct wm8994_priv *wm8994 = codec->drvdata;
-	int upper_value = 0;
-	int lower_value = 0;
-	int value = 0;
+	//int upper_value = 0;
+	//int lower_value = 0;
+	//int value = 0;
 
 	wm8994_write(codec, 0x0039, 0x006C);	// Anti Pop 2
 	wm8994_write(codec, 0x0001, 0x0003);	// Power Management 1
@@ -2813,7 +2813,7 @@ void wm8994_set_voicecall_speaker(struct snd_soc_codec *codec)
 
 void wm8994_set_voicecall_bluetooth(struct snd_soc_codec *codec)
 {
-	struct wm8994_priv *wm8994 = codec->drvdata;
+	//struct wm8994_priv *wm8994 = codec->drvdata;
 
 	/* Audio Interface & Clock Setting */
     wm8994_write(codec, 0x0204, 0x0008);    // AIF2 Clocking 1. Clock Source Select
@@ -3171,7 +3171,7 @@ void wm8994_set_headset_common(struct snd_soc_codec *codec,
 void wm8994_disable_fmradio_path(struct snd_soc_codec *codec,
 	enum fmradio_path path)
 {
-	struct wm8994_priv *wm8994 = codec->drvdata;
+	//struct wm8994_priv *wm8994 = codec->drvdata;
 
 	u16 val;
 

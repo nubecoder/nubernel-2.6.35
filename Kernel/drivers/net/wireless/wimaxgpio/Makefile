@@ -5,7 +5,7 @@
 #
 
 
-obj-m			:= wimax_gpio.o
+obj-y			:= wimax_gpio.o
 
 wimax_gpio-y	:= wibrogpio.o wimax_download.o wimax_i2c.o wimaxproc.o 
 

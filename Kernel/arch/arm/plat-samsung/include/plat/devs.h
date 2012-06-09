@@ -91,7 +91,7 @@ extern struct platform_device s3c_device_hwmon;
 extern struct platform_device s3c_device_keypad;
 
 extern struct platform_device s3c_device_nand;
-extern struct platform_device s3c_device_onenand;
+extern struct platform_device s5p_device_onenand;
 extern struct platform_device s3c64xx_device_onenand1;
 extern struct platform_device s5pc110_device_onenand;
 
@@ -148,6 +148,7 @@ extern struct platform_device s3c_device_usb_mass_storage;
 #  define USBSTATUS_DM				0x20
 #  define USBSTATUS_ACM				0x40
 #  define USBSTATUS_SAMSUNG_KIES_REAL		0x80
+#  define USBSTATUS_ADB_RNDIS			0x100
 
 /* soonyong.cho : This is for setting unique serial number */
 void __init s3c_usb_set_serial(void);

@@ -378,8 +378,7 @@ static irqreturn_t s3c_slide_isr(int irq, void *dev_id)
     //hojun_kim ]
     printk(KERN_INFO "\nSlide status=%x(0:open, 1:closed)\n", slide_is_closed);
 
-    input_report_switch(dev, SW_LID, slide_is_closed);
-    
+    input_report_switch(dev, SW_LID, slide_is_closed); 
     input_sync(dev); //hojun_kim
 
    return IRQ_HANDLED;
@@ -752,6 +751,7 @@ static int s3c_keypad_suspend(struct platform_device *dev, pm_message_t state)
 
 	s3c_pm_do_save(s3c_keypad_save, ARRAY_SIZE(s3c_keypad_save));
 
+	set_irq_type(IRQ_EINT(24), IRQ_TYPE_EDGE_BOTH);
         enable_irq_wake(IRQ_EINT5);
         enable_irq_wake(IRQ_EINT(24));
 

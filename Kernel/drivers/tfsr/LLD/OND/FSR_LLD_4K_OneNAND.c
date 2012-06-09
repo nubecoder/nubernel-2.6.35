@@ -631,10 +631,12 @@ PRIVATE VOID    _DumpRegisters       (volatile  OneNAND4kReg *pstReg);
 PRIVATE VOID    _DumpSpareBuffer     (volatile  OneNAND4kReg *pstReg);
 PRIVATE VOID    _DumpCmdLog          (VOID);
 
+#if 0
 PRIVATE VOID    _CalcTransferTime    (          UINT32       nDev,
                                                 UINT16       nSysConf1Reg,
                                                 UINT32      *pnReadCycle,
                                                 UINT32      *pnWriteCycle);
+#endif
 
 PRIVATE INT32   _GetUniqueID         (          UINT32       nDev,
                                                 OneNAND4kCxt *pstOND4kCxt,

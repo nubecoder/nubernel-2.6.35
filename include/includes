@@ -1,0 +1,65 @@
+#!/bin/bash
+#
+# includes
+# nubecoder 2012 - http://www.nubecoder.com/
+#
+
+#defines
+KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.1"
+LOCALVERSION=".nubernel_v0.1"
+VERSION_PATH="lib/modules/2.6.35.14+"
+
+KERNEL_BASE="/home/nubecoder/android/projects/SPH-D700/kernel/2.6.35"
+CROSS_COMPILE="/home/nubecoder/android/toolchains/arm-eabi-4.4.3/bin/arm-eabi-"
+CC_STRIP="${CROSS_COMPILE}strip -d --strip-unneeded"
+
+TARGET_TW_BML="victory_nubernel-bml"
+TARGET_TW_MTD="victory_nubernel-mtd"
+TARGET_CM7="victory_nubernel-cm7"
+TARGET_MOD="victory_modules"
+TARGET_DBG_BML="victory_dbg-bml"
+TARGET_DBG_MTD="victory_dbg-mtd"
+TARGET_BML8="victory_bml8mtd"
+
+INSTALL_MOD_PATH="$KERNEL_BASE/res/modules"
+INITRAMFS_TW_BML_PATH="$KERNEL_BASE/initramfs/tw-bml"
+INITRAMFS_TW_MTD_PATH="$KERNEL_BASE/initramfs/tw-mtd"
+INITRAMFS_CM7_PATH="$KERNEL_BASE/initramfs/cm7"
+MODULES_CM7_PATH="$KERNEL_BASE/update/cm7"
+
+RES_BIN_PATH="$KERNEL_BASE/res/bin"
+RES_SCRIPTS_PATH="$KERNEL_BASE/res/scripts"
+
+DEVICE_TMP_PATH="/data/local/tmp"
+
+BUILT_ZIMAGE="$KERNEL_BASE/Kernel/arch/arm/boot/zImage"
+BUILT_BOOTIMAGE="$KERNEL_BASE/res/mtd/boot.img"
+
+ZIMAGE_SRC="$BUILT_ZIMAGE"
+KERNELLOAD_SRC="$RES_SCRIPTS_PATH/kernelLoad"
+KEXEC_SRC="$RES_BIN_PATH/kexec"
+
+ZIMAGE_DEST="$DEVICE_TMP_PATH/zImage"
+KERNELLOAD_DEST="$DEVICE_TMP_PATH/kernelLoad"
+KEXEC_DEST="$DEVICE_TMP_PATH/kexec"
+
+ADB_KILL="adb kill-server"
+ADB_CONNECT="adb connect"
+ADB_DISCONNECT="adb disconnect"
+ADB_ROOT="adb root"
+ADB_SHELL="adb shell"
+ADB_PUSH="adb push"
+ADB_STATE="adb get-state"
+ADB_SERIAL="adb get-serialno"
+ADB_WHOAMI="$ADB_SHELL busybox whoami"
+ADB_OUT_CLEAN="tr -d '\r\n[:blank:]'"
+
+THREADS=$(expr 1 + $(grep processor /proc/cpuinfo | wc -l))
+VERSION=${KBUILD_BUILD_VERSION}_$(date +%m-%d-%Y)
+ERROR_MSG=
+TIME_START=
+TIME_END=
+
+#source functions
+source "$KERNEL_BASE/include/functions"
+

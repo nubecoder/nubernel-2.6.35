@@ -2613,7 +2613,8 @@ void TSP_forced_release_forOKkey(void)
 
 EXPORT_SYMBOL(TSP_forced_release_forOKkey);
 
-static void _input_report_finger_info(struct i2c_ts_driver * pTsDriver, report_finger_info_t * pFingerInfo, finger_status_t * pFingerStatus , int track_id)
+//static void _input_report_finger_info(struct i2c_ts_driver * pTsDriver, report_finger_info_t * pFingerInfo, finger_status_t * pFingerStatus , int track_id)
+static void _input_report_finger_info(struct qt602240_data *pTsDriver, report_finger_info_t *pFingerInfo, finger_status_t *pFingerStatus , int track_id)
 {
     unsigned long x, y;
     int action, area;

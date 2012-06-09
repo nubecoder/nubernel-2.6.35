@@ -74,7 +74,6 @@ endchoice
 config MACH_AQUILA
 	bool "Samsung Aquila"
 	select CPU_S5PV210
-	select ARCH_SPARSEMEM_ENABLE
 	select S5PV210_SETUP_FB_24BPP
 	select S3C_DEV_FB
 	help
@@ -83,7 +82,6 @@ config MACH_AQUILA
 config MACH_GONI
 	bool "GONI"
 	select CPU_S5PV210
-	select ARCH_SPARSEMEM_ENABLE
 	help
 	  Machine support for Samsung GONI board
 	  S5PC110(MCP) is one of package option of S5PV210
@@ -116,7 +114,6 @@ config S5PC110_DEV_ONENAND
 config MACH_SMDKV210
 	bool "SMDKV210"
 	select CPU_S5PV210
-	select ARCH_SPARSEMEM_ENABLE
 	select SAMSUNG_DEV_ADC
 	select SAMSUNG_DEV_TS
 	select S3C_DEV_WDT
@@ -127,7 +124,6 @@ config MACH_SMDKV210
 config MACH_SMDKC110
 	bool "SMDKC110"
 	select CPU_S5PV210
-	select ARCH_SPARSEMEM_ENABLE
 	select S3C_DEV_WDT
 	select HAVE_S3C2410_WATCHDOG
 	help
@@ -325,5 +321,11 @@ config CPU_DIDLE
 	bool "DEEP Idle"
 	depends on CPU_IDLE
 	default y
+
+config POKE_REC_BOOT_MAGIC
+	bool "Flag stage1 init to boot recovery on reboot(..., \"recovery\")"
+	help
+	  Poke REC_BOOT_MAGIC into REC_BOOT_ADDR on reboot(..., "recovery") to flag
+	  stage1 init to load the recovery image.
 
 endif

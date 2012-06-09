@@ -244,6 +244,7 @@ static int init_tty_mode_procfs(void)
     return ret;
 }
 
+#if 0
 /*  ÿ tty_mode   */
 static void cleanup_tty_mode_procfs(void)
 {
@@ -252,19 +253,21 @@ static void cleanup_tty_mode_procfs(void)
     
     printk(KERN_INFO "%s procfs removed\n", TTY_DIR_NAME);
 }
+#endif
 
 static int pop_noise_delete_timer_work_func(struct work_struct *ignored)
 {
     if(snd_saved_kcontrol && snd_saved_ctl_elem_value)
     {
-        struct snd_soc_codec *codec = snd_kcontrol_chip(snd_saved_kcontrol);
-        struct wm8994_priv *wm8994 = codec->drvdata;
+        //struct snd_soc_codec *codec = snd_kcontrol_chip(snd_saved_kcontrol);
+        //struct wm8994_priv *wm8994 = codec->drvdata;
     
         timer_on = 0;
         del_timer(&pop_noise_delete_timer);
 //        wm8994_set_call_path(snd_saved_kcontrol, snd_saved_ctl_elem_value);
 //       wm8994_set_end_point_volume(codec, wm8994->cur_path);
     }
+    return 0;
 }
 
 static DECLARE_WORK(pop_noise_delete_timer_work, pop_noise_delete_timer_work_func);
@@ -289,6 +292,7 @@ static int override_timer_work_func(struct work_struct *ignored)
         wm8994_mute_voicecall_path(codec, wm8994->cur_path);
         wm8994_write(codec, WM8994_SOFTWARE_RESET, 0x0000);
     }
+    return 0;
 }
 
 static DECLARE_WORK(override_timer_work, override_timer_work_func);
@@ -390,14 +394,14 @@ static int init_loopback_mode_procfs(void)
     no_ttymode:
     remove_proc_entry("loopback_mode", tty_procfs_dir);
     remove_proc_entry(TTY_DIR_NAME, NULL);
-    out:
+    //out:
     return ret;
 }
 
 static int wm8994_ready_call_path(struct snd_kcontrol *kcontrol, struct snd_ctl_elem_value *ucontrol)
 {
-    struct snd_soc_codec *codec = snd_kcontrol_chip(kcontrol);
-    struct wm8994_priv *wm8994 = codec->drvdata;
+    //struct snd_soc_codec *codec = snd_kcontrol_chip(kcontrol);
+    //struct wm8994_priv *wm8994 = codec->drvdata;
 
 #if 0
     if(wm8994->codec_state & CALL_ACTIVE)
@@ -691,7 +695,7 @@ static int wm8994_set_path(struct snd_kcontrol *kcontrol,
 	struct snd_soc_codec *codec = snd_kcontrol_chip(kcontrol);
 	struct wm8994_priv *wm8994 = codec->drvdata;
 	struct soc_enum *mc = (struct soc_enum *)kcontrol->private_value;
-	int val;
+	//int val;
 	int path_num = ucontrol->value.integer.value[0];
 
 	if (strcmp(mc->texts[path_num], playback_path[path_num])) {
@@ -1579,6 +1583,7 @@ static int wm8994_hw_params(struct snd_pcm_substream *substream,
 	return 0;
 }
 
+#if 0
 static int wm8994_digital_mute(struct snd_soc_dai *codec_dai, int mute)
 {
 	struct snd_soc_codec *codec = codec_dai->codec;
@@ -1605,6 +1610,7 @@ static int wm8994_digital_mute(struct snd_soc_dai *codec_dai, int mute)
 
 	return 0;
 }
+#endif
 
 static int wm8994_startup(struct snd_pcm_substream *substream,
 			  struct snd_soc_dai *codec_dai)
@@ -1664,12 +1670,12 @@ void wm8994_shutdown(struct snd_pcm_substream *substream,
 		return;
 #endif	
 	/* check and sync the capture flag */
-	if ((substream->stream == SNDRV_PCM_STREAM_CAPTURE) && !(wm8994->codec_state & CALL_ACTIVE)) {
+	if (substream->stream == SNDRV_PCM_STREAM_CAPTURE) {
 		wm8994->stream_state &=  ~(PCM_STREAM_CAPTURE);
 		wm8994->codec_state &= ~(CAPTURE_ACTIVE);
 		
 		/* disable only rec path when other scenario is active */
-		if (wm8994->codec_state)	
+		if ((wm8994->codec_state & ~(CALL_ACTIVE)))
 			wm8994_disable_rec_path(codec);
 	}
 

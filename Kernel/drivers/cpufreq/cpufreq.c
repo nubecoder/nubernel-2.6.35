@@ -39,7 +39,7 @@
 /* UV */
 extern unsigned int freq_uv_table[NUM_FREQ][3];
 int exp_UV_mV[NUM_FREQ] =     {       0,       0,       0,       0,       0,       0,       0,        0,      0,      0,      0 };
-int enabled_freqs[NUM_FREQ] = {       0,       0,       0,       1,       1,       1,       1,        1,      1,      1,      1 };
+int enabled_freqs[NUM_FREQ] = {       0,       0,       0,       0,       1,       1,       1,        1,      1,      1,      1 };
 /*  clock freqs               {  1.4GHz,  1.3GHz,  1.2GHz,  1.1GHz,  1.0GHz,  900MHz,  800MHz,  600MHz,  400MHz, 200MHz, 100MHz } */
 
 /**
@@ -1288,12 +1288,28 @@ static int __cpufreq_remove_dev(struct sys_device *sys_dev)
 		cpufreq_driver->exit(data);
 	unlock_policy_rwsem_write(cpu);
 
+	cpufreq_debug_enable_ratelimit();
+
+#ifdef CONFIG_HOTPLUG_CPU
+	/* when the CPU which is the parent of the kobj is hotplugged
+	 * offline, check for siblings, and create cpufreq sysfs interface
+	 * and symlinks
+	 */
+	if (unlikely(cpumask_weight(data->cpus) > 1)) {
+		/* first sibling now owns the new sysfs dir */
+		cpumask_clear_cpu(cpu, data->cpus);
+		cpufreq_add_dev(get_cpu_sysdev(cpumask_first(data->cpus)));
+
+		/* finally remove our own symlink */
+		lock_policy_rwsem_write(cpu);
+		__cpufreq_remove_dev(sys_dev);
+	}
+#endif
+
 	free_cpumask_var(data->related_cpus);
 	free_cpumask_var(data->cpus);
 	kfree(data);
-	per_cpu(cpufreq_cpu_data, cpu) = NULL;
 
-	cpufreq_debug_enable_ratelimit();
 	return 0;
 }
 
@@ -1380,7 +1396,7 @@ static unsigned int __cpufreq_get(unsigned int cpu)
 
 	ret_freq = cpufreq_driver->get(cpu);
 
-#ifdef NC_DEBUG
+#ifdef CONFIG_DEBUG_NUBERNEL_FREQ
 	printk("FREQ: %s: ret_freq: %uMHz, policy->cur: %uMHz \n", __func__, (ret_freq/1000), (policy->cur/1000));
 #endif
 
@@ -1913,7 +1929,7 @@ int cpufreq_update_policy(unsigned int cpu)
 	if (cpufreq_driver->get) {
 		policy.cur = cpufreq_driver->get(cpu);
 		if (!data->cur) {
-			dprintk("Driver did not initialize current freq");
+			dprintk("Driver did not initialize current freq\n");
 			data->cur = policy.cur;
 		} else {
 			if (data->cur != policy.cur)

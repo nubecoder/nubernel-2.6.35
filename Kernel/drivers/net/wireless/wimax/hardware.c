@@ -374,9 +374,9 @@ INT hwStop(MINIPORT_ADAPTER *Adapter)
 
 INT hwInit(MINIPORT_ADAPTER *Adapter)
 {
-	ENTER;
-
 	static PVOID ReceiveBuffer = NULL;	//cky 20100624
+
+	ENTER;
 	if(!hwGPIOInit())
 	{
 		DumpDebug(DISPATCH, "hwInit: Can't intialize GPIO");
@@ -680,8 +680,8 @@ unsigned int SendDataOut(MINIPORT_ADAPTER *Adapter, PBUFFER_DESCRIPTOR dsc)
 unsigned int sd_send(MINIPORT_ADAPTER *Adapter, UCHAR* pBuffer, UINT cbBuffer)
 {
 	int nRet = 0;
-	PUCHAR buf = (PUCHAR) pBuffer;
-	UINT size=cbBuffer;
+	//PUCHAR buf = (PUCHAR) pBuffer;
+	//UINT size=cbBuffer;
 //	UINT remainder=0;
 
 	cbBuffer  += (cbBuffer & 1) ? 1: 0;

@@ -106,6 +106,7 @@ static struct gpio_event_direct_entry sec_jack_key_map[] = {
 	},
 };
 
+#if 0
 static struct gpio_event_input_info sec_jack_key_info = {
 	.info.func = gpio_event_input_func,
 	.info.no_suspend = true,
@@ -114,17 +115,23 @@ static struct gpio_event_input_info sec_jack_key_info = {
 	.keymap = sec_jack_key_map,
 	.keymap_size = ARRAY_SIZE(sec_jack_key_map)
 };
+#endif
 
+#if 0
 static struct gpio_event_info *sec_jack_input_info[] = {
 	&sec_jack_key_info.info,
 };
+#endif
 
+#if 0
 static struct gpio_event_platform_data sec_jack_input_data = {
 	.name = "sec_jack",
 	.info = sec_jack_input_info,
 	.info_count = ARRAY_SIZE(sec_jack_input_info),
 };
+#endif
 
+#if 0
 static void sec_jack_set_type(struct sec_jack_info *hi, int jack_type)
 {
 	struct sec_jack_platform_data *pdata = hi->pdata;
@@ -165,13 +172,17 @@ static void sec_jack_set_type(struct sec_jack_info *hi, int jack_type)
 
 	switch_set_state(&switch_jack_detection, jack_type);
 }
+#endif
 
+#if 0
 static void handle_jack_not_inserted(struct sec_jack_info *hi)
 {
 	sec_jack_set_type(hi, SEC_JACK_NO_DEVICE);
 	hi->pdata->set_micbias_state(false);
 }
+#endif
 
+#if 0
 static void determine_jack_type(struct sec_jack_info *hi)
 {
 	struct sec_jack_platform_data *pdata = hi->pdata;
@@ -210,6 +221,7 @@ static void determine_jack_type(struct sec_jack_info *hi)
 	pr_debug("%s : jack removed before detection complete\n", __func__);
 	handle_jack_not_inserted(hi);
 }
+#endif
 
 static void jack_input_selector(int jack_type_status)
 {
@@ -464,6 +476,7 @@ static void short_sendend_switch_change(struct work_struct *work)
 
 DECLARE_WORK(short_sendend_switch_work,short_sendend_switch_change);
 
+#if 0
 /* IRQ handler for SHORT SEND END */
 static irqreturn_t short_send_end_irq_handler(int irq, void *dev_id)
 {
@@ -483,6 +496,7 @@ static irqreturn_t short_send_end_irq_handler(int irq, void *dev_id)
 
 	return IRQ_HANDLED;
 }
+#endif
 
 static void open_sendend_switch_change(struct work_struct *work)
 {

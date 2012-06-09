@@ -752,10 +752,12 @@ PRIVATE VOID  _DumpRegisters       (volatile FlexOneNANDReg *pstReg);
 PRIVATE VOID  _DumpSpareBuffer     (volatile FlexOneNANDReg *pstReg);
 PRIVATE VOID  _DumpCmdLog          (VOID);
 
+#if 0
 PRIVATE VOID  _CalcTransferTime    (UINT32       nDev,
                                     UINT16       nSysConf1Reg,
                                     UINT32      *pnReadCycle,
                                     UINT32      *pnWriteCycle);
+#endif
 
 PRIVATE INT32 _GetUniqueID         (UINT32       nDev,
                                     FlexONDCxt  *pstFNDCxt,

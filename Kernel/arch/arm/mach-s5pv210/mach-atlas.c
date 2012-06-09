@@ -1637,9 +1637,9 @@ static void touch_keypad_onoff(int onoff)
 	gpio_direction_output(_3_GPIO_TOUCH_EN, onoff);
 
 	if (onoff == TOUCHKEY_OFF)
-		msleep(30);
+		msleep(250);
 	else
-		msleep(25);
+		msleep(100);
 }
 
 static const int touch_keypad_code[] = {
@@ -1750,8 +1750,8 @@ static struct s3c_adc_mach_info s3c_adc_platform __initdata = {
 /* in revisions before 0.9, there is a common mic bias gpio */
 
 static DEFINE_SPINLOCK(mic_bias_lock);
-static bool wm8994_mic_bias;
-static bool jack_mic_bias;
+static bool wm8994_mic_bias = false;
+static bool jack_mic_bias = false;
 static void set_shared_mic_bias(void)
 {
 	gpio_set_value(GPIO_MICBIAS_EN, wm8994_mic_bias || jack_mic_bias);

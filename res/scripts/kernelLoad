@@ -1,0 +1,49 @@
+#!/system/bin/sh
+#
+# kernelLoad
+#  -Derrived from Tortel's "change_kernel.sh" script.
+# nubecoder 2012 - http://www.nubecoder.com/
+#
+
+#functions
+SHOW_HELP()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "Usage: $0 <kexec path> <zImage path> <mode(optional)>"
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	exit 1
+}
+
+KEXEC_BOOT_ZIMAGE()
+{
+	local KEXEC_FILE="$1"
+	local ZIMAGE_FILE="$2"
+	local KEXEC_MODE="$3"
+	busybox chmod 777 "$ZIMAGE_FILE"
+	busybox mount -ro remount /dev/block/stl6 /mnt/.lfs
+	busybox mount -ro remount /dev/block/stl9 /system
+	busybox mount -ro remount /dev/block/stl10 /data
+	busybox mount -ro remount /dev/block/stl11 /cache
+	case "$KEXEC_MODE" in
+		d|dbg|debug)
+			# debug boot
+			BOOT_PARAMETERS="console=tty0,115200 fbcon=rotate:1 fbcon=font:VGA7x14 lpj=387072 boot_delay=5 loglevel=4" ;;
+		r|recovery)
+			# recovery boot
+			BOOT_PARAMETERS="bootmode=2" ;;
+		*)
+			# normal boot
+			BOOT_PARAMETERS="console=ttySAC2,115200 loglevel=4" ;;
+	esac
+	$KEXEC_FILE --load-hardboot --mem-min=0x50000000 --append="$BOOT_PARAMETERS" "$ZIMAGE_FILE"
+	sync
+	$KEXEC_FILE -e
+}
+
+#main
+if busybox test -x "$1" && busybox test -f "$2" ; then
+	KEXEC_BOOT_ZIMAGE "$1" "$2" "$3"
+fi
+
+SHOW_HELP
+

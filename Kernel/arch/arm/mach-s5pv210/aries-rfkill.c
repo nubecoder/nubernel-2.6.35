@@ -213,7 +213,7 @@ static const struct rfkill_ops bt_rfkill_ops = {
 
 static int bluetooth_set_sleep(void *data, enum rfkill_user_states state)
 {	
-	unsigned int ret =0;
+	//unsigned int ret =0;
 	switch (state) {
 
 		case RFKILL_USER_STATE_UNBLOCKED:
@@ -266,11 +266,11 @@ static int bluetooth_lock_dvfs(void *data, enum rfkill_user_states state)
 			break;
 		case RFKILL_USER_STATE_SOFT_BLOCKED:
 			s5pv210_lock_dvfs_high_level(DVFS_LOCK_TOKEN_9, L9); //200MHz
-			pr_debug("[BT] dvfs lock to L6\n");
+			pr_debug("[BT] dvfs lock to L9\n");
 			break;
 		case RFKILL_USER_STATE_HARD_BLOCKED:
 			s5pv210_lock_dvfs_high_level(DVFS_LOCK_TOKEN_9, L8); //400MHz
-			pr_debug("[BT] dvfs lock to L5\n");
+			pr_debug("[BT] dvfs lock to L8\n");
 			break;
 		default:
 			pr_err("[BT] bad bluetooth rfkill state %d\n", state);

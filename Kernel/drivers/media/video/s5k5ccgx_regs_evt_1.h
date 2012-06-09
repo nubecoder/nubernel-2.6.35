@@ -3888,7 +3888,9 @@ regs_short_t ev_plus_4_regs[] = {
 
 regs_short_t contrast_minus_2_regs[] = {
 {0xFCFC, 0xD000}, 
-{0x0028, 0x7000}, 
+{0x0028, 0x7000},
+{0x002A, 0x079A},
+{0x0F12, 0x0000},		//seti_bSShapeContrast
 {0x002A, 0x01D2},
 {0x0F12, 0xFF80},		//REG_TC_UserContrast
 };
@@ -3896,6 +3898,8 @@ regs_short_t contrast_minus_2_regs[] = {
 regs_short_t contrast_minus_1_regs[] = {
 {0xFCFC, 0xD000}, 
 {0x0028, 0x7000}, 
+{0x002A, 0x079A},
+{0x0F12, 0x0000},		//seti_bSShapeContrast
 {0x002A, 0x01D2},
 {0x0F12, 0xFFC0},		//REG_TC_UserContrast
 };
@@ -3903,6 +3907,8 @@ regs_short_t contrast_minus_1_regs[] = {
 regs_short_t contrast_default_regs[] = {
 {0xFCFC, 0xD000}, 
 {0x0028, 0x7000}, 
+{0x002A, 0x079A},
+{0x0F12, 0x0001},		//seti_bSShapeContrast
 {0x002A, 0x01D2},
 {0x0F12, 0x0000},		//REG_TC_UserContrast
 };
@@ -3910,6 +3916,8 @@ regs_short_t contrast_default_regs[] = {
 regs_short_t contrast_plus_1_regs[] = {
 {0xFCFC, 0xD000}, 
 {0x0028, 0x7000}, 
+{0x002A, 0x079A},
+{0x0F12, 0x0000},		//seti_bSShapeContrast
 {0x002A, 0x01D2},
 {0x0F12, 0x0040},		//REG_TC_UserContrast
 };
@@ -3917,6 +3925,8 @@ regs_short_t contrast_plus_1_regs[] = {
 regs_short_t contrast_plus_2_regs[] = {
 {0xFCFC, 0xD000}, 
 {0x0028, 0x7000}, 
+{0x002A, 0x079A},
+{0x0F12, 0x0000},		//seti_bSShapeContrast
 {0x002A, 0x01D2},
 {0x0F12, 0x0080},		//REG_TC_UserContrast
 };

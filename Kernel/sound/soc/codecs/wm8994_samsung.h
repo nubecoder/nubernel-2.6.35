@@ -50,6 +50,7 @@ extern struct snd_soc_dai wm8994_dai;
 #define PLAYBACK_ACTIVE		0x01
 #define CAPTURE_ACTIVE		0x02
 #define CALL_ACTIVE		0x04
+#define FMRADIO_ACTIVE		0x08
 
 #define PCM_STREAM_DEACTIVE	0x00
 #define PCM_STREAM_PLAYBACK	0x01
@@ -77,6 +78,7 @@ Codec Output Path BIT
 #define PLAYBACK_RING_HP	(0x01 << 7)
 #define PLAYBACK_RING_SPK_HP	(0x01 << 8)
 #define PLAYBACK_HP_NO_MIC  (0x01 << 9)
+#define PLAYBACK_EXTRA_DOCK_SPEAKER (0x01 << 10)
 
 #define VOICECALL_RCV		(0x01 << 1)
 #define VOICECALL_SPK		(0x01 << 2)
@@ -103,12 +105,15 @@ Codec Output Path BIT
  */
 enum audio_path	{
 	OFF, RCV, SPK, HP, HP_NO_MIC, BT, SPK_HP,
-	RING_SPK, RING_HP, RING_NO_MIC, RING_SPK_HP
+	RING_SPK, RING_HP, RING_NO_MIC, RING_SPK_HP, EXTRA_DOCK_SPEAKER
 };
 enum mic_path		{MAIN, SUB, BT_REC, MIC_OFF};
 enum power_state	{CODEC_OFF, CODEC_ON };
 enum ringtone_state	{RING_OFF, RING_ON};
 enum input_source_state	{DEFAULT, RECOGNITION, CAMCORDER};
+enum output_source_state	{DEFAULT_OUTPUT, RING_TONE, VOIP_OUTPUT};
+enum fmradio_path		{FMR_OFF, FMR_SPK, FMR_HP, FMR_DUAL_MIX};
+enum fmradio_mix_path		{FMR_MIX_OFF, FMR_MIX_DUAL};
 
 typedef void (*select_route)(struct snd_soc_codec *);
 typedef void (*select_mic_route)(struct snd_soc_codec *);
@@ -139,8 +144,11 @@ struct wm8994_priv {
 	unsigned int  stream_state;
 	enum audio_path cur_path;
 	enum mic_path rec_path;
+	enum fmradio_path fmradio_path;
+	enum fmradio_mix_path fmr_mix_path;
 	enum power_state power_state;
 	enum input_source_state input_source;
+	enum output_source_state output_source;
 	enum ringtone_state ringtone_active;
 	select_route *universal_playback_path;
 	select_route *universal_voicecall_path;
@@ -186,6 +194,7 @@ void wm8994_set_playback_headset(struct snd_soc_codec *codec);
 void wm8994_set_playback_speaker(struct snd_soc_codec *codec);
 void wm8994_set_playback_bluetooth(struct snd_soc_codec *codec);
 void wm8994_set_playback_speaker_headset(struct snd_soc_codec *codec);
+void wm8994_set_playback_extra_dock_speaker(struct snd_soc_codec *codec);
 void wm8994_set_voicecall_common_setting(struct snd_soc_codec *codec);
 void wm8994_set_voicecall_receiver(struct snd_soc_codec *codec);
 void wm8994_set_voicecall_headset(struct snd_soc_codec *codec);

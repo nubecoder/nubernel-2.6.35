@@ -80,13 +80,14 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_AmpDisable(VibeUInt8 nActuatorIndex
 #endif
     }
 #endif
+
+
     if (g_bAmpEnabled)
     {
 		g_bAmpEnabled = false;
 		
 		pwm_config(Immvib_pwm, 0, freq_count/2);
 		pwm_disable(Immvib_pwm);
-		
 		//gpio_request(GPIO_VIBTONE_EN1, "GPIO_VIBTONE_EN1");
 		gpio_direction_output(vib_plat_data.vib_enable_gpio,0);
 		gpio_direction_input(vib_plat_data.vib_enable_gpio);
@@ -133,7 +134,9 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_AmpEnable(VibeUInt8 nActuatorIndex)
     {
     		g_bAmpEnabled = true;
 
+
 		pwm_enable(Immvib_pwm);
+
 		
 		//gpio_request(GPIO_VIBTONE_EN1, "GPIO_VIBTONE_EN1");
 		gpio_direction_output(vib_plat_data.vib_enable_gpio, 0);
@@ -204,6 +207,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_Terminate(void)
     ** If multiple actuators are supported, please make sure to call ImmVibeSPI_ForceOut_AmpDisable
     ** for each actuator (provide the actuator index as input argument).
     */
+    	
     ImmVibeSPI_ForceOut_AmpDisable(0);
 
 #if 0
@@ -256,6 +260,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_Set(VibeUInt8 nActuatorIndex, VibeI
 
 	if (nForce == 0)
 	{
+		
 		ImmVibeSPI_ForceOut_AmpDisable(0);
 
 	}
@@ -279,6 +284,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_SetSamples(VibeUInt8 nActuatorIndex
     return VIBE_S_SUCCESS;
 }
 
+#if 0
 /*
 ** Called to set force output frequency parameters
 */
@@ -292,6 +298,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_SetFrequency(VibeUInt8 nActuatorInd
 
     return VIBE_S_SUCCESS;
 }
+#endif
 
 /*
 ** Called to get the device name (device name must be returned as ANSI char)

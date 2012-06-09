@@ -5333,7 +5333,7 @@ struct qt602240_data {
 	struct work_struct ts_event_work;
 	unsigned int irq;
 	struct early_suspend	early_suspend;
-        struct qt602240_platform_data *pdata;	
+	struct qt602240_platform_data *pdata;	
 };
 
 /*------------------------------ functions prototype -----------------------------------*/

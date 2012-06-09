@@ -40,7 +40,7 @@ static ssize_t keyshort_test(struct device *dev, struct device_attribute *attr, 
 {
         int count;
         int mask=0;
-        u32 col=0,cval=0,rval=0;
+        //u32 col=0,cval=0,rval=0;
 
         if(!gpio_get_value(S5PV210_GPH2(6)))//Power Key
         {
@@ -61,7 +61,8 @@ static ssize_t keyshort_test(struct device *dev, struct device_attribute *attr, 
 	if(mask)  /*!gpio_get_value(GPIO_KBR0) || !gpio_get_value(GPIO_KBR1) || !gpio_get_value(GPIO_KBR2) || */
         {
                 count = sprintf(buf,"PRESS\n");
-              printk("keyshort_test: PRESS\n",mask);
+              //printk("keyshort_test: PRESS\n",mask);
+              printk("keyshort_test: PRESS\n");
         }
         else
         {

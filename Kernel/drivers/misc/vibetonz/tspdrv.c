@@ -104,14 +104,20 @@ struct pwm_device	*vib_pwm;
 
 struct vibrator_platform_data vib_plat_data;
 
+#ifdef CONFIG_MACH_FORTE
+extern void set_ldo12_reg(int);
+#endif
 static int set_vibetonz(int timeout)
 {
         //gpio_request(GPIO_VIBTONE_EN1, "GPIO_VIBTONE_EN1");
 
         if(!timeout) {
                 pwm_disable(Immvib_pwm);
-                printk("[VIBETONZ] DISABLE\n");
+             //   printk("[VIBETONZ] DISABLE\n");
                 gpio_set_value(vib_plat_data.vib_enable_gpio, 0);
+		#if defined(CONFIG_MACH_FORTE)
+      		set_ldo12_reg(0);
+		#endif
                 gpio_direction_input(vib_plat_data.vib_enable_gpio);
                 s3c_gpio_setpull(vib_plat_data.vib_enable_gpio,S3C_GPIO_PULL_DOWN);
         }
@@ -119,8 +125,11 @@ static int set_vibetonz(int timeout)
                 pwm_config(Immvib_pwm, VIBRATOR_DUTY, VIBRATOR_PERIOD);
                 pwm_enable(Immvib_pwm);
 
-                printk("[VIBETONZ] ENABLE\n");
+               // printk("[VIBETONZ] ENABLE\n");
                 gpio_direction_output(vib_plat_data.vib_enable_gpio, 0);
+		#if defined(CONFIG_MACH_FORTE)
+      		set_ldo12_reg(1);
+		#endif
                 mdelay(1);
                 gpio_set_value(vib_plat_data.vib_enable_gpio, 1);
         }
@@ -158,7 +167,7 @@ static int get_time_for_vibetonz(struct timed_output_dev *dev)
 
 static void enable_vibetonz_from_user(struct timed_output_dev *dev,int value)
 {
-	printk("[VIBETONZ] %s : time = %d msec \n",__func__,value);
+	//printk("[VIBETONZ] %s : time = %d msec \n",__func__,value);
 	hrtimer_cancel(&timer);
 	
 	set_vibetonz(value);
@@ -240,12 +249,12 @@ static ssize_t immTest_show(struct device *dev, struct device_attribute *attr, c
 static ssize_t immTest_store(struct device *dev, struct device_attribute *attr, const char *buf, size_t size)
 {
         char *after;
-        unsigned long arg1=0, arg2=0;
+        //unsigned long arg1=0, arg2=0;
 
         unsigned long value = simple_strtoul(buf, &after, 10);
 //      arg1 = (int) (value / 1000);
 //      arg2 = (int) (value % 1000 );
-        printk(KERN_INFO "[VIBETONZ] value:%ld\n", value);
+        //printk(KERN_INFO "[VIBETONZ] value:%ld\n", value);
 
         if (value > 0)
                 //ImmVibeSPI_ForceOut_AmpEnable(value);
@@ -265,13 +274,13 @@ static DEVICE_ATTR(immTest, S_IRUGO | S_IWUSR , immTest_show, immTest_store); //
 static int vibrator_probe(struct platform_device *pdev)
 {
 	struct vibrator_platform_data *pdata = pdev->dev.platform_data; 
-	int i, nRet=0, ret=0;
+	int i, nRet=0;//, ret=0;
 
 	vib_plat_data.timer_id = pdata->timer_id;
 	vib_plat_data.vib_enable_gpio = pdata->vib_enable_gpio;
 
 	if (gpio_is_valid(vib_plat_data.vib_enable_gpio)) {
-		if (nRet = gpio_request(vib_plat_data.vib_enable_gpio, "GPIO_VIBTONE_EN1"))
+		if ((nRet = gpio_request(vib_plat_data.vib_enable_gpio, "GPIO_VIBTONE_EN1")))
 			printk(KERN_ERR "Failed to request GPIO_VIBTONE_EN1! %d \n",nRet);
 	}
 #ifdef CONFIG_MACH_FORTE  
@@ -356,7 +365,7 @@ MODULE_LICENSE("GPL v2");
 
 int init_module(void)
 {
-    int nRet, i;   /* initialized below */
+    int nRet;//, i;   /* initialized below */
 
     DbgOut((KERN_INFO "tspdrv: init_module.\n"));
 
@@ -668,7 +677,9 @@ static int resume(struct platform_device *pdev)
 	return 0;   /* can resume */
 }
 
-static void platform_release(struct device *dev) 
+#if 0
+static void platform_release(struct device *dev)
 {	
     DbgOut((KERN_INFO "tspdrv: platform_release.\n"));
 }
+#endif

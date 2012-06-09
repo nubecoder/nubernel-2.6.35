@@ -2,8 +2,9 @@
 bootlogo/boot_logo.h
 bootlogo/makelogo
 *.md5
-update/zImage
+*/*/zImage
+*/*/boot.img
 source/*
-stand-alone modules/*
-firmware.info
+res/modules/*
+*.patch
 

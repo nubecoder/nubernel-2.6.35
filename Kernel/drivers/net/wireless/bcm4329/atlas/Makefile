@@ -12,6 +12,9 @@ EXTRA_CFLAGS += -DCUSTOMER_HW_SAMSUNG
 ifeq ($(CONFIG_S5PV210_GARNETT_DELTA),y)
 EXTRA_CFLAGS += -DREAD_MACADDR
 else
+ifeq ($(TARGET_PRODUCT),SCH-R915)
+EXTRA_CFLAGS += -DREAD_MACADDR
+endif
 EXTRA_CFLAGS += -DWRITE_MACADDR
 endif
 
@@ -85,8 +88,7 @@ KBUILD_CFLAGS += -I$(LINUXDIR)/include -I$(shell pwd)
 
 
 #obj-$(CONFIG_BROADCOM_WIFI)-m	+= dhd.o
-obj-m	+= src/wl/sys/hotspot_event_monitoring.o \
-	dhd.o
+obj-m += dhd.o
 
 dhd-y := src/dhd/sys/dhd_linux.o \
          src/dhd/sys/dhd_common.o \

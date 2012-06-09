@@ -340,7 +340,7 @@ int CheckCert(void)
 {
 	char buf[256] = {0};
 	int len = 4;
-	int i = 0;
+	//int i = 0;
 
 	WiMAX_EEPROM_Read(0x5800, buf, len);
 
@@ -358,7 +358,7 @@ int CheckCal(void)
 {
 	char buf[256] = {0};
 	int len = 8;
-	int i = 0;
+	//int i = 0;
 
 	WiMAX_EEPROM_Read(0x5400, buf, len);
 
@@ -622,7 +622,7 @@ void WiMAX_ReadEEPROM()
 
 void WiMAX_RraseEEPROM()
 {
-	short addr = 0;
+	//short addr = 0;
 	char buf[128] = {0};
 	int i;
 	
@@ -686,7 +686,7 @@ void WIMAX_BootInit(void)
 	if(LoadWiMaxBootImage() < 0)
 	{
 		DumpDebug("ERROR READ WIMAX BOOT IMAGE");
-		return 0;
+		return;
 	}
 
 	// set SCL, SDA pin

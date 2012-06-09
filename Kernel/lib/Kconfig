@@ -64,6 +64,16 @@ config CRC32
 	  kernel tree does. Such modules that use library CRC32 functions
 	  require M here.
 
+config CRC32_SELFTEST
+	bool "CRC32 perform self test on init"
+	default n
+	depends on CRC32
+	help
+	  This option enables the CRC32 library functions to perform a
+	  self test on initialization. The self test computes crc32_le
+	  and crc32_be over byte strings with random alignment and length
+	  and computes the total elapsed time and number of bytes processed.
+
 config CRC7
 	tristate "CRC7 functions"
 	help
@@ -103,6 +113,8 @@ config LZO_COMPRESS
 config LZO_DECOMPRESS
 	tristate
 
+source "lib/xz/Kconfig"
+
 #
 # These all provide a common interface (hence the apparent duplication with
 # ZLIB_INFLATE; DECOMPRESS_GZIP is just a wrapper.)
@@ -115,6 +127,10 @@ config DECOMPRESS_BZIP2
 	tristate
 
 config DECOMPRESS_LZMA
+	tristate
+
+config DECOMPRESS_XZ
+	select XZ_DEC
 	tristate
 
 config DECOMPRESS_LZO

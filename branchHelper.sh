@@ -1,15 +1,12 @@
 #!/bin/bash
 #
 # branchHelper.sh
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
 #define version string
 VERSION_STRING="nubernel-2.6.35_v"
-CURRENT_VERSION="0.0.2"
+CURRENT_VERSION="0.1"
 
 # defaults
 RELEASE="n"
@@ -20,9 +17,6 @@ VERBOSE="n"
 NEW_VERSION=
 FEATURE_NAME=
 ERROR_MSG=
-
-#temp
-AOSP="n"
 
 # functions
 SHOW_HELP()
@@ -86,31 +80,37 @@ BRANCH_RELEASE()
 	# update files
 	local PATTERN="${VERSION_STRING}$CURRENT_VERSION"
 	local REPLACEMENT="${VERSION_STRING}$NEW_VERSION"
+	local UPDATE_FOLDERS="cm7 cm7-restore-modules dbg-bml dbg-mtd tw-bml tw-mtd"
 	if [ "$VERBOSE" = "y" ]; then
-		#sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/google/android/updater-script
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/android/metadata
-		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh
-		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README
+		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes
+		sed -i "s/$PATTERN/$REPLACEMENT/g" res/heimdall/firmware.xml
+		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist
+		for FOLDER in $UPDATE_FOLDERS ; do
+			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/google/android/updater-script
+			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/android/metadata
+		done
 	else
-		#sed -i "s/$PATTERN/$REPLACEMENT/g" build_kernel.sh
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" update/META-INF/com/android/metadata >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh >/dev/null 2>&1
-		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" changelog >/dev/null 2>&1
 		sed -i "s/$PATTERN/$REPLACEMENT/g" README >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" res/heimdall/firmware.xml >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" featurelist >/dev/null 2>&1
+		for FOLDER in $UPDATE_FOLDERS ; do
+			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/google/android/updater-script >/dev/null 2>&1
+			sed -i "s/$PATTERN/$REPLACEMENT/g" update/$FOLDER/META-INF/com/android/metadata >/dev/null 2>&1
+		done
 	fi
 
-	local PATTERN="nubernel_v$CURRENT_VERSION"
-	local REPLACEMENT="nubernel_v$NEW_VERSION"
+	local PATTERN="LOCALVERSION=\".nubernel_v${CURRENT_VERSION}\""
+	local REPLACEMENT="LOCALVERSION=\".nubernel_v${NEW_VERSION}\""
 	if [ "$VERBOSE" = "y" ]; then
-		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh
+		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes
 	else
-		sed -i "s/$PATTERN/$REPLACEMENT/g" ncBuildHelper.sh >/dev/null 2>&1
+		sed -i "s/$PATTERN/$REPLACEMENT/g" include/includes >/dev/null 2>&1
 	fi
+
 	local PATTERN="CURRENT_VERSION=\"$CURRENT_VERSION\""
 	local REPLACEMENT="CURRENT_VERSION=\"$NEW_VERSION\""
 	if [ "$VERBOSE" = "y" ]; then
@@ -121,26 +121,26 @@ BRANCH_RELEASE()
 	# git add changes
 	if [ "$VERBOSE" = "y" ]
 	then
-		#git add build_kernel.sh
-		git add update/META-INF/com/google/android/updater-script
-		git add update/META-INF/com/android/metadata
-		git add ncBuildHelper.sh
-		git add featurelist
 		git add changelog
 		git add README
-		git add scripts/update_modules.sh
-		git add Kernel/arch/arm/config/victory_nubernel_defconfig
+		git add include/includes
+		git add res/heimdall/firmware.xml
+		git add featurelist
+		for FOLDER in $UPDATE_FOLDERS ; do
+			git add update/$FOLDER/META-INF/com/google/android/updater-script
+			git add update/$FOLDER/META-INF/com/android/metadata
+		done
 		git add $0
 	else
-		#git add build_kernel.sh >/dev/null 2>&1
-		git add update/META-INF/com/google/android/updater-script >/dev/null 2>&1
-		git add update/META-INF/com/android/metadata >/dev/null 2>&1
-		git add ncBuildHelper.sh >/dev/null 2>&1
-		git add featurelist >/dev/null 2>&1
 		git add changelog >/dev/null 2>&1
 		git add README >/dev/null 2>&1
-		git add scripts/update_modules.sh >/dev/null 2>&1
-		git add Kernel/arch/arm/config/victory_nubernel_defconfig >/dev/null 2>&1
+		git add include/includes >/dev/null 2>&1
+		git add res/heimdall/firmware.xml >/dev/null 2>&1
+		git add featurelist >/dev/null 2>&1
+		for FOLDER in $UPDATE_FOLDERS ; do
+			git add update/$FOLDER/META-INF/com/google/android/updater-script >/dev/null 2>&1
+			git add update/$FOLDER/META-INF/com/android/metadata >/dev/null 2>&1
+		done
 		git add $0 >/dev/null 2>&1
 	fi
 	# show some info

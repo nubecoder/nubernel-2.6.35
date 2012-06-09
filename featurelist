@@ -2,101 +2,113 @@ Samsung SPH-D700 (Epic 4G) kernel by nubecoder
 
 http://www.nubecoder.com/
 
-nubernel-2.6.35_v0.0.2
+nubernel-2.6.35_v0.1
 
 
 Feature list:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
-nubernel-2.6.35_v0.0.2
+nubernel-2.6.35_v0.1
 
 Includes a custom "Nubernel the kernel" bootlogo.
+The Kernel base is patched up to 2.6.35.14.
 Includes kexec support.
-Ensures su is installed properly. (tw build only!)
-Ensures superuser is installed properly. (tw build only!)
-Ensures busybox is installed properly. (tw build only!)
-Installs bash into /system/bin/ (if it is not found). (tw build only!)
-Installs bash resources if they do not already exist. (tw build only!)
-Includes flash tools (redbend_ua and bmlwrite) in /sbin. (tw build only!)
-Includes custom scripts in /vendor/bin. (tw build only!)
-Recovery redirector, "reboot recovery" will boot to the recovery kernel (bml8).
+Includes numerous fixes and patches pulled from all over.
+Ensures su is installed properly. (tw builds only!)
+Ensures superuser is installed properly. (tw builds only!)
+Ensures busybox is installed properly. (tw builds only!)
+Installs bash into /system/bin/ (if it is not found). (See notes about first boot below!)
+Installs bash resources if they do not already exist. (See notes about first boot below!)
+Installs bash as default adb shell. (See notes about first boot below!)
+Includes some led fun in the recovery flashable install packages (update-zips).
+Includes some custom scripts in /data/local/bin.
 Supports the following:
-  init.d scripts, init.local.rc, RFS, EXT4, CIFS, TUN, Netfilter TCPMSS (init.d scripts = tw build only).
+  init.d scripts, init.local.rc, CIFS, TUN, Netfilter TCPMSS (init.d scripts = tw builds only).
 Fully supports VoltageControl and SetCPU (see SetCPU notes below).
 SetCPU notes:
   SetCPU aparently uses "cpuinfo_cur_freq" rather than "scaling_cur_freq" for it's live readout.
   For some reason, "cpuinfo_cur_freq" reports being at some strange frequencies (75MHz, 150MHz, 300MHz).
-  I have no idea why this is happening, or how to fix it as of now, sorry.
+  I have no idea why this is happening, or how to fix it (still), sorry.
 Includes the following I/O schedulers:
-  noop, deadline, cfq, bfq, sio.
-Uses deadline as the default I/O scheduler.
+  noop, deadline, cfq, bfq, sio, vr.
+Uses "sio" as the default I/O scheduler.
 Includes the following CPU frequencies:
-  100MHz, 200MHz, 400MHz, 600MHz, 800MHz, 900MHz, 1000MHz, 1100MHz, 1200MHz, 1300MHz, 1400MHz.
+  100MHz, 200MHz, 400MHz, 600MHz, 800MHz, 900MHz, 1000MHz, 1128MHz, 1200MHz, 1316MHz, 1400MHz.
 The following CPU frequencies are disabled by default (use an app to enable them):
-  1200MHz, 1300MHz, 1400MHz.
+  1128MHz, 1200MHz, 1300MHz, 1400MHz.
 Includes the following CPU governors (see notes below):
   smartassV2, smartass, interactiveX, interactive, conservative, userspace, powersave, ondemand, performance.
-Uses ondemand as the default CPU governor.
+Uses "ondemand" as the default CPU governor.
 CPU governor notes:
   There seems to be a scaling problem with smartass (not V2).
   It likes to hang out at 900MHz, I'll try to fix it later.
-Loads the Android logger as a module. (tw build only!)
+Loads the Android logger as a module.
 Supports the following types of bootanimations (See notes):
   bootanimation (bootanimation.zip).
-  samsungani (*.qmg). (tw build only!)
+  samsungani (*.qmg). (tw non-debug builds only!)
 Bootanimation notes:
   bootanimation.zip:
     If you have both bootanimation.zip and boot*.qmg files, they will fight each other.
     It's better than froyo was, in that, it will kind of randomly choose one or the other.
     It's best to just remove the boot*.qmg files if using a bootanimation.zip animation.
+    Note:: If bootanimation.zip exists and sanim.zip does not, a symlink will be created.
   Samsung boot*.qmg boot animations:
     You must still fake out the kernel with a "blank" bootanimation.zip.
     You still might see a small glimpse of the framework's animation (blue android logo).
-Includes system app mover and remover: (tw build only!)
-  During boot, the init scripts make room to install root and recovery. (tw build only!)
-  Apps that are moved will have their data removed (to prevent FC's).
-  Two list files are checked to determine what will be moved or removed:
-    /data/local/.mv_sys_apps
-    /data/local/.rm_sys_apps
-  The format of the list files is as follows:
-    Each line must contain two strings separated by a space:
-      #1 - The system app's apk file name with no extension.
-      #2 - The system app's packagename.
-    Example:
-      FreeHDGameDemos com.gameloft.microwidget
-  If the list files do not exist, defaults will be created.
-  Apps that will be moved from /system/app to /data/app by default:
-    Asphalt5_DEMO_SAMSUNG_D700_Sprint_ML_330 (Asphalt 5 Demo)
-    FreeHDGameDemos (Promo Widget)
-    nascar09-prod-release (Sprint Nascar)
-    qik-8.66-release-ffc (Qik video)
-    sfl-prod-release (Sprint NFL)
-    SprintTV
-    SprintTVWidget
-    SprintZone
-    TN6.2-sprint-handset-6201501 (Telenav Navigation)
-  Apps that will be removed by default:
-    Term1
-    Term2
-    Term3
-    Term4
-    Term5
-Includes patches and code, etc from the following people:
-  Voodoo Sound - supercurio
-  Kernel bootlogo creation binary - morfic.
-  Keyboard patches, TARGET_PRODUCT fix, MODULE_LOOSE_VERMAGIC fix, kexec patch, etc - mkasick.
-  Various patches, scripting, etc - tanimn.
-  Various patches, scripting, etc - Tortel.
-  ClockworkMod recovery - koush.
-  ClockworkMod recovery (device specific), initramfs, scripting, etc - DRockstar.
-  Compiler tweaks, compiler warnings, etc - gzub.
-  Various patches, scripting, initial help getting my kernel compiled, etc - RandyT / Bonsai.
-  scaling_available_frequencies sysfs, compile errors, scripting, etc - nullghost.
-  Boot from sdcard (Dual Boot), Re-enabled kernel splash (bootlogo), various patches - Rodderik.
-  Various patches / code, scripting, cyanogenmod, etc:
-    chris41g / Decad3nce / DevinXtreme / DRockstar / jt1134
-    noobnl / nullghost / Rodderik / UberPinguin / wispoffates
-  Miscellaneous somethings - Anyone I may have missed.
+    (See notes about first boot below!)
+Includes first boot detection and will perform certain functions during the first boot:
+  During first boot, to ensure room to install root, busybox and bash, the samsung boot
+  animation (.qmg) and sound (/system/etc/PowerOn.wav) files will be removed. (tw builds only!)
+  Samsung qmg bootanimations:
+    You will need to re-install your samsung bootanimation if you are using one.
+    NOTE:: Normal bootanimation.zip files are not effected by this.
+  Bash will be installed as the default adb shell and bash resources will be installed if
+  they do not exist. (note: cm7 build forces replacement of /system/etc/bash/bashrc during first boot.)
+
+Some notes about the different builds:
+
+All builds are tagged, for example:
+  tw-mtd is a TouchWiz MTD based build.
+  dbg-bml is a TouchWiz BML based debug build.
+  cm7 is the CM7 (MTD) build.
+  You get the idea.
+
+MIUI build:
+There currently isnt one.
+
+Touchwiz builds:
+  No custom roms were used during the testing for TouchWiz builds. MTD builds were tested on converted stock backups.
+
+Debug builds:
+  These only support TouchWiz and are just for fun. =]
+  Debug builds have kernel messages output to the screen during boot. (Including a nifty little linux logo.)
+  Debug builds are not meant for daily use, they have extra debugging enabled which may have unforseen effects.
+  NOTE:: If you choose to run a debug build and have a problem, my 1st answer will be "Does it happen on the non-debug build?"
+
+CM7 build:
+  Since this kernel is patched up to 2.6.35.14 (and I didn't want it to falsely show as 2.6.35.7), modules built for 2.6.35.7
+  will fail to load (the vermagic doesn't match). Because of this, new modules will be installed into /system/lib/modules/
+  during the zip installation. When the modules are installed, the original modules will be backed up (unless a backup already exists).
+  NOTE:: Until other kernels update as well (maybe?), you will need to flash the cm7-restore-modules.zip when you want to use another kernel.
+
+cm7-restore-modules.zip:
+  This is a zip, flashable from recovery, that will restore the modules that were backed up during the kernel installation process.
+  You will want to use this to "reset" the modules in preparation of using another kernel.
+
+MTD builds (including cm7):
+  All MTD builds include clockwork mod recovery (taken from the cm7 sources).
+
+Credits:
+
+This kernel includes (or included) patches, code, scripts, etc from the following people:
+  supercurio / koush / netarchy / tanimn / Tortel / morfic / gzub
+  DRockstar / nullghost / RandyT / Bonsai / mkasick / Rodderik
+  chris41g / Decad3nce / DevinXtreme / DRockstar / jt1134 / noobnl
+  nullghost / Rodderik / UberPinguin / wispoffates / wtogami / bbelos
+  Alias8818 / gTan64 / AproSamurai / existz / sunfong / kangtastic
+  Ezekeel / toadlife / imoseyon / chris41g / erasmux / codeaurora forums
+
+Anyone I may have missed let me know and I'll add you.
 
 Thanks to all the above!
 

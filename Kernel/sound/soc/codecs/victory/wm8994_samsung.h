@@ -31,8 +31,10 @@ extern struct snd_soc_codec_device soc_codec_dev_wm8994;
 #define CMD_FMR_END			3	// Codec off in FM radio mode - to reduce pop up noise.
 #define CMD_RECOGNITION_DEACTIVE	4	// Distingush recognition gain. To use default MIC gain.
 #define CMD_RECOGNITION_ACTIVE		5	// Distingush recognition gain. To use MIC gain for recognition.
-#define CMD_CALL_FLAG_CLEAR		6	// Call flag clear for shutdown - to reduce pop up noise.
-#define CMD_CALL_END			7	// Codec off in call mode - to reduce pop up noise.
+// defined below as '4'
+//#define CMD_CALL_FLAG_CLEAR		6	// Call flag clear for shutdown - to reduce pop up noise.
+// defined below as '5'
+//#define CMD_CALL_END			7	// Codec off in call mode - to reduce pop up noise.
 #endif
 
 /* Sources for AIF1/2 SYSCLK - use with set_dai_sysclk() */

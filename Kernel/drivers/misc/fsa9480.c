@@ -35,7 +35,11 @@
 #include <linux/regulator/consumer.h>
 #include <mach/param.h>
 #include <plat/devs.h>
-
+#ifdef CONFIG_MACH_FORTE
+#include <mach/gpio-forte.h>
+#include <plat/gpio-cfg.h>
+#include <mach/gpio.h>
+#endif
 /* FSA9480 I2C registers */
 #define FSA9480_REG_DEVID		0x01
 #define FSA9480_REG_CTRL		0x02
@@ -146,14 +150,15 @@ extern int askon_status;
 /*********for WIMAX USB MODEM***********/
 int fsa9480_set_ctl_register(void)
 {
-     int ret=0;
-     struct i2c_client *client = local_usbsw->client;
-     if (adc_fsa == WIMAX_CABLE_50K)
-	     fsa9480_manual_switching(SWITCH_PORT_USB);
-     else 
-	     ret = i2c_smbus_write_byte_data(client, FSA9480_REG_CTRL,0x1E);
-     if (ret < 0)
-	     dev_err(&client->dev, "%s: err %d\n", __func__, ret);
+	int ret=0;
+	struct i2c_client *client = local_usbsw->client;
+	if (adc_fsa == WIMAX_CABLE_50K)
+		fsa9480_manual_switching(SWITCH_PORT_USB);
+	else 
+		ret = i2c_smbus_write_byte_data(client, FSA9480_REG_CTRL,0x1E);
+	if (ret < 0)
+		dev_err(&client->dev, "%s: err %d\n", __func__, ret);
+	return 0;
 }
 EXPORT_SYMBOL(fsa9480_set_ctl_register);
 /***************************/
@@ -192,9 +197,8 @@ EXPORT_SYMBOL(fsa9480_get_dock_status);
 void FSA9480_Enable_SPK(u8 enable)
 {
 	static struct regulator *esafeout2_regulator;
-	struct i2c_client *client = local_usbsw->client;
-
-	u8 data = 0;
+	//struct i2c_client *client = local_usbsw->client;
+	//u8 data = 0;
 	
 	if (!enable) {
 		printk("%s: Speaker Disabled\n", __func__);
@@ -223,7 +227,8 @@ static ssize_t print_switch_state(struct switch_dev *sdev, char *buf)
 
           printk("---------->  %s ,USBSTATUS=%d,CURRENTUSBSTATUS=%d\n",__func__,usbstatus,currentusbstatus);
     if(usbstatus){
-        if((currentusbstatus== USBSTATUS_UMS) || (currentusbstatus== USBSTATUS_ADB)) {
+        if((currentusbstatus== USBSTATUS_UMS) || (currentusbstatus== USBSTATUS_ADB) ||
+           (currentusbstatus== USBSTATUS_ADB_RNDIS)) {
           printk(KERN_INFO " ------------> sending notification: ums online\n");
 	#if defined(CONFIG_MACH_VICTORY)
            return sprintf(buf, "%s\n", "1");
@@ -237,7 +242,8 @@ static ssize_t print_switch_state(struct switch_dev *sdev, char *buf)
 	}
     }
     else{
-        if((currentusbstatus== USBSTATUS_UMS) || (currentusbstatus== USBSTATUS_ADB)){
+        if((currentusbstatus== USBSTATUS_UMS) || (currentusbstatus== USBSTATUS_ADB) ||
+           (currentusbstatus== USBSTATUS_ADB_RNDIS)) {
           printk(KERN_INFO " ---------> sending notification: ums offline\n");
 	
 	#if defined(CONFIG_MACH_VICTORY)
@@ -543,7 +549,7 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 				dock_status = 1;
 			
 			ret = i2c_smbus_write_byte_data(client,
-					FSA9480_REG_MANSW1, SW_DHOST);
+					FSA9480_REG_MANSW1, SW_VAUDIO);
 			if (ret < 0)
 				dev_err(&client->dev,
 					"%s: err %d\n", __func__, ret);
@@ -564,6 +570,24 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 			if (pdata->cardock_cb)
 				pdata->cardock_cb(FSA9480_ATTACHED);
 			dock_status = 1;
+
+                        ret = i2c_smbus_write_byte_data(client,
+                                        FSA9480_REG_MANSW1, SW_VAUDIO);
+                        if (ret < 0)
+                                dev_err(&client->dev,
+                                        "%s: err %d\n", __func__, ret);
+
+                        ret = i2c_smbus_read_byte_data(client,
+                                        FSA9480_REG_CTRL);
+                        if (ret < 0)
+                                dev_err(&client->dev,
+                                        "%s: err %d\n", __func__, ret);
+
+                        ret = i2c_smbus_write_byte_data(client,
+                                FSA9480_REG_CTRL, ret & ~CON_MANUAL_SW);
+                        if (ret < 0)
+                                dev_err(&client->dev,
+                                        "%s: err %d\n", __func__, ret);
 		}
 	/* Detached */
 	} else {
@@ -626,6 +650,18 @@ static void fsa9480_detect_dev(struct fsa9480_usbsw *usbsw)
 			if (pdata->cardock_cb)
 				pdata->cardock_cb(FSA9480_DETACHED);
 			dock_status = 0;
+
+                        ret = i2c_smbus_read_byte_data(client,
+                                        FSA9480_REG_CTRL);
+                        if (ret < 0)
+                                dev_err(&client->dev,
+                                        "%s: err %d\n", __func__, ret);
+
+                        ret = i2c_smbus_write_byte_data(client,
+                                        FSA9480_REG_CTRL, ret | CON_MANUAL_SW);
+                        if (ret < 0)
+                                dev_err(&client->dev,
+                                        "%s: err %d\n", __func__, ret);
 		}
 	}
 
@@ -723,6 +759,13 @@ static int __devinit fsa9480_probe(struct i2c_client *client,
 	struct i2c_adapter *adapter = to_i2c_adapter(client->dev.parent);
 	struct fsa9480_usbsw *usbsw;
 	int ret = 0;
+#ifdef CONFIG_MACH_FORTE 
+        s3c_gpio_cfgpin(GPIO_USB_SCL_28V, S3C_GPIO_OUTPUT);
+        s3c_gpio_setpull(GPIO_USB_SCL_28V, S3C_GPIO_PULL_NONE);
+
+        s3c_gpio_cfgpin(GPIO_USB_SDA_28V, S3C_GPIO_OUTPUT);
+        s3c_gpio_setpull(GPIO_USB_SDA_28V, S3C_GPIO_PULL_NONE);
+#endif
 
 	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE_DATA))
 		return -EIO;
@@ -768,16 +811,18 @@ static int __devinit fsa9480_probe(struct i2c_client *client,
 #endif
         switch_dev_register(&indicator_dev);
 
+#if defined(CONFIG_MACH_VICTORY)
+		ret = switch_dev_register(&wimax_cable);
+		wimax_cable.print_state = wimax_cable_type; 
+#endif
+
 	/* device detection */
 	fsa9480_detect_dev(usbsw);
 	
 	// set fsa9480 init flag.
 	if (usbsw->pdata->set_init_flag)
 		usbsw->pdata->set_init_flag();
-#if defined(CONFIG_MACH_VICTORY)
-	ret = switch_dev_register(&wimax_cable);
-	wimax_cable.print_state = wimax_cable_type;	
-#endif
+
 	return 0;
 
 fail2:

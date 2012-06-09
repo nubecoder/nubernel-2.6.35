@@ -2,13 +2,520 @@ Samsung SPH-D700 (Epic 4G) kernel by nubecoder
 
 http://www.nubecoder.com/
 
-nubernel-2.6.35_v0.0.2
+nubernel-2.6.35_v0.1
 
 
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-09-2012:
+initramfs: cwm: Syncing cwm recovery initramfs with cm7.
+featurelist: Update featurelist for release v0.1.
+
+06-06-2012:
+update-zip: all: Fix updater-script version info output (the change to two digit versioning caused this).
+media: video: samsung: mfc50: Fixing my patch of in_frame_map for cm7 support (fixes commitID: e63cd2d).
+defconfig: dbg-bml: Fix iniramfs path.
+compile: warnings: Quiet a ton of compiler warnings.
+scripting: warnings: Add IHEX, MK_FW, and LOGO to ignored (replaced) items list.
+
+06-05-2012:
+video: samsung: s3cfb_mdnie: Quiet warnings, fix formatting, etc.
+initramfs: all: custom scripts: Some minor syntax fixes.
+cpufreq: OC: Disable 1.1GHz step by default.
+initramfs: cm7: Add (tweaked) nubernel init scripts to cm7 (bash as default adb shell, etc).
+arm: remove stale export of 'sha_transform' (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=f23c126bfabef88c201c8cc56bd3ccd9d59c51e0).
+
+06-04-2012:
+leds: ledtrig: Give "other" users write permission.
+update-zip: all: Add some led_fun to the update-zips.
+update-zip: cm7: Fix up script headers.
+
+06-03-2012:
+update-zip: cm7: Don't backup or restore logger.ko (also fix up some logging).
+defconfig: non-debug builds: Enable CMDLINE_FORCE.
+update-zip: all: Changes to output of updater-scripts.
+update-zip: all: Adding build type info to version output of updater-scripts.
+packages: heimdall: Fixing up the firmware.xml file.
+scripting: Fixing a bug in the branchHelper script.
+scripting: Fixing up the branchHelper script for new builds.
+scripting: Remove duplicate "debug" initramfs folders.
+
+06-02-2012:
+defconfig: non-debug builds: Add "quiet" to boot args.
+defconfig: non-debug builds: Don't calibrate loops per jiffy during boot (set in boot args).
+defconfig: all: Reduce kernel log buffer to 16 (64KB).
+sched: Fix strncmp operation (via mainline: http://git.kernel.org/?p=linux/kernel/git/paulg/linux-stable.git;a=commit;h=524429c31b486c05449666b94613f59f729c0a84).
+arm: remove "optimized" SHA1 routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=commit;h=4d4487140d34c1b9b321889d2d209321b0da6643).
+lib/sha1: use the git implementation of SHA-1 (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=1eb19a12bd2214cdcad5273d472b062a4ba97fa1).
+s3c-keypad: On slide open, set keyboard backlight to configured state, not always on (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/e58150f788625c012019392a9bb028440d09e521).
+cpufreq: s5pv210: Call cpufreq_update_policy on DVFS events and force SLEEP_FREQ on suspend (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/a08ec940e5bebb86acec43b7bd73c2182bdd7c62).
+Oops, this should not have been left here.
+
+06-01-2012:
+initramfs: twrp: Whitespace fixes.
+update-zip: All: Syncing device asserts with cm7.
+
+05-31-2012:
+initramfs: all: Add fresh built modules (again).
+scripting: Some scripting cleanup, etc.
+defconfig: Duplicate "cyanogenmod_epicmtd_defconfig" into "victory_nubernel-cm7_defconfig".
+scripting: Some logging changes and a fix for when the INSTALL_ZIP_PACKAGE function has an error.
+scripting: build types: Change "mtd" to "tw-mtd".
+scripting: build types: Change "tw" to "tw-bml".
+scripting: build types: Change "debug" to "dbg-bml" and add "dbg-mtd".
+
+05-30-2012:
+scripting: Quiet the INSTALL_ZIP_PACKAGE function unless output is verbose.
+defconfig: Set CONFIG_BROADCOM_WIFI to 'm' (it is forced to be a module by the Makefile, and brakes if you change it).
+scripting: Fix up some build type "debug" related scripting.
+scripting: Add file and module info to verbose output.
+initramfs: DEBUG: Re-add hacked modules for 2.6.35.14 (more uniform hacking, remove the byte from the "depends" area for all modules).
+initramfs: DEBUG: Add freshly built modules.
+
+05-29-2012:
+initramfs: TW: Re-add hacked modules for 2.6.35.14 (more uniform hacking, remove the byte from the "depends" area for all modules).
+initramfs: TW: Add freshly built modules.
+voodoo-color: Add VOODOO_MDNIE options in Kconfig. Also add more tweaks, etc to s3cfb_mdnie_value.h.
+Reverting "mm: prevent concurrent unmap_mapping_range() on the same inode" (commitID: 3a98075).
+Reverting "PM / Wakeup: Introduce wakeup source objects and event statistics (v3)" (commitID: 599c650).
+
+05-27-2012:
+initramfs: CM7: Add freshly built modules.
+initramfs: MTD: Add freshly built modules.
+update-zip: Some adjustments to my updater-script(s).
+
+05-26-2012:
+scripting: More scripting changes (mostly related to adb root).
+scripting: Use "adb root" in stead of "adb shell 'su -c'".
+
+05-23-2012:
+debugging: nubernel: Adjust the descriptions and help info of my Kconfig debuging entries.
+debugging: nubernel: Change "DEBUG_NUBERNEL_SUSPEND_CONSOLE" to "DEBUG_NUBERNEL_NO_CONSOLE_SUSPEND".
+initramfs: CM7: Some minor changes to some .rc files.
+scripting: Rename buildAll.sh to buildPackages.sh.
+scripting: Changes to buildAll.sh to enable passing args.
+update-zip: CM7: Add zip package to restore module backups for cm7.
+scripting: menuconfig: Add menuConfig.sh script for easy "make menuconfig" access.
+scripting: Minor changes to functions file.
+scripting: build script: Add "debug" build type (will fix for mtd varient later).
+gitignore: Some adjustments to Kernel/.gitignore (also added new "logo" related entries).
+defconfig: More miscellaneous changes to my defconfigs (disable CONFIG_EXT2_FS, etc).
+defconfig: debugging: Fix and tweak victory_bootdebug_defconfig (currently for tw builds, will add mtd later).
+
+05-22-2012:
+update-zip: CM7: Adjustments to install_modules.sh (skip backup if *.bak file already exixts).
+scripting: build script: Add timestamp to output.
+gitignore: Add arch/arm/boot/compressed/ashldi3.S to Kernel/.gitignore.
+scripting: build script: Fix support for installing package via recovery.
+defconfigs: Changes to my defconfigs (for recent patches, etc).
+
+05-18-2012:
+defconfig: debugging: Make victory_bootdebug_defconfig dump kernel boot to screen (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/43c5609f8f25ea7138a834290b9726396faa8052).
+defconfig: Add victory_bootdebug_defconfig (duplicate of victory_nubernel_defconfig).
+cypress-touchkey: Add sysfs control for capacitive backlights (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/20cd60d724f7e88e3d279ebdb44b19223b0421f2).
+cypress-touchkey: Omnibus fixes (maksick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/fae4f0fd4afa478143e567fb4cd7a9b5432ea605).
+
+05-17-2012:
+yas529: Fix deadlock when disabling immediately after enabling (pawtip: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/ad550ea281e38fd27660f5fcd4861fa49f39de7f).
+wm8994: Adjust headset-mic voicecall-gain levels to match EL30 (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/f7d905d5abd40c803e2f5b1f12719f6340a0b4a5).
+wm8994: Adjust external-speaker playback-gain levels to match EL30 (mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/184383f4f1367a642a0085ab3544e92cff08f713).
+
+05-16-2012:
+PM: Use dev_name() in core device suspend and resume routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=5c1a07ab3e78ef68fc9ccf419c969e8ed88d7cb6).
+PM: Permit registration of parentless devices during system suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=b64959e6158d6dcb640fc22d7f43b94ad1c91135).
+PM: Replace the device power.status field with a bit field (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=b8c76f6aed0ab7df73a6410f3f82de2c831bb144).
+PM: Remove redundant checks from core device resume routines (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=5b219a51fdceaf76e0e18da57c7efb9e5586e567).
+PM: Use a different list of devices for each stage of device suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=8a43a9ab7b329aa8590f8a064df9bf8c80987507).
+PM: Avoid compiler warning in pm_noirq_op() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=2cbb3ce1ad19e66858a4284dd6c4bb958162c483).
+PM: Use pm_wakeup_pending() in __device_suspend() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=d83f905e126f8cbc5e4addc5d1a64aea785b732e).
+PM / Wakeup: Replace pm_check_wakeup_events() with pm_wakeup_pending() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=a2867e08c8e3bdbc00caf56bc3bdde19ccc058e3).
+Freezer: Fix a race during freezing of TASK_STOPPED tasks (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=8cfe400ca54fd1ed96f962bea5f7e20b09b6d69f).
+PM: Allow wakeup events to abort freezing of tasks (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=dbeeec5fe868f2e2e92fe94daa2c5a047240fdc4).
+PM: Prevent dpm_prepare() from returning errors unnecessarily (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=1e75227ef0571031cd18536ab768ee35667ec5b9).
+PM: Allow devices to be removed during late suspend and early resume (via mianline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=d08a5ace18dce9b18d8eb56bb6c0feef082b1b33).
+PM: Fix potential issue with failing asynchronous suspend (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=098dff738abbeaea15fc95c4f4fdaee1e9bbea75).
+PM / Wakeup: Introduce wakeup source objects and event statistics (v3) (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=074037ec79bea73edf1b1ec72fef1010e83e3cc5).
+PM: Do not use dynamically allocated objects in pm_wakeup_event() (via mianline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=4eb241e5691363c391aac8a5051d0d013188ec84).
+PM: Fix signed/unsigned warning in dpm_show_time() (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=0702d9ee0f1dcb6258789032f03b3208bfafaffc).
+PM: Make it possible to avoid races between wakeup and system sleep (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=c125e96f044427f38d106fab7bc5e4a5e6a18262).
+
+05-15-2012:
+Makefile: fix up some cflags (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/1a0c161466de4860af58f11e0b9c1d830c5d5865) (rebased into below commit).
+ARM: switch to 'hardfloat' optimization flags (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/6d113f32bde45bc9d7557c0cc73249ac31b7c36e).
+Add some optimization flags in arch/arm/Makefile (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/463f8e9a74d7f7145229ac0ba6d28f570f77a9f0).
+ARM: vfp: set mfpu=neon (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/d5a7f38a8f4d0d8148536ab79d7c43bed604e550).
+sched: Improve latencies under load by decreasing minimum scheduling granularity (via mainline: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=0bf377bbb0bea6130f35613491887cc622e42a8b).
+Optimized ARM RWSEM algorithm (via codeaurora: https://www.codeaurora.org/gitweb/quic/le/?p=kernel/msm.git;a=commit;h=917c8db2c20f54a904451b5b38933d57d3d1cc2e).
+arm: Allow CPU-supported unaligned accesses (via codeaurora: https://www.codeaurora.org/gitweb/quic/le/?p=kernel/msm.git;a=commit;h=d5c13d6cba4554cff2d0f6357984eaf068fa3061).
+ARM: 6900/1: Suspend: Fix build error on ARCH_S5PC100 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=5f23188e036aabfe9245f9e61adbb4ea27ed8f35).
+mfd: Fix resource reclaim for max8998 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=7484552eb24e3c62ef55a4ff0133d8450adea206).
+mfd: MAX8998/LP3974 hibernation support (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=cdd137c9c86c201ddb7f42ec978d2da45e7b7a17).
+mfd: Enable MAX8998 interrupts support (patch was already applied, but not being used) (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=2c7e6f5797140b33ec2b967ff28941e1c7eff4b2).
+ARM: Only allow PM_SLEEP with CPUs which support suspend (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=6a7861825f79f09213ef81b3c468f6f2e86f408e).
+ARM: Suspend: Fix dependency of ARCH_SUSPEND_POSSIBLE (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=3e1d9874b44212628b65ec4455d32cb4880b553f).
+ARM: S5P: Fix end address in memory resource information for UART devices (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=6236b97b9fa032057a9908ad16ff02c95feb3ad8).
+ARM: S5PV210: Place the common SPARSEMEM at ARCH_S5PV210 (via Samsung: http://git.kernel.org/?p=linux/kernel/git/kgene/linux-samsung.git;a=commit;h=eecb6a8420fde47ebc37d03f72ef6dcb8e93c0ef).
+
+05-13-2012:
+cleanup: Not sure how this got added, but it shouldn't be here.
+scripting: Add patchPatcher.sh script. Also a header fix for branchHelper.sh.
+defconfigs: Don't build nfc driver (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/9c209af5d28348209c89ffb0b39f211f2f39fc15).
+defconfigs: Some updates / adjustments to my defconfigs.
+gitignore: Ignore .patch files.
+initramfs: TW: Update modified proprietary modules for TW BML (hacked for 2.6.35.14 vermagic).
+scripting: modules: Update VERSION_PATH define for 2.6.35.14.
+mainline: updates: Applied patches up to 2.6.35.14.
+mainline: updates: Revert kernel updates done via netarchy (in prep for applying patches I made from the mainline).
+
+
+05-12-2012:
+scripting: build script: Be more specific when building zImage (use make zImage).
+initramfs: mtd: Minor changes to init.rc (Tweak background writeout).
+scripting: build script: Force install via cwm for now (will simply error out if no device is attached).
+debugging: defconfigs: Add new debugging entries to defconfigs.
+debugging: nubernel: Changes and additions to my custom debugging (be more specific, managable, etc).
+Kconfig: cyanogenmod: Fixing a bug with my CONFIG_CYANOGENMOD Kconfig option.
+scripting: build script: Add partial support for installing newly created package via cwm.
+
+05-10-2012:
+scripting: functions: Some logging adjustments.
+cpufreq: DEBUG_NUBERNEL: Some debugging adjustments, attempt to debug cm7 suspend issues.
+
+05-09-2012:
+scripting: More cleanup, load kernel via kexec for testing, etc.
+mach-s5pv210: Overclock: Fixing an overclocking related debugging typo.
+scripting: kernelLoad: Enable no_console_suspend for suspend/resume debugging in kexec args.
+initramfs: CM7: Enable UART debugging in init.rc.
+
+05-08-2012:
+scripting: Some fixes to the branch script, etc.
+bcm4329: victory / atlas: More hotspot_event_monitoring removal.
+update-zip: updater-script: Some changes to product assert in updater-script (all roms should be using SPH-D700, if not they need to fix it).
+scripting: Some scripting changes (add buildAll script, add heimdall resources, create heimdall package with build script, etc).
+
+05-07-2012:
+initramfs: A bunch more initramfs cleanup.
+
+05-06-2012:
+initramfs: CM7: Load android logger module.
+update-zip: CM7: Include android logger module for CM7.
+initramfs: Misc cleanup.
+initramfs: MTD: Ensure permissions of init scripts.
+initramfs: TW: Ensure permissions of init scripts.
+initramfs: Work around mkbootfs ignoring dotfiles.
+
+05-05-2012:
+build fix: Fix message about Extraneous text after else directive in atlas bcm4329 Makefile.
+Compress kernel with xz (via wtogami: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/2e1435ef143cd0cf686f713ef45e91f8511c2b40).
+defconfig: Use Simple IO scheduler as default.
+scripting: Script cleanup, folder structure adjustments, etc.
+
+05-04-2012:
+initramfs: Some init.rc cleanup.
+update-zip: Install 2.6.35.13 modules for CM7.
+update-zip: New folder structure, add mtd and cm7, etc.
+
+05-03-2012:
+initramfs: cwm: Update cwm initramfs (syncing with CM7).
+initramfs: mtd: Add mtd initramfs (for TW MTD).
+
+05-02-2012:
+initramfs: twrp: Add TWRP 2.1 (Team Win Recovery Project 2.1) initramfs.
+initramfs: stage1: Remove stage1 folder since it's already included in /usr/epicmtd_initramfs.
+initramfs: Move initramfs folders into a new structure.
+initramfs_tw: modules: Update modules.
+defconfig: Some defconfig cleanup.
+scripting: General module cleanup, etc.
+bcm4329: Re-merge wifi driver from aries (w/o removing tw support).
+Reverting "bcm4329: Merge wifi driver from aries" (commitID: f998a60).
+
+05-01-2012:
+bootlogo: Added new boot logo.
+bootlogo: Fix include path in makelogo.cpp.
+initramfs_tw: bash: Changes to bash-loader (pass any args to bash when using bash, just in case & why not).
+initramfs_tw: bash: More changes to bash-loader (more restrictive bash loading, fixes broken 3G data).
+bcm4329: Fix the change Samsung made in one of their updates which causes -Werror to break the compile.
+scripting: build script: Changes for epicmtd defconfig.
+initramfs_stage1: Syncing stage1 initramfs with CM7's Kernel/usr/epicmtd_initramfs/ (this will be removed later).
+defconfig: CM7: Syncing up with CM7 defconfig.
+wm8994: voodoo: Compile fixes (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/7579c18ed1364d024df429971a5271489fef3eee).
+wm8994: Whitespace.
+wm8994: voodoo: Fix compile of voodoo sound (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/265325bba6eb5ba78b2e92de0314cf471d488dde).
+wm8994: Port crespo's GB wm8994 driver (via mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/42bdadfed5105753440b5d3d2ab10ec9c2f4d2d0).
+initramfs: CM7: stage1: Whitespace.
+initramfs: CM7: stage1: Clean up first stage init (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/01ea906d5dd18b44cfe5e1f59d874470ae2bcc42).
+bcm4329: Merge wifi driver from aries (via noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/5f87cbd547d4187cba7ae6d0039f0d8a7f76fddd).
+bcm4329: Fix for compiling along with rest of platform (via UberPinguin: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/c84ca67726b20b191d5c75da60acc6d14fa48aee).
+initramfs: CM7: stage1: Whitespace.
+initramfs: CM7: Add stage1 initramfs to Kernel/usr/epicmtd_initramfs/ (syncing with CM7).
+initramfs_cm7: Whitespace.
+initramfs_cm7: Syncing up with current CM7 initramfs.
+
+04-29-2012:
+initramfs_tw: Enabling ro.secure in default.prop.
+
+04-28-2012:
+scripting: Move notify.wav into include folder and adjust function.
+
+04-27-2012:
+initramfs_tw: init scripts: Fixing some small bugs in the init scripts.
+initramfs_tw: init scripts: Update init_04_other for new bash resources.
+initramfs_tw: bash resources: Update resources for newer bash.
+initramfs_tw: bash: Update bash with newer (slightly more CM like) version.
+
+04-26-2012:
+initramfs_tw: bash: Changes to bash-loader to fix scripting functions.
+update-zip: Changes to updater-script.
+initramfs_tw: init scripts: Cleaning up script headers.
+initramfs_tw: bash resources: Syncing PATH exports with init.rc.
+initramfs_tw: Changes to init scripts, adding bash and resources, implementing .first_boot more generally, etc.
+
+04-25-2012:
+defconfig: Enabling CC_OPTIMIZE_FOR_SIZE in victory_nubernel.
+defconfig: Removing duplicate voodoo color entries in defconfigs.
+mach-s5pv210: fix for audio drop-off during boot audio and who knows what else (via GlitchKernel: https://github.com/GlitchKernel/Glitch/commit/e8338dfd802b831f4bec3f96484e659a1b6a3e0c).
+
+04-24-2012:
+video: s3cfb_nt35580: initialize brightness (via sunfong: https://github.com/Sunfong/sunfong-samsung-3.0/commit/b5c9e41dc5bef0b74fa47ef90e1f9f28a58a84ff).
+video: s3cfb_tl2796: initialize brightness (via sunfong: https://github.com/Sunfong/sunfong-samsung-3.0/commit/e4b57a1770a6ebb6c6a97d281c0ea482259ba699).
+iosched: Add V(R) i/o scheduler (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/9b92f4073449f8d67bd0c730a35bb61766fd9827).
+Add ext4/jbd2 patches from crespo GB kernel (via mkasick: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/3a879fe9389ae1647910ef93a14175befa682d23).
+Epicmtd: add missing encyrpting support to kernel for device encyrption (noobnl: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/4c814f7fbe96ade607d9621d55a2693ea60f127e).
+lowmemkiller: Reverting the idiotic change Samsung added in the FC09 source.
+Patching sources up to FC09.
+initramfs_tw: Some minor changes to the init.rc script.
+initramfs_tw: Some changes to init_01_prep (allows for Samsung qmg boot animation support after 1st boot).
+initramfs_tw: More cleanup (removing recovery related items, etc).
+
+04-23-2012:
+initramfs_tw: Cleaning up the nubernel init scripts.
+initramfs_tw: add voodoo_color_info script to initramfs_tw.
+voodoo color: Set hacky_v1_offset to 2.3.3 defaults (0,0,0); Also includes a small whitespace fix.
+scripting: Miscelaneous changes to scripts.
+scripting: Moving some script related files.
+ncBuildHelper: Always generate new compile.h file (force new timestamp).
+
+04-18-2012:
+initramfs_tw: Module fixup / cleanup.
+
+04-17-2012:
+initramfs_tw: update hacked j4fs module to avoid a modinfo corruption warning.
+defconfig: Disable CONFIG_POKE_REC_BOOT_MAGIC in victory_nubernel (TouchWiz).
+initramfs_tw: Remove bash and related files.
+initramfs_tw: Update used modules and remove unneeded modules.
+
+04-16-2012:
+initramfs_tw: Removed old sd card booting method and excess binaries; Updated su binary and superuser apk; Fixed some permissions and symlinks.
+Move redbend_ua binary to update folder and adjust helper scripts.
+
+04-15-2012:
+loop: Properly clear sysfs in autoclear mode (via kernel.org: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=51a0bb0c2e614659132fce272c8a1815a12c5c2a). [Thanks to Warren Togami for sharing.]
+loop: add some basic read-only sysfs attributes (via kernel.org: http://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=commit;h=ee86273062cbb310665fe49e1f1937d2cf85b0b9). [Thanks to Warren Togami for sharing.]
+Adjustments to defconfigs.
+Remove more unused defconfigs.
+Remove unused cyanogenmod defconfig.
+
+04-14-2012:
+Whitespace fix.
+Add adb_rndis USB gadget mode, fix rndis support on Linux USB hosts (mkasick via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/5372af6f0042d0336034340a7d3503e4b427d81d).
+Whitespace fix.
+Add CONFIG_USB_CSW_HACK to defconfigs, but keep disabled for now.
+USB: android gadget: mass_storage: read/write performance enhancement (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/2cb75a41df67b4a0c63c5d5e38fe554051973327).
+Added optimized CRC32 algorithm (via Ezekeel: https://github.com/Ezekeel/GLaDOS-nexus-s/commit/f04fc2475aa96b9133cf8cfd42597cf511bd2c74).
+
+04-13-2012:
+sched: Fix update_curr_rt() (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/ee8487a1c27e22dd6be26fad37c468404ad02e09).
+vmscan: prevent background aging of anon page in no swap system (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/8a2bf870ca7697c149d23ea2749da234e2cd2a2c).
+lib: Improve the performance of memcpy and memmove of the general version (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/f1391df95bd4b0e19f0b502123db862443333821).
+lib: Introduce some memory copy macros and functions (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/ee353c9f0230fadd7eea7b2bdb9a875d51b8300e).
+mmc: core: Increase write data timeout value for bad SDHC cards (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/e393f86874b9f13e403376ab6a77a863d6ecebfc).
+lib/checksum.c: optimize do_csum a bit (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/3cc03cd454711d6040777b77e961b3ccf1b5d30c).
+ARM: dma-mapping: free allocated page if unable to map (via kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/4b35e7172553d85f49d9f9545f41970c68244b2d).
+Whitespace fix.
+sched: Move sched_autogroup_exit() to free_signal_struct() (Mike Galbraith via existz: https://github.com/existz/linux_gt-i9000-gb/commit/140cb4cb0716ca15af16de56c8d80b043d901faa).
+sched, autogroup fixes (zachariasmaladroit via existz: https://github.com/existz/linux_gt-i9000-gb/commit/3fcc5aaeb633bceacfb4ba2f377830a7c6ee7b78).
+sched: Add 'autogroup' scheduling feature: automated per session task groups (Mike Galbraith via existz: https://github.com/existz/linux_gt-i9000-gb/commit/febcfa876e669047d7c31585438bf89891249977).
+Reverting "Automated per tty task groups patch" (commitID: a4a969e).
+
+04-12-2012:
+Misc. sched fixes (via existz: https://github.com/existz/linux_gt-i9000-gb/commit/92918f283cbff8f8c9e0f0b74aafbef5b5494563).
+Fix smartassv2 (kangtastic: https://github.com/kangtastic/sch-i500-gingerbread/commit/5f8dcfb91e7d83b17ca771c76ed8a09dfe81b9de).
+Fix bug in SmartassV2 (abev66 : https://github.com/abev66/linux_NS_ICS_vilta/commit/ad316c6049c6ce07b6bc01fd1778b8567efa9bc2).
+Increased default readahead value to 1024kB (Ezekeel: https://github.com/Ezekeel/GLaDOS-nexus-s-ics/commit/f5b052e79c50e2c490a5e24b5b36a2ca05c0ac8a).
+Tweak readahead (netarchy: https://github.com/netarchy/nexus-s/commit/e21f80e8455cde8dde5a685d59bee8ecf8f0f443).
+
+04-11-2012:
+Lowering KERNEL_SEC_HARDRESET_KEY_MAX and removing face keys from keypad_info output (face keys can't trigger the hardreset).
+Added keypad_info script to initramfs_tw.
+Enabling the pseudo hardreset keys sysfs export in defconfigs.
+Enabling pseudo hard reset in defconfigs.
+
+04-10-2012:
+Exporting the pseudo hardreset keys via sysfs.
+Implementing pseudo hard reset as a Kconfig option.
+Add voodoo color to my defconfigs.
+Add voodoo color (bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/90da0f3af77e648d07719504bf7d3ea86243f856).
+Fixing up the 600MHz frequency step.
+
+04-09-2012:
+Add support for dock audio (xcaliburninhand via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/22e2321f630f8af43c3b42f7ed0ef2595dc019d4).
+Minor changes to build script and functions.
+Add missing defconfig entries for the hw keyboard patches.
+Applying recent patches to defconfigs.
+Fixed 600mhz step (toadlife: https://github.com/toadlife/CleanGB-Kernel/commit/69ca8ab02937235e310e8e82d6653275d23d8a54).
+Fixed CPU frequency tables (toadlife: https://github.com/toadlife/CleanGB-Kernel/commit/1510b5ac031c0d1ceb2787db5470f67e41e2ce25).
+Remove hotspot_event_monitoring related code in dhd.ko module (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/5e20f7116822f5fd586158acde237baa6c297a74).
+epicmtd: Force higher dvfs limit for stable hd recording on some devices (Decad3nce via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/44b1e0caf917ce03c345d33529ee850bf41a74f9).
+Fix RNDIS support for linux (bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/82627780c4481e8b148201e2d46ce29996f08235).
+Disable btsdio (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/c31656f239a1f377ddbc624af8f66c740eb5a02c).
+victory: less modules please (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/135f568ff4f7e0231294554f84a23a17eefc3b94).
+Update defconfig to add additional BT profiles (wispoffates via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/f8c123e0ce940ec332dfdde395c4a58164d98f3a).
+Add POKE_REC_BOOT_MAGIC Kconfig option. (mkasick via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/a540cdd1285efa527701f8d6ae4549217945ed40).
+Add poke_rec_boot_magic() to boot recovery on reboot(..., "recovery") (mkasick via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/c942f235e73aa710cc3b401ca31410c2490199f7).
+epicmtd: quiet vibrator kernel drivers and merge wimax gpio driver to kernel (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/c62d0939c835d2d0095261876762d73a74826cd5).
+Include TUN, CIFS, FUSE, & TCPMSS in CM7 defconfig (via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/7d62c83ea867fc1508e5e0c0d7ced810523b3c02).
+
+04-08-2012:
+Applying previous patch to my defconfigs.
+Remove .ko and intergrate them to kernel, added mkasick dummy param to kernel (noobnl via bbelos: https://github.com/bbelos/android_kernel_samsung_victory/commit/09630ef668fee8a643b03ee4615885f2371886e0).
+Fix warning for pagemap.h (imoseyon: https://github.com/imoseyon/leanKernel-i500-gingerbread/commit/70c7addd1943f44cc85fbdeafc2cd47c8740938b).
+Updating initramfs_tw modules.
+Toolchain related changes.
+Updating initramfs_tw to FC09.
+Updating initramfs_tw to EL30.
+
+04-07-2012:
+Adding vermagic hacked proprietary modules for 2.6.35.13.
+
+04-06-2012:
+Changes to update_modules script for 2.6.35.13.
+
+04-02-2012:
+Patching sources up to EL30.
+
+01-30-2012:
+Switching toolchain (aosp arm-eabi-4.4.3).
+Enabled UART debugging in initramfs_tw.
+
+01-22-2012:
+Fixing removal of ttyCIQ in dpram.c.
+
+01-04-2012:
+Changes to -march CFLAG.
+Updating initramfs_tw modules.
+Reverting "Fixing a permission error on the backlight brightness sysfs entry" (commitID: 8d41454).
+
+01-02-2012:
+Changing hardcoded wifi IP address.
+Fixing up helper script calls from functions.
+
+01-01-2012:
+Toolchain related changes to build script and Makefile.
+
+12-30-2011:
+Add missing CROSS_COMPILE cmd line args in functions.
+
+12-24-2011:
+Fixing a changelog entry leftover from a rebase.
+Add bml8 defconfig (based on cm7 defconfig).
+Add initramfs_bml8 for bml8 MTD fix (jt1134, mkasick and noobnl: https://github.com/EpicCM/epic3buttonfix).
+Changes to defconfigs for smartass governor.
+Update changelog.
+Set default timer to 1000hz when using s5p hi-res timers (netarchy: https://github.com/netarchy/nexus-s/commit/363cea48af03abb20c6196d2ec2b2fb05e041024).
+S5PC11X: USB: Remove unnecessary code for USB Tethering (sb223.kang via netarchy: https://github.com/netarchy/nexus-s/commit/cffd6dc859595618113470a1cf2dbb574813f10e).
+Some more debugging cleanup in smartass governor (GOV: tag) (myself: https://github.com/nubecoder/nubernel-kernel/commit/8af22af9cc323113444528569852d9be01c18e6e).
+Squashing a bug in smartass governor (myself: https://github.com/nubecoder/nubernel-kernel/commit/2ef926ed43f43357758d2abfc1eb2a70fef6c0fc).
+More debugging fixes and clean up (myself: https://github.com/nubecoder/nubernel-kernel/commit/8688002c4da6eba9e0cc8663200666f46a509571).
+Added extra debugging to smartass governor (myself: https://github.com/nubecoder/nubernel-kernel/commit/49642c075ed43b6f0c412f0c5bf47e66706233cb).
+Fixing someone's typo.
+More changes to smartass governor.  Make debug more readable (myself: https://github.com/nubecoder/nubernel-kernel/commit/c21e9fc20e6e3f653a5d8c215698eb1121a20391).
+Added DEFAULT_DEBUG_MASK and Kconfig option for smartass governor (myself: https://github.com/nubecoder/nubernel-kernel/commit/6bd05bd9a14d576d2a7c720da7fcd80ca184acb4).
+smartass governor: fixed sysfs interface and added Kconfig options (Ziggy471 via myself: https://github.com/nubecoder/nubernel-kernel/commit/3c7679c684dba15eda38cd891462a558c2d81680).
+Fixing up the debugging a bit in smartass governor (myself: https://github.com/nubecoder/nubernel-kernel/commit/676437550fb117664a6ab785a7a64447329c3eec).
+Squashing the up_min_freq bug in smartass governor (myself: https://github.com/nubecoder/nubernel-kernel/commit/abb9e1faac647f2a012b0622f3ddcd828472ccb6).
+Added some error checking to the smartass2 governor.
+Added some error checking to the smartass governor.
+Added some error checking to the interactive governor.
+Add SLQB (Nick Piggin via netarchy: https://github.com/netarchy/nexus-s/commit/db7daf96ad654265272ae2c0733e7b29104fe228).
+JHash 3 (Jozsef Kadlecsik via netarchy: https://github.com/netarchy/nexus-s/commit/665cd5dc159970027a724217461c2515c490e616).
+
+12-23-2011:
+Changes to defconfig for cm mtd (UberPinguin: https://github.com/EpicCM/android_kernel_samsung_victory/commit/3cdfc992b5c2e0ee53417731ea16577991155862).
+Fix variances for the bastard galaxy s device (Decad3nce: https://github.com/EpicCM/android_kernel_samsung_victory/commit/c25fc40e9fc474885f0cbf520ffa3a9cada9ac4d).
+Updated mfc drivers to remove buffer cache (Decad3nce: https://github.com/EpicCM/android_kernel_samsung_victory/commit/8bb05079bc5177b8ba629d2542af007c7bc5c6dd).
+
+12-22-2011:
+Add mtd defconfig.
+Changing initramfs path in CM mtd defconfig.
+
+12-21-2011:
+Add initramfs_stage1 for MTD support.
+Fixing fix_permissions' shebang for use in cm-recovery.
+Add initramfs_cwm from CM7.
+Sync initramfs_cm7 with CM7.
+Add support for MTD/YAFFS2 to kernel.
+Reverting "Set 4k read ahead in mtd_blkdevs.c".
+
+12-19-2011:
+More adjustments to cflags.
+cflag adjustment (via netarchy: https://github.com/netarchy/nexus-s/commit/e87e538efbe5b098a0c2009c6661074070a28f29).
+Select changes from "Makefile comments for personal reference" (via netarchy: https://github.com/netarchy/nexus-s/commit/08fb7777ea4cbc430e8e9f716dd5832db4a98f48).
+Changing cflags (via netarchy: https://github.com/netarchy/nexus-s/commit/1ba4d5c9ea8ecfa2cae1be3acad68293ad516ca6).
+Compiler optimizations (via netarchy: https://github.com/netarchy/nexus-s/commit/f0b9a5dd0f03eddf4d0912a0aec827bb3b1c4976).
+Moving CROSS_COMPILE into the defconfigs (still setting it on the command line).
+
+12-10-2011:
+Some changes to the kernelLoad script.
+Added kernel loading (kexec) support to the build script.
+Added kernel load helper scripts (kexec functionality).
+
+12-09-2011:
+Updated dpram module (ttyCIQ removal) in initramfs_tw.
+
+12-08-2011:
+STAGING: brcm80211 fix TX Queue overflow  & STAGING: brcm80211 remove dhd_doflow (Grant Grundler via toadlife: https://github.com/toadlife/Epic-4G-EI22-Kernel-CleanGB/commit/c25bb9776a8e6f8b2b7e9835b3d77a86997b4657).
+
+12-07-2011:
+3 button reboot, all fixed up and working.
+3 button reboot, correcting key code for POWER key.
+Porting the 3 button reboot from Froyo.
+
+11-30-2011:
+Commenting out all references to ttyCIQ.
+
+11-21-2011:
+Atempting to fix the "mmc_delayed_work" kernel wakelock.
+
+11-20-2011:
+Redirect "reboot bootloader" to reboot into download mode (noobnl: https://github.com/EpicCM/android_kernel_epic4g_gb_official/commit/7a8cc34ace48375624a9fffc02ca76cedf588d05).
+Use CONFIG_DEBUG_NUBERNEL to check if debugging.
+Added charge-control script to initramfs_tw/nubernel/bin/.
+Revised the batt_info script a bit.
+Fixing some things I broke when switching to using CONFIG_DEBUG_NUBERNEL.
+
+11-19-2011:
+Removing some redundant code in max17040_battery.c.
+Some debugging fixes and additions.
+Added battery over-charge protection (at 4210mV).
+Implement battery charge control via sysfs.
+Removing a useless script from initramfs_tw/nubernel/bin/.
+Re-applying "Remove in_frame_map from mfc input structures since it is not compatible with aries OMX libraries" for CONFIG_CYANOGENMOD=y builds only.
+Reverting "Remove in_frame_map from mfc input structures since it is not compatible with aries OMX libraries" (commitID: 1b2f882).
+Create CYANOGENMOD entry in init/Kconfig; Add and enable CONFIG_CYANOGENMOD in cm defconfig.
+Create DEBUG_NUBERNEL entry in lib/Kconfig.debug, add CONFIG_DEBUG_NUBERNEL into defconfig, and begin using it.
+Initial version of batt_info script.
+
+11-18-2011:
+Use the LOW_BATT_COND_VOLTAGE define for this check.
+
+11-17-2011:
+Added more charge rate debug logging.
+Added some charge rate debug logging.
+Added some Fuelgauge calculation debug logging.
+
 11-16-2011:
+Rearranging the list of credits in featurelist (also added netarchy to list).
 Feature list for v0.0.2.
 Disable custom debugging for release.
 

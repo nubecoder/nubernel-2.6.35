@@ -91,6 +91,7 @@ static unsigned int get_bb(unsigned int block, unsigned int *bbt)
 	return apanic_bbt[block/32] & flag;
 }
 
+#if defined (CONFIG_MTD)
 static void alloc_bbt(struct mtd_info *mtd, unsigned int *bbt)
 {
 	int bbt_size;
@@ -110,6 +111,7 @@ static void scan_bbt(struct mtd_info *mtd, unsigned int *bbt)
 			set_bb(i, apanic_bbt);
 	}
 }
+#endif
 
 #define APANIC_INVALID_OFFSET 0xFFFFFFFF
 
@@ -138,6 +140,7 @@ static void apanic_erase_callback(struct erase_info *done)
 	wake_up(wait_q);
 }
 
+#if defined (CONFIG_MTD)
 static int apanic_proc_read(char *buffer, char **start, off_t offset,
 			       int count, int *peof, void *dat)
 {
@@ -205,6 +208,7 @@ static int apanic_proc_read(char *buffer, char **start, off_t offset,
 	mutex_unlock(&drv_mutex);
 	return count;
 }
+#endif
 
 static void mtd_panic_erase(void)
 {
@@ -284,6 +288,7 @@ static void apanic_remove_proc_work(struct work_struct *work)
 	mutex_unlock(&drv_mutex);
 }
 
+#if defined (CONFIG_MTD)
 static int apanic_proc_write(struct file *file, const char __user *buffer,
 				unsigned long count, void *data)
 {
@@ -399,6 +404,7 @@ static struct mtd_notifier mtd_panic_notifier = {
 	.add	= mtd_panic_notify_add,
 	.remove	= mtd_panic_notify_remove,
 };
+#endif
 
 static int in_panic = 0;
 

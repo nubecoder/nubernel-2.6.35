@@ -50,10 +50,12 @@
 #define GPIO_LEVEL_HIGH			1
 
 #define GPIO_AP_RXD			S5PV210_GPA1(2)
-#define GPIO_AP_RXD_AF			0x2 // UART_2_RXD
+// already defined as '2' in arch/arm/mach-s5pv210/include/mach/gpio-crespo.h
+//#define GPIO_AP_RXD_AF			0x2 // UART_2_RXD
 
 #define GPIO_AP_TXD			S5PV210_GPA1(3)
-#define GPIO_AP_TXD_AF			0x2 // UART_2_TXD
+// already defined as '2' in arch/arm/mach-s5pv210/include/mach/gpio-crespo.h
+//#define GPIO_AP_TXD_AF			0x2 // UART_2_TXD
 
 #define GPIO_PHONE_ON			S5PV210_GPJ1(0)
 #define GPIO_PHONE_ON_AF		0x1
@@ -61,18 +63,18 @@
 #define GPIO_PHONE_RST_N		S5PV210_GPH3(7)
 #define GPIO_PHONE_RST_N_AF		0x1
 
-#define GPIO_PDA_ACTIVE                 S5PV210_MP03(3) 
-#define GPIO_PDA_ACTIVE_AF              0x1
+#define GPIO_PDA_ACTIVE		S5PV210_MP03(3) 
+#define GPIO_PDA_ACTIVE_AF		0x1
 
 
-#define GPIO_PHONE_ACTIVE               S5PV210_GPH1(7)
-#define GPIO_PHONE_ACTIVE_AF            0xff    
+#define GPIO_PHONE_ACTIVE		S5PV210_GPH1(7)
+#define GPIO_PHONE_ACTIVE_AF		0xff
 
 #define GPIO_ONEDRAM_INT_N		S5PV210_GPH1(3)
 #define GPIO_ONEDRAM_INT_N_AF		0xff
 
 #define IRQ_ONEDRAM_INT_N		IRQ_EINT11
-#define IRQ_PHONE_ACTIVE                IRQ_EINT15
+#define IRQ_PHONE_ACTIVE		IRQ_EINT15
 
 
 /*****************************************************************************/
@@ -82,8 +84,9 @@
 #include <linux/netdevice.h>
 /* Device node name for application interface */
 #define APP_DEVNAME				"multipdp"
+
 /* number of PDP context */
-#define NUM_PDP_CONTEXT			4
+#define NUM_PDP_CONTEXT			2
 
 /* Device types */
 #define DEV_TYPE_NET			0 /* network device for IP data */
@@ -136,7 +139,7 @@ struct pdp_info {
 	union {
 		/* Virtual serial interface */
 		struct {
-			struct tty_driver	tty_driver[NUM_PDP_CONTEXT];	// CSD, CDMA, TRFB, CIQ
+			struct tty_driver	tty_driver[NUM_PDP_CONTEXT];	// CSD, CDMA
 			int			refcount;
 			struct tty_struct	*tty_table[1];
 			struct ktermios		*termios[1];
@@ -155,7 +158,7 @@ static struct pdp_info *pdp_table[MAX_PDP_CONTEXT];
 static DEFINE_MUTEX(pdp_lock);
 
 static inline struct pdp_info * pdp_get_dev(u8 id);
-static inline void check_pdp_table(char*, int);
+static inline void check_pdp_table(const char*, int);
 static int onedram_get_semaphore_for_init(const char *func);
 
 /*****************************************************************************/
@@ -233,14 +236,14 @@ static int onedram_lock_with_semaphore(const char*);
 static void onedram_release_lock(const char*);
 static void dpram_cp_dump(dump_order);
 static void dpram_drop_data(dpram_device_t *device);
-static int kernel_sec_dump_cp_handle2(void);
+static void kernel_sec_dump_cp_handle2(void);
 
 // CL209498 of Kernel_main
-static u16 check_pending_rx();
+static u16 check_pending_rx(void);
 
 static void non_command_handler(u16 non_cmd);
 
-static int boot_complete = 0;
+//static int boot_complete = 0;
 static int requested_semaphore = 0;
 static int phone_boot = 0;
 static int unreceived_semaphore = 0;
@@ -322,6 +325,7 @@ struct class *dpram_class;
 static DECLARE_WAIT_QUEUE_HEAD(dpram_err_wait_q);
 static struct fasync_struct *dpram_err_async_q;
 extern void usb_switch_mode(int);
+void request_phone_reset(void);
 #endif	/* _ENABLE_ERROR_DEVICE */
 
 spinlock_t mem_cpy_lock;
@@ -364,7 +368,7 @@ static inline void byte_align(unsigned long dest, unsigned long src)
 	}
 
 	else {
-		dprintk(KERN_ERR "oops.~\n");
+		//dprintk(KERN_ERR "oops.~\n");
 	}
 }
 
@@ -489,7 +493,7 @@ static int dpram_write(dpram_device_t *device,
 	int size = 0;
 	u16 head, tail;
 	u16 irq_mask = 0;
-	unsigned long flags;
+	//unsigned long flags;
 	
 //	down_interruptible(&write_mutex);	
 #ifdef PRINT_WRITE
@@ -697,7 +701,7 @@ static int dpram_read_fmt(dpram_device_t *device, const u16 non_cmd)
 static int dpram_read_raw(dpram_device_t *device, const u16 non_cmd)
 {
 	int retval = 0;
-	int retval_add = 0;
+	//int retval_add = 0;
 	int size = 0;
 	u16 head, tail;
 	u16 up_tail = 0;
@@ -708,10 +712,11 @@ static int dpram_read_raw(dpram_device_t *device, const u16 non_cmd)
 	struct pdp_hdr hdr;
 	u16 read_offset;
 	u8 len_high, len_low, id, control;
-	u16 pre_hdr_size, pre_data_size;
+	u16 pre_data_size;
+	//u16 pre_hdr_size;
 	u8 ch;
 
-	int i;
+	//int i;
 
 	if(!*onedram_sem)
 		printk(KERN_ERR "!!!!! %s no sem\n", __func__);
@@ -752,8 +757,8 @@ static int dpram_read_raw(dpram_device_t *device, const u16 non_cmd)
 			}
 			else {
 				printk(KERN_ERR "[OneDram] %s failed.. First byte: %d, drop byte: %d\n", __func__, ch, size);
-				printk(KERN_ERR "buff addr: %x\n", (device->in_buff_addr));
-				printk(KERN_ERR "read addr: %x\n", (device->in_buff_addr + ((u16)(tail + read_offset) % device->in_buff_size)));
+				printk(KERN_ERR "buff addr: %lx\n", (device->in_buff_addr));
+				printk(KERN_ERR "read addr: %lx\n", (device->in_buff_addr + ((u16)(tail + read_offset) % device->in_buff_size)));
 
 				dpram_drop_data(device);
 				onedram_release_lock(__func__);
@@ -817,8 +822,8 @@ static int dpram_read_raw(dpram_device_t *device, const u16 non_cmd)
 			
 			if(!ret) {
 				printk(KERN_ERR "[OneDram] %s failed.. (tty_insert_flip_string) drop byte: %d\n", __func__, size);
-				printk(KERN_ERR "buff addr: %x\n", (device->in_buff_addr));
-				printk(KERN_ERR "read addr: %x\n", (device->in_buff_addr + ((u16)(tail + read_offset) % device->in_buff_size)));
+				printk(KERN_ERR "buff addr: %lx\n", (device->in_buff_addr));
+				printk(KERN_ERR "read addr: %lx\n", (device->in_buff_addr + ((u16)(tail + read_offset) % device->in_buff_size)));
 				dpram_drop_data(device);
 				onedram_release_lock(__func__);
 				return -1;
@@ -832,8 +837,8 @@ static int dpram_read_raw(dpram_device_t *device, const u16 non_cmd)
 				read_offset ++;
 			else {
 				printk(KERN_ERR "[OneDram] %s failed.. Last byte: %d, drop byte: %d\n", __func__, ch, size);
-				printk(KERN_ERR "buff addr: %x\n", (device->in_buff_addr));
-				printk(KERN_ERR "read addr: %x\n", (device->in_buff_addr + ((u16)(tail + read_offset) % device->in_buff_size)));
+				printk(KERN_ERR "buff addr: %lx\n", (device->in_buff_addr));
+				printk(KERN_ERR "read addr: %lx\n", (device->in_buff_addr + ((u16)(tail + read_offset) % device->in_buff_size)));
 				dpram_drop_data(device);
 				onedram_release_lock(__func__);
 				return -1;
@@ -869,7 +874,7 @@ static int dpram_read_raw(dpram_device_t *device, const u16 non_cmd)
 	
 }
 #ifdef _ENABLE_ERROR_DEVICE
-void request_phone_reset()
+void request_phone_reset(void)
 {
 	char buf[DPRAM_ERR_MSG_LEN];
 	unsigned long flags;
@@ -889,7 +894,7 @@ void request_phone_reset()
 	wake_up_interruptible(&dpram_err_wait_q);
 	kill_fasync(&dpram_err_async_q, SIGIO, POLL_IN);
 }
-#endif
+#endif /* _ENABLE_ERROR_DEVICE */
 
 static int onedram_get_semaphore(const char *func)
 {
@@ -920,7 +925,7 @@ static int onedram_get_semaphore(const char *func)
 #ifdef _ENABLE_ERROR_DEVICE
 	if(unreceived_semaphore > 10)
 		request_phone_reset();
-#endif
+#endif /* _ENABLE_ERROR_DEVICE */
 
 	return 0;
 }
@@ -956,7 +961,7 @@ static int onedram_get_semaphore_for_init(const char *func)
 #ifdef _ENABLE_ERROR_DEVICE
 	if(unreceived_semaphore > 12)
 		request_phone_reset();
-#endif
+#endif /* _ENABLE_ERROR_DEVICE */
 
 	return 0;
 }
@@ -1090,7 +1095,7 @@ static void dpram_clear(void)
 static int dpram_init_and_report(void)
 {
 	const u16 magic_code = 0x00aa;
-	const u16 init_start = INT_COMMAND(INT_MASK_CMD_INIT_START);
+	//const u16 init_start = INT_COMMAND(INT_MASK_CMD_INIT_START);
 	const u16 init_end = INT_COMMAND(INT_MASK_CMD_INIT_END);
 	u16 ac_code = 0;
 
@@ -1105,7 +1110,7 @@ static int dpram_init_and_report(void)
 	if(onedram_lock_with_semaphore(__func__) < 0)
 		return -EINTR;
 #if 0
-        /* @LDK@ send init start code to phone */
+  /* @LDK@ send init start code to phone */
 	*onedram_mailboxBA = init_start;
 	printk(KERN_ERR "[OneDRAM] Send to MailboxBA 0x%x (onedram init start).\n", init_start);
 #endif
@@ -1225,32 +1230,32 @@ static void dpram_nvdata_load(struct _param_nv *param)
 	else
 		dprintk("CP DUMP MODE !!! \n");
 #else
-
+	unsigned int ret = 0;
 	unsigned char * load_addr =  DPRAM_VBASE + DPRAM_DEFAULT_NV_DATA_OFFSET;
 
 	printk(" +---------------------------------------------+\n");
 	printk(" |                  LOAD NVDATA                |\n");
 	printk(" +---------------------------------------------+\n");
 	printk("  - Read from File(\"/efs/nv_data.bin\").\n");
-	printk("  - Address of NV data(virt): 0x%08x.\n", param->addr);
+	printk("  - Address of NV data(virt): 0x%s.\n", param->addr);
 	printk("  - Size of NV data: %d.\n", param->size);
 
 	if(!(*onedram_sem))
-		{
+	{
 		if(!onedram_get_semaphore(__func__)) 
-			{
+		{
 			printk("[OneDRAM] %s failed.. onedram_get_semaphore\n", __func__);
 			return;
-			}
 		}
+	}
 
 	if(onedram_lock_with_semaphore(__func__) < 0)
-		{
+	{
 		printk("[OneDRAM] %s failed.. onedram_lock_with_semaphore\n", __func__);
 		return;
-		}
+	}
 	
-	copy_from_user((void *)load_addr, (void __user *)param->addr, param->size);	
+	ret = copy_from_user((void *)load_addr, (void __user *)param->addr, param->size);
 
 	onedram_release_lock(__func__);
 
@@ -1270,32 +1275,32 @@ static void dpram_nvpacket_data_read(void * usrbufaddr)
 	unsigned int err_length = 0xffffffff;
 	
 	if(!(*onedram_sem))
-		{
+	{
 		if(!onedram_get_semaphore(__func__)) 
-			{
-			copy_to_user((void __user *)usrbufaddr, (unsigned char*)&err_length, sizeof(unsigned int));
+		{
+			val = copy_to_user((void __user *)usrbufaddr, (unsigned char*)&err_length, sizeof(unsigned int));
 			printk("[OneDRAM] %s failed.. onedram_get_semaphore\n", __func__);
 			return;
-			}
 		}
+	}
 
 	if(onedram_lock_with_semaphore(__func__) < 0)
-		{
-		copy_to_user((void __user *)usrbufaddr, (unsigned char*)&err_length, sizeof(unsigned int));
+	{
+		val = copy_to_user((void __user *)usrbufaddr, (unsigned char*)&err_length, sizeof(unsigned int));
 		printk("[OneDRAM] %s failed.. onedram_lock_with_semaphore\n", __func__);
 		return;
-		}
+	}
 	
 	if (*onedram_sem)	// check twice
-		{
+	{
 		// DATA STRUCTURE
 		// 0x7f  + length 4byte + data + 0x7e
 		cur_ptr = packet_addr;
 		if ( *cur_ptr++ != 0x7f )
-			{
-			copy_to_user((void __user *)usrbufaddr, (unsigned char*)&err_length, sizeof(unsigned int));
+		{
+			val = copy_to_user((void __user *)usrbufaddr, (unsigned char*)&err_length, sizeof(unsigned int));
 			printk("[OneDRAM] %s failed.. invalid header\n", __func__);
-			}
+		}
 
 		#if 1
 		// big endian
@@ -1314,26 +1319,26 @@ static void dpram_nvpacket_data_read(void * usrbufaddr)
 
 		printk("[OneDRAM] %s nv packet large data length = 0x%x\n", __func__,length);
 
-		copy_to_user((void __user *)usrbufaddr, (unsigned char*)&length, sizeof(length));
-		copy_to_user((void __user *)(usrbufaddr+sizeof(length)), cur_ptr, length);
+		val = copy_to_user((void __user *)usrbufaddr, (unsigned char*)&length, sizeof(length));
+		val = copy_to_user((void __user *)(usrbufaddr+sizeof(length)), cur_ptr, length);
 
 		cur_ptr += length;
 		
 		// check EOP 0x7e 
 		if ( *cur_ptr != 0x7e )
-			{
-			copy_to_user((void __user *)usrbufaddr, (unsigned char*)&err_length, sizeof(unsigned int));
+		{
+			val = copy_to_user((void __user *)usrbufaddr, (unsigned char*)&err_length, sizeof(unsigned int));
 			printk("[OneDRAM] %s failed.. invalid header tail\n", __func__);
-			}
+		}
 
 
 		printk("[OneDRAM] %s nv packet large data read complete\n", __func__);
-		}
+	}
 	else
-		{
-		copy_to_user((void __user *)usrbufaddr, (unsigned char*)&err_length, sizeof(unsigned int));
+	{
+		val = copy_to_user((void __user *)usrbufaddr, (unsigned char*)&err_length, sizeof(unsigned int));
 		printk("[OneDRAM] %s failed.. sem: %d check and return\n", __func__, *onedram_sem);
-		}
+	}
 
 	onedram_release_lock(__func__);
 
@@ -1360,6 +1365,7 @@ static void dpram_phone_power_on(void)
 }
 
 
+#if 0
 static void dpram_phone_just_power_on(void)
 {
         printk("[sridhar]dpram_phone_power_on \n");
@@ -1375,6 +1381,7 @@ static void dpram_phone_just_power_on(void)
 	printk("  - GPIO_PHONE_ON : %s, GPIO_PHONE_RST_N : %s\n", 
 		gpio_get_value(GPIO_PHONE_ON)?"HIGH":"LOW", gpio_get_value(GPIO_PHONE_RST_N)?"HIGH":"LOW");
 }
+#endif
 
 
 static void dpram_phone_boot_start(void)
@@ -2027,6 +2034,7 @@ static int dpram_tty_ioctl(struct tty_struct *tty, struct file *file,
 		unsigned int cmd, unsigned long arg)
 {
 	unsigned int val;
+	struct _param_em param;
 
 //	dprintk("START cmd = 0x%x\n", cmd);
 	
@@ -2126,10 +2134,9 @@ static int dpram_tty_ioctl(struct tty_struct *tty, struct file *file,
 		case DPRAM_EXTRA_MEM_RW: //etinum.victory.dpram from instinctq
 		{
             
-            printk("[DPRAM] DPRAM_EXTRA_MEM_RW!!!\n");
+			printk("[DPRAM] DPRAM_EXTRA_MEM_RW!!!\n");
 
-            #if 1 
-			struct _param_em param;
+#if 1
 			val = copy_from_user((void *)&param, (void *)arg, sizeof(param));
 			if (dpram_extra_mem_rw(&param) < 0) {
 				printk("[OneDRAM] external memory access fail..\n");
@@ -2140,7 +2147,7 @@ static int dpram_tty_ioctl(struct tty_struct *tty, struct file *file,
 			}
 
 			return 0;
-            #endif
+#endif
 		}
 
 		default:
@@ -2390,18 +2397,20 @@ static void cmd_emer_down_handler(void)
 	/* TODO: add your codes here.. */
 }
 
+#if 0
 static void cmd_smp_req_handler(void)
 {
 	const u16 cmd = INT_COMMAND(INT_MASK_CMD_SMP_REP);
 	if(return_onedram_semaphore(__func__))
 		*onedram_mailboxBA = cmd;
 }
+#endif
 
 static void cmd_smp_rep_handler(void)
 {
 	/* TODO: add your codes here.. */
-	unreceived_semaphore = 0;
 	u16 non_cmd;
+	unreceived_semaphore = 0;
 
 	/* phone acked semaphore release */
 	if(*onedram_sem != 0x0) {
@@ -2470,7 +2479,7 @@ static void command_handler(u16 cmd)
 	}
 }
 
-u16 check_pending_rx()
+u16 check_pending_rx(void)
 {
 	u32 head, tail;
 	u16 mbox = 0;
@@ -2640,8 +2649,10 @@ static void phone_active_delayed_work_handler(struct work_struct *ignored)
 
 	printk("Phone active is still low!!!" );
 	
+#ifdef _ENABLE_ERROR_DEVICE
 	if(phone_sync)
-			request_phone_reset();	
+			request_phone_reset();
+#endif /* _ENABLE_ERROR_DEVICE */
 
 }
 #endif /* DPRAM_USES_DELAYED_PHONE_ACTIVE_IRQ */
@@ -2677,12 +2688,12 @@ static irqreturn_t phone_active_irq_handler(int irq, void *dev_id)
 #ifdef _ENABLE_ERROR_DEVICE
 	if((phone_sync) && (!gpio_get_value(GPIO_PHONE_ACTIVE)))
 		request_phone_reset();	
-#endif
+#endif /* _ENABLE_ERROR_DEVICE */
 #endif /* DPRAM_USES_DELAYED_PHONE_ACTIVE_IRQ */
 
 	return IRQ_HANDLED;
 }
-static int kernel_sec_dump_cp_handle2(void)
+static void kernel_sec_dump_cp_handle2(void)
 {
  	t_kernel_sec_mmu_info mmu_info;    
     
@@ -2697,7 +2708,7 @@ static int kernel_sec_dump_cp_handle2(void)
 	kernel_sec_get_mmu_reg_dump(&mmu_info);
 	kernel_sec_set_upload_cause(UPLOAD_CAUSE_CP_ERROR_FATAL);
 	kernel_sec_hw_reset(false);
-}       
+}
 
 /* basic functions. */
 #ifdef _ENABLE_ERROR_DEVICE
@@ -2991,8 +3002,6 @@ static struct tty_driver* get_tty_driver_by_id(struct pdp_info *dev)
 	switch (dev->id) {
 		case 1:		index = 0;	break;
 		case 7:		index = 1;	break;
-		case 9:		index = 2;	break;
-		case 27:	index = 3;	break;
 		default:	index = 0;
 	}
 
@@ -3006,8 +3015,6 @@ static int get_minor_start_index(int id)
 	switch (id) {
 		case 1:		start = 0;	break;
 		case 7:		start = 1;	break;
-		case 9:		start = 2;	break;
-		case 27:	start = 3;	break;
 		default:	start = 0;
 	}
 
@@ -3054,7 +3061,7 @@ static void vs_del_dev(struct pdp_info *dev)
 	tty_unregister_driver(tty_driver);
 }
 
-static inline void check_pdp_table(char * func, int line)
+static inline void check_pdp_table(const char * func, int line)
 {
 	int slot;
 	for (slot = 0; slot < MAX_PDP_CONTEXT; slot++) {
@@ -3155,8 +3162,6 @@ static int multipdp_init(void)
 	pdp_arg_t pdp_args[NUM_PDP_CONTEXT] = {
 		{ .id = 1, .ifname = "ttyCSD" },
 		{ .id = 7, .ifname = "ttyCDMA" },
-		{ .id = 9, .ifname = "ttyTRFB" },
-		{ .id = 27, .ifname = "ttyCIQ" },
 	};
 
 
@@ -3307,7 +3312,7 @@ static int dpram_resume(struct platform_device *dev)
 	return 0;
 }
 
-static int dpram_shutdown(struct platform_Device *dev)
+static int dpram_shutdown(struct platform_device *dev)
 {
 	int ret = 0;
 	printk("\ndpram_shutdown !!!!!!!!!!!!!!!!!!!!!\n");
@@ -3327,6 +3332,8 @@ static int __devinit dpram_probe(struct platform_device *dev)
 {
 	int retval;
 	/* @LDK@ register dpram (tty) driver */
+
+	printk("enter dpram_probe\n");
 	retval = register_dpram_driver();
 	if (retval) {
 		dprintk(KERN_ERR "failed to register dpram (tty) driver.\n");
@@ -3359,6 +3366,10 @@ static int __devinit dpram_probe(struct platform_device *dev)
 
 	dpram_shared_bank_remap();
 
+	
+    spin_lock_init(&mem_cpy_lock);
+	spin_lock_init(&mem_cmp_lock);
+
 	/* @LDK@ register interrupt handler */
 	if ((retval = register_interrupt_handler()) < 0) {
 		return -1;
@@ -3375,8 +3386,8 @@ static int __devinit dpram_probe(struct platform_device *dev)
 	//check_miss_interrupt();
 	gpio_set_value(GPIO_PDA_ACTIVE, GPIO_LEVEL_HIGH);
 
-    spin_lock_init(&mem_cpy_lock);
-	spin_lock_init(&mem_cmp_lock);
+    printk("exit dpram_probe\n");
+
 	
 	return 0;
 }
@@ -3389,7 +3400,7 @@ static int __devexit dpram_remove(struct platform_device *dev)
 	/* @LDK@ unregister dpram error device */
 #ifdef _ENABLE_ERROR_DEVICE
 	unregister_dpram_err_device();
-#endif
+#endif /* _ENABLE_ERROR_DEVICE */
 	
 	/* remove app. interface device */
 	misc_deregister(&multipdp_dev);

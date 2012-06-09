@@ -87,7 +87,7 @@
 /* Device node name for application interface */
 #define APP_DEVNAME				"multipdp"
 /* number of PDP context */
-#define NUM_PDP_CONTEXT			4
+#define NUM_PDP_CONTEXT			2
 
 /* Device types */
 #define DEV_TYPE_NET			0 /* network device for IP data */
@@ -140,7 +140,7 @@ struct pdp_info {
 	union {
 		/* Virtual serial interface */
 		struct {
-			struct tty_driver	tty_driver[NUM_PDP_CONTEXT];	// CSD, CDMA, TRFB, CIQ
+			struct tty_driver	tty_driver[NUM_PDP_CONTEXT];	// CSD, CDMA
 			int			refcount;
 			struct tty_struct	*tty_table[1];
 			struct ktermios		*termios[1];
@@ -2356,8 +2356,6 @@ static struct tty_driver* get_tty_driver_by_id(struct pdp_info *dev)
 	switch (dev->id) {
 		case 1:		index = 0;	break;
 		case 7:		index = 1;	break;
-		case 9:		index = 2;	break;
-		case 27:	index = 3;	break;
 		default:	index = 0;
 	}
 
@@ -2371,8 +2369,6 @@ static int get_minor_start_index(int id)
 	switch (id) {
 		case 1:		start = 0;	break;
 		case 7:		start = 1;	break;
-		case 9:		start = 2;	break;
-		case 27:	start = 3;	break;
 		default:	start = 0;
 	}
 
@@ -2520,8 +2516,6 @@ static int multipdp_init(void)
 	pdp_arg_t pdp_args[NUM_PDP_CONTEXT] = {
 		{ .id = 1, .ifname = "ttyCSD" },
 		{ .id = 7, .ifname = "ttyCDMA" },
-		{ .id = 9, .ifname = "ttyTRFB" },
-		{ .id = 27, .ifname = "ttyCIQ" },
 	};
 
 
@@ -2559,7 +2553,7 @@ static void init_hw_setting(void)
 
 	s3c_gpio_cfgpin(GPIO_ONEDRAM_INT_N, S3C_GPIO_SFN(GPIO_ONEDRAM_INT_N_AF));
 	s3c_gpio_setpull(GPIO_ONEDRAM_INT_N, S3C_GPIO_PULL_NONE); 
-	set_irq_type(IRQ_ONEDRAM_INT_N, IRQ_TYPE_EDGE_FALLING);
+	//set_irq_type(IRQ_ONEDRAM_INT_N, IRQ_TYPE_EDGE_FALLING);
 
 	if (gpio_is_valid(GPIO_PHONE_ON)) {
 		if (gpio_request(GPIO_PHONE_ON, "dpram/GPIO_PHONE_ON"))
@@ -2608,7 +2602,7 @@ static int register_interrupt_handler(void)
 //	dpram_clear();
 
 	/* @LDK@ dpram interrupt */
-	retval = request_irq(dpram_irq, dpram_irq_handler, IRQF_DISABLED, "dpram irq", NULL);
+	retval = request_irq(dpram_irq, dpram_irq_handler, IRQF_TRIGGER_LOW, "dpram irq", NULL);
 
 	enable_irq_wake(dpram_irq);
 
@@ -2652,6 +2646,15 @@ static void check_miss_interrupt(void)
 
 static int dpram_suspend(struct platform_device *dev, pm_message_t state)
 {
+	unsigned int dpram_irq = IRQ_ONEDRAM_INT_N;
+	int retval = 0;
+
+
+	disable_irq(dpram_irq);
+	set_irq_type(IRQ_ONEDRAM_INT_N, IRQ_TYPE_EDGE_FALLING);
+	enable_irq(dpram_irq);
+	//enable_irq_wake(dpram_irq);
+
 	gpio_set_value(GPIO_PDA_ACTIVE, GPIO_LEVEL_LOW);
 	if(requested_semaphore)
 		printk(KERN_ERR "=====> %s requested semaphore: %d\n", __func__, requested_semaphore);
@@ -2660,6 +2663,12 @@ static int dpram_suspend(struct platform_device *dev, pm_message_t state)
 
 static int dpram_resume(struct platform_device *dev)
 {
+	unsigned int dpram_irq = IRQ_ONEDRAM_INT_N;
+
+	disable_irq(dpram_irq);
+	set_irq_type(IRQ_ONEDRAM_INT_N, IRQ_TYPE_LEVEL_LOW);
+	enable_irq(dpram_irq);
+
 	gpio_set_value(GPIO_PDA_ACTIVE, GPIO_LEVEL_HIGH);
 	if(requested_semaphore)
 		printk(KERN_ERR "=====> %s requested semaphore: %d\n", __func__, requested_semaphore);

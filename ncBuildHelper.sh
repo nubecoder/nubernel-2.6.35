@@ -1,105 +1,155 @@
 #!/bin/bash
 #
 # ncBuildHelper.sh
-#
-#
-# 2011 nubecoder
-# http://www.nubecoder.com/
+# nubecoder 2012 - http://www.nubecoder.com/
 #
 
-# define envvars
+#source includes
+source "$PWD/include/includes"
+
+#defaults
+BUILD_TYPE="tw-bml"
+RECOVERY_TYPE="cwm"
 TARGET="victory_nubernel"
-KBUILD_BUILD_VERSION="nubernel-2.6.35_v0.0.2"
-LOCALVERSION=".nubernel_v0.0.2"
-INSTALL_MOD_PATH="../stand-alone\ modules"
-CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2011.03-41/bin/arm-none-linux-gnueabi-"
-#prebuilt aosp from cm
-#CROSS_COMPILE="/home/nubecoder/cm_android/system/prebuilt/linux-x86/toolchain/arm-eabi-4.4.3/bin/arm-eabi-"
-#sammy recommended below
-#CROSS_COMPILE="/home/nubecoder/android/kernel_dev/toolchains/arm-2009q3-68/bin/arm-none-eabi-"
-
-# define defaults
-BUILD_KERNEL=n
-BUILD_MODULES=n
-MODULE_ARGS=
 CLEAN=n
-DEFCONFIG=n
 DISTCLEAN=n
-PRODUCE_TAR=n
-PRODUCE_ZIP=n
+BUILD_MODULES=n
+BUILD_KERNEL=n
+CREATE_PACKAGE=n
+KEXEC_ZIMAGE=n
+WIFI_KEXEC=n
+INSTALL_PACKAGE=n
 VERBOSE=n
-WIFI_FLASH=n
-WIRED_FLASH=n
 
-# define vars
-MKZIP='7z -mx9 -mmt=1 a "$OUTFILE" .'
-THREADS=$(expr 1 + $(grep processor /proc/cpuinfo | wc -l))
-VERSION=$(date +%m-%d-%Y)
-ERROR_MSG=
-TIME_START=
-TIME_END=
-
-# exports
+#exports
 export KBUILD_BUILD_VERSION
 
-#source functions
-source $PWD/functions
+#functions
+function SHOW_HELP()
+{
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "Usage options for $0:"
+	echo "-b : Build zImage."
+	echo "-c : Run 'make clean'."
+	echo "-d : Run 'make distclean'."
+	echo "-h : Print this help info."
+	echo "-i : Install zip via recovery."
+	echo "-k : Kexec the current zImage."
+	echo "     Options are: <u|usb|wifi|w> (defaults to usb)."
+	echo "-m : Build and install modules."
+	echo "-p : Create install packages."
+	echo "-r : Define the recovery type."
+	echo "     Recovery types are: <cwm|twrp> (defaults to cwm)."
+	echo "-t : Define the build type."
+	echo "     Build types are: <tw-bml|tw-mtd|cm7|dbg-bml|dbg-mtd|mod|bml8> (defaults to tw-bml)."
+	echo "-v : Verbose script output."
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	exit 1
+}
+function SHOW_SETTINGS()
+{
+	TIME_START=$(date +%s)
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "build type      == $BUILD_TYPE"
+	echo "recovery type   == $RECOVERY_TYPE"
+	echo "build version   == $KBUILD_BUILD_VERSION"
+	echo "build target    == $TARGET"
+	echo "cross compile   == $CROSS_COMPILE"
+	echo "outfile         == $VERSION.$BUILD_TYPE.*"
+	echo "modules path    == $INSTALL_MOD_PATH"
+	echo "make threads    == $THREADS"
+	echo "make clean      == $CLEAN"
+	echo "make distclean  == $DISTCLEAN"
+	echo "build modules   == $BUILD_MODULES"
+	echo "build kernel    == $BUILD_KERNEL"
+	echo "create package  == $CREATE_PACKAGE"
+	echo "install package == $INSTALL_PACKAGE"
+	echo "kexec zimage    == $KEXEC_ZIMAGE"
+	echo "wifi kexec      == $WIFI_KEXEC"
+	echo "verbose output  == $VERBOSE"
+	echo "=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]"
+	echo "*"
+}
 
-# main
-while getopts ":bcCd:hj:m:tuvwz" flag
+#main
+while getopts ":bcdhik:mpr:t:v" flag
 do
 	case "$flag" in
-	b)
-		BUILD_KERNEL=y
-		;;
-	c)
-		CLEAN=y
-		;;
-	C)
-		DISTCLEAN=y
-		;;
-	d)
-		DEFCONFIG=y
-		TARGET="$OPTARG"
-		;;
-	h)
-		SHOW_HELP
-		;;
-	j)
-		THREADS=$OPTARG
-		;;
-	m)
-		BUILD_MODULES=y
-		MODULE_ARGS="$OPTARG"
-		;;
-	t)
-		PRODUCE_TAR=y
-		;;
-	u)
-		WIRED_FLASH=y
-		;;
-	v)
-		VERBOSE=y
-		;;
-	w)
-		WIFI_FLASH=y
-		;;
-	z)
-		PRODUCE_ZIP=y
-		;;
-	*)
-		ERROR_MSG="Error:: problem with option '$OPTARG'"
-		SHOW_ERROR
-		SHOW_HELP
-		;;
-	esac
+		b)
+			BUILD_KERNEL=y ;;
+		c)
+			CLEAN=y ;;
+		d)
+			DISTCLEAN=y ;;
+		h)
+			SHOW_HELP ;;
+		i)
+			INSTALL_PACKAGE=y ;;
+		k)
+			KEXEC_ZIMAGE=y
+			case "$OPTARG" in
+				u|usb)
+					WIFI_KEXEC=n ;;
+				w|wifi)
+					WIFI_KEXEC=y ;;
+				*)
+					ERROR_MSG="Error:: problem with option '$OPTARG'"
+					SHOW_ERROR
+					SHOW_HELP ;;
+			esac ;;
+		m)
+			BUILD_MODULES=y ;;
+		p)
+			CREATE_PACKAGE=y ;;
+		r)
+			case "$OPTARG" in
+				cwm)
+					RECOVERY_TYPE="$OPTARG" ;;
+				twrp)
+					RECOVERY_TYPE="$OPTARG" ;;
+				*)
+					ERROR_MSG="Error:: problem with option '$OPTARG'"
+					SHOW_ERROR
+					SHOW_HELP ;;
+			esac ;;
+		t)
+			case "$OPTARG" in
+				tw-bml)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_TW_BML ;;
+				tw-mtd)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_TW_MTD ;;
+				cm7)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_CM7 ;;
+				dbg-bml)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_DBG_BML ;;
+				dbg-mtd)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_DBG_MTD ;;
+				mod)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_MOD ;;
+				bml8)
+					BUILD_TYPE="$OPTARG"
+					TARGET=$TARGET_BML8 ;;
+				*)
+					ERROR_MSG="Error:: problem with option '$OPTARG'"
+					SHOW_ERROR
+					SHOW_HELP ;;
+			esac ;;
+		v)
+			VERBOSE=y ;;
+		*)
+			ERROR_MSG="Error:: problem with option '$OPTARG'"
+			SHOW_ERROR
+			SHOW_HELP ;;
+		esac
 done
 
-# show current settings
 SHOW_SETTINGS
-
-# force MAKE_DEFCONFIG below
-REMOVE_DOTCONFIG
 
 if [ "$CLEAN" = "y" ] ; then
 	MAKE_CLEAN
@@ -107,65 +157,34 @@ fi
 if [ "$DISTCLEAN" = "y" ] ; then
 	MAKE_DISTCLEAN
 fi
-if [ "$DEFCONFIG" = "y" -o ! -f "Kernel/.config" ] ; then
-	MAKE_DEFCONFIG
-fi
+
+MAKE_DEFCONFIG
+
 if [ "$BUILD_MODULES" = "y" ] ; then
 	BUILD_MODULES
-	if [ "$MODULE_ARGS" != "${MODULE_ARGS/c/}" ] ; then
-		INSTALL_MODULES
-		COPY_ARG="nubernel"
-		if [ $TARGET = "victory_nubernel" ]; then
-			COPY_ARG="nubernel"
-		elif [ $TARGET = "victory_modules" ]; then
-			COPY_ARG="stand-alone"
-		elif [ $TARGET = "cyanogenmod_epic" ]; then
-			COPY_ARG="cyanogenmod"
-		fi
-		COPY_MODULES $COPY_ARG
-	fi
-	if [ "$MODULE_ARGS" != "${MODULE_ARGS/s/}" ] ; then
-		STRIP_ARG="nubernel"
-		if [ $TARGET = "victory_nubernel" ]; then
-			STRIP_ARG="nubernel"
-		elif [ $TARGET = "victory_modules" ]; then
-			STRIP_ARG="stand-alone"
-		elif [ $TARGET = "cyanogenmod_epic" ]; then
-			STRIP_ARG="cyanogenmod"
-		fi
-		STRIP_MODULES $STRIP_ARG
-	fi
+	INSTALL_MODULES
 fi
 if [ "$BUILD_KERNEL" = "y" ] ; then
-	ZIMAGE_ARG="$LOCALVERSION"
-	if [ $TARGET = "cyanogenmod_epic" ]; then
-		ZIMAGE_ARG="$LOCALVERSION.cm7"
-	else
-		ZIMAGE_ARG="$LOCALVERSION"
-	fi
-	BUILD_ZIMAGE $ZIMAGE_ARG
+	BUILD_ZIMAGE
 	GENERATE_WARNINGS_FILE
-	ZIMAGE_UPDATE
 fi
-if [ "$PRODUCE_TAR" = y ] ; then
-	CREATE_TAR
-fi
-if [ "$PRODUCE_ZIP" = y ] ; then
-	CREATE_ZIP
-fi
-if [ "$WIFI_FLASH" = y ] ; then
-	WIFI_FLASH_SCRIPT
-fi
-if [ "$WIRED_FLASH" = y ] ; then
-	WIRED_FLASH_SCRIPT
+if [ "$CREATE_PACKAGE" = "y" ] ; then
+	if [ "$BUILD_TYPE" != "mod" ] || [ "$BUILD_TYPE" != "bml8" ] ; then
+		CREATE_INSTALL_PACKAGE
+	fi
 fi
 
-# fix for module changing every build.
-if [ "$DEFCONFIG" != "victory_modules" ] && [ "$BUILD_MODULES" = "y" ]; then
-	git co -- initramfs_tw/lib/modules/dhd.ko
-	git co -- initramfs_cm7/lib/modules/dhd.ko
+if [ "$KEXEC_ZIMAGE" = "y" ] ; then
+	if [ "$WIFI_KEXEC" = "y" ] ; then
+		WIFI_KERNEL_LOAD_SCRIPT
+	else
+		WIRED_KERNEL_LOAD_SCRIPT
+	fi
 fi
 
-# show completed message
+if [ "$INSTALL_PACKAGE" = "y" ] ; then
+	INSTALL_ZIP_PACKAGE
+fi
+
 SHOW_COMPLETED
 

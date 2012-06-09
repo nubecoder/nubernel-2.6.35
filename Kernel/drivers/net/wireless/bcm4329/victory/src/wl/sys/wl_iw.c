@@ -51,7 +51,7 @@ typedef const struct si_pub  si_t;
 #include <dngl_stats.h>
 #include <dhd.h>
 #define WL_ERROR(x) printf x
-#define WL_TRACE(x) printf x
+#define WL_TRACE(x)
 #define WL_ASSOC(x) 
 #define WL_INFORM(x) 
 #define WL_WSEC(x) 
@@ -124,7 +124,7 @@ typedef const struct si_pub  si_t;
 #endif 
 
 #if defined(SOFTAP)
-#define WL_SOFTAP(x) printk x
+#define WL_SOFTAP(x)
 static struct net_device *priv_dev;
 static bool 	ap_cfg_running = FALSE;
 bool 	ap_fw_loaded = FALSE;
@@ -159,9 +159,6 @@ extern uint dhd_pkt_filter_enable;
 extern uint dhd_master_mode;
 extern void dhd_pktfilter_offload_enable(dhd_pub_t * dhd, char *arg, int enable, int master_mode);
 uint wl_msg_level = WL_ERROR_VAL;
-#ifdef FEATURE_HOTSPOT_EVENT
-extern int hotspot_event_detect_complete(char *msg);
-#endif
 #define MAX_WLIW_IOCTL_LEN 1024
 
 
@@ -1660,13 +1657,6 @@ wl_iw_send_priv_event(
 	union iwreq_data wrqu;
 	char extra[IW_CUSTOM_MAX + 1];
 	int cmd;
-
-#ifdef FEATURE_HOTSPOT_EVENT
-        if(ap_cfg_running) {
-          hotspot_event_detect_complete(flag);
-          return 0;
-     }
-#endif
 
 	cmd = IWEVCUSTOM;
 	memset(&wrqu, 0, sizeof(wrqu));
@@ -7449,7 +7439,7 @@ int get_parmeter_from_string(
 				
 				memcpy(dst, param_str_begin, parm_str_len);
 				*((char *)dst + parm_str_len) = 0; 
-				WL_ERROR((" written as a string:%s\n", (char *)dst));
+//				WL_ERROR((" written as a string:%s\n", (char *)dst));
 			break;
 
 		}
@@ -7629,6 +7619,7 @@ exit_proc:
 }
 #ifdef SOFTAP
 
+#if 0
 static int iwpriv_wpasupp_loop_tst(struct net_device *dev,
             struct iw_request_info *info,
             union iwreq_data *wrqu,
@@ -7666,6 +7657,7 @@ static int iwpriv_wpasupp_loop_tst(struct net_device *dev,
 
 	return res;
 }
+#endif
 #endif 
 
 
@@ -8349,6 +8341,7 @@ static const iw_handler wl_iw_handler[] =
 };
 
 #ifdef SOFTAP
+#if 0
 //  SecFeature ADD START STEALTH_V by jaekwan.jeon
 static int iwpriv_set_max_stations(struct net_device *dev,
         struct iw_request_info *info,
@@ -8390,7 +8383,7 @@ static int iwpriv_set_max_stations(struct net_device *dev,
                 extra[wrqu->data.length] = 0;
                 WL_SOFTAP((" Got str param in iw_point:\n %s\n", extra));
                 
-                if(max_assoc = bcm_atoi(extra)){ 
+                if((max_assoc = bcm_atoi(extra))){ 
 
 	            if ((res = dev_wlc_intvar_set(dev, "maxassoc", max_assoc))) {
 
@@ -8424,6 +8417,8 @@ failed:
         if(extra != NULL) kfree(extra);
 	return res;
 }
+#endif
+
 //  SecFeature ADD END STEALTH_V by jaekwan.jeon
 static int iwpriv_disassoc_sta(struct net_device *dev,
     struct iw_request_info *info,
@@ -8432,7 +8427,7 @@ static int iwpriv_disassoc_sta(struct net_device *dev,
 {
     scb_val_t scbval;
     char sta_mac[ETHER_ADDR_LEN];
-    int ret = 0;
+    //int ret = 0;
 
     scbval.val = htod32(1);
 

@@ -147,6 +147,27 @@ struct wifi_mem_prealloc {
 	unsigned long size;
 };
 
+/* REC_BOOT_MAGIC is poked into REC_BOOT_ADDR on reboot(..., "recovery") to
+ * flag stage1 init to load the recovery image.  This address is located in
+ * the last 4 kB of unmapped RAM, shared with the kexec hardboot page and
+ * pmstats. */
+#ifdef CONFIG_POKE_REC_BOOT_MAGIC
+#define REC_BOOT_ADDR  0x57fff800
+#define REC_BOOT_MAGIC 0x5EC0B007
+
+static void poke_rec_boot_magic(void)
+{
+	unsigned int __iomem *rec_boot_mem;
+
+	if ((rec_boot_mem = ioremap(REC_BOOT_ADDR, sizeof(*rec_boot_mem))) == NULL)
+		/* Can't do much about this. */
+		return;
+
+	writel(REC_BOOT_MAGIC, rec_boot_mem);
+	iounmap(rec_boot_mem);
+}
+#endif
+
 static int victory_notifier_call(struct notifier_block *this,
 					unsigned long code, void *_cmd)
 {
@@ -157,12 +178,15 @@ static int victory_notifier_call(struct notifier_block *this,
 			mode = REBOOT_MODE_ARM11_FOTA;
 		else if (!strcmp((char *)_cmd, "arm9_fota"))
 			mode = REBOOT_MODE_ARM9_FOTA;
-		else if (!strcmp((char *)_cmd, "recovery"))
+		else if (!strcmp((char *)_cmd, "recovery")) {
 			mode = REBOOT_MODE_ARM11_FOTA;
-		else if (!strcmp((char *)_cmd, "bml7recovery"))
+#ifdef CONFIG_POKE_REC_BOOT_MAGIC
+			poke_rec_boot_magic();
+#endif
+		} else if (!strcmp((char *)_cmd, "bml7recovery"))
 			mode = REBOOT_MODE_RECOVERY;
 		else if (!strcmp((char *)_cmd, "bootloader"))
-			mode = REBOOT_MODE_FAST_BOOT;
+			mode = REBOOT_MODE_DOWNLOAD;
 		else if (!strcmp((char *)_cmd, "download"))
 			mode = REBOOT_MODE_DOWNLOAD;
 		else if (!strcmp((char *)_cmd, "factory_reboot"))
@@ -231,6 +255,7 @@ static void gps_gpio_init(void)
 	return;
 }
 
+#if 0
 static void uart_switch_init(void)
 {
 	int ret;
@@ -255,6 +280,7 @@ static void uart_switch_init(void)
 
 	gpio_export_link(uartswitch_dev, "UART_SEL", GPIO_UART_SEL);
 }
+#endif
 
 static void victory_switch_init(void)
 {
@@ -317,6 +343,7 @@ static struct s3c2410_uartcfg victory_uartcfgs[] __initdata = {
 	},
 };
 
+#if 0
 static struct s3cfb_lcd nt35580 = {
 	.width = 480,
 	.height = 800,
@@ -341,6 +368,7 @@ static struct s3cfb_lcd nt35580 = {
 		.inv_vden = 1,
 	},
 };
+#endif
 
 #define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_FIMC0 (12288 * SZ_1K)
 #define  S5PV210_VIDEO_SAMSUNG_MEMSIZE_FIMC1 (9900 * SZ_1K)
@@ -1413,8 +1441,8 @@ static struct s3c_adc_mach_info s3c_adc_platform __initdata = {
 /* in revisions before 0.9, there is a common mic bias gpio */
 
 static DEFINE_SPINLOCK(mic_bias_lock);
-static bool wm8994_mic_bias;
-static bool jack_mic_bias;
+static bool wm8994_mic_bias = false;
+static bool jack_mic_bias = false;
 static void set_shared_mic_bias(void)
 {
 	gpio_set_value(GPIO_MICBIAS_EN, wm8994_mic_bias || jack_mic_bias);
@@ -1843,7 +1871,7 @@ static int ce147_power_off(void)
 
 static int ce147_power_en(int onoff)
 {
-	int bd_level;
+	//int bd_level;
 	int err = 0;
 #if 0
 	if(onoff){
@@ -1875,6 +1903,7 @@ static int ce147_power_en(int onoff)
 	return 0;
 	}
 
+#if 0
 static int smdkc110_cam1_power(int onoff)
 {
 	int err;
@@ -1886,7 +1915,7 @@ static int smdkc110_cam1_power(int onoff)
 	if (err) {
 		printk(KERN_ERR "failed to request GPB for camera control\n");
 	return err;
-}
+	}
 
 	gpio_direction_output(S5PV210_GPB(0), 0);
 
@@ -1910,7 +1939,7 @@ static int smdkc110_cam1_power(int onoff)
 	if (err) {
 		printk(KERN_ERR "failed to request GPB for camera control\n");
 		return err;
-}
+	}
 
 	gpio_direction_output(S5PV210_GPB(2), 0);
 
@@ -1928,6 +1957,7 @@ static int smdkc110_cam1_power(int onoff)
 
 	return 0;
 }
+#endif
 
 /*
  * Guide for Camera Configuration for Jupiter board
@@ -1984,7 +2014,7 @@ static struct s3c_platform_camera ce147 = {
 #ifdef CONFIG_VIDEO_S5KA3DFX
 /* External camera module setting */
 static DEFINE_MUTEX(s5ka3dfx_lock);
-static struct regulator *s5ka3dfx_vga_avdd;
+//static struct regulator *s5ka3dfx_vga_avdd;
 static struct regulator *s5ka3dfx_vga_vddio;
 static struct regulator *s5ka3dfx_cam_isp_host;
 static struct regulator *s5ka3dfx_vga_dvdd;
@@ -2434,8 +2464,10 @@ static struct i2c_board_info i2c_devs2[] __initdata = {
 };
 
 
+#if 0
 static struct i2c_board_info i2c_devs8[] __initdata = {
 };
+#endif
 static struct i2c_board_info i2c_devs6[] __initdata = {
 #ifdef CONFIG_REGULATOR_MAX8998
 	{
@@ -2801,7 +2833,7 @@ static void victory_power_off(void)
 {
 	int err, i;
 	int mode = REBOOT_MODE_NONE;
-	char reset_mode = 'r';
+	//char reset_mode = 'r';
 	int phone_wait_cnt = 0;
 
 	/* Change this API call just before power-off to take the dump. */
@@ -3142,7 +3174,9 @@ static struct platform_device *victory_devices[] __initdata = {
 #ifdef CONFIG_FIQ_DEBUGGER
 	&s5pv210_device_fiqdbg_uart2,
 #endif
-	&s5pc110_device_onenand,
+#ifdef CONFIG_MTD_ONENAND
+    &s5p_device_onenand,
+#endif
 #ifdef CONFIG_RTC_DRV_S3C
 	&s5p_device_rtc,
 #endif
@@ -3261,7 +3295,7 @@ static void __init victory_map_io(void)
 	s3c24xx_init_uarts(victory_uartcfgs, ARRAY_SIZE(victory_uartcfgs));
 	s5p_reserve_bootmem(victory_media_devs, ARRAY_SIZE(victory_media_devs));
 #ifdef CONFIG_MTD_ONENAND
-	s5pc110_device_onenand.name = "s5pc110-onenand";
+	s5p_device_onenand.name = "s5p-onenand";
 #endif
 }
 
@@ -3389,7 +3423,7 @@ static void __init sound_init(void)
 	gpio_request(GPIO_MICBIAS_EN, "micbias_enable");
 }
 
-static void __init onenand_init()
+static void __init onenand_init(void)
 {
 	struct clk *clk = clk_get(NULL, "onenand");
 	BUG_ON(!clk);
@@ -3417,10 +3451,12 @@ static void __init qt_touch_init(void)
 
 }
 
+#if 0
 static void k3g_irq_init(void)
 {
         i2c_devs0[0].irq = (system_rev >= 0x0A) ? IRQ_EINT(29) : -1;
 }
+#endif
 
 
 static void __init victory_machine_init(void)
@@ -3569,9 +3605,9 @@ void otg_phy_init(void)
 	writel(readl(S3C_USBOTG_PHYTUNE) | (0x1<<20),
 			S3C_USBOTG_PHYTUNE);
 
-	/* set DC level as 6 (6%) */
-	writel((readl(S3C_USBOTG_PHYTUNE) & ~(0xf)) | (0x1<<2) | (0x1<<1),
-			S3C_USBOTG_PHYTUNE);
+	/* set DC level as 1011 (16%) */
+	writel((readl(S3C_USBOTG_PHYTUNE) & ~(0xf)) | 0xb, S3C_USBOTG_PHYTUNE);
+
 }
 EXPORT_SYMBOL(otg_phy_init);
 

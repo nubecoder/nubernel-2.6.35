@@ -104,10 +104,11 @@ void s5pv210_setup_sdhci2_cfg_gpio(struct platform_device *dev, int width)
 
 	if(machine_is_herring() || machine_is_crespo() || machine_is_victory())
 		memory_enable = S5PV210_GPG2(2);
-        else if (machine_is_atlas() || machine_is_forte() ||  machine_is_aries()){	
+  else if (machine_is_atlas() || machine_is_forte() ||  machine_is_aries()){	
 		memory_enable = S5PV210_GPJ2(7);
-	}else
-		return -1;
+	}
+	else
+		return;
 
 
 	switch (width) {

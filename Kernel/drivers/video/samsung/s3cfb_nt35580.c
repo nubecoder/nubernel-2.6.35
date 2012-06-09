@@ -218,6 +218,7 @@ static int __devinit nt35580_probe(struct spi_device *spi)
 	}
 
 	lcd->bl_dev->props.max_brightness = 255;
+	lcd->bl_dev->props.brightness = lcd->bl;
 	spi_set_drvdata(spi, lcd);
 
 	nt35580_ldi_enable(lcd);

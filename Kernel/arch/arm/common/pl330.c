@@ -1122,12 +1122,13 @@ static inline int _loop_ring(unsigned dry_run, u8 buf[],
 		unsigned long *bursts, const struct _xfer_spec *pxs, int ev)
 {
 	int cyc, off;
-	unsigned lcnt0, lcnt1, ljmp0, ljmp1, ljmpfe;
+	//unsigned lcnt0, lcnt1, ljmp0, ljmp1, ljmpfe;
+	unsigned lcnt1, ljmp0, ljmp1, ljmpfe;
 	struct _arg_LPEND lpend;
+	int i;//, j;
 
 	off = 0;
 	ljmpfe = off;
-	int i, j;
 	lcnt1 = 256;
 	cyc = 1;
 

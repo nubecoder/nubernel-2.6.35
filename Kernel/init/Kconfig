@@ -23,6 +23,13 @@ config CONSTRUCTORS
 
 menu "General setup"
 
+config CYANOGENMOD
+	bool "Enable build for CM"
+	default n
+	help
+	  Enable this when building CyanogenMod (needed to enable some CM
+	  specific changes which break things in non-CM builds).
+
 config EXPERIMENTAL
 	bool "Prompt for development and/or incomplete code/drivers"
 	---help---
@@ -123,13 +130,16 @@ config HAVE_KERNEL_BZIP2
 config HAVE_KERNEL_LZMA
 	bool
 
+config HAVE_KERNEL_XZ
+	bool
+
 config HAVE_KERNEL_LZO
 	bool
 
 choice
 	prompt "Kernel compression mode"
 	default KERNEL_GZIP
-	depends on HAVE_KERNEL_GZIP || HAVE_KERNEL_BZIP2 || HAVE_KERNEL_LZMA || HAVE_KERNEL_LZO
+	depends on HAVE_KERNEL_GZIP || HAVE_KERNEL_BZIP2 || HAVE_KERNEL_LZMA || HAVE_KERNEL_XZ || HAVE_KERNEL_LZO
 	help
 	  The linux kernel is a kind of self-extracting executable.
 	  Several compression algorithms are available, which differ
@@ -173,6 +183,21 @@ config KERNEL_LZMA
 	  Its ratio is best, decompression speed is between the other
 	  two. Compression is slowest.	The kernel size is about 33%
 	  smaller with LZMA in comparison to gzip.
+
+config KERNEL_XZ
+	bool "XZ"
+	depends on HAVE_KERNEL_XZ
+	help
+	  XZ uses the LZMA2 algorithm and instruction set specific
+	  BCJ filters which can improve compression ratio of executable
+	  code. The size of the kernel is about 30% smaller with XZ in
+	  comparison to gzip. On architectures for which there is a BCJ
+	  filter (i386, x86_64, ARM, IA-64, PowerPC, and SPARC), XZ
+	  will create a few percent smaller kernel than plain LZMA.
+
+	  The speed is about the same as with LZMA: The decompression
+	  speed of XZ is better than that of bzip2 but worse than gzip
+	  and LZO. Compression is slow.
 
 config KERNEL_LZO
 	bool "LZO"
@@ -650,6 +675,7 @@ endif # CGROUPS
 
 config SCHED_AUTOGROUP
 	bool "Automatic process group scheduling"
+	select EVENTFD
 	select CGROUPS
 	select CGROUP_SCHED
 	select FAIR_GROUP_SCHED
@@ -887,11 +913,11 @@ config PRINTK
 	  strongly discouraged.
 
 config SEC_LOG
-        default y
-        bool "Enable support for sec_log" if EMBEDDED
-        depends on PRINTK
-        help
-          This option enables sec_log support.
+	default y
+	bool "Enable support for sec_log" if EMBEDDED
+	depends on PRINTK
+	help
+	  This option enables sec_log support.
 
 config BUG
 	bool "BUG() support" if EMBEDDED
@@ -1130,6 +1156,11 @@ config SLUB
 	   and has enhanced diagnostics. SLUB is the default choice for
 	   a slab allocator.
 
+config SLQB
+	bool "SLQB (Queued allocator)"
+	help
+	  SLQB is a proposed new slab allocator.
+
 config SLOB
 	depends on EMBEDDED
 	bool "SLOB (Simple Allocator)"
@@ -1210,7 +1241,7 @@ config HAVE_GENERIC_DMA_COHERENT
 config SLABINFO
 	bool
 	depends on PROC_FS
-	depends on SLAB || SLUB_DEBUG
+	depends on SLAB || SLUB_DEBUG || SLQB
 	default y
 
 config RT_MUTEXES

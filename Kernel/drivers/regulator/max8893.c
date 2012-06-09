@@ -252,7 +252,8 @@ static int max8893_ldo_get_voltage(struct regulator_dev *rdev)
 {
 	struct max8893_data *max8893 = rdev_get_drvdata(rdev);
 	int ldo = max8893_get_ldo(rdev);
-	int value, shift = 0, mask = 0xff, reg;
+	//int value, shift = 0, mask = 0xff, reg;
+	int value, reg = 0;
 
 	DBG("func =%s called for regulator = %d\n",__func__,ldo);
 
@@ -283,7 +284,8 @@ static int max8893_ldo_set_voltage(struct regulator_dev *rdev,
 {
 	struct max8893_data *max8893 = rdev_get_drvdata(rdev);
 	int ldo = max8893_get_ldo(rdev);
-	int value, shift = 0, mask = 0xff, reg;
+	//int value, shift = 0, mask = 0xff, reg;
+	int value, reg = 0;
 	int min_vol = min_uV / 1000, max_vol = max_uV / 1000;
 	const int *vol_map = ldo_8893_voltage_map[ldo];
 	int i = 0;
@@ -488,7 +490,8 @@ int max8893_ldo_set_voltage_direct(int ldo,
 				int min_uV, int max_uV)
 {
 	struct max8893_data *max8893 = client_8893data_p;
-	int value, shift = 0, mask = 0xff, reg;
+	//int value, shift = 0, mask = 0xff, reg;
+	int value, reg;
 	int min_vol = min_uV / 1000, max_vol = max_uV / 1000;
 	const int *vol_map = ldo_8893_voltage_map[ldo];
 	int i = 0;
@@ -607,7 +610,7 @@ static int __devinit max8893_pmic_probe(struct i2c_client *client,
 	struct max8893_platform_data *pdata = client->dev.platform_data;
 	struct max8893_data *max8893;
 	int i = 0, id, ret;	
-	int gpio_value=0;
+	//int gpio_value=0;
 
 	DBG("func =%s :: Start!!!\n",__func__);
 

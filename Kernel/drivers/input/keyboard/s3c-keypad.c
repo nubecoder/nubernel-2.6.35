@@ -79,6 +79,13 @@ static u32 keymask[KEYPAD_COLUMNS];
 static u32 prevmask[KEYPAD_COLUMNS];
 
 static int in_sleep = 0;
+static bool is_led_on;
+
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+extern unsigned long kernel_sec_hardreset_key1;
+extern unsigned long kernel_sec_hardreset_key2;
+extern unsigned long kernel_sec_hardreset_key3;
+#endif // CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
 
 #define COLUMN_DELAY_DEFAULT KEYPAD_DELAY
 #define COLUMN_DELAY_MAX     (1000000/(HZ*KEYPAD_COLUMNS))
@@ -187,7 +194,7 @@ static int keypad_scan(void)
 static int keypad_scan(void)
 {
 
-	u32 col,cval,rval,gpio;
+	u32 col,cval,rval;//,gpio;
 
 	DPRINTK("H3C %x H2C %x \n",readl(S5PV210_GPH3CON),readl(S5PV210_GPH2CON));
 	DPRINTK("keypad_scan() is called\n");
@@ -196,7 +203,7 @@ static int keypad_scan(void)
 
 	for (col=0; col < KEYPAD_COLUMNS; col++) {
 
-		cval = KEYCOL_DMASK & ~((1 << col) | (1 << col+ 8)); // clear that column number and 
+		cval = KEYCOL_DMASK & ~((1 << col) | (1 << (col + 8))); // clear that column number and 
 
 		writel(cval, key_base+S3C_KEYIFCOL);             // make that Normal output.
 								 // others shuld be High-Z output.
@@ -227,7 +234,7 @@ static void keypad_timer_handler(unsigned long data)
 	int i,col;
 	struct s3c_keypad *pdata = (struct s3c_keypad *)data;
 	struct input_dev *dev = pdata->dev;
-	static some_keys_pressed = 0;
+	static int some_keys_pressed = 0;
         #if 0	//suik_Fix
         #ifdef CONFIG_KERNEL_DEBUG_SEC	
 	static bool is_first_key_pressed;
@@ -267,7 +274,7 @@ static void keypad_timer_handler(unsigned long data)
                              SENSITIVE(pr_err("[key_press_OFF] keycode=%d\n", i+1));
 					}
 				}
-			
+
 				/*input_report_key(dev,pdata->keycodes[i],1);
 				DPRINTK("\nkey Pressed  : key %d map %d\n",i, pdata->keycodes[i]); */
 			} 
@@ -366,7 +373,7 @@ static irqreturn_t s3c_slide_isr(int irq, void *dev_id)
   input_sync(dev); //hojun_kim
 
   //hojun_kim 100511[
-  if(!key_status)
+  if(!key_status || !is_led_on)
   {
     keypad_led_onoff(0);
   }
@@ -470,26 +477,25 @@ static int s3c_slidegpio_isr_setup(void *pdev)
 	return count;
 }
 
-static ssize_t key_led_control(struct device *dev, struct device_attribute *attr, const char *buf, size_t size)
+static ssize_t key_led_control(struct device *dev,
+                                       struct device_attribute *attr,
+                                       const char *buf, size_t count)
 {
-        unsigned char data;
-        if(sscanf(buf, "%d\n", &data) == 1) {
-                          printk("key_led_control: %d \n", data);
-
-                          if(data == 1)
-                          {
-                                keypad_led_onoff(1);
-                          }
-                          else if(data == 2)
-                          {
-                                keypad_led_onoff(0);
-                          }
-
-        }
-        else
-                printk("key_led_control Error\n");
-
-                return size;
+	unsigned int val;
+	if(sscanf(buf, "%d\n", &val) == 1) {
+		printk("key_led_control: %d \n", val);
+		if(val == 1) {
+			is_led_on = true;
+			keypad_led_onoff(1);
+		}
+		else if(val == 2) {
+			is_led_on = false;
+			keypad_led_onoff(0);
+		}
+	}
+	else
+		printk("key_led_control Error\n");
+	return count;
 }
 
 // nandu froyo merge
@@ -497,6 +503,39 @@ static ssize_t key_led_control(struct device *dev, struct device_attribute *attr
 static DEVICE_ATTR(key_pressed, S_IRUGO | S_IWUSR | S_IXOTH, keyshort_test, NULL);
 static DEVICE_ATTR(brightness, S_IRUGO | S_IWUSR | S_IXOTH, NULL, key_led_control);
 // nandu froyo merge
+
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+#define HARDRESET_KEY_ATTR(hardreset_key, hardreset_key_min, hardreset_key_max) \
+static ssize_t hardreset_key##_show(struct device *dev, \
+                            struct device_attribute *attr, char *buf) \
+{ \
+	return snprintf(buf, PAGE_SIZE, "%lu\n", hardreset_key); \
+} \
+\
+static ssize_t hardreset_key##_store(struct device *dev, \
+                             struct device_attribute *attr, \
+                             const char *buf, size_t count) \
+{ \
+	unsigned long val; \
+	int res; \
+\
+	if ((res = strict_strtoul(buf, 10, &val)) < 0) \
+		return res; \
+\
+	if (val < hardreset_key_min || val > hardreset_key_max) \
+		return -EINVAL; \
+\
+	hardreset_key = val; \
+\
+	return count; \
+} \
+\
+static DEVICE_ATTR(hardreset_key, S_IRUGO | S_IWUSR, hardreset_key##_show, hardreset_key##_store);
+HARDRESET_KEY_ATTR(kernel_sec_hardreset_key1, KERNEL_SEC_HARDRESET_KEY_MIN, KERNEL_SEC_HARDRESET_KEY_MAX)
+HARDRESET_KEY_ATTR(kernel_sec_hardreset_key2, KERNEL_SEC_HARDRESET_KEY_MIN, KERNEL_SEC_HARDRESET_KEY_MAX)
+HARDRESET_KEY_ATTR(kernel_sec_hardreset_key3, KERNEL_SEC_HARDRESET_KEY_MIN, KERNEL_SEC_HARDRESET_KEY_MAX)
+#undef HARDRESET_KEY_ATTR
+#endif // CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
 
 #ifdef CONFIG_KEYPAD_S3C_EXPORT_DELAYS
 #define DELAY_ATTR(delay, delay_max) \
@@ -568,8 +607,7 @@ static int __init s3c_keypad_probe(struct platform_device *pdev)
 	struct s3c_keypad *s3c_keypad;
 	int ret, size;
 	int key, code;
-
-         unsigned int gpio;
+	//unsigned int gpio;
 
 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
 	if (res == NULL) {
@@ -635,13 +673,13 @@ static int __init s3c_keypad_probe(struct platform_device *pdev)
 
 	//printk("%s, keypad row number is %d, column is %d",__FUNCTION__, s3c_keypad->nr_rows, s3c_keypad->no_cols);
 
-      // set_bit(26 & KEY_MAX, input_dev->keybit);  // nandu victory froyo merge
-     
-        input_set_capability(input_dev, EV_SW, SW_LID); //hojun_kim
- 
+	// set_bit(26 & KEY_MAX, input_dev->keybit);  // nandu victory froyo merge
+
+	input_set_capability(input_dev, EV_SW, SW_LID); //hojun_kim
+
 	input_dev->name = DEVICE_NAME;
 	input_dev->phys = "s3c-keypad/input0";
-	
+
 	input_dev->id.bustype = BUS_HOST;
 	input_dev->id.vendor = 0x0001;
 	input_dev->id.product = 0x0001;
@@ -664,10 +702,10 @@ static int __init s3c_keypad_probe(struct platform_device *pdev)
 	}
 
 
-       // newly added block for victory froyo merge
+	// newly added block for victory froyo merge
 #if 1
-       ret = request_irq(keypad_irq->start, s3c_keypad_isr, IRQF_SAMPLE_RANDOM,
-		DEVICE_NAME, (void *) pdev);
+	ret = request_irq(keypad_irq->start, s3c_keypad_isr, IRQF_SAMPLE_RANDOM,
+	DEVICE_NAME, (void *) pdev);
 	if (ret) {
 		printk("request_irq failed (IRQ_KEYPAD) !!!\n");
 		ret = -EIO;
@@ -676,43 +714,54 @@ static int __init s3c_keypad_probe(struct platform_device *pdev)
 #endif
 
 #ifndef CONFIG_S5PV210_CRESPO_DELTA
-        s3c_slidegpio_isr_setup((void *)s3c_keypad);
+	is_led_on = true;
+	s3c_slidegpio_isr_setup((void *)s3c_keypad);
 #endif
        
-         ret = input_register_device(input_dev);
-        if (ret) {
-                printk("Unable to register s3c-keypad input device!!!\n");
-                goto out;
-        }
+	ret = input_register_device(input_dev);
+	if (ret) {
+		printk("Unable to register s3c-keypad input device!!!\n");
+		goto out;
+	}
 
-          keypad_timer.expires = jiffies + TIMER_DELAY;
+	keypad_timer.expires = jiffies + TIMER_DELAY;
 
 
-          if (is_timer_on == FALSE) {
-                add_timer(&keypad_timer);
-                is_timer_on = TRUE;
-        } else {
-                mod_timer(&keypad_timer,keypad_timer.expires);
-        }
+	if (is_timer_on == FALSE) {
+		add_timer(&keypad_timer);
+		is_timer_on = TRUE;
+	} else {
+		mod_timer(&keypad_timer,keypad_timer.expires);
+	}
 
- 
-        input_report_switch(s3c_keypad->dev, SW_LID, 1); //hojun_kim
-        input_sync(s3c_keypad->dev); //hojun_kim
-  // nandu froyo victory merge
+
+	input_report_switch(s3c_keypad->dev, SW_LID, 1); //hojun_kim
+	input_sync(s3c_keypad->dev); //hojun_kim
+	// nandu froyo victory merge
         
 	printk( DEVICE_NAME " Initialized\n");
 	
-	if (device_create_file(&pdev->dev, &dev_attr_key_pressed) < 0)
-	{
+	if (device_create_file(&pdev->dev, &dev_attr_key_pressed) < 0) {
 		printk("%s s3c_keypad_probe\n",__FUNCTION__);
 		pr_err("Failed to create device file(%s)!\n", dev_attr_key_pressed.attr.name);
 	}
 
-         if (device_create_file(&pdev->dev, &dev_attr_brightness) < 0)
-         {
-        printk("%s s3c_keypad_probe\n",__FUNCTION__);
-        pr_err("Failed to create device file(%s)!\n", dev_attr_brightness.attr.name);
-  	}
+	if (device_create_file(&pdev->dev, &dev_attr_brightness) < 0) {
+		printk("%s s3c_keypad_probe\n",__FUNCTION__);
+		pr_err("Failed to create device file(%s)!\n", dev_attr_brightness.attr.name);
+	}
+
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+	if (device_create_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key1) < 0)
+		pr_err("Unable to create \"%s\".\n", dev_attr_kernel_sec_hardreset_key1.attr.name);
+
+	if (device_create_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key2) < 0)
+		pr_err("Unable to create \"%s\".\n", dev_attr_kernel_sec_hardreset_key2.attr.name);
+
+	if (device_create_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key3) < 0)
+		pr_err("Unable to create \"%s\".\n", dev_attr_kernel_sec_hardreset_key3.attr.name);
+
+#endif // CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
 
 #ifdef CONFIG_KEYPAD_S3C_EXPORT_DELAYS
 	if (device_create_file(&pdev->dev, &dev_attr_column_delay) < 0)
@@ -762,6 +811,12 @@ static int s3c_keypad_remove(struct platform_device *pdev)
 		clk_put(keypad_clock);
 		keypad_clock = NULL;
 	}
+
+#ifdef CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
+	device_remove_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key1);
+	device_remove_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key2);
+	device_remove_file(&pdev->dev, &dev_attr_kernel_sec_hardreset_key3);
+#endif // CONFIG_KEYPAD_S3C_EXPORT_HARDRESET_KEYS
 
 #ifdef CONFIG_KEYPAD_S3C_EXPORT_DELAYS
 	device_remove_file(&pdev->dev, &dev_attr_column_delay);
@@ -813,9 +868,9 @@ static int s3c_keypad_suspend(struct platform_device *dev, pm_message_t state)
 
 static int s3c_keypad_resume(struct platform_device *dev)
 {
-	struct s3c_keypad          *s3c_keypad = (struct s3c_keypad *) platform_get_drvdata(dev);
-      struct input_dev           *iDev = s3c_keypad->dev;
-	unsigned int key_temp_data=0;
+	//struct s3c_keypad          *s3c_keypad = (struct s3c_keypad *) platform_get_drvdata(dev);
+	//struct input_dev           *iDev = s3c_keypad->dev;
+	//unsigned int key_temp_data=0;
 	
 	printk(KERN_DEBUG "++++ %s\n", __FUNCTION__ );
 

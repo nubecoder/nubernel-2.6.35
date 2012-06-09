@@ -43,7 +43,34 @@
 #include <mach/adc.h>
 #include <plat/gpio-cfg.h>
 #include <linux/android_alarm.h>
+#ifdef CONFIG_MACH_FORTE
+#include <linux/earlysuspend.h>
+#include <mach/regs-power.h>
+#endif
 #include "s5pc110_battery.h"
+
+#ifdef CONFIG_BATTERY_S5PC110_CHARGE_CONTROL
+// charge rate
+#define CHARGE_RATE_AC         charge_rate_ac
+#define CHARGE_RATE_USB         charge_rate_usb
+unsigned long charge_rate_ac = CHARGE_RATE_AC_DEFAULT;
+unsigned long charge_rate_usb = CHARGE_RATE_USB_DEFAULT;
+// charge control
+#define FULL_CHARGE_COND_VOLTAGE charge_full_voltage
+#define FULL_CHARGE_COND_CURRENT charge_full_current
+#define RECHARGE_COND_VOLTAGE    charge_recharge_voltage
+unsigned long charge_full_voltage = FULL_CHARGE_COND_VOLTAGE_DEFAULT;
+unsigned long charge_full_current = FULL_CHARGE_COND_CURRENT_DEFAULT;
+unsigned long charge_recharge_voltage = RECHARGE_COND_VOLTAGE_DEFAULT;
+#else
+// charge rate
+#define CHARGE_RATE_AC  CHARGE_RATE_AC_DEFAULT
+#define CHARGE_RATE_USB CHARGE_RATE_USB_DEFAULT
+// charge control
+#define FULL_CHARGE_COND_VOLTAGE FULL_CHARGE_COND_VOLTAGE_DEFAULT
+#define FULL_CHARGE_COND_CURRENT FULL_CHARGE_COND_CURRENT_DEFAULT
+#define RECHARGE_COND_VOLTAGE    RECHARGE_COND_VOLTAGE_DEFAULT
+#endif /* CONFIG_BATTERY_S5PC110_CHARGE_CONTROL */
 
 #define BAT_POLLING_INTERVAL	10000
 #define BAT_WAITING_INTERVAL	20000	/* 20 sec */
@@ -71,6 +98,10 @@
 
 #define USE_MODULE_TIMEOUT      (10*60*1000)    // 10 min (DG05_FINAL: 1 min -> 10 min)
 
+#ifdef CONFIG_MACH_FORTE
+extern void otg_phy_off(void);        /*added to power-off PHY in case of LPM charging */
+#endif
+
 #ifdef __SOC_TEST__
 static int soc_test = 100;
 #endif
@@ -87,6 +118,15 @@ extern void kernel_sec_clear_upload_magic_number(void);
 extern void kernel_sec_set_upload_magic_number(void);   
 #endif
 struct s5p_batt_block_temp *s5p_battery_block_temp; 
+#ifdef CONFIG_MACH_FORTE
+struct battery_driver
+{
+        struct early_suspend    early_suspend;
+};
+struct battery_driver *battery = NULL;
+extern void Set_Regulators(void);
+extern void Read_Regulators(void);
+#endif
 struct battery_info {
 	u32 batt_temp;		/* Battery Temperature (C) from ADC */
 	u32 batt_temp_adc;	/* Battery Temperature ADC value */
@@ -317,18 +357,53 @@ static int max8998_charging_control(struct chg_data *chg)
 	int ret;
 	int topoff;
 
-	if ((prev_charging == chg->charging) && (prev_cable == chg->cable_status))
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+	printk(KERN_INFO "CHRG:CR: %s: [ Charge rate begin ] \n", __func__);
+#endif
+	if ((prev_charging == chg->charging) && (prev_cable == chg->cable_status)) {
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+		printk(KERN_INFO "CHRG:CR: (prev_charging [%d] == chg->charging [%d]) && (prev_cable [%d] == chg->cable_status [%d]) \n",
+				prev_charging, chg->charging, prev_cable, chg->cable_status);
+		printk(KERN_INFO "CHRG:CR: %s: [ Charge rate end ] \n", __func__);
+#endif
 		return 0;
+	}
 
 	bat_info("%s : chg(%d) cable(%d) dis(%X) bat(%d,%d,%d), esafe(%d)\n", __func__,
 		chg->charging, chg->cable_status, chg->bat_info.dis_reason,
 		chg->bat_info.batt_soc, chg->set_batt_full, chg->bat_info.batt_is_full,
 		chg->esafe);
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+	printk(KERN_INFO "CHRG:CR: chg [%d] cable [%d] dis [%X] bat(soc [%d], set_full [%d], is_full [%d]), esafe [%d] \n",
+			chg->charging, chg->cable_status, chg->bat_info.dis_reason,
+			chg->bat_info.batt_soc, chg->set_batt_full, chg->bat_info.batt_is_full,
+			chg->esafe);
+#endif
 
+#ifdef CONFIG_MACH_FORTE
+	if(lpm_charging_mode)
+	{
+		chg->esafe = 0;
+	}	
+#endif	
 	if (!chg->charging) {
 		/* disable charging */
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+		printk(KERN_INFO "CHRG:CR: %s: [ disable charging ] \n", __func__);
+#endif
 		s3c_clean_chg_current(chg);
 
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+		printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d], chg->esafe [%d], MAX8998_SHIFT_ESAFEOUT [%d], MAX8998_CHGTIME_7HR [%d] \n",
+				MAX8998_REG_CHGR2, chg->esafe, MAX8998_SHIFT_ESAFEOUT, MAX8998_CHGTIME_7HR);
+			printk(KERN_INFO "																			MAX8998_SHIFT_FT [%d], MAX8998_CHGEN_DISABLE [%d], MAX8998_SHIFT_CHGEN [%d] \n",
+				MAX8998_SHIFT_FT, MAX8998_CHGEN_DISABLE, MAX8998_SHIFT_CHGEN);
+		printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d] value [%d] \n",
+				MAX8998_REG_CHGR2,
+				((chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
+				(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
+				(MAX8998_CHGEN_DISABLE	<< MAX8998_SHIFT_CHGEN)));
+#endif
 		ret = max8998_write_reg(i2c, MAX8998_REG_CHGR2,
 			(chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
 			(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
@@ -336,42 +411,124 @@ static int max8998_charging_control(struct chg_data *chg)
 		if (ret < 0)
 			goto err;
 	} else {
+	
+		/* Turn OFF PHY in case of LPM charging */
+#ifdef CONFIG_MACH_FORTE		
+		if (lpm_charging_mode)
+		{
+			printk("\nLNT DEBUG OTG PHY OFF");
+			otg_phy_off();
+		}
+#endif		
 		/* enable charging */
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+		printk(KERN_INFO "CHRG:CR: %s: [ enable charging ] \n", __func__);
+#endif
 		if (chg->cable_status == CABLE_TYPE_AC) {
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+			printk(KERN_INFO "CHRG:CR: %s: [ CABLE_TYPE_AC ] \n", __func__);
+#endif
 			/* termination current adc NOT used to detect full-charging */
-			if (chg->pdata->termination_curr_adc > 0)
+			if (chg->pdata->termination_curr_adc > 0) {
 				topoff = MAX8998_TOPOFF_10;
-			else
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_10 [%d] \n", topoff);
+#endif
+			}
+			else {
 				topoff = MAX8998_TOPOFF_30;
-
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_30 [%d] \n", topoff);
+#endif
+			}
 			/* ac */
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
+					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], CHARGE_RATE_AC [%lu], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, CHARGE_RATE_AC, MAX8998_SHIFT_ICHG);
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%lu] \n",
+					MAX8998_REG_CHGR1,
+					((topoff	<< MAX8998_SHIFT_TOPOFF) |
+					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
+					(CHARGE_RATE_AC	<< MAX8998_SHIFT_ICHG)));
+#endif
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 				(topoff	<< MAX8998_SHIFT_TOPOFF) |
 				(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-				(MAX8998_ICHG_600	<< MAX8998_SHIFT_ICHG));
+				(CHARGE_RATE_AC	<< MAX8998_SHIFT_ICHG));
 			if (ret < 0)
 				goto err;
-
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d], chg->esafe [%d], MAX8998_SHIFT_ESAFEOUT [%d], MAX8998_CHGTIME_7HR [%d] \n",
+					MAX8998_REG_CHGR2, chg->esafe, MAX8998_SHIFT_ESAFEOUT, MAX8998_CHGTIME_7HR);
+			printk(KERN_INFO "																			MAX8998_SHIFT_FT [%d], MAX8998_CHGEN_ENABLE [%d], MAX8998_SHIFT_CHGEN [%d] \n",
+					MAX8998_SHIFT_FT, MAX8998_CHGEN_ENABLE, MAX8998_SHIFT_CHGEN);
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d] value [%d] \n",
+					MAX8998_REG_CHGR2,
+					((chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
+					(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
+					(MAX8998_CHGEN_ENABLE	<< MAX8998_SHIFT_CHGEN)));
+#endif
+#ifndef CONFIG_MACH_FORTE
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR2,
 				(chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
 				(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
 				(MAX8998_CHGEN_ENABLE	<< MAX8998_SHIFT_CHGEN));
+#else
+			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR2,
+				(chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
+				(MAX8998_CHGTIME_DISABLE << MAX8998_SHIFT_FT) |
+				(MAX8998_CHGEN_ENABLE	<< MAX8998_SHIFT_CHGEN));
+#endif				
 			if (ret < 0)
 				goto err;
-		} else {
-			if (chg->pdata->termination_curr_adc > 0)
+		}
+		else {
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+			printk(KERN_INFO "CHRG:CR: %s: [ ! CABLE_TYPE_AC ] \n", __func__);
+#endif
+			if (chg->pdata->termination_curr_adc > 0) {
 				topoff = MAX8998_TOPOFF_10;
-			else
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_10 [%d] \n", topoff);
+#endif
+			}
+			else {
 				topoff = MAX8998_TOPOFF_35;
-
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_35 [%d] \n", topoff);
+#endif
+			}
 			/* usb */
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
+					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], CHARGE_RATE_USB [%lu], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, CHARGE_RATE_USB, MAX8998_SHIFT_ICHG);
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%lu] \n",
+					MAX8998_REG_CHGR1,
+					((topoff	<< MAX8998_SHIFT_TOPOFF) |
+					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
+					(CHARGE_RATE_USB	<< MAX8998_SHIFT_ICHG)));
+#endif
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 				(topoff	<< MAX8998_SHIFT_TOPOFF) |
 				(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-				(MAX8998_ICHG_475	<< MAX8998_SHIFT_ICHG));
+				(CHARGE_RATE_USB	<< MAX8998_SHIFT_ICHG));
 			if (ret < 0)
 				goto err;
-
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d], chg->esafe [%d], MAX8998_SHIFT_ESAFEOUT [%d], MAX8998_CHGTIME_7HR [%d] \n",
+					MAX8998_REG_CHGR2, chg->esafe, MAX8998_SHIFT_ESAFEOUT, MAX8998_CHGTIME_7HR);
+			printk(KERN_INFO "																			MAX8998_SHIFT_FT [%d], MAX8998_CHGEN_ENABLE [%d], MAX8998_SHIFT_CHGEN [%d] \n",
+					MAX8998_SHIFT_FT, MAX8998_CHGEN_ENABLE, MAX8998_SHIFT_CHGEN);
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR2 [%d] value [%d] \n",
+					MAX8998_REG_CHGR2,
+					((chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
+					(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
+					(MAX8998_CHGEN_ENABLE	<< MAX8998_SHIFT_CHGEN)));
+#endif
 			ret = max8998_write_reg(i2c, MAX8998_REG_CHGR2,
 				(chg->esafe		<< MAX8998_SHIFT_ESAFEOUT) |
 				(MAX8998_CHGTIME_7HR	<< MAX8998_SHIFT_FT) |
@@ -382,11 +539,22 @@ static int max8998_charging_control(struct chg_data *chg)
 	}
 
 	prev_charging = chg->charging;
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+	printk(KERN_INFO "CHRG:CR: prev_charging [%d] \n", prev_charging);
+#endif
 	prev_cable = chg->cable_status;
-
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+	printk(KERN_INFO "CHRG:CR: prev_cable [%d] \n", prev_cable);
+#endif
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+	printk(KERN_INFO "CHRG:CR: %s: [ Charge rate end ] \n", __func__);
+#endif
 	return 0;
 err:
 	pr_err("max8998_read_reg error\n");
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+	printk(KERN_INFO "CHRG:CR: %s: [ Charge rate end ] \n", __func__);
+#endif
 	return ret;
 }
 
@@ -482,8 +650,16 @@ static bool max8998_set_esafe(struct max8998_charger_callbacks *ptr, u8 esafe)
 		return 0;
 	}
 	chg->esafe = esafe;
+#ifdef CONFIG_MACH_FORTE
+	if(!lpm_charging_mode)
+	{
+		max8998_update_reg(chg->iodev->i2c, MAX8998_REG_CHGR2,
+			(esafe << MAX8998_SHIFT_ESAFEOUT), MAX8998_MASK_ESAFEOUT);
+	}
+#else	
 	max8998_update_reg(chg->iodev->i2c, MAX8998_REG_CHGR2,
 		(esafe << MAX8998_SHIFT_ESAFEOUT), MAX8998_MASK_ESAFEOUT);
+#endif	
 	bat_info("%s : esafe = %d\n", __func__, esafe);
 	return 1;
 }
@@ -695,10 +871,22 @@ static unsigned long s3c_read_temp(struct chg_data *chg)
 static unsigned long s3c_read_chg_current(struct chg_data *chg)
 {
 	int adc = 0;
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+	unsigned long ret;
+#endif
 
 	adc = s3c_bat_get_adc_data(chg->s3c_adc_channel.s3c_adc_chg_current);
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+	printk(KERN_INFO "CHRG:CUR: %s: adc [ %d ] \n", __func__, adc);
+#endif
 
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+	ret = calculate_average_adc(chg->s3c_adc_channel.s3c_adc_chg_current, adc, chg);
+	printk(KERN_INFO "CHRG:CUR: %s: avg_adc [ %lu ] \n", __func__, ret);
+	return ret;
+#else
 	return calculate_average_adc(chg->s3c_adc_channel.s3c_adc_chg_current, adc, chg);
+#endif
 }
 
 static int s3c_get_chg_current(struct chg_data *chg)
@@ -713,10 +901,22 @@ static int s3c_get_chg_current(struct chg_data *chg)
 		if (chg->pdata->termination_curr_adc <= 0)
 			goto skip;
 
-		if ((chg->bat_info.batt_vcell / 1000 > 4000)
-			&& (chg->bat_info.chg_current_adc < chg->pdata->termination_curr_adc)) {
+		// over-charge protection
+		if ((chg->bat_info.batt_vcell > OVER_CHARGE_COND_VOLTAGE)) {
 			count++;
-			if (count > 2) {
+			if (count > CHG_CURRENT_COUNT) {
+				chg->bat_info.batt_is_full = true;
+				chg->set_batt_full = true;
+				count = 0;
+			}
+		}
+
+		//if ((chg->bat_info.batt_vcell / 1000 > 4000)
+			//&& (chg->bat_info.chg_current_adc < chg->pdata->termination_curr_adc)) {
+		if ((chg->bat_info.batt_vcell > FULL_CHARGE_COND_VOLTAGE)
+			&& (chg->bat_info.chg_current_adc < FULL_CHARGE_COND_CURRENT)) {
+			count++;
+			if (count > CHG_CURRENT_COUNT) {
 				chg->bat_info.batt_is_full = true;
 				chg->set_batt_full = true;
 				count = 0;
@@ -998,7 +1198,7 @@ static int s3c_cable_status_update(struct chg_data *chg)
 		#ifdef CONFIG_KERNEL_DEBUG_SEC
         	// Clear upload magic number to protect from sudden power-off...
         	if ((chg->bat_info.batt_soc <= LOW_BATT_COND_LEVEL) &&
-                    (chg->bat_info.batt_vcell/1000 + 35 <= LOW_BATT_COND_VOLTAGE))          
+                    (chg->bat_info.batt_vcell + 35 <= LOW_BATT_COND_VOLTAGE))
         		{
                 		kernel_sec_clear_upload_magic_number();
         		}
@@ -1122,8 +1322,19 @@ static void s3c_bat_work(struct work_struct *work)
 {
 	struct chg_data *chg = container_of(work, struct chg_data, bat_work);
 	int ret;
-	static int cnt = 0;
+	//static int cnt = 0;
+	//u32 con = 0;
+	
 	mutex_lock(&chg->mutex);
+
+	#ifdef CONFIG_MACH_FORTE
+	if(lpm_charging_mode)
+	{
+		Read_Regulators();
+		con = readl(S5P_NORMAL_CFG);
+		printk("\n NORMAL CFG = %X",con);
+	}
+	#endif
 
 	s3c_get_bat_temp(chg);
   #ifndef CONFIG_MACH_FORTE
@@ -1133,7 +1344,8 @@ static void s3c_bat_work(struct work_struct *work)
 
 #if defined( CONFIG_MACH_ATLAS) || defined(CONFIG_MACH_FORTE)
 	/* low battery check by voltage */
-	if ((chg->bat_info.batt_vcell < 3400000) && (chg->cable_status == CABLE_TYPE_NONE))
+	//if ((chg->bat_info.batt_vcell < 3400000) && (chg->cable_status == CABLE_TYPE_NONE))
+	if ((chg->bat_info.batt_vcell < LOW_BATT_COND_VOLTAGE) && (chg->cable_status == CABLE_TYPE_NONE))
 		cnt++;
 	else
 		cnt = 0;
@@ -1209,6 +1421,7 @@ int s3c_bat_use_wimax(int onoff)
 	struct chg_data *chg = pchg;
 
 	s3c_bat_use_module(chg, USE_WIMAX, onoff);
+	return 0;
 }
 EXPORT_SYMBOL(s3c_bat_use_wimax);
 #else
@@ -1484,18 +1697,169 @@ succeed:
 	return rc;
 }
 
+#ifdef CONFIG_BATTERY_S5PC110_CHARGE_CONTROL
+static ssize_t s3c_bat_show_control_attrs(struct device *dev,
+					struct device_attribute *attr, char *buf);
+
+static ssize_t s3c_bat_store_control_attrs(struct device *dev, struct device_attribute *attr,
+					const char *buf, size_t count);
+
+#define SEC_BATTERY_CONTROL_ATTR(_name) \
+{ \
+	.attr = { .name = #_name, .mode = 0664, .owner = THIS_MODULE }, \
+	.show = s3c_bat_show_control_attrs, \
+	.store = s3c_bat_store_control_attrs, \
+}
+
+static struct device_attribute s3c_battery_control_attrs[] = {
+	SEC_BATTERY_CONTROL_ATTR(charge_rate_ac),
+	SEC_BATTERY_CONTROL_ATTR(charge_rate_usb),
+	SEC_BATTERY_CONTROL_ATTR(charge_full_voltage),
+	SEC_BATTERY_CONTROL_ATTR(charge_full_current),
+	SEC_BATTERY_CONTROL_ATTR(charge_recharge_voltage),
+};
+#undef SEC_BATTERY_CONTROL_ATTR
+
+static ssize_t s3c_bat_show_control_attrs(struct device *dev,
+					struct device_attribute *attr, char *buf)
+{
+	unsigned long val;
+	int i = 0;
+	const ptrdiff_t off = attr - s3c_battery_control_attrs;
+
+	switch (off) {
+	case BATT_CHARGE_RATE_AC:
+		val = charge_rate_ac;
+		i += scnprintf(buf + i, PAGE_SIZE - i, "%lu\n", val);
+		break;
+	case BATT_CHARGE_RATE_USB:
+		val = charge_rate_usb;
+		i += scnprintf(buf + i, PAGE_SIZE - i, "%lu\n", val);
+		break;
+	case BATT_CHARGE_FULL_VOLTAGE:
+		val = (charge_full_voltage / 1000);
+		i += scnprintf(buf + i, PAGE_SIZE - i, "%lu\n", val);
+		break;
+	case BATT_CHARGE_FULL_CURRENT:
+		val = charge_full_current;
+		i += scnprintf(buf + i, PAGE_SIZE - i, "%lu\n", val);
+		break;
+	case BATT_CHARGE_RECHARGE_VOLTAGE:
+		val = (charge_recharge_voltage / 1000);
+		i += scnprintf(buf + i, PAGE_SIZE - i, "%lu\n", val);
+		break;
+	default:
+		i = -EINVAL;
+	}
+	return i;
+}
+
+static ssize_t s3c_bat_store_control_attrs(struct device *dev, struct device_attribute *attr,
+				   const char *buf, size_t count)
+{
+	unsigned long val;
+	int res;
+	int ret = 0;
+	const ptrdiff_t off = attr - s3c_battery_control_attrs;
+
+	switch (off) {
+	case BATT_CHARGE_RATE_AC:
+		if ((res = strict_strtoul(buf, 10, &val)) < 0) {
+			ret = res;
+			break;
+		}
+		if ((val < CHARGE_RATE_MIN) || (val > CHARGE_RATE_MAX)) {
+			ret = -EINVAL;
+			break;
+		}
+		charge_rate_ac = val;
+		ret = count;
+		break;
+	case BATT_CHARGE_RATE_USB:
+		if ((res = strict_strtoul(buf, 10, &val)) < 0) {
+			ret = res;
+			break;
+		}
+		if ((val < CHARGE_RATE_MIN) || (val > CHARGE_RATE_MAX)) {
+			ret = -EINVAL;
+			break;
+		}
+		charge_rate_usb = val;
+		ret = count;
+		break;
+	case BATT_CHARGE_FULL_VOLTAGE:
+		if ((res = strict_strtoul(buf, 10, &val)) < 0) {
+			ret = res;
+			break;
+		}
+		if (((val * 1000) < FULL_CHARGE_COND_VOLTAGE_DEFAULT) || ((val * 1000) > FULL_CHARGE_COND_VOLTAGE_MAX)) {
+			ret = -EINVAL;
+			break;
+		}
+		charge_full_voltage = (val * 1000);
+		ret = count;
+		break;
+	case BATT_CHARGE_FULL_CURRENT:
+		if ((res = strict_strtoul(buf, 10, &val)) < 0) {
+			ret = res;
+			break;
+		}
+		if ((val < FULL_CHARGE_COND_CURRENT_MIN) || (val > FULL_CHARGE_COND_CURRENT_DEFAULT)) {
+			ret = -EINVAL;
+			break;
+		}
+		charge_full_current = val;
+		ret = count;
+		break;
+	case BATT_CHARGE_RECHARGE_VOLTAGE:
+		if ((res = strict_strtoul(buf, 10, &val)) < 0) {
+			ret = res;
+			break;
+		}
+		if (((val * 1000) < RECHARGE_COND_VOLTAGE_DEFAULT) || ((val * 1000) > RECHARGE_COND_VOLTAGE_MAX)) {
+			ret = -EINVAL;
+			break;
+		}
+		charge_recharge_voltage = (val * 1000);
+		ret = count;
+		break;
+	default:
+		ret = -EINVAL;
+	}
+	return ret;
+}
+
+static int s3c_bat_create_control_attrs(struct device *dev)
+{
+	int i, rc;
+	for (i = 0; i < ARRAY_SIZE(s3c_battery_control_attrs); i++) {
+		rc = device_create_file(dev, &s3c_battery_control_attrs[i]);
+		if (rc)
+			goto s3c_control_attrs_failed;
+	}
+	goto control_attrs_succeed;
+s3c_control_attrs_failed:
+	while (i--)
+		device_remove_file(dev, &s3c_battery_control_attrs[i]);
+control_attrs_succeed:
+	return rc;
+}
+#endif /* CONFIG_BATTERY_S5PC110_CHARGE_CONTROL */
+
 static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 {
 	int ret;
 	int topoff;
-	u8 data2=0;
+	//u8 data2=0;
 	u8 data[MAX8998_NUM_IRQ_REGS];
 
 	struct chg_data *chg = max8998_chg;
         struct i2c_client *i2c = chg->iodev->i2c;
 
 	bat_info("%s\n", __func__);
-
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+	printk(KERN_INFO "CHRG:CR: %s: [ max8998_int_work_func begin ] \n", __func__);
+#endif
 	ret = max8998_bulk_read(i2c, MAX8998_REG_IRQ1, MAX8998_NUM_IRQ_REGS, data);
 	if (ret < 0)
 		goto err;
@@ -1503,16 +1867,22 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 	wake_lock(&chg->work_wake_lock);
 
 	if (data[MAX8998_REG_IRQ3] & MAX8998_IRQ_TOPOFFR_MASK) {
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+		printk(KERN_INFO "CHRG:CR: %s: [ (data[MAX8998_REG_IRQ3] & MAX8998_IRQ_TOPOFFR_MASK) ] \n", __func__);
+#endif
 		bat_info("%s : topoff intr(%d)\n", __func__, chg->set_batt_full);
 #ifndef CONFIG_MACH_FORTE
 		if (s3c_bat_check_v_f(chg) == 0)
 			goto end;
 #else
 	ret = max8998_read_reg(i2c, MAX8998_REG_STATUS2, &data2);//FET disable flag is set after battery removal
-	if(data2 & 0x28)
+	if(data2 & 0x08)
 	{
 		
 		bat_info("%s : topoff stop charging ******* %d \n", __func__,data2);
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+		printk(KERN_INFO "CHRG:CR: %s: [ topoff stop charging ] \n", __func__);
+#endif
 		writel(readl(S5P_INFORM6)& 0xFFFF00FF, S5P_INFORM6);
 		#ifdef CONFIG_KERNEL_DEBUG_SEC
 		kernel_sec_clear_upload_magic_number();
@@ -1524,46 +1894,133 @@ static irqreturn_t max8998_int_work_func(int irq, void *max8998_chg)
 	}
 #endif
 
-		if (chg->set_batt_full)
+		if (chg->set_batt_full) {
 			chg->bat_info.batt_is_full = true;
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+			printk(KERN_INFO "CHRG:CR: %s: [ chg->set_batt_full ] \n", __func__);
+#endif
+		}
 		else {
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+			printk(KERN_INFO "CHRG:CR: %s: [ ! chg->set_batt_full ] \n", __func__);
+#endif
 			chg->set_batt_full = true;
 
-			if (chg->pdata->termination_curr_adc > 0)
+			if (chg->pdata->termination_curr_adc > 0) {
 				topoff = MAX8998_TOPOFF_10;
-			else if (chg->cable_status == CABLE_TYPE_AC)
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_10 [%d] \n", topoff);
+#endif
+			}
+			else if (chg->cable_status == CABLE_TYPE_AC) {
 				topoff = MAX8998_TOPOFF_30;
-			else 
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+				printk(KERN_INFO "CHRG:CR: %s: [ CABLE_TYPE_AC ] \n", __func__);
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_30 [%d] \n", topoff);
+#endif
+			}
+			else {
 				topoff = MAX8998_TOPOFF_35;
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+				printk(KERN_INFO "CHRG:CR: %s: [ ! CABLE_TYPE_AC ] \n", __func__);
+				printk(KERN_INFO "CHRG:CR: MAX8998_TOPOFF_35 [%d] \n", topoff);
+#endif
+			}
 
-			if (chg->cable_status == CABLE_TYPE_AC)
+			if (chg->cable_status == CABLE_TYPE_AC) {
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
+					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], CHARGE_RATE_AC [%d], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, CHARGE_RATE_AC, MAX8998_SHIFT_ICHG);
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
+					MAX8998_REG_CHGR1,
+					((topoff	<< MAX8998_SHIFT_TOPOFF) |
+					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
+					(CHARGE_RATE_AC	<< MAX8998_SHIFT_ICHG)));
+#endif
 				max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 					(topoff	<< MAX8998_SHIFT_TOPOFF) |
 					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-					(MAX8998_ICHG_600	<< MAX8998_SHIFT_ICHG));
+					(CHARGE_RATE_AC	<< MAX8998_SHIFT_ICHG));
+			}
 			else if (chg->cable_status == CABLE_TYPE_USB)
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d], topoff [%d], MAX8998_SHIFT_TOPOFF [%d], MAX8998_RSTR_DISABLE [%d] \n",
+					MAX8998_REG_CHGR1, topoff, MAX8998_SHIFT_TOPOFF, MAX8998_RSTR_DISABLE);
+			printk(KERN_INFO "																			MAX8998_SHIFT_RSTR [%d], CHARGE_RATE_USB [%d], MAX8998_SHIFT_ICHG [%d] \n",
+					MAX8998_SHIFT_RSTR, CHARGE_RATE_USB, MAX8998_SHIFT_ICHG);
+			printk(KERN_INFO "CHRG:CR: write_reg: MAX8998_REG_CHGR1 [%d] value [%d] \n",
+					MAX8998_REG_CHGR1,
+					((topoff	<< MAX8998_SHIFT_TOPOFF) |
+					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
+					(CHARGE_RATE_USB	<< MAX8998_SHIFT_ICHG)));
+#endif
 				max8998_write_reg(i2c, MAX8998_REG_CHGR1,
 					(topoff	<< MAX8998_SHIFT_TOPOFF) |
 					(MAX8998_RSTR_DISABLE	<< MAX8998_SHIFT_RSTR) |
-					(MAX8998_ICHG_475	<< MAX8998_SHIFT_ICHG));
+					(CHARGE_RATE_USB	<< MAX8998_SHIFT_ICHG));
 		}
 	}
 
-	if (data[MAX8998_REG_IRQ4] & MAX8998_IRQ_LOBAT1_MASK)
+	if (data[MAX8998_REG_IRQ4] & MAX8998_IRQ_LOBAT1_MASK) {
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+		printk(KERN_INFO "CHRG:CR: %s: [ max8998_lowbat_warning ] \n", __func__);
+#endif
 		max8998_lowbat_warning(chg);
+	}
 
-	if (data[MAX8998_REG_IRQ4] & MAX8998_IRQ_LOBAT2_MASK)
+	if (data[MAX8998_REG_IRQ4] & MAX8998_IRQ_LOBAT2_MASK) {
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+		printk(KERN_INFO "CHRG:CR: %s: [ max8998_lowbat_critical ] \n", __func__);
+#endif
 		max8998_lowbat_critical(chg);
+	}
 
 end:
 	queue_work(chg->monitor_wqueue, &chg->bat_work);
-
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+		printk(KERN_INFO "CHRG:CR: %s: [ max8998_int_work_func end ] \n", __func__);
+#endif
 	return IRQ_HANDLED;
 err:
 	pr_err("%s : pmic read error\n", __func__);
+#ifdef CONFIG_DEBUG_NUBERNEL_CHRG
+		printk(KERN_INFO "CHRG:CR: %s: [ max8998_int_work_func end ] \n", __func__);
+#endif
 	return IRQ_HANDLED;
 }
 
+#ifdef CONFIG_MACH_FORTE
+static void battery_early_suspend(struct early_suspend *h)
+{
+        u32 con;
+
+        /*hsmmc clock disable*/
+        con = readl(S5P_CLKGATE_IP2);
+        con &= ~(S5P_CLKGATE_IP2_HSMMC3|S5P_CLKGATE_IP2_HSMMC2|S5P_CLKGATE_IP2_HSMMC1 \
+                |S5P_CLKGATE_IP2_HSMMC0);
+        writel(con, S5P_CLKGATE_IP2);
+
+        /*g3d clock disable*/
+        con = readl(S5P_CLKGATE_IP0);
+        con &= ~S5P_CLKGATE_IP0_G3D;
+        writel(con, S5P_CLKGATE_IP0);
+
+        /*power gating*/
+        con = readl(S5P_NORMAL_CFG);
+        con &= ~(S5PC110_POWER_DOMAIN_G3D|S5PC110_POWER_DOMAIN_MFC|S5PC110_POWER_DOMAIN_TV \
+                |S5PC110_POWER_DOMAIN_CAM|S5PC110_POWER_DOMAIN_AUDIO);
+        writel(con , S5P_NORMAL_CFG);
+
+}
+
+static void battery_late_resume(struct early_suspend *h)
+{
+
+        // do nothing!
+}
+#endif
 static __devinit int max8998_charger_probe(struct platform_device *pdev)
 {
 	struct max8998_dev *iodev = dev_get_drvdata(pdev->dev.parent);
@@ -1571,6 +2028,10 @@ static __devinit int max8998_charger_probe(struct platform_device *pdev)
 	struct chg_data *chg;
         struct i2c_client *i2c = iodev->i2c;
 	int ret = 0;
+	
+#ifdef CONFIG_MACH_FORTE	
+	u32 con = 0;
+#endif	
 
 	bat_info("%s : MAX8998 Charger Driver Loading\n", __func__);
 
@@ -1619,6 +2080,11 @@ static __devinit int max8998_charger_probe(struct platform_device *pdev)
 	chg->cable_status = CABLE_TYPE_NONE;
 	chg->jig_status = false;
 	chg->esafe = MAX8998_USB_VBUS_AP_ON;
+
+#ifdef CONFIG_MACH_FORTE
+	if(charging_mode_get())
+		chg->esafe = MAX8998_ESAFE_ALLOFF;      /* esafe regulator off in LPM charging*/
+#endif
 
 	chg->s3c_adc_channel.s3c_adc_voltage = pdata->s3c_adc_channel->s3c_adc_voltage;
 	chg->s3c_adc_channel.s3c_adc_chg_current = pdata->s3c_adc_channel->s3c_adc_chg_current;
@@ -1689,6 +2155,22 @@ static __devinit int max8998_charger_probe(struct platform_device *pdev)
 	}
 
 	check_lpm_charging_mode(chg);
+#ifdef CONFIG_MACH_FORTE
+	if(charging_mode_get())
+        {
+                battery = kzalloc(sizeof(struct battery_driver), GFP_KERNEL);
+                battery->early_suspend.level = EARLY_SUSPEND_LEVEL_DISABLE_FB + 1;
+                battery->early_suspend.suspend = battery_early_suspend;
+                battery->early_suspend.resume = battery_late_resume;
+                register_early_suspend(&battery->early_suspend);
+				
+		/* Made initial setting LPM charging as per Froyo */
+		Set_Regulators();	
+		writel(0xFFFFFF8D , S5P_NORMAL_CFG);
+		con = readl(S5P_NORMAL_CFG);
+        }
+	
+#endif
 
 	/* init power supplier framework */
 	ret = power_supply_register(&pdev->dev, &chg->psy_bat);
@@ -1727,6 +2209,14 @@ static __devinit int max8998_charger_probe(struct platform_device *pdev)
 		pr_err("%s : Failed to create_attrs\n", __func__);
 		goto err_irq;
 	}
+
+#ifdef CONFIG_BATTERY_S5PC110_CHARGE_CONTROL
+	ret = s3c_bat_create_control_attrs(chg->psy_bat.dev);
+	if (ret) {
+		pr_err("%s : Failed to create_control_attrs\n", __func__);
+		goto err_irq;
+	}
+#endif /* CONFIG_BATTERY_S5PC110_CHARGE_CONTROL */
 
 	chg->callbacks.set_cable = max8998_set_cable;
 	chg->callbacks.set_jig = max8998_set_jig;

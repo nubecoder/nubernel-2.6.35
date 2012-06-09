@@ -2,13 +2,18 @@ Samsung SPH-D700 (Epic 4G) kernel by nubecoder
 
 http://www.nubecoder.com/
 
-nubernel-2.6.35_v0.0.2
+nubernel-2.6.35_v0.1
 
 
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-09-2012:
+initramfs: cwm: Syncing cwm recovery initramfs with cm7.
+featurelist: Update featurelist for release v0.1.
+
 06-06-2012:
+update-zip: all: Fix updater-script version info output (the change to two digit versioning caused this).
 media: video: samsung: mfc50: Fixing my patch of in_frame_map for cm7 support (fixes commitID: e63cd2d).
 defconfig: dbg-bml: Fix iniramfs path.
 compile: warnings: Quiet a ton of compiler warnings.

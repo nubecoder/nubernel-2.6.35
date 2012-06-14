@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-14-2012:
+wm8994: victory: voodoo sound: Fixing up Voodoo Sound for victory driver (TouchWiz builds).
 wm8994: crespo: DockAudio: Add support for audio redirection to samsung docks (applied to crespo driver for CM7) (via bbelos: https://github.com/CyanogenMod/android_kernel_samsung_victory/commit/c8b6c1277e390a21ef3303b08b34c9e4251154b0).
 
 06-09-2012:

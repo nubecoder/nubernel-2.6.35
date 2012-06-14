@@ -474,15 +474,14 @@ int wm8994_write(struct snd_soc_codec *codec, unsigned int reg,
 	u8 data[4];
 	int ret;
 
-	/* data is
-	 * D15..D9 WM8993 register offset
-	 * D8...D0 register data
-	 */
-
 #ifdef CONFIG_SND_VOODOO
 	value = voodoo_hook_wm8994_write(codec, reg, value);
 #endif
 
+	/* data is
+	 * D15..D9 WM8993 register offset
+	 * D8...D0 register data
+	 */
 	data[0] = (reg & 0xff00) >> 8;
 	data[1] = reg & 0x00ff;
 	data[2] = value >> 8;

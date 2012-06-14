@@ -13,7 +13,7 @@
 	|| defined (CONFIG_SAMSUNG_CAPTIVATE)				       \
 	|| defined (CONFIG_SAMSUNG_VIBRANT)				       \
 	|| defined (CONFIG_SAMSUNG_FASCINATE)				       \
-	|| defined (CONFIG_SAMSUNG_EPIC)
+	|| defined (CONFIG_MACH_VICTORY)
 #define NEXUS_S
 #endif
 

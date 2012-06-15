@@ -12,8 +12,11 @@ nubernel-2.6.35_v0.1
 
 Includes a custom "Nubernel the kernel" bootlogo.
 The Kernel base is patched up to 2.6.35.14.
+Includes Voodoo Color.
+Includes Voodoo Sound.
 Includes kexec support.
-Includes numerous fixes and patches pulled from all over.
+Includes dock audio redirect support ("Galaxy Dock Sound Redirector" market app required).
+Includes numerous fixes and patches (too many to list, see the changelog for full details).
 Ensures su is installed properly. (tw builds only!)
 Ensures superuser is installed properly. (tw builds only!)
 Ensures busybox is installed properly. (tw builds only!)
@@ -96,7 +99,7 @@ cm7-restore-modules.zip:
   You will want to use this to "reset" the modules in preparation of using another kernel.
 
 MTD builds (including cm7):
-  All MTD builds include clockwork mod recovery (taken from the cm7 sources).
+  All MTD builds include ClockworkMod recovery (taken from the cm7 sources).
 
 Credits:
 

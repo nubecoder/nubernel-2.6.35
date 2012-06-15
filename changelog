@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-15-2012:
+featurelist: Update featurelist with some missing info.
+
 06-14-2012:
 wm8994: crespo: voodoo sound: Changed "CONFIG_SAMSUNG_EPIC" to "CONFIG_MACH_VICTORY" in crespo/wm8994_voodoo.h (to reduce redundant Kconfig entries).
 wm8994: crespo: Added Voodoo Sound v10 (applied to crespo driver for CM7) (via marcusant: https://github.com/marcusant/Atarashii/commit/2af490a8c26e4653d6a79b32122eb241c75d7ee4).

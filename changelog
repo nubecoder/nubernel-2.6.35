@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-18-2012:
+drivers misc: TouchSense: Tweak and add some sysfs entries.
 wm8994: crespo: Quiet warning caused by PLAYBACK_EXTRA_DOCK_SPEAKER support.
 mach-s5pv210: mach-victory: Some minor code reordering.
 drivers misc: TouchSense: Adjustments to the sysfs handler code.

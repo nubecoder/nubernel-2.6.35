@@ -124,6 +124,7 @@ static int set_vibetonz(int timeout)
 		s3c_gpio_setpull(vib_plat_data.vib_enable_gpio, S3C_GPIO_PULL_DOWN);
 	} else {
 		pwm_config(Immvib_pwm, VIBRATOR_DUTY, VIBRATOR_PERIOD);
+
 		pwm_enable(Immvib_pwm);
 
 		printk("[VIBETONZ] ENABLE\n");
@@ -243,14 +244,14 @@ struct device *immTest_test;
 EXPORT_SYMBOL(immTest_test);
 
 extern long int freq_count;
-static ssize_t immTest_show(struct device *dev,
+static ssize_t vibeTestTimer_show(struct device *dev,
 						struct device_attribute *attr, char *buf)
 {
 	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	printk(KERN_INFO "[VIBETONZ] %s : operate nothing\n", __FUNCTION__);
 	return snprintf(buf, PAGE_SIZE, "[VIBETONZ] \n");
 }
-static ssize_t immTest_store(struct device *dev,
+static ssize_t vibeTestTimer_store(struct device *dev,
 						struct device_attribute *attr,
 						const char *buf, size_t count)
 {
@@ -260,20 +261,48 @@ static ssize_t immTest_store(struct device *dev,
 	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	if ((res = strict_strtoul(buf, 10, &val)) < 0)
 		return res;
-	printk(KERN_INFO "[VIBETONZ] immTest value:%lu \n", val);
+	printk(KERN_INFO "[VIBETONZ] vibeTestTimer value:%lu \n", val);
 
 	if (val > 0) {
-		printk("[VIBETONZ:nc] val > 0: %lu \n", val);
-		//ImmVibeSPI_ForceOut_AmpEnable(val);
-		ImmVibeSPI_ForceOut_Set(0, val);
+		printk("[VIBETONZ:nc] disable \n");
 	} else {
-		printk("[VIBETONZ:nc] else: %lu \n", val);
-		ImmVibeSPI_ForceOut_AmpDisable(val);
+		printk("[VIBETONZ:nc] enable \n");
 	}
+	enable_vibetonz_from_user(dev, (int)val);
 
 	return count;
 }
-static DEVICE_ATTR(immTest, S_IRUGO | S_IWUSR, immTest_show, immTest_store);
+static DEVICE_ATTR(vibeTestTimer, S_IRUGO | S_IWUSR, vibeTestTimer_show, vibeTestTimer_store);
+
+static ssize_t vibeTestForce_show(struct device *dev,
+						struct device_attribute *attr, char *buf)
+{
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
+	printk(KERN_INFO "[VIBETONZ] %s : operate nothing\n", __FUNCTION__);
+	return snprintf(buf, PAGE_SIZE, "[VIBETONZ] \n");
+}
+static ssize_t vibeTestForce_store(struct device *dev,
+						struct device_attribute *attr,
+						const char *buf, size_t count)
+{
+	unsigned long val;
+	int res;
+
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
+	if ((res = strict_strtoul(buf, 10, &val)) < 0)
+		return res;
+	printk(KERN_INFO "[VIBETONZ] vibeTestForce value:%lu \n", val);
+
+	if (val > 0) {
+		printk("[VIBETONZ:nc] disable \n");
+		ImmVibeSPI_ForceOut_Set(0, val);
+	} else {
+		printk("[VIBETONZ:nc] enable \n");
+		ImmVibeSPI_ForceOut_AmpDisable(val);
+	}
+	return count;
+}
+static DEVICE_ATTR(vibeTestForce, S_IRUGO | S_IWUSR, vibeTestForce_show, vibeTestForce_store);
 #endif /* VIBE_TUNING */
 
 
@@ -322,17 +351,23 @@ static int vibrator_probe(struct platform_device *pdev)
 	//wake_lock_init(&vib_wake_lock, WAKE_LOCK_SUSPEND, "vib_present");
 
 #ifdef VIBE_TUNING
-	// ---------- file creation at '/sys/class/vibetonz/immTest'------------------------------
+	// ---------- class creation at '/sys/class/vibetonz/'------------------------------
 	vibetonz_class = class_create(THIS_MODULE, "vibetonz");
 	if (IS_ERR(vibetonz_class))
 		pr_err("Failed to create class(vibetonz)!\n");
 
+	// ---------- device creation at '/sys/class/vibetonz/immTest/'------------------------------
 	immTest_test = device_create(vibetonz_class, NULL, 0, NULL, "immTest");
 	if (IS_ERR(immTest_test))
 		pr_err("Failed to create device(switch)!\n");
 
-	if (device_create_file(immTest_test, &dev_attr_immTest) < 0)
-		pr_err("Failed to create device file(%s)!\n", dev_attr_immTest.attr.name);
+	// ---------- file creation at '/sys/class/vibetonz/immTest/vibeTestTimer'------------------------------
+	if (device_create_file(immTest_test, &dev_attr_vibeTestTimer) < 0)
+		pr_err("Failed to create device file(%s)!\n", dev_attr_vibeTestTimer.attr.name);
+
+	// ---------- file creation at '/sys/class/vibetonz/immTest/vibeTestForce'------------------------------
+	if (device_create_file(immTest_test, &dev_attr_vibeTestForce) < 0)
+		pr_err("Failed to create device file(%s)!\n", dev_attr_vibeTestForce.attr.name);
 #endif
 
 	vibetonz_start();

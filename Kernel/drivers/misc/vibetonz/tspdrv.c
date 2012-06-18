@@ -110,11 +110,12 @@ extern void set_ldo12_reg(int);
 
 static int set_vibetonz(int timeout)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	//gpio_request(GPIO_VIBTONE_EN1, "GPIO_VIBTONE_EN1");
 
 	if(!timeout) {
 		pwm_disable(Immvib_pwm);
-		//printk("[VIBETONZ] DISABLE\n");
+		printk("[VIBETONZ] DISABLE\n");
 		gpio_set_value(vib_plat_data.vib_enable_gpio, 0);
 #if defined(CONFIG_MACH_FORTE)
 		set_ldo12_reg(0);
@@ -125,7 +126,7 @@ static int set_vibetonz(int timeout)
 		pwm_config(Immvib_pwm, VIBRATOR_DUTY, VIBRATOR_PERIOD);
 		pwm_enable(Immvib_pwm);
 
-		//printk("[VIBETONZ] ENABLE\n");
+		printk("[VIBETONZ] ENABLE\n");
 		gpio_direction_output(vib_plat_data.vib_enable_gpio, 0);
 #if defined(CONFIG_MACH_FORTE)
 		set_ldo12_reg(1);
@@ -144,6 +145,7 @@ static int set_vibetonz(int timeout)
 
 static enum hrtimer_restart vibetonz_timer_func(struct hrtimer *timer)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	set_vibetonz(0);
 	return HRTIMER_NORESTART;
 }
@@ -152,6 +154,7 @@ static int get_time_for_vibetonz(struct timed_output_dev *dev)
 {
 	int remaining;
 
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	if (hrtimer_active(&timer)) {
 		ktime_t r = hrtimer_get_remaining(&timer);
 		remaining = r.tv.sec * 1000 + r.tv.nsec / 1000000;
@@ -166,7 +169,8 @@ static int get_time_for_vibetonz(struct timed_output_dev *dev)
 
 static void enable_vibetonz_from_user(struct timed_output_dev *dev, int value)
 {
-	//printk("[VIBETONZ] %s : time = %d msec \n",__func__,value);
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
+	printk("[VIBETONZ] %s : time = %d msec \n",__func__,value);
 	hrtimer_cancel(&timer);
 
 	set_vibetonz(value);
@@ -194,6 +198,7 @@ static void vibetonz_start(void)
 {
 	int ret = 0;
 
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	hrtimer_init(&timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 	timer.function = vibetonz_timer_func;
 	ret = timed_output_dev_register(&timed_output_vt);
@@ -241,6 +246,7 @@ extern long int freq_count;
 static ssize_t immTest_show(struct device *dev,
 						struct device_attribute *attr, char *buf)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	printk(KERN_INFO "[VIBETONZ] %s : operate nothing\n", __FUNCTION__);
 	return 0;
 }
@@ -254,12 +260,15 @@ static ssize_t immTest_store(struct device *dev,
 	unsigned long value = simple_strtoul(buf, &after, 10);
 	//arg1 = (int) (value / 1000);
 	//arg2 = (int) (value % 1000 );
-	//printk(KERN_INFO "[VIBETONZ] value:%ld\n", value);
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
+	printk(KERN_INFO "[VIBETONZ] immTest value:%lu \n", value);
 
 	if (value > 0) {
+		printk("[VIBETONZ:nc] val > 0: %lu \n", val);
 		//ImmVibeSPI_ForceOut_AmpEnable(value);
 		ImmVibeSPI_ForceOut_Set(0, value);
 	} else {
+		printk("[VIBETONZ:nc] else: %lu \n", val);
 		ImmVibeSPI_ForceOut_AmpDisable(value);
 	}
 	//freq_count = value;
@@ -275,6 +284,7 @@ static int vibrator_probe(struct platform_device *pdev)
 	struct vibrator_platform_data *pdata = pdev->dev.platform_data;
 	int i, nRet=0;//, ret=0;
 
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	vib_plat_data.timer_id = pdata->timer_id;
 	vib_plat_data.vib_enable_gpio = pdata->vib_enable_gpio;
 
@@ -334,6 +344,7 @@ static int vibrator_probe(struct platform_device *pdev)
 
 static int vibrator_remove(struct platform_device *pdev)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 
 #ifdef CONFIG_MACH_FORTE
 	regulator_disable(vib_plat_data.regulator);
@@ -363,6 +374,7 @@ int init_module(void)
 {
 	int nRet;//, i;   /* initialized below */
 
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	DbgOut((KERN_INFO "tspdrv: init_module.\n"));
 
 //#ifdef IMPLEMENT_AS_CHAR_DRIVER
@@ -391,6 +403,7 @@ int init_module(void)
 
 void cleanup_module(void)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	DbgOut((KERN_INFO "tspdrv: cleanup_module.\n"));
 
 	VibeOSKernelLinuxTerminateTimer();
@@ -409,6 +422,7 @@ void cleanup_module(void)
 
 static int open(struct inode *inode, struct file *file)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	DbgOut((KERN_INFO "tspdrv: open.\n"));
 
 	if (!try_module_get(THIS_MODULE))
@@ -419,6 +433,7 @@ static int open(struct inode *inode, struct file *file)
 
 static int release(struct inode *inode, struct file *file)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	DbgOut((KERN_INFO "tspdrv: release.\n"));
 
 	/*
@@ -443,6 +458,7 @@ static int release(struct inode *inode, struct file *file)
 static ssize_t read(struct file *file, char *buf, size_t count, loff_t *ppos)
 {
 	const size_t nBufSize = (g_cchDeviceName > (size_t)(*ppos)) ? min(count, g_cchDeviceName - (size_t)(*ppos)) : 0;
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 
 	/* End of buffer, exit */
 	if (0 == nBufSize)
@@ -463,6 +479,7 @@ static ssize_t write(struct file *file, const char *buf, size_t count, loff_t *p
 {
 	int i = 0;
 
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	*ppos = 0;  /* file position not used, always set to 0 */
 
 	/*
@@ -576,6 +593,7 @@ static int ioctl(struct inode *inode, struct file *file, unsigned int cmd, unsig
 	int i;
 #endif
 
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	switch (cmd) {
 #ifdef VIBE_TUNING1
 		case 185:
@@ -632,6 +650,7 @@ static int ioctl(struct inode *inode, struct file *file, unsigned int cmd, unsig
 
 static int suspend(struct platform_device *pdev, pm_message_t state)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	if (g_bIsPlaying) {
 		DbgOut((KERN_INFO "tspdrv: can't suspend, still playing effects.\n"));
 		return -EBUSY;
@@ -646,6 +665,7 @@ static int suspend(struct platform_device *pdev, pm_message_t state)
 
 static int resume(struct platform_device *pdev)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	DbgOut((KERN_INFO "tspdrv: resume.\n"));
 
 #ifdef CONFIG_MACH_FORTE

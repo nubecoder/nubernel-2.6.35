@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-18-2012:
+drivers misc: TouchSense: Re-enable and add debugging.
 plat-samsung: pwm: Minor whitespace fixes.
 drivers misc: TouchSense: Whitespace and syntax fixes.
 

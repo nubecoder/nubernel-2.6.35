@@ -67,6 +67,7 @@ static void VibeOSKernelLinuxStopTimer(void);
  */
 static inline int VibeSemIsLocked(struct semaphore *lock)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 #if ((LINUX_VERSION_CODE & 0xFFFFFF) < KERNEL_VERSION(2,6,27))
 	return (atomic_read(&lock->count) != 1);
 #else
@@ -77,6 +78,7 @@ static inline int VibeSemIsLocked(struct semaphore *lock)
 
 static enum hrtimer_restart tsp_timer_interrupt(struct hrtimer *timer)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	/* Scheduling next timeout value right away */
 	hrtimer_forward_now(timer, g_ktFiveMs);
 
@@ -98,6 +100,7 @@ static int VibeOSKernelTimerProc(void* data)
 	int i;
 	int bReachEndBuffer = 0;
 
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	while(!kthread_should_stop()) {
 		if(g_bTimerThreadStarted) {
 			/* Block until we get woken up by timer tick */
@@ -175,6 +178,7 @@ static int VibeOSKernelTimerProc(void* data)
 
 static void VibeOSKernelLinuxInitTimer(void)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	/* Get a 5,000,000ns = 5ms time value */
 	g_ktFiveMs = ktime_set(0, 5000000);
 
@@ -193,6 +197,7 @@ static void VibeOSKernelLinuxStartTimer(void)
 	int ret = 0;
 	int i;
 
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	/* Reset watchdog counter */
 	g_nWatchdogCounter = 0;
 
@@ -224,6 +229,7 @@ static void VibeOSKernelLinuxStopTimer(void)
 {
 	int i;
 
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	if(g_bTimerStarted) {
 		g_bTimerStarted = false;
 		hrtimer_cancel(&g_tspTimer);
@@ -241,6 +247,7 @@ static void VibeOSKernelLinuxStopTimer(void)
 
 static void VibeOSKernelLinuxTerminateTimer(void)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	VibeOSKernelLinuxStopTimer();
 	g_bTimerThreadStarted = false;
 	complete_all(&g_tspCompletion);

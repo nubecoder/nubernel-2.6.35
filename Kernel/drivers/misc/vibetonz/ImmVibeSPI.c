@@ -65,6 +65,7 @@ extern struct vibrator_platform_data vib_plat_data;
 IMMVIBESPIAPI VibeStatus
 ImmVibeSPI_ForceOut_AmpDisable(VibeUInt8 nActuatorIndex)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 #if 0
 #error Please review the code between the #if and #endif
 	if (g_bAmpEnabled)
@@ -96,6 +97,7 @@ ImmVibeSPI_ForceOut_AmpDisable(VibeUInt8 nActuatorIndex)
 IMMVIBESPIAPI VibeStatus
 ImmVibeSPI_ForceOut_AmpEnable(VibeUInt8 nActuatorIndex)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 #if 0
 #error Please review the code between the #if and #endif
 	if (!g_bAmpEnabled)
@@ -136,6 +138,7 @@ ImmVibeSPI_ForceOut_AmpEnable(VibeUInt8 nActuatorIndex)
 IMMVIBESPIAPI VibeStatus
 ImmVibeSPI_ForceOut_Initialize(void)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 #if 0
 #error Please review the code between the #if and #endif
 	DbgOut((KERN_DEBUG "ImmVibeSPI_ForceOut_Initialize.\n"));
@@ -175,6 +178,7 @@ ImmVibeSPI_ForceOut_Initialize(void)
 IMMVIBESPIAPI VibeStatus
 ImmVibeSPI_ForceOut_Terminate(void)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 #if 0
 #error Please review the code between the #if and #endif
 	DbgOut((KERN_DEBUG "ImmVibeSPI_ForceOut_Terminate.\n"));
@@ -228,6 +232,7 @@ ImmVibeSPI_ForceOut_Set(VibeUInt8 nActuatorIndex, VibeInt8 nForce)
 	}
 #endif
 	int pwm_duty = (freq_count / 2) + (((freq_count / 2) - 2) * nForce) / 127;
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	if (nForce == 0) {
 		ImmVibeSPI_ForceOut_AmpDisable(0);
 	} else {
@@ -245,6 +250,7 @@ IMMVIBESPIAPI VibeStatus
 ImmVibeSPI_ForceOut_SetSamples(VibeUInt8 nActuatorIndex, VibeUInt16 nOutputSignalBitDepth,
 						VibeUInt16 nBufferSizeInBytes, VibeInt8* pForceOutputBuffer)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	/* This function is not called for LRA device */
 	return VIBE_S_SUCCESS;
 }
@@ -275,6 +281,7 @@ ImmVibeSPI_ForceOut_SetFrequency(VibeUInt8 nActuatorIndex,
 IMMVIBESPIAPI VibeStatus
 ImmVibeSPI_Device_GetName(VibeUInt8 nActuatorIndex, char *szDevName, int nSize)
 {
+	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 #if 0
 #error Please review the code between the #if and #endif
 #if 0

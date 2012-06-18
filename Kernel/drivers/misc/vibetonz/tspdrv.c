@@ -248,30 +248,28 @@ static ssize_t immTest_show(struct device *dev,
 {
 	printk("[VIBETONZ:nc] enter: %s \n", __func__);
 	printk(KERN_INFO "[VIBETONZ] %s : operate nothing\n", __FUNCTION__);
-	return 0;
+	return snprintf(buf, PAGE_SIZE, "[VIBETONZ] \n");
 }
 static ssize_t immTest_store(struct device *dev,
 						struct device_attribute *attr,
 						const char *buf, size_t count)
 {
-	char *after;
-	//unsigned long arg1=0, arg2=0;
+	unsigned long val;
+	int res;
 
-	unsigned long value = simple_strtoul(buf, &after, 10);
-	//arg1 = (int) (value / 1000);
-	//arg2 = (int) (value % 1000 );
 	printk("[VIBETONZ:nc] enter: %s \n", __func__);
-	printk(KERN_INFO "[VIBETONZ] immTest value:%lu \n", value);
+	if ((res = strict_strtoul(buf, 10, &val)) < 0)
+		return res;
+	printk(KERN_INFO "[VIBETONZ] immTest value:%lu \n", val);
 
-	if (value > 0) {
+	if (val > 0) {
 		printk("[VIBETONZ:nc] val > 0: %lu \n", val);
-		//ImmVibeSPI_ForceOut_AmpEnable(value);
-		ImmVibeSPI_ForceOut_Set(0, value);
+		//ImmVibeSPI_ForceOut_AmpEnable(val);
+		ImmVibeSPI_ForceOut_Set(0, val);
 	} else {
 		printk("[VIBETONZ:nc] else: %lu \n", val);
-		ImmVibeSPI_ForceOut_AmpDisable(value);
+		ImmVibeSPI_ForceOut_AmpDisable(val);
 	}
-	//freq_count = value;
 
 	return count;
 }

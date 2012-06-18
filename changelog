@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-18-2012:
+mach-s5pv210: mach-victory: Some minor code reordering.
 drivers misc: TouchSense: Adjustments to the sysfs handler code.
 drivers misc: TouchSense: Re-enable and add debugging.
 plat-samsung: pwm: Minor whitespace fixes.

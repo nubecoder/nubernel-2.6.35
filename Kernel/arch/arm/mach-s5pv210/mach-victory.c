@@ -174,16 +174,16 @@ static int victory_notifier_call(struct notifier_block *this,
 	int mode = REBOOT_MODE_NONE;
 
 	if ((code == SYS_RESTART) && _cmd) {
-		if (!strcmp((char *)_cmd, "arm11_fota"))
-			mode = REBOOT_MODE_ARM11_FOTA;
-		else if (!strcmp((char *)_cmd, "arm9_fota"))
-			mode = REBOOT_MODE_ARM9_FOTA;
-		else if (!strcmp((char *)_cmd, "recovery")) {
+		if (!strcmp((char *)_cmd, "recovery")) {
 			mode = REBOOT_MODE_ARM11_FOTA;
 #ifdef CONFIG_POKE_REC_BOOT_MAGIC
 			poke_rec_boot_magic();
 #endif
-		} else if (!strcmp((char *)_cmd, "bml7recovery"))
+		} else if (!strcmp((char *)_cmd, "arm9_fota"))
+			mode = REBOOT_MODE_ARM9_FOTA;
+		else if (!strcmp((char *)_cmd, "arm11_fota"))
+			mode = REBOOT_MODE_ARM11_FOTA;
+		else if (!strcmp((char *)_cmd, "bml7recovery"))
 			mode = REBOOT_MODE_RECOVERY;
 		else if (!strcmp((char *)_cmd, "bootloader"))
 			mode = REBOOT_MODE_DOWNLOAD;

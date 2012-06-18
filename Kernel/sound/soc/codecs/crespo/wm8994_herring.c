@@ -32,7 +32,6 @@
 /*
  * Definitions of tunning volumes for wm8994
  */
-
 struct gain_info_t cdma_playback_gain_table[PLAYBACK_GAIN_NUM] = {
 	{ /* COMMON */
 		.mode = COMMON_SET_BIT,
@@ -446,7 +445,7 @@ struct gain_info_t cdma_voicecall_gain_table[VOICECALL_GAIN_NUM] = {
 	},
 };
 
-struct gain_info_t playback_gain_table[PLAYBACK_GAIN_NUM] = {
+struct gain_info_t playback_gain_table[PLAYBACK_GAIN_NUM + 5] = { // +5 for PLAYBACK_EXTRA_DOCK_SPEAKER support. -nubecoder
 	{ /* COMMON */
 		.mode = COMMON_SET_BIT,
 		.reg  = WM8994_DAC1_LEFT_VOLUME,	/* 610h */

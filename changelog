@@ -9,6 +9,7 @@ Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
 06-18-2012:
+plat-samsung: pwm: Minor whitespace fixes.
 drivers misc: TouchSense: Whitespace and syntax fixes.
 
 06-15-2012:

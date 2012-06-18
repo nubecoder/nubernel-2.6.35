@@ -3,25 +3,25 @@
 ** File:
 **     tspdrv.c
 **
-** Description: 
+** Description:
 **     TouchSense Kernel Module main entry-point.
 **
-** Portions Copyright (c) 2008-2009 Immersion Corporation. All Rights Reserved. 
+** Portions Copyright (c) 2008-2009 Immersion Corporation. All Rights Reserved.
 **
-** This file contains Original Code and/or Modifications of Original Code 
-** as defined in and that are subject to the GNU Public License v2 - 
-** (the 'License'). You may not use this file except in compliance with the 
-** License. You should have received a copy of the GNU General Public License 
+** This file contains Original Code and/or Modifications of Original Code
+** as defined in and that are subject to the GNU Public License v2 -
+** (the 'License'). You may not use this file except in compliance with the
+** License. You should have received a copy of the GNU General Public License
 ** along with this program; if not, write to the Free Software Foundation, Inc.,
-** 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or contact 
+** 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA or contact
 ** TouchSenseSales@immersion.com.
 **
-** The Original Code and all software distributed under the License are 
-** distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER 
-** EXPRESS OR IMPLIED, AND IMMERSION HEREBY DISCLAIMS ALL SUCH WARRANTIES, 
-** INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS 
-** FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. Please see 
-** the License for the specific language governing rights and limitations 
+** The Original Code and all software distributed under the License are
+** distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
+** EXPRESS OR IMPLIED, AND IMMERSION HEREBY DISCLAIMS ALL SUCH WARRANTIES,
+** INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY, FITNESS
+** FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT. Please see
+** the License for the specific language governing rights and limitations
 ** under the License.
 ** =========================================================================
 */
@@ -52,7 +52,7 @@
 /* Device name and version information */
 #define VERSION_STR " v3.3.13.0\n"                  /* DO NOT CHANGE - this is auto-generated */
 #define VERSION_STR_LEN 16                          /* account extra space for future extra digits in version number */
-static char g_szDeviceName[  (VIBE_MAX_DEVICE_NAME_LENGTH 
+static char g_szDeviceName[  (VIBE_MAX_DEVICE_NAME_LENGTH
                             + VERSION_STR_LEN)
                             * NUM_ACTUATORS];       /* initialized in init_module */
 static size_t g_cchDeviceName;                      /* initialized in init_module */
@@ -65,7 +65,7 @@ static char g_bIsPlaying = false;
 /* Buffer to store data sent to SPI */
 #define SPI_BUFFER_SIZE (NUM_ACTUATORS * (VIBE_OUTPUT_SAMPLE_SIZE + SPI_HEADER_SIZE))
 static int g_bStopRequested = false;
-static actuator_samples_buffer g_SamplesBuffer[NUM_ACTUATORS] = {{0}}; 
+static actuator_samples_buffer g_SamplesBuffer[NUM_ACTUATORS] = {{0}};
 
 #define VIBE_TUNING
 
@@ -107,38 +107,38 @@ struct vibrator_platform_data vib_plat_data;
 #ifdef CONFIG_MACH_FORTE
 extern void set_ldo12_reg(int);
 #endif
+
 static int set_vibetonz(int timeout)
 {
-        //gpio_request(GPIO_VIBTONE_EN1, "GPIO_VIBTONE_EN1");
+	//gpio_request(GPIO_VIBTONE_EN1, "GPIO_VIBTONE_EN1");
 
-        if(!timeout) {
-                pwm_disable(Immvib_pwm);
-             //   printk("[VIBETONZ] DISABLE\n");
-                gpio_set_value(vib_plat_data.vib_enable_gpio, 0);
-		#if defined(CONFIG_MACH_FORTE)
-      		set_ldo12_reg(0);
-		#endif
-                gpio_direction_input(vib_plat_data.vib_enable_gpio);
-                s3c_gpio_setpull(vib_plat_data.vib_enable_gpio,S3C_GPIO_PULL_DOWN);
-        }
-        else {
-                pwm_config(Immvib_pwm, VIBRATOR_DUTY, VIBRATOR_PERIOD);
-                pwm_enable(Immvib_pwm);
+	if(!timeout) {
+		pwm_disable(Immvib_pwm);
+		//printk("[VIBETONZ] DISABLE\n");
+		gpio_set_value(vib_plat_data.vib_enable_gpio, 0);
+#if defined(CONFIG_MACH_FORTE)
+		set_ldo12_reg(0);
+#endif
+		gpio_direction_input(vib_plat_data.vib_enable_gpio);
+		s3c_gpio_setpull(vib_plat_data.vib_enable_gpio, S3C_GPIO_PULL_DOWN);
+	} else {
+		pwm_config(Immvib_pwm, VIBRATOR_DUTY, VIBRATOR_PERIOD);
+		pwm_enable(Immvib_pwm);
 
-               // printk("[VIBETONZ] ENABLE\n");
-                gpio_direction_output(vib_plat_data.vib_enable_gpio, 0);
-		#if defined(CONFIG_MACH_FORTE)
-      		set_ldo12_reg(1);
-		#endif
-                mdelay(1);
-                gpio_set_value(vib_plat_data.vib_enable_gpio, 1);
-        }
+		//printk("[VIBETONZ] ENABLE\n");
+		gpio_direction_output(vib_plat_data.vib_enable_gpio, 0);
+#if defined(CONFIG_MACH_FORTE)
+		set_ldo12_reg(1);
+#endif
+		mdelay(1);
+		gpio_set_value(vib_plat_data.vib_enable_gpio, 1);
+	}
 
-        //gpio_free(GPIO_VIBTONE_EN1);
+	//gpio_free(GPIO_VIBTONE_EN1);
 
-        vibrator_value = timeout;
+	vibrator_value = timeout;
 
-        return 0;
+	return 0;
 }
 
 
@@ -158,22 +158,21 @@ static int get_time_for_vibetonz(struct timed_output_dev *dev)
 	} else
 		remaining = 0;
 
-	if (vibrator_value ==-1)
+	if (vibrator_value == -1)
 		remaining = -1;
 
 	return remaining;
-
 }
 
-static void enable_vibetonz_from_user(struct timed_output_dev *dev,int value)
+static void enable_vibetonz_from_user(struct timed_output_dev *dev, int value)
 {
 	//printk("[VIBETONZ] %s : time = %d msec \n",__func__,value);
 	hrtimer_cancel(&timer);
-	
+
 	set_vibetonz(value);
 	vibrator_value = value;
 
-	if (value > 0) 
+	if (value > 0)
 	{
 		if (value > max_timeout)
 			value = max_timeout;
@@ -197,7 +196,6 @@ static void vibetonz_start(void)
 
 	hrtimer_init(&timer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
 	timer.function = vibetonz_timer_func;
-
 	ret = timed_output_dev_register(&timed_output_vt);
 	if(ret)
 		printk(KERN_ERR "[VIBETONZ] timed_output_dev_register is fail \n");
@@ -210,7 +208,7 @@ static int release(struct inode *inode, struct file *file);
 static ssize_t read(struct file *file, char *buf, size_t count, loff_t *ppos);
 static ssize_t write(struct file *file, const char *buf, size_t count, loff_t *ppos);
 static int ioctl(struct inode *inode, struct file *file, unsigned int cmd, unsigned long arg);
-static struct file_operations fops = 
+static struct file_operations fops =
 {
     .owner =    THIS_MODULE,
     .read =     read,
@@ -221,7 +219,7 @@ static struct file_operations fops =
 };
 
 //#ifndef IMPLEMENT_AS_CHAR_DRIVER
-static struct miscdevice miscdev = 
+static struct miscdevice miscdev =
 {
 	.minor =    MISC_DYNAMIC_MINOR,
 	.name =     MODULE_NAME,
@@ -240,40 +238,41 @@ struct device *immTest_test;
 EXPORT_SYMBOL(immTest_test);
 
 extern long int freq_count;
-static ssize_t immTest_show(struct device *dev, struct device_attribute *attr, char *buf)
+static ssize_t immTest_show(struct device *dev,
+						struct device_attribute *attr, char *buf)
 {
-        printk(KERN_INFO "[VIBETONZ] %s : operate nothing\n", __FUNCTION__);
-
-        return 0;
+	printk(KERN_INFO "[VIBETONZ] %s : operate nothing\n", __FUNCTION__);
+	return 0;
 }
-static ssize_t immTest_store(struct device *dev, struct device_attribute *attr, const char *buf, size_t size)
+static ssize_t immTest_store(struct device *dev,
+						struct device_attribute *attr,
+						const char *buf, size_t count)
 {
-        char *after;
-        //unsigned long arg1=0, arg2=0;
+	char *after;
+	//unsigned long arg1=0, arg2=0;
 
-        unsigned long value = simple_strtoul(buf, &after, 10);
-//      arg1 = (int) (value / 1000);
-//      arg2 = (int) (value % 1000 );
-        //printk(KERN_INFO "[VIBETONZ] value:%ld\n", value);
+	unsigned long value = simple_strtoul(buf, &after, 10);
+	//arg1 = (int) (value / 1000);
+	//arg2 = (int) (value % 1000 );
+	//printk(KERN_INFO "[VIBETONZ] value:%ld\n", value);
 
-        if (value > 0)
-                //ImmVibeSPI_ForceOut_AmpEnable(value);
-                ImmVibeSPI_ForceOut_Set(0, value);
-        else
-                ImmVibeSPI_ForceOut_AmpDisable(value);
+	if (value > 0) {
+		//ImmVibeSPI_ForceOut_AmpEnable(value);
+		ImmVibeSPI_ForceOut_Set(0, value);
+	} else {
+		ImmVibeSPI_ForceOut_AmpDisable(value);
+	}
+	//freq_count = value;
 
-        //freq_count = value;
-
-        return size;
+	return count;
 }
-//static DEVICE_ATTR(immTest, S_IRUGO | S_IWUSR | S_IWOTH | S_IXOTH, immTest_show, immTest_store);
-static DEVICE_ATTR(immTest, S_IRUGO | S_IWUSR , immTest_show, immTest_store); //Fix CTS Fail 
+static DEVICE_ATTR(immTest, S_IRUGO | S_IWUSR, immTest_show, immTest_store);
 #endif /* VIBE_TUNING */
 
 
 static int vibrator_probe(struct platform_device *pdev)
 {
-	struct vibrator_platform_data *pdata = pdev->dev.platform_data; 
+	struct vibrator_platform_data *pdata = pdev->dev.platform_data;
 	int i, nRet=0;//, ret=0;
 
 	vib_plat_data.timer_id = pdata->timer_id;
@@ -283,17 +282,15 @@ static int vibrator_probe(struct platform_device *pdev)
 		if ((nRet = gpio_request(vib_plat_data.vib_enable_gpio, "GPIO_VIBTONE_EN1")))
 			printk(KERN_ERR "Failed to request GPIO_VIBTONE_EN1! %d \n",nRet);
 	}
-#ifdef CONFIG_MACH_FORTE  
+#ifdef CONFIG_MACH_FORTE
 	vib_plat_data.regulator = regulator_get(&pdev->dev, "vibrator");
-        if (!vib_plat_data.regulator) {
-             printk("failed to get vibrator regulator\n");
-              
-        }
-    
-        ret = regulator_enable(vib_plat_data.regulator);
-        if (ret < 0) {
-             printk("fialed to enable vibrator regulator\n");
-        }
+	if (!vib_plat_data.regulator) {
+		printk("failed to get vibrator regulator\n");
+	}
+	ret = regulator_enable(vib_plat_data.regulator);
+	if (ret < 0) {
+		printk("fialed to enable vibrator regulator\n");
+	}
 #endif
 	ImmVibeSPI_ForceOut_Initialize();
 	VibeOSKernelLinuxInitTimer();
@@ -317,7 +314,6 @@ static int vibrator_probe(struct platform_device *pdev)
 	//wake_lock_init(&vib_wake_lock, WAKE_LOCK_SUSPEND, "vib_present");
 
 #ifdef VIBE_TUNING
-
 	// ---------- file creation at '/sys/class/vibetonz/immTest'------------------------------
 	vibetonz_class = class_create(THIS_MODULE, "vibetonz");
 	if (IS_ERR(vibetonz_class))
@@ -339,8 +335,8 @@ static int vibrator_probe(struct platform_device *pdev)
 static int vibrator_remove(struct platform_device *pdev)
 {
 
-#ifdef CONFIG_MACH_FORTE  
-        regulator_disable(vib_plat_data.regulator);
+#ifdef CONFIG_MACH_FORTE
+	regulator_disable(vib_plat_data.regulator);
 #endif
 	DbgOut((KERN_INFO "tspdrv: vibrator removed .\n"));
 
@@ -365,238 +361,222 @@ MODULE_LICENSE("GPL v2");
 
 int init_module(void)
 {
-    int nRet;//, i;   /* initialized below */
+	int nRet;//, i;   /* initialized below */
 
-    DbgOut((KERN_INFO "tspdrv: init_module.\n"));
+	DbgOut((KERN_INFO "tspdrv: init_module.\n"));
 
 //#ifdef IMPLEMENT_AS_CHAR_DRIVER
 #if 0
-    g_nMajor = register_chrdev(0, MODULE_NAME, &fops);
-    if (g_nMajor < 0) 
-    {
-        DbgOut((KERN_ERR "tspdrv: can't get major number.\n"));
-        return g_nMajor;
-    }
+	g_nMajor = register_chrdev(0, MODULE_NAME, &fops);
+	if (g_nMajor < 0) {
+		DbgOut((KERN_ERR "tspdrv: can't get major number.\n"));
+		return g_nMajor;
+	}
 #else
-    nRet = misc_register(&miscdev);
+	nRet = misc_register(&miscdev);
 	printk("[VIBETONZ:WJYOO] MISC_REGISTER nRet = %d\n", nRet);
-	if (nRet) 
-    {
-        DbgOut((KERN_ERR "tspdrv: misc_register failed.\n"));
+	if (nRet) {
+		DbgOut((KERN_ERR "tspdrv: misc_register failed.\n"));
 		return nRet;
 	}
 #endif
 
 	nRet = platform_driver_register(&vibrator_driver);
-	if (nRet) 
-    {
-        DbgOut((KERN_ERR "tspdrv: platform_driver_register failed.\n"));
-    }
+	if (nRet) {
+		DbgOut((KERN_ERR "tspdrv: platform_driver_register failed.\n"));
+	}
 
 	return nRet;
 }
 
 void cleanup_module(void)
 {
-    DbgOut((KERN_INFO "tspdrv: cleanup_module.\n"));
+	DbgOut((KERN_INFO "tspdrv: cleanup_module.\n"));
 
-    VibeOSKernelLinuxTerminateTimer();
-    ImmVibeSPI_ForceOut_Terminate();
+	VibeOSKernelLinuxTerminateTimer();
+	ImmVibeSPI_ForceOut_Terminate();
 
 	platform_driver_unregister(&vibrator_driver);
 
 //#ifdef IMPLEMENT_AS_CHAR_DRIVER
 #if 0
-    unregister_chrdev(g_nMajor, MODULE_NAME);
+	unregister_chrdev(g_nMajor, MODULE_NAME);
 #else
-    misc_deregister(&miscdev);
-    gpio_free(vib_plat_data.vib_enable_gpio);
+	misc_deregister(&miscdev);
+	gpio_free(vib_plat_data.vib_enable_gpio);
 #endif
 }
 
-static int open(struct inode *inode, struct file *file) 
+static int open(struct inode *inode, struct file *file)
 {
-    DbgOut((KERN_INFO "tspdrv: open.\n"));
+	DbgOut((KERN_INFO "tspdrv: open.\n"));
 
-    if (!try_module_get(THIS_MODULE)) return -ENODEV;
+	if (!try_module_get(THIS_MODULE))
+		return -ENODEV;
 
-    return 0; 
+	return 0;
 }
 
-static int release(struct inode *inode, struct file *file) 
+static int release(struct inode *inode, struct file *file)
 {
-    DbgOut((KERN_INFO "tspdrv: release.\n"));
+	DbgOut((KERN_INFO "tspdrv: release.\n"));
 
-    /* 
-    ** Reset force and stop timer when the driver is closed, to make sure
-    ** no dangling semaphore remains in the system, especially when the
-    ** driver is run outside of immvibed for testing purposes.
-    */
-    VibeOSKernelLinuxStopTimer();
+	/*
+	** Reset force and stop timer when the driver is closed, to make sure
+	** no dangling semaphore remains in the system, especially when the
+	** driver is run outside of immvibed for testing purposes.
+	*/
+	VibeOSKernelLinuxStopTimer();
 
-    /* 
-    ** Clear the variable used to store the magic number to prevent 
-    ** unauthorized caller to write data. TouchSense service is the only 
-    ** valid caller.
-    */
-    file->private_data = (void*)NULL;
+	/*
+	** Clear the variable used to store the magic number to prevent
+	** unauthorized caller to write data. TouchSense service is the only
+	** valid caller.
+	*/
+	file->private_data = (void*)NULL;
 
-    module_put(THIS_MODULE);
+	module_put(THIS_MODULE);
 
-    return 0; 
+	return 0;
 }
 
 static ssize_t read(struct file *file, char *buf, size_t count, loff_t *ppos)
 {
-    const size_t nBufSize = (g_cchDeviceName > (size_t)(*ppos)) ? min(count, g_cchDeviceName - (size_t)(*ppos)) : 0;
+	const size_t nBufSize = (g_cchDeviceName > (size_t)(*ppos)) ? min(count, g_cchDeviceName - (size_t)(*ppos)) : 0;
 
-    /* End of buffer, exit */
-    if (0 == nBufSize) return 0;
+	/* End of buffer, exit */
+	if (0 == nBufSize)
+		return 0;
 
-    if (0 != copy_to_user(buf, g_szDeviceName + (*ppos), nBufSize)) 
-    {
-        /* Failed to copy all the data, exit */
-        DbgOut((KERN_ERR "tspdrv: copy_to_user failed.\n"));
-        return 0;
-    }
+	if (0 != copy_to_user(buf, g_szDeviceName + (*ppos), nBufSize)) {
+		/* Failed to copy all the data, exit */
+		DbgOut((KERN_ERR "tspdrv: copy_to_user failed.\n"));
+		return 0;
+	}
 
-    /* Update file position and return copied buffer size */
-    *ppos += nBufSize;
-    return nBufSize;
+	/* Update file position and return copied buffer size */
+	*ppos += nBufSize;
+	return nBufSize;
 }
 
 static ssize_t write(struct file *file, const char *buf, size_t count, loff_t *ppos)
 {
-    int i = 0;
+	int i = 0;
 
-    *ppos = 0;  /* file position not used, always set to 0 */
+	*ppos = 0;  /* file position not used, always set to 0 */
 
-    /* 
-    ** Prevent unauthorized caller to write data. 
-    ** TouchSense service is the only valid caller.
-    */
-    if (file->private_data != (void*)TSPDRV_MAGIC_NUMBER) 
-    {
-        DbgOut((KERN_ERR "tspdrv: unauthorized write.\n"));
-        return 0;
-    }
+	/*
+	** Prevent unauthorized caller to write data.
+	** TouchSense service is the only valid caller.
+	*/
+	if (file->private_data != (void*)TSPDRV_MAGIC_NUMBER) {
+		DbgOut((KERN_ERR "tspdrv: unauthorized write.\n"));
+		return 0;
+	}
 
-    /* Check buffer size */
-    if ((count <= SPI_HEADER_SIZE) || (count >= SPI_BUFFER_SIZE))
-    {
-        DbgOut((KERN_ERR "tspdrv: invalid write buffer size.\n"));
-        return 0;
-    }
+	/* Check buffer size */
+	if ((count <= SPI_HEADER_SIZE) || (count >= SPI_BUFFER_SIZE)) {
+		DbgOut((KERN_ERR "tspdrv: invalid write buffer size.\n"));
+		return 0;
+	}
 
-    while (i < count)
-    {
-        int nIndexFreeBuffer;   /* initialized below */
+	while (i < count) {
+		int nIndexFreeBuffer;   /* initialized below */
 
-        samples_buffer* pInputBuffer = (samples_buffer*)(&buf[i]);
+		samples_buffer* pInputBuffer = (samples_buffer*)(&buf[i]);
 
-        if ((i + SPI_HEADER_SIZE) >= count)
-        {
-            /*
-            ** Index is about to go beyond the buffer size.
-            ** (Should never happen).
-            */
-            DbgOut((KERN_EMERG "tspdrv: invalid buffer index.\n"));
-        }
+		if ((i + SPI_HEADER_SIZE) >= count) {
+			/*
+			** Index is about to go beyond the buffer size.
+			** (Should never happen).
+			*/
+			DbgOut((KERN_EMERG "tspdrv: invalid buffer index.\n"));
+		}
 
-        /* Check bit depth */
-        if (8 != pInputBuffer->nBitDepth)
-        {
-            DbgOut((KERN_WARNING "tspdrv: invalid bit depth. Use default value (8).\n"));
-        }
+		/* Check bit depth */
+		if (8 != pInputBuffer->nBitDepth) {
+			DbgOut((KERN_WARNING "tspdrv: invalid bit depth. Use default value (8).\n"));
+		}
 
-        /* The above code not valid if SPI header size is not 3 */
+		/* The above code not valid if SPI header size is not 3 */
 #if (SPI_HEADER_SIZE != 3)
 #error "SPI_HEADER_SIZE expected to be 3"
 #endif
 
-        /* Check buffer size */
-        if ((i + SPI_HEADER_SIZE + pInputBuffer->nBufferSize) > count)
-        {
-            /*
-            ** Index is about to go beyond the buffer size.
-            ** (Should never happen).
-            */
-            DbgOut((KERN_EMERG "tspdrv: invalid data size.\n"));
-        }
-        
-        /* Check actuator index */
-        if (NUM_ACTUATORS <= pInputBuffer->nActuatorIndex)
-        {
-            DbgOut((KERN_ERR "tspdrv: invalid actuator index.\n"));
-            i += (SPI_HEADER_SIZE + pInputBuffer->nBufferSize);
-            continue;
-        }
+		/* Check buffer size */
+		if ((i + SPI_HEADER_SIZE + pInputBuffer->nBufferSize) > count) {
+			/*
+			** Index is about to go beyond the buffer size.
+			** (Should never happen).
+			*/
+			DbgOut((KERN_EMERG "tspdrv: invalid data size.\n"));
+		}
 
-        if (0 == g_SamplesBuffer[pInputBuffer->nActuatorIndex].actuatorSamples[0].nBufferSize)
-        {
-            nIndexFreeBuffer = 0;
-        }
-        else if (0 == g_SamplesBuffer[pInputBuffer->nActuatorIndex].actuatorSamples[1].nBufferSize)
-        {
-             nIndexFreeBuffer = 1;
-        }
-        else
-        {
-            /* No room to store new samples  */
-            DbgOut((KERN_ERR "tspdrv: no room to store new samples.\n"));
-            return 0;
-        }
+		/* Check actuator index */
+		if (NUM_ACTUATORS <= pInputBuffer->nActuatorIndex) {
+			DbgOut((KERN_ERR "tspdrv: invalid actuator index.\n"));
+			i += (SPI_HEADER_SIZE + pInputBuffer->nBufferSize);
+			continue;
+		}
 
-        /* Store the data in the actuator's free buffer */
-        if (0 != copy_from_user(&(g_SamplesBuffer[pInputBuffer->nActuatorIndex].actuatorSamples[nIndexFreeBuffer]), &(buf[i]), (SPI_HEADER_SIZE + pInputBuffer->nBufferSize))) 
-        {
-            /* Failed to copy all the data, exit */
-            DbgOut((KERN_ERR "tspdrv: copy_from_user failed.\n"));
-            return 0;
-        }
+		if (0 == g_SamplesBuffer[pInputBuffer->nActuatorIndex].actuatorSamples[0].nBufferSize) {
+			nIndexFreeBuffer = 0;
+		} else if (0 == g_SamplesBuffer[pInputBuffer->nActuatorIndex].actuatorSamples[1].nBufferSize) {
+			nIndexFreeBuffer = 1;
+		} else {
+			/* No room to store new samples  */
+			DbgOut((KERN_ERR "tspdrv: no room to store new samples.\n"));
+			return 0;
+		}
 
-        /* if the no buffer is playing, prepare to play g_SamplesBuffer[pInputBuffer->nActuatorIndex].actuatorSamples[nIndexFreeBuffer] */
-        if ( -1 == g_SamplesBuffer[pInputBuffer->nActuatorIndex].nIndexPlayingBuffer)
-        {
-           g_SamplesBuffer[pInputBuffer->nActuatorIndex].nIndexPlayingBuffer = nIndexFreeBuffer;
-           g_SamplesBuffer[pInputBuffer->nActuatorIndex].nIndexOutputValue = 0;
-        }
+		/* Store the data in the actuator's free buffer */
+		if (0 != copy_from_user(&(g_SamplesBuffer[pInputBuffer->nActuatorIndex].actuatorSamples[nIndexFreeBuffer]),
+								&(buf[i]), (SPI_HEADER_SIZE + pInputBuffer->nBufferSize))) {
+			/* Failed to copy all the data, exit */
+			DbgOut((KERN_ERR "tspdrv: copy_from_user failed.\n"));
+			return 0;
+		}
 
-        /* Call SPI */
-       ImmVibeSPI_ForceOut_SetSamples(pInputBuffer->nActuatorIndex, pInputBuffer->nBitDepth, pInputBuffer->nBufferSize, &(g_SamplesBuffer[pInputBuffer->nActuatorIndex].actuatorSamples[nIndexFreeBuffer].dataBuffer[0]));
+		/* if the no buffer is playing, prepare to play g_SamplesBuffer[pInputBuffer->nActuatorIndex].actuatorSamples[nIndexFreeBuffer] */
+		if ( -1 == g_SamplesBuffer[pInputBuffer->nActuatorIndex].nIndexPlayingBuffer) {
+			g_SamplesBuffer[pInputBuffer->nActuatorIndex].nIndexPlayingBuffer = nIndexFreeBuffer;
+			g_SamplesBuffer[pInputBuffer->nActuatorIndex].nIndexOutputValue = 0;
+		}
 
-        /* Increment buffer index */
-        i += (SPI_HEADER_SIZE + pInputBuffer->nBufferSize);
-    }
+		/* Call SPI */
+		ImmVibeSPI_ForceOut_SetSamples(pInputBuffer->nActuatorIndex,
+								pInputBuffer->nBitDepth, pInputBuffer->nBufferSize,
+								&(g_SamplesBuffer[pInputBuffer->nActuatorIndex].actuatorSamples[nIndexFreeBuffer].dataBuffer[0]));
+
+		/* Increment buffer index */
+		i += (SPI_HEADER_SIZE + pInputBuffer->nBufferSize);
+	}
 
 #ifdef QA_TEST
-    g_nForceLog[g_nForceLogIndex++] = g_cSPIBuffer[0];
-    if (g_nForceLogIndex >= FORCE_LOG_BUFFER_SIZE)
-    {
-        for (i=0; i<FORCE_LOG_BUFFER_SIZE; i++)
-        {
-            printk("<6>%d\t%d\n", g_nTime, g_nForceLog[i]);
-            g_nTime += TIME_INCREMENT;
-        }
-        g_nForceLogIndex = 0;
-    }
+	g_nForceLog[g_nForceLogIndex++] = g_cSPIBuffer[0];
+	if (g_nForceLogIndex >= FORCE_LOG_BUFFER_SIZE) {
+		for (i=0; i<FORCE_LOG_BUFFER_SIZE; i++) {
+			printk("<6>%d\t%d\n", g_nTime, g_nForceLog[i]);
+			g_nTime += TIME_INCREMENT;
+		}
+		g_nForceLogIndex = 0;
+	}
 #endif
 
-    /* Start the timer after receiving new output force */
-    g_bIsPlaying = true;
-    VibeOSKernelLinuxStartTimer();
+	/* Start the timer after receiving new output force */
+	g_bIsPlaying = true;
+	VibeOSKernelLinuxStartTimer();
 
-    return count;
+	return count;
 }
 
 static int ioctl(struct inode *inode, struct file *file, unsigned int cmd, unsigned long arg)
 {
 #ifdef QA_TEST
-    int i;
+	int i;
 #endif
 
-    switch (cmd)
-    {
+	switch (cmd) {
 #ifdef VIBE_TUNING1
 		case 185:
 			g_PWM_duty_max = arg; /* set value of g_PWM_duty_max in ImmVibeSPI */
@@ -608,78 +588,75 @@ static int ioctl(struct inode *inode, struct file *file, unsigned int cmd, unsig
 			g_PWM_multiplier = arg; /* set value of g_PWM_multiplier in ImmVibeSPI */
 			break;
 #endif /* VIBE_TUNING */
-        case TSPDRV_STOP_KERNEL_TIMER:
-            /* 
-            ** As we send one sample ahead of time, we need to finish playing the last sample
-            ** before stopping the timer. So we just set a flag here.
-            */
-            if (true == g_bIsPlaying) g_bStopRequested = true;
+		case TSPDRV_STOP_KERNEL_TIMER:
+			/*
+			** As we send one sample ahead of time, we need to finish playing the last sample
+			** before stopping the timer. So we just set a flag here.
+			*/
+			if (true == g_bIsPlaying)
+				g_bStopRequested = true;
 
 #ifdef QA_TEST
-            if (g_nForceLogIndex)
-            {
-                for (i=0; i<g_nForceLogIndex; i++)
-                {
-                    printk("<6>%d\t%d\n", g_nTime, g_nForceLog[i]);
-                    g_nTime += TIME_INCREMENT;
-                }
-            }
-            g_nTime = 0;
-            g_nForceLogIndex = 0;
+			if (g_nForceLogIndex) {
+				for (i=0; i<g_nForceLogIndex; i++) {
+					printk("<6>%d\t%d\n", g_nTime, g_nForceLog[i]);
+					g_nTime += TIME_INCREMENT;
+				}
+			}
+			g_nTime = 0;
+			g_nForceLogIndex = 0;
 #endif
-            break;
+			break;
 
-        case TSPDRV_IDENTIFY_CALLER:
-            if (TSPDRV_MAGIC_NUMBER == arg) file->private_data = (void*)TSPDRV_MAGIC_NUMBER;
-            break;
+		case TSPDRV_IDENTIFY_CALLER:
+			if (TSPDRV_MAGIC_NUMBER == arg)
+				file->private_data = (void*)TSPDRV_MAGIC_NUMBER;
+			break;
 
-        case TSPDRV_ENABLE_AMP:
-            //wake_lock(&vib_wake_lock);
-            ImmVibeSPI_ForceOut_AmpEnable(arg);
-            break;
+		case TSPDRV_ENABLE_AMP:
+			//wake_lock(&vib_wake_lock);
+			ImmVibeSPI_ForceOut_AmpEnable(arg);
+			break;
 
-        case TSPDRV_DISABLE_AMP:
-            ImmVibeSPI_ForceOut_AmpDisable(arg);
-            //wake_unlock(&vib_wake_lock);
-            break;
+		case TSPDRV_DISABLE_AMP:
+			ImmVibeSPI_ForceOut_AmpDisable(arg);
+			//wake_unlock(&vib_wake_lock);
+			break;
 
-        case TSPDRV_GET_NUM_ACTUATORS:
-            return NUM_ACTUATORS;
-    }
+		case TSPDRV_GET_NUM_ACTUATORS:
+			return NUM_ACTUATORS;
+	}
 
-    return 0;
+	return 0;
 }
 
-static int suspend(struct platform_device *pdev, pm_message_t state) 
+static int suspend(struct platform_device *pdev, pm_message_t state)
 {
-    if (g_bIsPlaying)
-    {
-        DbgOut((KERN_INFO "tspdrv: can't suspend, still playing effects.\n"));
-        return -EBUSY;
-    }
-    else
-    {
-#ifdef CONFIG_MACH_FORTE  
-       regulator_disable(vib_plat_data.regulator);
+	if (g_bIsPlaying) {
+		DbgOut((KERN_INFO "tspdrv: can't suspend, still playing effects.\n"));
+		return -EBUSY;
+	} else {
+#ifdef CONFIG_MACH_FORTE
+		regulator_disable(vib_plat_data.regulator);
 #endif
-        DbgOut((KERN_INFO "tspdrv: suspend.\n"));
-        return 0;
-    }
+		DbgOut((KERN_INFO "tspdrv: suspend.\n"));
+		return 0;
+	}
 }
 
-static int resume(struct platform_device *pdev) 
-{	
-    DbgOut((KERN_INFO "tspdrv: resume.\n"));
-        
-#ifdef CONFIG_MACH_FORTE  
-    regulator_enable(vib_plat_data.regulator);
+static int resume(struct platform_device *pdev)
+{
+	DbgOut((KERN_INFO "tspdrv: resume.\n"));
+
+#ifdef CONFIG_MACH_FORTE
+	regulator_enable(vib_plat_data.regulator);
 #endif
 	return 0;   /* can resume */
 }
 
 #if 0
 static void platform_release(struct device *dev)
-{	
-    DbgOut((KERN_INFO "tspdrv: platform_release.\n"));
+{
+	DbgOut((KERN_INFO "tspdrv: platform_release.\n"));
 }
 #endif

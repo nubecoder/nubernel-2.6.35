@@ -8,6 +8,9 @@ nubernel-2.6.35_v0.1
 Changelog:
 =]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]=]
 
+06-18-2012:
+drivers misc: TouchSense: Whitespace and syntax fixes.
+
 06-15-2012:
 featurelist: Update featurelist with some missing info.
 

@@ -4,7 +4,7 @@
 
 obj-$(CONFIG_VIBETONZ) += vibrator.o
 
-vibrator-objs +=tspdrv.o 
+vibrator-objs += tspdrv.o
 
 all:
 	@echo "$(MAKE) --no-print-directory -C $(KDIR) SUBDIRS=$(CURDIR) modules"
@@ -12,7 +12,7 @@ all:
 		SUBDIRS=$(CURDIR) modules
 
 clean:
-	rm -f *.o *.ko *.mod.c *.mod.o *~ .*.cmd .*.o.cmd Module.symvers modules.order 
+	rm -f *.o *.ko *.mod.c *.mod.o *~ .*.cmd .*.o.cmd Module.symvers modules.order
 
 install:
 	@$(MAKE) --no-print-directory -C $(KDIR) \
